@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="var(--background)">
+  <title>Clock</title>
+  <link rel="stylesheet" href="http://shared.localhost:8081/style/theme.css" />
+  <link rel="stylesheet" href="http://shared.localhost:8081/style/main.css" />
+  <link rel="stylesheet" href="http://shared.localhost:8081/style/tablists.css" />
+  <link rel="stylesheet" href="http://shared.localhost:8081/style/panels.css" />
+  <link rel="stylesheet" href="http://shared.localhost:8081/style/headerbars.css" />
+  <link rel="stylesheet" href="style/analog_clock.css" />
+  <script src="js/clock.js"></script>
+</head>
+<body>
+  <div id="tabs" class="tablist">
+    <ul>
+      <li><a href="#">Alarms</a></li>
+      <li><a href="#">World Clock</a></li>
+      <li><a href="#">Stopwatch</a></li>
+      <li><a href="#">Timer</a></li>
+    </ul>
+
+    <div class="panels">
+      <div class="panel">
+        <div class="headerbar">
+          <h1>Clock</h1>
+        </div>
+        <div class="content">
+          <div class="analog-clock">
+            <div class="analog-hour"></div>
+            <div class="analog-minute"></div>
+            <div class="analog-second"></div>
+            <div class="bullet"></div>
+          </div>
+        </div>
+      </div>
+      <!-- <div class="panel"></div> -->
+      <!-- <div class="panel"></div> -->
+      <!-- <div class="panel"></div> -->
+    </div>
+  </div>
+</body>
+</html>

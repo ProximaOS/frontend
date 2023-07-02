@@ -1,0 +1,7 @@
+<svg width="32" height="32"
+   viewBox="0 0 32 32" version="1.1"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:xlink="http://www.w3.org/1999/xlink">
+  <path d="M6 6 22 6Q28 6 28 12L28 20Q28 26 22 26L6 26Q0 26 0 20L0 12Q0 6 6 6M30 13Q30 12 31 12 32 12 32 13L32 19Q32 20 31 20 30 20 30 19L30 13M2 12 2 20Q2 24 6 24L22 24Q26 24 26 20L26 12Q26 8 22 8L6 8Q2 8 2 12"
+     fill="#fff" stroke="none" stroke-width="0" />
+</svg>

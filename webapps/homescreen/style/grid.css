@@ -1,0 +1,80 @@
+#grid {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: calc(100% - 8rem);
+  overflow-x: auto;
+  overflow-y: hidden;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  z-index: 1;
+}
+
+#grid > .page {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  scroll-snap-align: center;
+  padding: var(--statusbar-height) 1rem 0;
+  box-sizing: border-box;
+}
+
+.icon {
+  position: absolute;
+  width: calc(100% / var(--grid-columns));
+  height: calc(100% / var(--grid-rows));
+  transition: all 0.3s cubic-bezier(1, 0, 0, 1);
+}
+
+.icon.widget-2x2 {
+  grid-column: span 2;
+  grid-row: span 2;
+}
+
+.icon.dragging {
+  transition: none;
+}
+
+.icon .icon-holder {
+  width: 100%;
+  padding: 1rem 0 0;
+  box-sizing: border-box;
+}
+
+.icon.widget-2x2 .icon-holder {
+  padding: 1.5rem 0 0;
+}
+
+.icon .icon-holder > * {
+  width: 4.8rem;
+  height: 4.8rem;
+  border-radius: 25%;
+  margin: 0 auto;
+  display: block;
+  transition: all 0.3s ease;
+}
+
+.icon.widget-2x2 .icon-holder > * {
+  width: 12rem;
+  height: 12rem;
+  border-radius: 12.5%;
+}
+
+.icon.dragging .icon-holder > img {
+  transform: scale(1.25);
+}
+
+.icon .name {
+  width: 100%;
+  margin: 0.4rem 0 1rem;
+  text-align: center;
+  font-size: 1.2rem;
+  color: #fff;
+  text-shadow: 0 3px 6px #333, 0 1px 0 #333;
+  transition: all 0.3s ease;
+}
+
+.icon.icon.dragging .name {
+  opacity: 0;
+}

@@ -1,0 +1,63 @@
+.analog-clock {
+  margin: 1.5rem auto;
+  width: 25rem;
+  height: 25rem;
+  border-radius: 50%;
+  box-shadow: -1rem -1rem 1.5rem var(--background-plus), 1rem 1rem 1.5rem rgba(0, 0, 0, 0.25), inset 1rem 1rem 1.5rem var(--background-plus), inset -1rem -1rem 1.5rem rgba(0, 0, 0, 0.25);
+  background: linear-gradient(to bottom, var(--background-plus)s, transparent);
+  position: relative;
+}
+
+.analog-hour {
+  position: absolute;
+  left: 50%;
+  bottom: 50%;
+  margin-left: -.5rem;
+  margin-bottom: -.5rem;
+  background: var(--text-color);
+  border-radius: 1rem;
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.25), inset 0 0.5rem 1rem rgba(255, 255, 255, 0.25);
+  width: 1rem;
+  height: 25%;
+  transform-origin: bottom;
+  animation: spin 216000s steps(60) infinite;
+}
+
+.analog-minute {
+  position: absolute;
+  left: 50%;
+  bottom: 50%;
+  margin-left: -.35rem;
+  margin-bottom: -.35rem;
+  background: #858585;
+  border-radius: 1rem;
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.25), inset 0 0.5rem 1rem rgba(255, 255, 255, 0.25);
+  width: .75rem;
+  height: 35%;
+  transform-origin: bottom;
+  animation: spin 3600s steps(60) infinite;
+}
+
+.analog-second {
+  position: absolute;
+  left: 50%;
+  bottom: 50%;
+  margin-left: -.25rem;
+  margin-bottom: -.25rem;
+  background: var(--accent-color);
+  border-radius: 1rem;
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.25), inset 0 0.5rem 1rem rgba(255, 255, 255, 0.25);
+  width: .5rem;
+  height: 45%;
+  transform-origin: bottom;
+  animation: spin 60s steps(60) infinite;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}

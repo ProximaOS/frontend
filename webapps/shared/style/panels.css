@@ -1,0 +1,100 @@
+.panel {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: var(--background);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  z-index: 50;
+}
+
+.panel > .content {
+  width: 100%;
+  height: 100%;
+  flex-grow: 1;
+  overflow-y: auto;
+  margin-top: calc((-5rem - var(--statusbar-height)) * var(--progress, 0));
+  scrollbar-width: none;
+}
+
+.panel > .content aside {
+  margin: 0 auto 1.5rem;
+  padding: 0;
+  background-color: var(--background-minus);
+  border-radius: 1.5rem;
+  width: calc(100% - 3rem);
+  max-width: 71.8rem;
+  box-sizing: border-box;
+}
+
+.panel > .content aside header {
+  width: 100%;
+  padding: 0 2rem;
+  box-sizing: border-box;
+  height: 3rem;
+  line-height: 3rem;
+  color: #858585;
+  font-size: 1.6rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  margin: 1rem 0 0;
+}
+
+.panel > .content aside ul {
+  margin: 0;
+  padding: 0 0.5rem 0.5rem;
+  width: 100%;
+  background-color: transparent;
+}
+
+.panel > .content aside ul li {
+  min-height: 3.2rem;
+  background-color: transparent;
+}
+
+.panel > .content aside ul li > a {
+  color: var(--accent-color);
+  width: max-content;
+  line-height: 2.2rem;
+  font-size: 1.6rem;
+  text-decoration: none;
+  transition: box-shadow 0.2s ease;
+}
+
+.panel > .content aside ul li > a:hover {
+  box-shadow: 0 0.2rem 0 var(--accent-color);
+}
+
+.panel > .content aside ul li > a:active {
+  opacity: 0.5;
+}
+
+@media screen and (min-width: 983px) {
+  .panel > .headerbar .safezone {
+    margin-inline-start: 0;
+  }
+
+  .panel > .content header,
+  .panel > .content ul {
+    margin-inline-start: 1.5rem;
+  }
+
+  .panel > .content aside {
+    position: absolute;
+    right: 0;
+    top: calc(5rem + var(--statusbar-height) + (4rem * (1 - var(--progress, 0))));
+    width: 22rem;
+    margin: calc(1.5rem * var(--progress, 0)) 1.5rem 1.5rem;
+  }
+}
+
+@media screen and (min-width: 1536px) {
+  .panel > .headerbar .safezone,
+  .panel > .content header,
+  .panel > .content ul {
+    margin-inline-start: auto;
+  }
+}

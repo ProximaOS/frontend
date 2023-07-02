@@ -1,0 +1,102 @@
+#windows {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+}
+
+#screen.keyboard.active #windows {
+  height: 60%;
+}
+
+.appframe {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #000;
+  transform: translateY(100%);
+  visibility: hidden;
+}
+
+.appframe.active {
+  transform: translateY(0);
+  visibility: visible;
+}
+
+#homescreen.appframe {
+  transform: scale(1.5);
+  visibility: visible;
+  transition: transform 0.5s cubic-bezier(0.2, 0.9, 0.1, 1);
+}
+
+#homescreen.appframe.active {
+  transform: scale(1);
+}
+
+.appframe.expand {
+  border-radius: var(--screen-radius);
+  animation: expand 0.5s cubic-bezier(0.2, 0.9, 0.1, 1) forwards;
+}
+
+@keyframes expand {
+  from {
+    transform: scale(0.75);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.appframe.shrink {
+  border-radius: var(--screen-radius);
+  animation: shrink 0.3s cubic-bezier(0.8, 0.1, 0.9, 0) forwards;
+}
+
+@keyframes shrink {
+  from {
+    transform: scale(1);
+    opacity: 1;
+  }
+  to {
+    transform: scale(0.75);
+    opacity: 0;
+  }
+}
+
+.appframe.transparent {
+  background-color: transparent;
+}
+
+.appframe > .browser {
+  position: absolute;
+  left: 0;
+  top: var(--statusbar-height);
+  width: 100%;
+  height: calc(100% - var(--statusbar-height) - 2.5rem);
+}
+
+#screen.software-buttons-enabled .appframe > .browser {
+  height: calc(100% - var(--statusbar-height) - var(--software-buttons-height));
+}
+
+.appframe.overlay > .browser {
+  top: 0;
+  height: calc(100% - 2.5rem);
+}
+
+#screen.software-buttons-enabled .appframe.overlay > .browser {
+  height: calc(100% - var(--software-buttons-height));
+}
+
+.appframe.immersive > .browser,
+.appframe.fullscreen > .browser,
+#screen.software-buttons-enabled .appframe.immersive > .browser,
+#screen.software-buttons-enabled .appframe.fullscreen > .browser {
+  top: 0;
+  height: 100%;
+}

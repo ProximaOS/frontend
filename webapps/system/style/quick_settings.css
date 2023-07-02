@@ -1,0 +1,153 @@
+#connection-settings {
+  width: 100%;
+  flex-grow: 1;
+  overflow: hidden;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+#connection-settings li {
+  width: 12rem;
+  flex-grow: 1;
+  background-color: var(--background-plus);
+  border-radius: 2rem;
+  margin: 0;
+  height: 6.5rem;
+  list-style: none;
+}
+
+#quick-settings {
+  width: 100%;
+  flex-grow: 1;
+  overflow: hidden;
+  background-color: var(--background-plus);
+  border-radius: 2rem;
+}
+
+#quick-settings-grid {
+  width: 100%;
+  overflow: hidden;
+  margin: 0;
+  padding: 0 1rem;
+  box-sizing: border-box;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+}
+
+#quick-settings li {
+  width: 4rem;
+  height: 6.5rem;
+  aspect-ratio: 1 / 1;
+  list-style: none;
+}
+
+#connection-settings li > a,
+#quick-settings li > a {
+  width: 100%;
+  height: 100%;
+  line-height: 1;
+  display: inline-flex;
+  align-items: center;
+  text-decoration: none;
+  color: var(--text-color);
+  font-size: 1.4rem;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  padding-inline-start: 6.25rem;
+  box-sizing: border-box;
+  position: relative;
+}
+
+#quick-settings li > a {
+  padding: 0;
+  padding-inline-start: 0;
+}
+
+#connection-settings li > a[data-icon]::before,
+#quick-settings li > a[data-icon]::before {
+  width: 4rem;
+  background-color: var(--item-hover);
+  border-radius: 2rem;
+  height: 4rem;
+  line-height: 4rem;
+  margin: 1.25rem;
+  text-align: center;
+  font-size: 2.4rem;
+  flex-shrink: 0;
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+
+#quick-settings li > a[data-icon]::before {
+  margin: 1.75rem 0 0.75rem;
+  position: relative;
+}
+
+#connection-settings li > a::after {
+  content: '';
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  left: 0;
+  top: 0;
+  border-radius: 2rem;
+}
+
+#connection-settings li > a:hover::after {
+  background-color: var(--item-hover);
+}
+
+#connection-settings li > a:active::after {
+  background-color: var(--item-active);
+}
+
+#quick-settings li > a:hover::before {
+  background-color: var(--item-hover-plus);
+}
+
+#quick-settings li > a:active::before {
+  background-color: var(--item-active-plus);
+}
+
+#connection-settings li.enabled,
+#quick-settings li.enabled > a::before {
+  background-color: var(--accent-color);
+  color: var(--accent-color-plus);
+}
+
+#connection-settings li.enabled > a,
+#quick-settings li.enabled > a {
+  color: var(--accent-color-plus);
+}
+
+#connection-settings li.enabled > a {
+  font-weight: bold;
+}
+
+#connection-settings li.enabled > a[data-icon]::before {
+  background-color: var(--accent-color-hover);
+}
+
+#quick-settings > .grippy-bar {
+  width: 100%;
+  height: 2rem;
+  position: relative;
+}
+
+#quick-settings > .grippy-bar::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 0.25rem;
+  width: 5rem;
+  height: 0.5rem;
+  margin-left: -2.5rem;
+  background-color: var(--item-hover);
+  border-radius: 0.5rem;
+}

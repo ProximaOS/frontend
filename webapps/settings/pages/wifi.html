@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="var(--background)">
+  <link rel="stylesheet" href="http://shared.localhost:8081/style/theme.css" />
+  <link rel="stylesheet" href="http://shared.localhost:8081/style/fonts.css" />
+  <link rel="stylesheet" href="http://shared.localhost:8081/style/main.css" />
+  <link rel="stylesheet" href="http://shared.localhost:8081/style/icons/icons.css" />
+  <link rel="stylesheet" href="http://shared.localhost:8081/style/panels.css" />
+  <link rel="stylesheet" href="http://shared.localhost:8081/style/headerbars.css" />
+  <link rel="stylesheet" href="http://shared.localhost:8081/style/activity_bars.css" />
+  <link rel="stylesheet" href="http://shared.localhost:8081/style/buttons.css" />
+  <link rel="stylesheet" href="http://shared.localhost:8081/style/lists.css" />
+  <link rel="stylesheet" href="http://shared.localhost:8081/style/switches.css" />
+  <link rel="stylesheet" href="http://shared.localhost:8081/style/toolbars.css" />
+  <link rel="stylesheet" href="http://shared.localhost:8081/style/webview.css" />
+  <link rel="stylesheet" href="style/settings.css" />
+  <script defer src="http://shared.localhost:8081/js/panels.js"></script>
+</head>
+<body>
+  <div class="app">
+    <div id="wifi" class="panel">
+      <div class="headerbar">
+        <div class="safezone">
+          <a href="#" id="back-button" data-icon="back"></a>
+          <h1>Wi-Fi</h1>
+        </div>
+      </div>
+
+      <div class="content lists">
+        <ul>
+          <li data-icon="wifi">
+            <div class="pack-switch">
+              <label for="wifi-switch">
+                <p>Enable Wi-Fi</p>
+              </label>
+              <span>
+                <input type="checkbox" name="wifi-switch" id="wifi-switch" checked />
+              </span>
+            </div>
+          </li>
+          <li id="reload-button" data-icon="reload">
+            <p>Refresh</p>
+          </li>
+        </ul>
+
+        <header>Available Networks</header>
+        <ul id="available-networks"></ul>
+
+        <aside>
+          <header>Are you looking for</header>
+          <ul>
+            <li><a href="#">Tethering</a></li>
+            <li><a href="#">Hotspot Settings</a></li>
+          </ul>
+        </aside>
+      </div>
+    </div>
+  </div>
+
+  <script src="wifi/js/main.js"></script>
+</body>
+</html>

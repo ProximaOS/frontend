@@ -1,0 +1,145 @@
+#lockscreen {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #000;
+  opacity: 0;
+  visibility: hidden;
+  z-index: 16384;
+  transition: all 0.3s cubic-bezier(0.2, 0.9, 0.1, 1);
+}
+
+#lockscreen.visible {
+  opacity: 1;
+  visibility: visible;
+}
+
+#lockscreen-background {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background: #000 url(/resources/wallpapers/default.png) no-repeat center / cover;
+  transform: scale(calc(1 + (0.125 * (1 - (1 - var(--motion-progress, 1))))));
+}
+
+#lockscreen.transitioning #lockscreen-background {
+  transition: all 0.3s cubic-bezier(0.2, 0.9, 0.1, 1);
+}
+
+#lockscreen.low-power #lockscreen-background {
+  opacity: 0;
+  visibility: hidden;
+  transition: all 1s ease;
+}
+
+#lockscreen-container {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.lockscreen-row {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  margin: 1.5rem 0;
+  align-items: center;
+  transform: scale(calc(1 - (0.125 * (1 - var(--motion-progress, 1)))));
+  opacity: var(--motion-progress, 1);
+}
+
+#lockscreen.transitioning .lockscreen-row {
+  transition: all 0.3s cubic-bezier(0.2, 0.9, 0.1, 1);
+}
+
+#lockscreen.low-power .lockscreen-row {
+  margin: 3rem 0 0;
+  opacity: 0.75;
+  transition: all 1s ease;
+}
+
+#lockscreen-icon {
+  margin: 4.5rem 0 0;
+  color: #fff;
+  text-shadow: 0 0.25rem 1rem rgba(0, 0, 0, 0.3);
+}
+
+#lockscreen-icon.fail-unlock {
+  animation: fail-unlock 0.75s ease-in-out;
+}
+
+@keyframes fail-unlock {
+  0% {
+    transform: translateX(0);
+  }
+  20% {
+    transform: translateX(1rem);
+  }
+  40% {
+    transform: translateX(-0.75rem);
+  }
+  60% {
+    transform: translateX(0.5rem);
+  }
+  80% {
+    transform: translateX(-0.25rem);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
+#lockscreen-clock {
+  font-size: 7.2rem;
+  font-weight: bold;
+  color: #fff;
+  line-height: 7.8rem;
+  text-shadow: 0 0.25rem 1rem rgba(0, 0, 0, 0.3);
+}
+
+#lockscreen-date {
+  font-size: 2rem;
+  color: #fff;
+  text-shadow: 0 0.25rem 1rem rgba(0, 0, 0, 0.3);
+}
+
+.lockscreen-hint {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  bottom: calc(25% * (1 - var(--motion-progress, 1)));
+  text-align: center;
+  padding: 0 1.5rem 2.5rem;
+  box-sizing: border-box;
+  pointer-events: none;
+  font-size: 1.6rem;
+  color: rgba(255, 255, 255, calc(var(--motion-progress, 1) * 0.5));
+}
+
+#lockscreen.transitioning .lockscreen-hint {
+  transition: all 0.3s cubic-bezier(0.2, 0.9, 0.1, 1);
+}
+
+#lockscreen.low-power .lockscreen-hint {
+  opacity: 0.75;
+  color: transparent;
+  transition: all 1s ease;
+}
+
+.lockscreen-hint::before {
+  content: '';
+  position: absolute;
+  left: calc(100% / 3);
+  width: calc(100% / 3);
+  bottom: 1rem;
+  height: 0.5rem;
+  background-color: #fff;
+  border-radius: 0.5rem;
+  box-shadow: 0 0.25rem 1rem rgba(0, 0, 0, 0.3);
+}

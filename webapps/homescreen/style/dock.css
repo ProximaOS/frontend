@@ -1,0 +1,15 @@
+#dock {
+  position: absolute;
+  left: 1rem;
+  width: calc(100% - 2rem);
+  height: 7rem;
+  bottom: 1rem;
+}
+
+#dock .icon-holder {
+  padding: 1.5rem 0;
+}
+
+#dock .icon .name {
+  opacity: 0;
+}

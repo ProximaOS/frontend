@@ -1,0 +1,83 @@
+.pack-switch {
+  width: 100%;
+  display: inline-flex;
+}
+
+.pack-switch > label {
+  width: 100%;
+  display: inline-flex;
+  flex-direction: column;
+  justify-content: center;
+  flex-grow: 1;
+}
+
+.pack-switch > span {
+  flex-shrink: 0;
+  display: inline-flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.pack-switch > span input[type="checkbox"] {
+  background-color: var(--switch-normal);
+  width: 5rem;
+  height: 2.5rem;
+  border-radius: 2.5rem;
+  border: none;
+  position: relative;
+  outline: none;
+  appearance: none;
+  transition: all 0.1s ease;
+}
+
+.pack-switch > span input[type="checkbox"]:hover {
+  background-color: var(--switch-hover);
+}
+
+.pack-switch > span input[type="checkbox"]:hover {
+  background-color: var(--switch-active);
+}
+
+.pack-switch > span input[type="checkbox"]:checked {
+  background-color: var(--accent-color);
+}
+
+.pack-switch > span input[type="checkbox"]::before {
+  content: '';
+  position: absolute;
+  left: 0.5rem;
+  top: 0.5rem;
+  width: 1.5rem;
+  height: 1.5rem;
+  background-color: var(--text-color);
+  border-radius: 1.5rem;
+  transition: all 0.3s cubic-bezier(0.2, 0, 0, 1);
+  z-index: 1;
+  pointer-events: none;
+}
+
+.pack-switch > span input[type="checkbox"]:hover::before {
+  transform: scale(1.2);
+}
+
+.pack-switch > span input[type="checkbox"]:active::before {
+  transform: scale(0.8);
+  width: 4rem;
+}
+
+.pack-switch > span input[type="checkbox"]:checked::before {
+  left: 3rem;
+  transform: scale(1);
+  background-color: var(--accent-color-plus);
+}
+
+.pack-switch > span input[type="checkbox"]:checked:hover::before {
+  transform: scale(1.2);
+}
+
+.pack-switch > span input[type="checkbox"]:checked:active::before {
+  left: 0.5rem;
+  transform: scale(0.8);
+  width: 4rem;
+}

@@ -1,0 +1,128 @@
+#software-buttons {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  bottom: 0;
+  height: var(--software-buttons-height);
+  display: flex;
+  justify-content: center;
+  z-index: 4096;
+}
+
+#screen:not(.keyboard-visible) #software-buttons.light {
+  filter: invert(1) hue-rotate(180deg);
+}
+
+#software-buttons.hidden {
+  transform: translateY(-100%);
+}
+
+#software-buttons > button {
+  position: relative;
+  width: 8rem;
+  height: 100%;
+  background: transparent no-repeat center / 1.75rem;
+  border: none;
+  opacity: 0.8;
+}
+
+#software-buttons > button::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  top: 0;
+  width: 0;
+  height: 100%;
+  border-radius: 9999px;
+  background: rgba(255, 255, 255, 0.1);
+  opacity: 0;
+  pointer-events: none;
+  transition: all 0.3s cubic-bezier(0.2, 0.9, 0.1, 1), width 0.1s ease 0.3s;
+}
+
+#software-buttons > button:active:after {
+  width: calc(100% + 1rem);
+  opacity: 1;
+  transition: all 0.3s cubic-bezier(0.2, 0.9, 0.1, 1);
+}
+
+#software-buttons > #software-back-button {
+  background-image: url(images/back.png);
+}
+
+#software-buttons > #software-home-button {
+  background-image: url(images/home.png);
+}
+
+#software-buttons > #software-recents-button {
+  background-image: url(images/recents.png);
+}
+
+#software-buttons > #software-keyboard-button {
+  background-image: url(images/splitscreen.png);
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 5rem;
+}
+
+#dock {
+  height: var(--software-buttons-height);
+  display: flex;
+  padding-inline-start: 2.5rem;
+  gap: 1.5rem;
+}
+
+#dock .icon {
+  position: relative;
+  width: var(--software-buttons-height);
+  height: var(--software-buttons-height);
+}
+
+#dock .icon.expand {
+  animation: dock-expand 0.5s cubic-bezier(0.2, 0.9, 0.1, 1) forwards;
+}
+
+@keyframes dock-expand {
+  from {
+    transform: scale(0.75);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+#dock .icon.shrink {
+  animation: dock-shrink 0.3s cubic-bezier(0.8, 0.1, 0.9, 0) forwards;
+}
+
+@keyframes dock-shrink {
+  from {
+    transform: scale(1);
+    opacity: 1;
+  }
+  to {
+    transform: scale(0.75);
+    opacity: 0;
+  }
+}
+
+#dock .icon > img {
+  width: calc(var(--software-buttons-height) - 1rem);
+  height: calc(var(--software-buttons-height) - 1rem);
+  margin: 0.5rem;
+  opacity: 0.75;
+}
+
+#dock .icon.active > img {
+  opacity: 1;
+}
+
+@media screen and (max-width: 767px) {
+  #dock {
+    display: none;
+  }
+}

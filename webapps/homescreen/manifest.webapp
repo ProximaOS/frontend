@@ -1,0 +1,23 @@
+{
+  "version": "1.0",
+  "name": "Homescreen",
+  "role": "homescreen",
+  "description": "Manage your device settings",
+  "launch_path": "/index.html",
+  "icons": {
+    "16": "/style/icons/settings.svg"
+  },
+  "developer": {
+    "name": "MortCodesWeb",
+    "url": "https://openorchid.github.io/"
+  },
+  "default_locale": "en",
+  "orientation": "portrait-primary",
+  "background_color": "#f0f6ff",
+  "theme_color": "#0061e0",
+  "permissions": {
+    "nodeintegration": {}
+  },
+  "transparent": true,
+  "statusbar": "overlay"
+}

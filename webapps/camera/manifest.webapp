@@ -1,0 +1,19 @@
+{
+  "version": "1.0",
+  "name": "Camera",
+  "description": "Take photos and videos as memories.",
+  "launch_path": "/index.html",
+  "icons": {
+    "45": "/style/icons/camera.png"
+  },
+  "developer": {
+    "name": "MortCodesWeb",
+    "url": "https://openorchid.github.io/"
+  },
+  "default_locale": "en",
+  "orientation": "portrait-primary",
+  "background_color": "#f0f6ff",
+  "theme_color": "#0061e0",
+  "permissions": {},
+  "display": "immersive"
+}

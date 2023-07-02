@@ -1,0 +1,143 @@
+#statusbar {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: var(--statusbar-height);
+  z-index: 32767;
+  transition: all 0.3s ease;
+}
+
+#statusbar.light {
+  filter: invert(1) hue-rotate(180deg);
+}
+
+#statusbar.hidden {
+  transform: translateY(-100%);
+}
+
+.statusbar-icons {
+  position: absolute;
+  left: 0;
+  top: 0;
+  margin: 0 var(--statusbar-padding-left) 0 var(--statusbar-padding-right);
+  width: calc(100% - var(--statusbar-padding-left) - var(--statusbar-padding-right));
+  height: 100%;
+  opacity: 0.8;
+}
+
+.statusbar-icons > .left {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 50%;
+  height: 100%;
+  display: flex;
+  justify-content: start;
+  align-items: center;
+}
+
+.statusbar-icons > .right {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  width: 50%;
+  height: 100%;
+  display: flex;
+  justify-content: end;
+  flex-direction: row-reverse;
+  align-items: center;
+}
+
+.statusbar-icons > .left div,
+.statusbar-icons > .right div {
+  color: #fff;
+  min-width: 2rem;
+  height: 2rem;
+  line-height: 2rem;
+  margin: 0 0.2rem;
+  text-align: center;
+  transition: all 0.3s cubic-bezier(0.2, 0.9, 0.1, 1.25) 0.3s, margin 0.3s cubic-bezier(0.2, 0.9, 0.1, 1.25);
+}
+
+.statusbar-icons > .left .hidden,
+.statusbar-icons > .right .hidden {
+  opacity: 0;
+  transform: scale(0.2);
+  visibility: hidden;
+  margin: 0 -1rem;
+  transition: all 0.3s ease, margin 0.3s cubic-bezier(0.2, 0.9, 0.1, 1) 0.3s;
+}
+
+#statusbar-notifications::before {
+  width: 2rem;
+  height: 2rem;
+  line-height: 2rem;
+  font-size: 1.8rem;
+}
+
+#statusbar-time {
+  color: #fff;
+  font-size: 1.6rem;
+}
+
+#statusbar-battery::before {
+  width: 2rem;
+  height: 2rem;
+  line-height: 2rem;
+  font-size: 1.8rem;
+}
+
+#statusbar-cellular-signal {
+  position: relative;
+}
+
+#statusbar-cellular-signal::before {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 2rem;
+  height: 2rem;
+  line-height: 2rem;
+  font-size: 1.8rem;
+}
+
+#statusbar-cellular-signal::after {
+  content: 'signal-5';
+  position: absolute;
+  left: 0;
+  top: 0;
+  font-family: "openorchid-icons";
+  width: 2rem;
+  height: 2rem;
+  line-height: 2rem;
+  font-size: 1.8rem;
+  opacity: 0.5;
+}
+
+#statusbar-network {
+  position: relative;
+}
+
+#statusbar-network::before {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 2rem;
+  height: 2rem;
+  line-height: 2rem;
+  font-size: 1.8rem;
+}
+
+#statusbar-network::after {
+  content: 'wifi-4';
+  position: absolute;
+  left: 0;
+  top: 0;
+  font-family: "openorchid-icons";
+  width: 2rem;
+  height: 2rem;
+  line-height: 2rem;
+  font-size: 1.8rem;
+  opacity: 0.5;
+}

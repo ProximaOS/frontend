@@ -1,0 +1,34 @@
+.ripple-button {
+  position: relative;
+  overflow: hidden;
+  display: inline-block;
+  cursor: pointer;
+}
+
+.ripple {
+  content: "";
+  display: block;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  background: radial-gradient(circle at 50% 50%, rgba(0, 0, 0, 0.2), transparent 75%);
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.ripple.animate {
+  animation: rippleEffect 0.75s ease forwards;
+}
+
+@keyframes rippleEffect {
+  0% {
+    opacity: 1;
+    transform: scale(0);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1);
+  }
+}

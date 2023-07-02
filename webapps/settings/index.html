@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="var(--background)">
+  <title>Document</title>
+  <link rel="stylesheet" href="http://shared.localhost:8081/style/theme.css" />
+  <link rel="stylesheet" href="http://shared.localhost:8081/style/fonts.css" />
+  <link rel="stylesheet" href="http://shared.localhost:8081/style/main.css" />
+  <link rel="stylesheet" href="http://shared.localhost:8081/style/icons/icons.css" />
+  <link rel="stylesheet" href="http://shared.localhost:8081/style/panels.css" />
+  <link rel="stylesheet" href="http://shared.localhost:8081/style/headerbars.css" />
+  <link rel="stylesheet" href="http://shared.localhost:8081/style/tablists.css" />
+  <link rel="stylesheet" href="http://shared.localhost:8081/style/activity_bars.css" />
+  <link rel="stylesheet" href="http://shared.localhost:8081/style/buttons.css" />
+  <link rel="stylesheet" href="http://shared.localhost:8081/style/lists.css" />
+  <link rel="stylesheet" href="http://shared.localhost:8081/style/switches.css" />
+  <link rel="stylesheet" href="http://shared.localhost:8081/style/toolbars.css" />
+  <link rel="stylesheet" href="style/settings.css" />
+  <script defer src="http://shared.localhost:8081/js/panels.js"></script>
+  <script src="js/bootstrap.js"></script>
+  <script defer src="js/pages.js"></script>
+</head>
+
+<body>
+  <div id="app" class="app">
+    <div id="root" class="panel visible">
+      <div class="headerbar">
+        <div class="safezone">
+          <h1>Settings</h1>
+          <menu role="toolbar">
+            <a href="#" data-icon="search"></a>
+            <a href="#" data-icon="more"></a>
+          </menu>
+        </div>
+      </div>
+
+      <div class="content lists">
+        <header>Networking</header>
+        <ul>
+          <li data-icon="airplane">
+            <div class="pack-switch">
+              <label for="airplane-switch">
+                <p>Airplane Mode</p>
+              </label>
+              <span>
+                <input type="checkbox" name="airplane-switch" id="airplane-switch" />
+              </span>
+            </div>
+          </li>
+          <li data-icon="location">
+            <div class="pack-switch">
+              <label for="gps-switch">
+                <p>Geolocation</p>
+              </label>
+              <span>
+                <input type="checkbox" name="gps-switch" id="gps-switch" checked />
+              </span>
+            </div>
+          </li>
+          <li class="page" data-icon="wifi" data-page-id="wifi">
+            <p>Wi-Fi</p>
+          </li>
+          <li class="page" data-icon="bluetooth" data-page-id="bluetooth">
+            <p>Bluetooth</p>
+          </li>
+        </ul>
+
+        <header>Personalization</header>
+        <ul>
+          <li class="page" data-icon="settings">
+            <p>General</p>
+          </li>
+          <li class="page" data-icon="audio">
+            <p>Audio</p>
+          </li>
+          <li class="page" data-icon="display">
+            <p>Display</p>
+          </li>
+          <li class="page" data-icon="homescreen">
+            <p>Homescreen</p>
+          </li>
+          <li class="page" data-icon="lock">
+            <p>Lock Screen</p>
+          </li>
+          <li class="page" data-icon="timedate">
+            <p>Date & Time</p>
+          </li>
+        </ul>
+
+        <header>Device</header>
+        <ul>
+          <li class="page" data-icon="battery-70">
+            <p>Battery</p>
+          </li>
+          <li class="page" data-icon="storage">
+            <p>Storage</p>
+          </li>
+        </ul>
+
+        <header>Software</header>
+        <ul>
+          <li class="page" data-icon="user">
+            <p>Users</p>
+          </li>
+          <li class="page" data-icon="power">
+            <p>System</p>
+          </li>
+          <li class="page" data-icon="info">
+            <p>About Device</p>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <iframe src="" frameborder="0" id="content" class="panel"></iframe>
+  </div>
+</body>
+
+</html>

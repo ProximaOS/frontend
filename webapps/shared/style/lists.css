@@ -1,0 +1,122 @@
+.lists header {
+  width: 100%;
+  max-width: 74.8rem;
+  padding: 0 2rem;
+  box-sizing: border-box;
+  height: 3rem;
+  line-height: 3rem;
+  color: #858585;
+  font-size: 1.6rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  margin: 1rem auto 0;
+}
+
+.lists ul {
+  margin: 0 auto 1.5rem;
+  padding: 0.5rem;
+  background-color: var(--background-plus);
+  border-radius: 1.5rem;
+  width: calc(100% - 3rem);
+  max-width: 71.8rem;
+  box-sizing: border-box;
+}
+
+.lists ul li {
+  position: relative;
+  margin: 0;
+  list-style: none;
+  min-height: 5rem;
+  display: inline-flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 100%;
+  padding: 0 1.5rem;
+  box-sizing: border-box;
+  border-radius: 1rem;
+  color: var(--text-color);
+}
+
+.lists ul li:hover {
+  background-color: var(--item-hover);
+}
+
+.lists ul li:active {
+  background-color: var(--item-active);
+}
+
+.lists ul li.selected {
+  background-color: var(--accent-color);
+  color: var(--accent-color-plus);
+}
+
+.lists ul li[data-icon] {
+  padding-inline-start: 4.5rem;
+}
+
+.lists ul li[data-icon]::before {
+  position: absolute;
+  top: 50%;
+  margin-top: -1.2rem;
+  left: 1.2rem;
+  color: var(--text-color);
+  width: 2.4rem;
+  height: 2.4rem;
+  line-height: 2.4rem;
+  font-size: 2.4rem;
+}
+
+.lists ul li.selected[data-icon]::before {
+  color: var(--accent-color-plus);
+}
+
+.lists ul li.page::after {
+  content: 'forward';
+  font-family: "openorchid-icons";
+  font-size: 2rem;
+  color: #858585;
+  text-align: end;
+  line-height: 5rem;
+}
+
+.lists ul li.page.selected::after {
+  color: var(--accent-color-plus);
+  opacity: 0.5;
+}
+
+.lists ul li::after {
+  content: '';
+  position: absolute;
+  left: 1.5rem;
+  top: 0;
+  width: calc(100% - 3rem);
+  height: 100%;
+  pointer-events: none;
+  border-bottom: solid 0.1rem var(--item-hover);
+  box-sizing: border-box;
+}
+
+.lists ul li:hover::after,
+.lists ul li:active::after,
+.lists ul li:last-child::after {
+  border-bottom: none;
+}
+
+.lists ul li p {
+  margin: 0;
+  height: 2.2rem;
+  line-height: 2.2rem;
+  font-size: 1.6rem;
+  color: var(--text-color);
+}
+
+.lists ul li.selected p {
+  color: var(--accent-color-plus);
+}
+
+.lists ul li p:not(:first-child) {
+  height: 1.9rem;
+  line-height: 1.9rem;
+  font-size: 1.4rem;
+  opacity: 0.5;
+}
