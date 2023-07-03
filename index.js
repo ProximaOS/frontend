@@ -5,7 +5,7 @@ const http = require('http');
 
 function createWindow() {
   const mainWindow = new BrowserWindow({
-    icon: './res/default.png',
+    icon: path.join(__dirname, 'res', 'icon.png'),
     title: 'OpenOrchid Simulator (Vulkan)',
     width: 320,
     height: 640,

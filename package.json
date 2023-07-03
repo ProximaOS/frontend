@@ -23,20 +23,29 @@
   },
   "build": {
     "appId": "org.openorchid.simulator",
+    "productName": "openorchid",
     "directories": {
-      "output": "dist"
+      "output": "dist",
+      "buildResources": "res"
     },
     "win": {
-      "target": "nsis"
+      "target": "nsis",
+      "icon": "res/icon.png"
     },
-    "extraResources": [
-      {
-        "from": "webapps",
-        "to": "../webapps"
-      }
+    "mac": {
+      "icon": "res/icon.png"
+    },
+    "linux": {
+      "icon": "res/icon.png"
+    },
+    "files": [
+      "package.json",
+      "package-lock.json",
+      "index.js",
+      "preload.js"
     ],
-    "asarUnpack": [
-      "webapps/"
+    "extraFiles": [
+      "webapps"
     ]
   }
 }
