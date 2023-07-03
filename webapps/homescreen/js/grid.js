@@ -54,11 +54,11 @@ var Grid = {
       }
 
       files.forEach(file => {
-        const appManifestPath = path.join('webapps', file, 'manifest.webapp')
+        const appManifestPath = path.join('webapps', file, 'manifest.json')
         const appManifest = JSON.parse(fs.readFileSync(appManifestPath, { encoding: 'utf-8' }));
         console.log(appManifest);
 
-        appManifest.manifestUrl = `http://${file}.localhost:${location.port}/manifest.webapp`;
+        appManifest.manifestUrl = `http://${file}.localhost:${location.port}/manifest.json`;
         if (appManifest.icons) {
           Object.entries(appManifest.icons).forEach((icon) => {
             appManifest.icons[icon[0]] = `http://${file}.localhost:${location.port}${icon[1]}`;
@@ -87,7 +87,7 @@ var Grid = {
           icon.id = `appicon${pageIndex + index}`;
           icon.classList.add("icon");
           var x = 10 + ((window.innerWidth - 20) / this.gridColumns) * (index % this.gridColumns);
-          var y = 40 + ((window.innerHeight - 120) / this.gridRows) * (parseInt(index / 4) % this.gridRows);
+          var y = ((window.innerHeight - 120) / this.gridRows) * (parseInt(index / 4) % this.gridRows);
           icon.style.transform = `translate(${x}px, ${y}px)`;
           if (app.type == 'widget') {
             icon.classList.add(`widget-${app.size[0]}x${app.size[1]}`);
@@ -136,7 +136,7 @@ var Grid = {
     Grid.startY = event.clientY || event.touches[0].clientY;
 
     // Get the existing translate values of the icon
-    Grid.startTranslateX = Grid.draggedIcon.getBoundingClientRect().left;
+    Grid.startTranslateX = Grid.draggedIcon.getBoundingClientRect().left - 10;
     Grid.startTranslateY = Grid.draggedIcon.getBoundingClientRect().top;
 
     setTimeout(function () {
@@ -196,7 +196,7 @@ var Grid = {
         newPositionX / ((window.innerWidth - 20) / Grid.gridColumns)
       );
       var gridY = Math.round(
-        newPositionY / ((window.innerHeight - 120) / Grid.gridRows)
+        (newPositionY - 40) / ((window.innerHeight - 120) / Grid.gridRows)
       );
 
       // Snap the icon to the grid position
@@ -204,7 +204,7 @@ var Grid = {
       var snappedY = gridY * ((window.innerHeight - 120) / Grid.gridRows);
 
       // Update the transform with the new position
-      Grid.draggedIcon.style.transform = `translate(${newPositionX - Grid.startX}px, ${newPositionY - Grid.startY}px)`;
+      Grid.draggedIcon.style.transform = `translate(${newPositionX}px, ${newPositionY}px)`;
 
       // Update the drop indicator position
       Grid.dropIndicatorElement.style.transform = `translate(${10 + snappedX}px, ${40 + snappedY}px)`;
@@ -221,6 +221,7 @@ var Grid = {
     if (Grid.isDragging) {
       Grid.isDragging = false;
       Grid.draggedIcon.classList.remove("dragging");
+      Grid.dropIndicatorElement.classList.remove("visible");
       Grid.draggedIcon.style.zIndex = "";
       var clientX = event.clientX || event.touches[0].clientX;
       var clientY = event.clientY || event.touches[0].clientY;
@@ -233,16 +234,17 @@ var Grid = {
 
       // Calculate the closest grid position
       var gridX = Math.round(
-        newPositionX / (window.innerWidth / Grid.gridColumns)
+        newPositionX / ((window.innerWidth - 20) / Grid.gridColumns)
       );
       var gridY = Math.round(
-        newPositionY / ((window.innerHeight - 80) / Grid.gridRows)
+        (newPositionY - 40) / ((window.innerHeight - 120) / Grid.gridRows)
       );
 
       // Snap the icon to the grid position
-      var snappedX = gridX * (window.innerWidth / Grid.gridColumns);
-      var snappedY = gridY * ((window.innerHeight - 80) / Grid.gridRows);
-      Grid.draggedIcon.style.transform = `translate(${snappedX}px, ${snappedY}px)`;
+      var snappedX = gridX * ((window.innerWidth - 20) / Grid.gridColumns);
+      var snappedY = gridY * ((window.innerHeight - 120) / Grid.gridRows);
+
+      Grid.draggedIcon.style.transform = `translate(${10 + snappedX}px, ${snappedY}px)`;
       Grid.savePositions();
 
       // Check if dropped on the dock
@@ -271,8 +273,6 @@ var Grid = {
           newPage.appendChild(Grid.draggedIcon);
           Grid.savePositions();
         }
-
-        Grid.dropIndicatorElement.classList.remove("visible");
       }
     }
   },
@@ -302,10 +302,10 @@ var Grid = {
           }
 
           // Calculate the new position
-          var newPositionX = newGridX * (window.innerWidth / Grid.gridColumns);
+          var newPositionX = newGridX * ((window.innerWidth - 20) / Grid.gridColumns);
           var newPositionY =
-            newGridY * ((window.innerHeight - 80) / Grid.gridRows);
-          icon.style.transform = `translate(${newPositionX}px, ${newPositionY}px)`;
+            newGridY * ((window.innerHeight - 120) / Grid.gridRows);
+          icon.style.transform = `translate(${10 + newPositionX}px, ${newPositionY}px)`;
         }
       }
     });

@@ -5,9 +5,12 @@ const http = require('http');
 
 function createWindow() {
   const mainWindow = new BrowserWindow({
+    icon: './res/default.png',
+    title: 'OpenOrchid Simulator (Vulkan)',
     width: 320,
     height: 640,
     autoHideMenuBar: true,
+    fullscreenable: false,
     webPreferences: {
       nodeIntegration: true,
       nodeIntegrationInSubFrames: true,

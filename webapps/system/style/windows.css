@@ -6,7 +6,7 @@
   height: 100%;
 }
 
-#screen.keyboard.active #windows {
+#screen.keyboard-visible #windows {
   height: 60%;
 }
 
