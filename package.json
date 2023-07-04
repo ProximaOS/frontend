@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "set SYSTEM_HOME=. && electron .",
+    "start": "electron .",
+    "start:browser": "electron . --chrome",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
@@ -39,6 +40,9 @@
       "icon": "res/icon.png"
     },
     "files": [
+      ".gitignore",
+      "LICENSE",
+      "README.md",
       "package.json",
       "package-lock.json",
       "index.js",

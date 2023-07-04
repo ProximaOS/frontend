@@ -1,0 +1,288 @@
+html,
+body {
+  margin: 0;
+  padding: 0;
+  font-size: 10px;
+  font-family: system-ui;
+  user-select: none;
+}
+
+.chrome {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: var(--background);
+  border-radius: 2.5rem;
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+  gap: 0.5rem;
+  overflow: hidden;
+}
+
+body.win32 .chrome {
+  border-radius: 1rem;
+  border: solid 0.1rem var(--item-active-plus);
+  box-sizing: border-box;
+  background-clip: content-box;
+  width: calc(100% - 0.1rem);
+  height: calc(100% - 0.1rem);
+}
+
+.maximized.win32 .chrome {
+  border-radius: 0;
+}
+
+.maximized.win32 .chrome {
+  border: none;
+}
+
+.chrome .tablist-holder {
+  width: 100%;
+  height: 4rem;
+  background-color: var(--background);
+  flex-shrink: 0;
+  display: flex;
+  padding: 0 0.5rem;
+  box-sizing: border-box;
+  gap: 0.5rem;
+  margin: 0.5rem 0 0;
+  -webkit-app-region: drag;
+}
+
+.chrome .tablist {
+  height: 4rem;
+  display: flex;
+  gap: 0.5rem;
+  margin: 0;
+  padding: 0;
+}
+
+.chrome .tablist li {
+  width: 24rem;
+  height: 4rem;
+  display: flex;
+  gap: 0.5rem;
+  list-style: none;
+  border-radius: 2rem;
+  margin: 0;
+  padding: 0 1rem;
+  padding-inline-end: 0.5rem;
+  box-sizing: border-box;
+  align-items: center;
+  -webkit-app-region: none;
+}
+
+.chrome .tablist li.active {
+  background-color: var(--background-plus);
+}
+
+.chrome .tablist li > .favicon {
+  width: 2rem;
+  height: 2rem;
+  flex-shrink: 0;
+}
+
+.chrome .tablist li > .title {
+  width: 100%;
+  flex-grow: 1;
+  height: 2rem;
+  line-height: 2rem;
+  font-size: 1.4rem;
+  color: var(--text-color);
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.chrome .tablist li > .close-button {
+  width: 3.2rem;
+  height: 3.2rem;
+  line-height: 3.2rem;
+  border: none;
+  background-color: transparent;
+  margin: 0;
+  padding: 0;
+  text-align: center;
+  color: var(--text-color);
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.chrome .tablist li > .close-button:hover {
+  background-color: var(--item-hover);
+}
+
+.chrome .tablist li > .close-button:active {
+  background-color: var(--item-active);
+}
+
+.chrome .tablist li > .close-button[data-icon]::before {
+  font-size: 1.6rem;
+}
+
+body.win32 .chrome .tablist li {
+  opacity: 0;
+  animation: tab-open-win32 0.3s cubic-bezier(0.2, 0.9, 0.1, 1) forwards 0.3s;
+}
+
+@keyframes tab-open-win32 {
+  from {
+    opacity: 0;
+    transform: scale(0.75);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.chrome .navbar {
+  width: 100%;
+  height: 4rem;
+  background-color: var(--background);
+  flex-shrink: 0;
+  display: flex;
+  padding: 0 0.5rem;
+  box-sizing: border-box;
+  gap: 0.5rem;
+  -webkit-app-region: drag;
+}
+
+.chrome .tablist-holder > button,
+.chrome .navbar button {
+  min-width: 4rem;
+  height: 4rem;
+  line-height: 4rem;
+  margin: 0;
+  padding: 0 1rem;
+  box-sizing: border-box;
+  border: none;
+  border-radius: 50%;
+  flex-shrink: 0;
+  background-color: transparent;
+  color: var(--text-color);
+  font-size: 1.6rem;
+  text-align: center;
+  -webkit-app-region: none;
+}
+
+body.win32 .chrome .tablist-holder > button,
+body.win32 .chrome .navbar > button {
+  border-radius: 0.5rem;
+  transition: transform 0.3s ease;
+}
+
+.chrome .tablist-holder > button[data-icon]::before,
+.chrome .navbar button[data-icon]::before {
+  font-size: 2rem;
+}
+
+.chrome .tablist-holder > button:hover,
+.chrome .navbar button:hover {
+  background-color: var(--item-hover);
+}
+
+body.win32 .chrome .tablist-holder > button:hover,
+body.win32 .chrome .navbar > button:hover {
+  box-shadow: 0 -0.1rem 0.1rem rgba(255, 255, 255, 0.125);
+}
+
+.chrome .tablist-holder > button:active,
+.chrome .navbar button:active {
+  background-color: var(--item-active);
+}
+
+body.win32 .chrome .tablist-holder > button:active,
+body.win32 .chrome .navbar > button:active {
+  transform: scale(0.9);
+  transition: none;
+}
+
+/* .chrome .tablist-holder > button {
+  background-color: var(--item-hover);
+}
+
+.chrome .tablist-holder > button:hover {
+  background-color: var(--item-hover-plus);
+}
+
+.chrome .tablist-holder > button:active {
+  background-color: var(--item-active-plus);
+} */
+
+.chrome .navbar .urlbar {
+  width: 100%;
+  height: 4rem;
+  display: flex;
+  border-radius: 2rem;
+  margin: 0;
+  padding: 0;
+  background-color: var(--background-plus);
+  flex-grow: 1;
+  -webkit-app-region: none;
+}
+
+.chrome .navbar .urlbar > .urlbar-input {
+  width: 100%;
+  height: 4rem;
+  line-height: 4rem;
+  margin: 0;
+  padding: 0;
+  border: none;
+  background-color: transparent;
+  color: var(--text-color);
+  font-size: 1.6rem;
+  flex-grow: 1;
+  outline: none;
+  font-family: system-ui;
+  display: none;
+}
+
+.chrome .navbar .urlbar > .urlbar-display-url {
+  width: 100%;
+  height: 4rem;
+  line-height: 4rem;
+  color: var(--text-color);
+  font-size: 1.6rem;
+  flex-grow: 1;
+  display: flex;
+}
+
+.chrome .navbar .urlbar:hover > .urlbar-input,
+.chrome .navbar .urlbar:focus-within > .urlbar-input {
+  display: block;
+}
+
+.chrome .navbar .urlbar:hover > .urlbar-display-url,
+.chrome .navbar .urlbar:focus-within > .urlbar-display-url {
+  display: none;
+}
+
+.chrome .navbar .urlbar > .urlbar-display-url .ignored {
+  opacity: 0.5;
+}
+
+.chrome .webviews {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  flex-grow: 1;
+}
+
+.chrome .webviews > webview {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  visibility: hidden;
+}
+
+.chrome .webviews > webview.active {
+  visibility: visible;
+}
+
+.context-menu-visible .chrome .webviews > webview {
+  pointer-events: none;
+}

@@ -1,0 +1,52 @@
+#context-menu {
+  position: absolute;
+  left: 0;
+  top: 0;
+  min-width: 25rem;
+  background-color: var(--acrylic-background);
+  border-radius: 1.5rem;
+  box-shadow: 0 1.5rem 3rem rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(20px) saturate(180%);
+  padding: 0.5rem;
+  box-sizing: border-box;
+  transition: opacity 0.3s ease, transform 0.3s ease, visibility 0.3s ease;
+  opacity: 0;
+  transform: translateY(-1rem);
+  visibility: hidden;
+  display: flex;
+  flex-direction: column;
+  -webkit-app-region: none;
+}
+
+#context-menu.visible {
+  opacity: 1;
+  transform: translateY(0);
+  visibility: visible;
+}
+
+#context-menu > .item {
+  width: 100%;
+  height: 4rem;
+  line-height: 4rem;
+  border: none;
+  background-color: transparent;
+  border-radius: 1rem;
+  color: var(--text-color);
+  padding: 0 1rem;
+  box-sizing: border-box;
+  font-size: 1.6rem;
+  text-align: start;
+}
+
+#context-menu > .item:hover {
+  background-color: var(--item-hover);
+}
+
+#context-menu > .item:active {
+  background-color: var(--item-active);
+}
+
+#context-menu > .item[disabled] {
+  opacity: 0.5;
+  pointer-events: none;
+}
