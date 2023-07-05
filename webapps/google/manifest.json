@@ -14,5 +14,8 @@
   "orientation": "portrait-primary",
   "background_color": "#f0f6ff",
   "theme_color": "#40a060",
-  "permissions": {}
+  "permissions": {},
+  "chrome": {
+    "navigation": true
+  }
 }

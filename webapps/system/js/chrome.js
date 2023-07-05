@@ -42,7 +42,7 @@ const Browser = {
     return this.chrome.querySelector('.browser-container');
   },
 
-  init: function(chromeElement, url) {
+  init: function(chromeElement, url, isChromeEnabled) {
     if (chromeElement) {
       this.chrome = chromeElement;
       this.chrome.innerHTML = `
@@ -74,7 +74,9 @@ const Browser = {
         <div class="browser-container"></div>
       `;
     }
-    this.chrome.classList.add('visible');
+    if (isChromeEnabled) {
+      this.chrome.classList.add('visible');
+    }
     this.openNewTab(false, url);
 
     this.addButton().addEventListener('click', this.openNewTab.bind(this, false));
@@ -120,20 +122,50 @@ const Browser = {
     webview.addEventListener('did-change-theme-color', this.handleThemeColorUpdated.bind(this));
     webview.addEventListener('', this.handleThemeColorUpdated.bind(this));
 
+    const ipcListener = EventListener.appWindow;
     const pattern = /^http:\/\/.*\.localhost:8081\//;
+    const cssURL = `http://shared.localhost:${location.port}/style/webview.css`;
+    const jsURL = `http://shared.localhost:${location.port}/js/webview.js`;
+
 
     ['did-start-loading', 'did-start-navigation', 'did-stop-loading', 'dom-ready'].forEach((eventType) => {
       webview.addEventListener(eventType, () => {
+        const xhr = new XMLHttpRequest();
+        xhr.open('GET', cssURL, true);
+        xhr.onreadystatechange = function () {
+          if (xhr.readyState === 4 && xhr.status === 200) {
+            const cssContent = xhr.responseText;
+            webview.insertCSS(cssContent);
+          } else if (xhr.readyState === 4) {
+            console.error('Failed to fetch CSS:', xhr.status, xhr.statusText);
+          }
+        };
+        xhr.send();
+
+        const xhr1 = new XMLHttpRequest();
+        xhr1.open('GET', jsURL, true);
+        xhr1.onreadystatechange = function () {
+          if (xhr1.readyState === 4 && xhr1.status === 200) {
+            const jsContent = xhr1.responseText;
+            webview.executeJavaScript(jsContent);
+          } else if (xhr1.readyState === 4) {
+            console.error('Failed to fetch JS:', xhr1.status, xhr1.statusText);
+          }
+        };
+        xhr1.send();
+
         if (pattern.test(webview.getURL())) {
           webview.nodeintegration = true;
           webview.nodeintegrationinsubframes = true;
           webview.disablewebsecurity = true;
           webview.webpreferences = "contextIsolation=false";
+          webview.addEventListener('ipc-message', ipcListener);
         } else {
           webview.nodeintegration = false;
           webview.nodeintegrationinsubframes = false;
           webview.disablewebsecurity = false;
           webview.webpreferences = "contextIsolation=true";
+          webview.removeEventListener('ipc-message', ipcListener);
         }
       });
     });
@@ -274,10 +306,12 @@ const Browser = {
 
     // If the color is light (luminance > 0.5), add 'light' class to the status bar
     if (luminance > 0.5) {
-      this.chrome.classList.add('light');
+      this.statusbar.classList.add('light');
+      this.softwareButtons.classList.add('light');
     } else {
       // Otherwise, remove 'light' class
-      this.chrome.classList.remove('light');
+      this.statusbar.classList.remove('light');
+      this.softwareButtons.classList.remove('light');
     }
   },
 
@@ -294,6 +328,3 @@ const Browser = {
     return luminance;
   },
 };
-
-// Initialize the Browser object
-Browser.init(document.getElementById('chrome'));
