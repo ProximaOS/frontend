@@ -18,6 +18,14 @@ const MessageHandler = {
           this.handleNotification(data);
           break;
 
+        case 'picture-in-picture':
+          this.handlePictureInPicture(data);
+          break;
+
+        case 'keyboard':
+          this.handleKeyboard(data);
+          break;
+
         default:
           break;
       }
@@ -41,6 +49,22 @@ const MessageHandler = {
 
   handlePrompt: function (data) {
     ModalDialog.showPrompt(data.origin, data.text, data.input);
+  },
+
+  handlePictureInPicture: function (data) {
+    if (data.action == 'enable') {
+      PictureInPicture.show();
+    } else {
+      PictureInPicture.hide();
+    }
+  },
+
+  handleKeyboard: function (data) {
+    if (data.action == 'show') {
+      Keyboard.show();
+    } else {
+      Keyboard.hide();
+    }
   }
 }
 
