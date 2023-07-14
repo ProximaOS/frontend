@@ -90,7 +90,7 @@
 #lockscreen-icon {
   margin: 4.5rem 0 0;
   color: #fff;
-  text-shadow: 0 0.25rem 1rem rgba(0, 0, 0, 0.3);
+  mix-blend-mode: difference;
 }
 
 #lockscreen-icon.fail-unlock {
@@ -123,13 +123,13 @@
   font-weight: bold;
   color: #fff;
   line-height: 7.8rem;
-  text-shadow: 0 0.25rem 1rem rgba(0, 0, 0, 0.3);
+  mix-blend-mode: difference;
 }
 
 #lockscreen-date {
   font-size: 2rem;
   color: #fff;
-  text-shadow: 0 0.25rem 1rem rgba(0, 0, 0, 0.3);
+  mix-blend-mode: difference;
 }
 
 #lockscreen-toolbar {
@@ -141,7 +141,9 @@
   justify-content: space-between;
   opacity: 1;
   visibility: visible;
-  transition: all 0.5s cubic-bezier(0.2, 0.9, 0.1, 1);
+  transform: scale(calc(1 - (0.125 * (1 - var(--motion-progress, 1)))));
+  opacity: var(--motion-progress, 1);
+  transition: opacity 0.5s cubic-bezier(0.2, 0.9, 0.1, 1), visibility 0.5s ease;
 }
 
 #lockscreen.low-power #lockscreen-toolbar {
