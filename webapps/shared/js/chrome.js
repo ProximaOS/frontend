@@ -1,73 +1,77 @@
 const Browser = {
   _id: 0,
 
-  DEFAULT_URL: 'https://www.duckduckgo.com',
+  DEFAULT_URL: "https://www.duckduckgo.com",
 
-  chrome: document.getElementById('chrome'),
-  statusbar: document.getElementById('statusbar'),
-  softwareButtons: document.getElementById('software-buttons'),
+  chrome: document.getElementById("chrome"),
+  statusbar: document.getElementById("statusbar"),
+  softwareButtons: document.getElementById("software-buttons"),
 
-  tablist: function() {
-    return this.chrome.querySelector('.tablist');
+  tablist: function () {
+    return this.chrome.querySelector(".tablist");
   },
 
-  addButton: function() {
-    return this.chrome.querySelector('.add-button');
+  addButton: function () {
+    return this.chrome.querySelector(".add-button");
   },
 
-  navbarBackButton: function() {
-    return this.chrome.querySelector('.navbar-back-button');
+  navbarBackButton: function () {
+    return this.chrome.querySelector(".navbar-back-button");
   },
 
-  navbarForwardButton: function() {
-    return this.chrome.querySelector('.navbar-forward-button');
+  navbarForwardButton: function () {
+    return this.chrome.querySelector(".navbar-forward-button");
   },
 
-  navbarReloadButton: function() {
-    return this.chrome.querySelector('.navbar-reload-button');
+  navbarReloadButton: function () {
+    return this.chrome.querySelector(".navbar-reload-button");
   },
 
-  navbarHomeButton: function() {
-    return this.chrome.querySelector('.navbar-home-button');
+  navbarHomeButton: function () {
+    return this.chrome.querySelector(".navbar-home-button");
   },
 
-  navbarTabsButton: function() {
-    return this.chrome.querySelector('.navbar-tabs-button');
+  navbarTabsButton: function () {
+    return this.chrome.querySelector(".navbar-tabs-button");
   },
 
-  urlbar: function() {
-    return this.chrome.querySelector('.urlbar');
+  navbarOptionsButton: function () {
+    return this.chrome.querySelector(".navbar-options-button");
   },
 
-  urlbarInput: function() {
-    return this.chrome.querySelector('.urlbar-input');
+  urlbar: function () {
+    return this.chrome.querySelector(".urlbar");
   },
 
-  urlbarDisplayUrl: function() {
-    return this.chrome.querySelector('.urlbar-display-url');
+  urlbarInput: function () {
+    return this.chrome.querySelector(".urlbar-input");
   },
 
-  browserContainer: function() {
-    return this.chrome.querySelector('.browser-container');
+  urlbarDisplayUrl: function () {
+    return this.chrome.querySelector(".urlbar-display-url");
   },
 
-  tabsView: function() {
-    return this.chrome.querySelector('.tabs-view');
+  browserContainer: function () {
+    return this.chrome.querySelector(".browser-container");
   },
 
-  tabsViewCloseButton: function() {
-    return this.chrome.querySelector('.tabs-view-close-button');
+  tabsView: function () {
+    return this.chrome.querySelector(".tabs-view");
   },
 
-  tabsViewAddButton: function() {
-    return this.chrome.querySelector('.tabs-view-add-button');
+  tabsViewCloseButton: function () {
+    return this.chrome.querySelector(".tabs-view-close-button");
   },
 
-  tabsViewList: function() {
-    return this.chrome.querySelector('.tabs-view .grid');
+  tabsViewAddButton: function () {
+    return this.chrome.querySelector(".tabs-view-add-button");
   },
 
-  init: function(chromeElement, url, isChromeEnabled) {
+  tabsViewList: function () {
+    return this.chrome.querySelector(".tabs-view .grid");
+  },
+
+  init: function (chromeElement, url, isChromeEnabled) {
     if (chromeElement) {
       this.chrome = chromeElement;
       this.chrome.innerHTML = `
@@ -114,131 +118,182 @@ const Browser = {
       `;
     }
     if (isChromeEnabled) {
-      this.chrome.classList.add('visible');
+      this.chrome.classList.add("visible");
     }
-    if (window.matchMedia('(prefers-color-scheme: light)')) {
-      this.statusbar.classList.add('light');
-      this.softwareButtons.classList.add('light');
-      this.chrome.classList.add('light');
-      this.chrome.parentElement.classList.add('light');
-    } else if (window.matchMedia('(prefers-color-scheme: dark)')) {
-      this.statusbar.classList.add('dark');
-      this.softwareButtons.classList.add('dark');
-      this.chrome.classList.add('dark');
-      this.chrome.parentElement.classList.add('dark');
+    if (window.matchMedia("(prefers-color-scheme: light)")) {
+      this.statusbar.classList.add("light");
+      this.softwareButtons.classList.add("light");
+      this.chrome.classList.add("light");
+      this.chrome.parentElement.classList.add("light");
+    } else if (window.matchMedia("(prefers-color-scheme: dark)")) {
+      this.statusbar.classList.add("dark");
+      this.softwareButtons.classList.add("dark");
+      this.chrome.classList.add("dark");
+      this.chrome.parentElement.classList.add("dark");
     }
     this.chrome.dataset.id = 0;
     this.DEFAULT_URL = url;
     this.openNewTab(false, url);
 
-    this.addButton().addEventListener('click', this.openNewTab.bind(this, false));
-    this.urlbarInput().addEventListener('keydown', this.handleUrlbarInputKeydown.bind(this));
-    this.navbarBackButton().addEventListener('click', this.handleNavbarBackButton.bind(this));
-    this.navbarForwardButton().addEventListener('click', this.handleNavbarForwardButton.bind(this));
-    this.navbarReloadButton().addEventListener('click', this.handleNavbarReloadButton.bind(this));
-    this.navbarHomeButton().addEventListener('click', this.handleNavbarHomeButton.bind(this));
-    this.navbarTabsButton().addEventListener('click', this.handleNavbarTabsButton.bind(this));
-    this.tabsViewCloseButton().addEventListener('click', this.handleTabsViewCloseButton.bind(this));
-    this.tabsViewAddButton().addEventListener('click', this.openNewTab.bind(this));
+    this.addButton().addEventListener(
+      "click",
+      this.openNewTab.bind(this, false)
+    );
+    this.urlbarInput().addEventListener(
+      "keydown",
+      this.handleUrlbarInputKeydown.bind(this)
+    );
+    this.navbarBackButton().addEventListener(
+      "click",
+      this.handleNavbarBackButton.bind(this)
+    );
+    this.navbarForwardButton().addEventListener(
+      "click",
+      this.handleNavbarForwardButton.bind(this)
+    );
+    this.navbarReloadButton().addEventListener(
+      "click",
+      this.handleNavbarReloadButton.bind(this)
+    );
+    this.navbarHomeButton().addEventListener(
+      "click",
+      this.handleNavbarHomeButton.bind(this)
+    );
+    this.navbarTabsButton().addEventListener(
+      "click",
+      this.handleNavbarTabsButton.bind(this)
+    );
+    this.navbarOptionsButton().addEventListener(
+      "click",
+      this.handleNavbarOptionsButton.bind(this)
+    );
+    this.tabsViewCloseButton().addEventListener(
+      "click",
+      this.handleTabsViewCloseButton.bind(this)
+    );
+    this.tabsViewAddButton().addEventListener(
+      "click",
+      this.openNewTab.bind(this)
+    );
   },
 
-  openNewTab: function(isPrivate, url) {
+  openNewTab: function (isPrivate, url) {
     var id = `${this.chrome.nodeName}#${this.chrome.id}.${this.chrome.className}`;
     this.chrome.dataset.id++;
     this.navbarTabsButton().dataset.amount = this.chrome.dataset.id;
 
-    var tab = document.createElement('li');
+    var tab = document.createElement("li");
     this.tablist().appendChild(tab);
 
-    var favicon = document.createElement('img');
-    favicon.classList.add('favicon');
+    var favicon = document.createElement("img");
+    favicon.classList.add("favicon");
     tab.appendChild(favicon);
 
-    var title = document.createElement('span');
-    title.classList.add('title');
+    var title = document.createElement("span");
+    title.classList.add("title");
     tab.appendChild(title);
 
-    var closeButton = document.createElement('button');
-    closeButton.classList.add('close-button');
-    closeButton.dataset.icon = 'close';
+    var closeButton = document.createElement("button");
+    closeButton.classList.add("close-button");
+    closeButton.dataset.icon = "close";
     tab.appendChild(closeButton);
 
-    var gridTab = document.createElement('div');
-    gridTab.classList.add('tab');
+    var gridTab = document.createElement("div");
+    gridTab.classList.add("tab");
     this.tabsViewList().appendChild(gridTab);
 
-    var gridHeader = document.createElement('div');
-    gridHeader.classList.add('header');
+    var gridHeader = document.createElement("div");
+    gridHeader.classList.add("header");
     gridTab.appendChild(gridHeader);
 
-    var gridFavicon = document.createElement('img');
-    gridFavicon.classList.add('favicon');
+    var gridFavicon = document.createElement("img");
+    gridFavicon.classList.add("favicon");
     gridHeader.appendChild(gridFavicon);
 
-    var gridTitle = document.createElement('span');
-    gridTitle.classList.add('title');
+    var gridTitle = document.createElement("span");
+    gridTitle.classList.add("title");
     gridHeader.appendChild(gridTitle);
 
-    var gridCloseButton = document.createElement('button');
-    gridCloseButton.classList.add('close-button');
-    gridCloseButton.dataset.icon = 'close';
+    var gridCloseButton = document.createElement("button");
+    gridCloseButton.classList.add("close-button");
+    gridCloseButton.dataset.icon = "close";
     gridHeader.appendChild(gridCloseButton);
 
-    var gridPreview = document.createElement('img');
-    gridPreview.classList.add('preview');
+    var gridPreview = document.createElement("img");
+    gridPreview.classList.add("preview");
     gridTab.appendChild(gridPreview);
 
-    var webview = document.createElement('webview');
+    var webview = document.createElement("webview");
     webview.src = url || this.DEFAULT_URL;
-    webview.classList.add('browser');
+    webview.classList.add("browser");
     webview.nodeintegration = true;
     webview.nodeintegrationinsubframes = true;
     webview.disablewebsecurity = true;
     webview.webpreferences = "contextIsolation=false";
     webview.useragent = navigator.userAgent;
-    webview.preload = `file://${process.cwd().replaceAll('\\', '/')}/preload.js`;
+    webview.preload = `file://${process
+      .cwd()
+      .replaceAll("\\", "/")}/preload.js`;
     this.browserContainer().appendChild(webview);
 
-    webview.addEventListener('context-menu', this.handleContextMenu.bind(this));
-    webview.addEventListener('page-favicon-updated', this.handlePageFaviconUpdated.bind(this));
-    webview.addEventListener('page-title-updated', this.handlePageTitleUpdated.bind(this));
-    webview.addEventListener('did-start-navigation', this.handleDidStartNavigation.bind(this));
-    webview.addEventListener('did-change-theme-color', this.handleThemeColorUpdated.bind(this));
+    webview.addEventListener("context-menu", this.handleContextMenu.bind(this));
+    webview.addEventListener(
+      "page-favicon-updated",
+      this.handlePageFaviconUpdated.bind(this)
+    );
+    webview.addEventListener(
+      "page-title-updated",
+      this.handlePageTitleUpdated.bind(this)
+    );
+    webview.addEventListener(
+      "did-start-navigation",
+      this.handleDidStartNavigation.bind(this)
+    );
+    webview.addEventListener(
+      "did-change-theme-color",
+      this.handleThemeColorUpdated.bind(this)
+    );
 
     const ipcListener = EventListener.appWindow;
     const pattern = /^http:\/\/.*\.localhost:8081\//;
     const cssURL = `http://shared.localhost:${location.port}/style/webview.css`;
     const jsURL = `http://shared.localhost:${location.port}/js/webview.js`;
 
-    webview.addEventListener('did-stop-loading', () => {
-      var splashElement = this.chrome.parentElement.querySelector('.splashscreen');
+    webview.addEventListener("did-stop-loading", () => {
+      var splashElement =
+        this.chrome.parentElement.querySelector(".splashscreen");
       if (splashElement) {
-        splashElement.classList.add('hidden');
+        splashElement.classList.add("hidden");
       }
     });
 
-    ['did-start-loading', 'did-start-navigation', 'did-stop-loading', 'dom-ready'].forEach((eventType) => {
+    [
+      "did-start-loading",
+      "did-start-navigation",
+      "did-stop-loading",
+      "dom-ready",
+    ].forEach((eventType) => {
       webview.addEventListener(eventType, () => {
         const xhr = new XMLHttpRequest();
-        xhr.open('GET', cssURL, true);
+        xhr.open("GET", cssURL, true);
         xhr.onreadystatechange = function () {
           if (xhr.readyState === 4 && xhr.status === 200) {
             const cssContent = xhr.responseText;
             webview.insertCSS(cssContent);
           } else if (xhr.readyState === 4) {
-            console.error('Failed to fetch CSS:', xhr.status, xhr.statusText);
+            console.error("Failed to fetch CSS:", xhr.status, xhr.statusText);
           }
         };
         xhr.send();
 
         const xhr1 = new XMLHttpRequest();
-        xhr1.open('GET', jsURL, true);
+        xhr1.open("GET", jsURL, true);
         xhr1.onreadystatechange = function () {
           if (xhr1.readyState === 4 && xhr1.status === 200) {
             const jsContent = xhr1.responseText;
             webview.executeJavaScript(jsContent);
           } else if (xhr1.readyState === 4) {
-            console.error('Failed to fetch JS:', xhr1.status, xhr1.statusText);
+            console.error("Failed to fetch JS:", xhr1.status, xhr1.statusText);
           }
         };
         xhr1.send();
@@ -248,17 +303,17 @@ const Browser = {
           webview.nodeintegrationinsubframes = true;
           webview.disablewebsecurity = true;
           webview.webpreferences = "contextIsolation=false";
-          webview.addEventListener('ipc-message', ipcListener);
+          webview.addEventListener("ipc-message", ipcListener);
         } else {
           webview.nodeintegration = false;
           webview.nodeintegrationinsubframes = false;
           webview.disablewebsecurity = false;
           webview.webpreferences = "contextIsolation=true";
-          webview.removeEventListener('ipc-message', ipcListener);
+          webview.removeEventListener("ipc-message", ipcListener);
         }
 
         if (!isPrivate) {
-          webview.capturePage().then(data => {
+          webview.capturePage().then((data) => {
             gridPreview.src = data.toDataURL();
           });
         }
@@ -266,30 +321,30 @@ const Browser = {
     });
 
     const focus = () => {
-      var tabs = this.chrome.querySelectorAll('.tablist li');
-      tabs.forEach(function(tab) {
-        tab.classList.remove('active');
+      var tabs = this.chrome.querySelectorAll(".tablist li");
+      tabs.forEach(function (tab) {
+        tab.classList.remove("active");
       });
 
-      var gridTabs = this.chrome.querySelectorAll('.tabs-view .grid .tab');
-      gridTabs.forEach(function(gridTab) {
-        gridTab.classList.remove('active');
+      var gridTabs = this.chrome.querySelectorAll(".tabs-view .grid .tab");
+      gridTabs.forEach(function (gridTab) {
+        gridTab.classList.remove("active");
       });
 
-      var webviews = this.chrome.querySelectorAll('.browser-container webview');
-      webviews.forEach(function(webview) {
-        webview.classList.remove('active');
+      var webviews = this.chrome.querySelectorAll(".browser-container webview");
+      webviews.forEach(function (webview) {
+        webview.classList.remove("active");
       });
 
-      tab.classList.add('active');
-      gridTab.classList.add('active');
-      webview.classList.add('active');
+      tab.classList.add("active");
+      gridTab.classList.add("active");
+      webview.classList.add("active");
     };
 
     focus();
-    tab.addEventListener('click', focus.bind(this));
-    gridTab.addEventListener('click', focus.bind(this));
-    closeButton.addEventListener('click', () => {
+    tab.addEventListener("click", focus.bind(this));
+    gridTab.addEventListener("click", focus.bind(this));
+    closeButton.addEventListener("click", () => {
       this.chrome.dataset.id--;
       this.navbarTabsButton().dataset.amount = this.chrome.dataset.id;
 
@@ -297,7 +352,7 @@ const Browser = {
       gridTab.remove();
       webview.remove();
     });
-    gridCloseButton.addEventListener('click', () => {
+    gridCloseButton.addEventListener("click", () => {
       this.chrome.dataset.id--;
       this.navbarTabsButton().dataset.amount = this.chrome.dataset.id;
 
@@ -307,52 +362,100 @@ const Browser = {
     });
   },
 
-  handleUrlbarInputKeydown: function(event) {
-    if (event.key === 'Enter') {
-      var activeTab = this.chrome.querySelector('.tablist li.active');
-      var webview = this.chrome.querySelector('.browser-container .browser.active');
+  handleUrlbarInputKeydown: function (event) {
+    if (event.key === "Enter") {
+      var activeTab = this.chrome.querySelector(".tablist li.active");
+      var webview = this.chrome.querySelector(
+        ".browser-container .browser.active"
+      );
       var url = event.target.value;
       webview.src = url;
     }
   },
 
-  handleNavbarBackButton: function() {
-    var webview = this.chrome.querySelector('.browser-container .browser.active');
+  handleNavbarBackButton: function () {
+    var webview = this.chrome.querySelector(
+      ".browser-container .browser.active"
+    );
     if (webview.canGoBack()) {
       webview.goBack();
     }
   },
 
-  handleNavbarForwardButton: function() {
-    var webview = this.chrome.querySelector('.browser-container .browser.active');
+  handleNavbarForwardButton: function () {
+    var webview = this.chrome.querySelector(
+      ".browser-container .browser.active"
+    );
     if (webview.canGoForward()) {
       webview.goForward();
     }
   },
 
-  handleNavbarReloadButton: function() {
-    var webview = this.chrome.querySelector('.browser-container .browser.active');
+  handleNavbarReloadButton: function () {
+    var webview = this.chrome.querySelector(
+      ".browser-container .browser.active"
+    );
     webview.reload();
   },
 
-  handleNavbarHomeButton: function() {
-    var webview = this.chrome.querySelector('.browser-container .browser.active');
+  handleNavbarHomeButton: function () {
+    var webview = this.chrome.querySelector(
+      ".browser-container .browser.active"
+    );
     webview.src = this.DEFAULT_URL;
   },
 
-  handleNavbarTabsButton: function() {
-    this.tabsView().classList.toggle('visible');
+  handleNavbarTabsButton: function () {
+    this.tabsView().classList.toggle("visible");
   },
 
-  handleTabsViewCloseButton: function() {
-    this.tabsView().classList.remove('visible');
+  handleNavbarOptionsButton: function (event) {
+    const rtl = document.dir === "rtl";
+    const x = rtl ? 5 : window.innerWidth - 5;
+    setTimeout(() => {
+      contextMenu.show(x, 90, [
+        {
+          name: "New Tab",
+          icon: "add",
+          onclick: this.openNewTab.bind(this, false),
+        },
+        {
+          name: "New Private Tab",
+          icon: "add",
+          onclick: this.openNewTab.bind(this, true),
+        },
+        { type: "separator" },
+        {
+          name: "Library",
+          icon: "browser-library",
+          onclick: null,
+        },
+        {
+          name: "Add-Ons",
+          icon: "browser-addons",
+          onclick: null,
+        },
+        {
+          name: "Settings",
+          icon: "settings",
+          onclick: null,
+        },
+      ]);
+    }, 100);
   },
 
-  handleContextMenu: function(event) {
-    console.log(event);
-    contextMenu(event.params.x, event.params.y, [
+  handleTabsViewCloseButton: function () {
+    this.tabsView().classList.remove("visible");
+  },
+
+  handleContextMenu: function (event) {
+    var webview = this.chrome.querySelector(
+      ".browser-container .browser.active"
+    );
+    contextMenu.show(event.params.x, event.params.y, [
       {
-        name: 'Copy',
+        name: "Copy",
+        icon: "textselection-copy",
         disabled: !event.params.editFlags.canCopy,
         onclick: () => {
           webview.focus();
@@ -360,7 +463,8 @@ const Browser = {
         },
       },
       {
-        name: 'Cut',
+        name: "Cut",
+        icon: "textselection-cut",
         disabled: !event.params.editFlags.canCut,
         onclick: () => {
           webview.focus();
@@ -368,7 +472,8 @@ const Browser = {
         },
       },
       {
-        name: 'Paste',
+        name: "Paste",
+        icon: "textselection-paste",
         disabled: !event.params.editFlags.canPaste,
         onclick: () => {
           webview.focus();
@@ -376,15 +481,18 @@ const Browser = {
         },
       },
       {
-        name: 'Select All',
+        name: "Select All",
+        icon: "textselection-selectall",
         disabled: !event.params.editFlags.canSelectAll,
         onclick: () => {
           webview.focus();
           webview.selectAll();
         },
       },
+      { type: "separator" },
       {
-        name: 'Delete',
+        name: "Delete",
+        icon: "delete",
         disabled: !event.params.editFlags.canDelete,
         onclick: () => {
           webview.focus();
@@ -394,22 +502,24 @@ const Browser = {
     ]);
   },
 
-  handlePageFaviconUpdated: function(event) {
-    var favicon = this.chrome.querySelector('.tablist .active .favicon');
-    var gridFavicon = this.chrome.querySelector('.tabs-view .active .favicon');
+  handlePageFaviconUpdated: function (event) {
+    var favicon = this.chrome.querySelector(".tablist .active .favicon");
+    var gridFavicon = this.chrome.querySelector(".tabs-view .active .favicon");
     favicon.src = event.favicons[0];
     gridFavicon.src = event.favicons[0];
   },
 
-  handlePageTitleUpdated: function(event) {
-    var title = this.chrome.querySelector('.tablist .active .title');
-    var gridTitle = this.chrome.querySelector('.tabs-view .active .title');
+  handlePageTitleUpdated: function (event) {
+    var title = this.chrome.querySelector(".tablist .active .title");
+    var gridTitle = this.chrome.querySelector(".tabs-view .active .title");
     title.textContent = event.title;
     gridTitle.textContent = event.title;
   },
 
-  handleDidStartNavigation: function() {
-    var webview = this.chrome.querySelector('.browser-container .browser.active');
+  handleDidStartNavigation: function () {
+    var webview = this.chrome.querySelector(
+      ".browser-container .browser.active"
+    );
     this.urlbarInput().value = webview.getURL();
     var url = new URL(webview.getURL());
     this.urlbarDisplayUrl().innerHTML = `
@@ -421,35 +531,37 @@ const Browser = {
     `;
   },
 
-  handleThemeColorUpdated: function(event) {
-    var webview = this.chrome.querySelector('.browser-container .browser.active');
+  handleThemeColorUpdated: function (event) {
+    var webview = this.chrome.querySelector(
+      ".browser-container .browser.active"
+    );
     const color = event.themeColor;
     webview.dataset.themeColor = color;
-    this.chrome.parentElement.style.setProperty('--theme-color', color);
+    this.chrome.parentElement.style.setProperty("--theme-color", color);
 
     // Calculate the luminance of the color
     const luminance = this.calculateLuminance(color);
 
     // If the color is light (luminance > 0.5), add 'light' class to the status bar
     if (luminance > 0.5) {
-      this.chrome.classList.add('light');
-      this.chrome.parentElement.classList.add('light');
-      this.statusbar.classList.add('light');
-      this.softwareButtons.classList.add('light');
-      this.chrome.classList.remove('dark');
-      this.chrome.parentElement.classList.remove('dark');
-      this.statusbar.classList.remove('dark');
-      this.softwareButtons.classList.remove('dark');
+      this.chrome.classList.add("light");
+      this.chrome.parentElement.classList.add("light");
+      this.statusbar.classList.add("light");
+      this.softwareButtons.classList.add("light");
+      this.chrome.classList.remove("dark");
+      this.chrome.parentElement.classList.remove("dark");
+      this.statusbar.classList.remove("dark");
+      this.softwareButtons.classList.remove("dark");
     } else {
       // Otherwise, remove 'light' class
-      this.chrome.classList.remove('light');
-      this.chrome.parentElement.classList.remove('light');
-      this.statusbar.classList.remove('light');
-      this.softwareButtons.classList.remove('light');
-      this.chrome.classList.add('dark');
-      this.chrome.parentElement.classList.add('dark');
-      this.statusbar.classList.add('dark');
-      this.softwareButtons.classList.add('dark');
+      this.chrome.classList.remove("light");
+      this.chrome.parentElement.classList.remove("light");
+      this.statusbar.classList.remove("light");
+      this.softwareButtons.classList.remove("light");
+      this.chrome.classList.add("dark");
+      this.chrome.parentElement.classList.add("dark");
+      this.statusbar.classList.add("dark");
+      this.softwareButtons.classList.add("dark");
     }
   },
 

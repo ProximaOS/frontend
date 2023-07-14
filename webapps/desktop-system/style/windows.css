@@ -117,6 +117,10 @@
   height: calc(100% - var(--statusbar-height));
 }
 
+#screen.context-menu-visible .appframe .chrome .browser {
+  pointer-events: none;
+}
+
 #windows.dragging .chrome .browser {
   pointer-events: none;
 }

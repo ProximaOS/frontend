@@ -40,12 +40,11 @@ app.on('ready', function () {
     frame: false,
     thickFrame: true,
     webPreferences: {
-      nodeIntegration: true,
-      contextIsolation: false,
       defaultFontFamily: "system-ui",
       defaultMonospaceFontSize: 14,
       disableDialogs: true,
       devTools: require("electron-is-dev"),
+      preload: path.join(__dirname, 'src', 'update.js')
     },
   });
   updateWindow.loadURL("openorchid://updater/index.html");

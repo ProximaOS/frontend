@@ -1,5 +1,5 @@
 {
-  "name": "system",
+  "name": "desktop-system",
   "version": "1.0.0",
   "description": "System is a crucial part for OpenOrchid's Ui to function.\r It's the thing that contains your navbar, statusbar, browser, gestures, and app windows.",
   "main": "src/index.js",

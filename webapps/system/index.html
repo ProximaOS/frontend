@@ -6,6 +6,7 @@
   <link rel="stylesheet" href="http://shared.localhost:8081/style/theme.css" />
   <link rel="stylesheet" href="http://shared.localhost:8081/style/webview.css" />
   <link rel="stylesheet" href="http://shared.localhost:8081/style/icons/icons.css">
+  <link rel="stylesheet" href="dist/main.bundle.css">
   <link rel="stylesheet" href="style/system.css">
   <link rel="stylesheet" href="style/splashscreen.css">
   <link rel="stylesheet" href="style/windows.css">
@@ -37,6 +38,7 @@
   <script defer src="js/keyboard.js"></script>
   <script defer src="js/modal_dialog.js"></script>
   <script defer src="js/message_handler.js"></script>
+  <script defer src="js/context_menu.js"></script>
   <script defer src="lockscreen/js/motion.js"></script>
   <script defer src="lockscreen/js/clock.js"></script>
   <script defer src="lockscreen/js/date.js"></script>
@@ -238,6 +240,12 @@
       <button id="software-keyboard-button"></button>
 
       <div id="dock"></div>
+    </div>
+
+    <div id="context-menu">
+      <div id="context-menu-content">
+        <div id="context-menu-content-items"></div>
+      </div>
     </div>
   </div>
 </body>

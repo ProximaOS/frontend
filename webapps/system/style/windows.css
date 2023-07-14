@@ -113,6 +113,10 @@
   height: calc(100% - var(--statusbar-height) - 2.5rem);
 }
 
+#screen.context-menu-visible .appframe .chrome .browser {
+  pointer-events: none;
+}
+
 .appframe .chrome.visible .browser {
   top: calc(var(--statusbar-height) + 2.5rem + var(--chrome-tablist-height) + var(--chrome-navbar-height) + (var(--chrome-toolbar-gap) * 2));
   height: calc(100% - var(--statusbar-height) - 2.5rem - var(--chrome-tablist-height) - var(--chrome-navbar-height) - (var(--chrome-toolbar-gap) * 2));
