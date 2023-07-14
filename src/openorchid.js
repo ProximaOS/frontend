@@ -5,6 +5,8 @@ const settings = require('electron-settings');
 const path = require('path');
 const fs = require('fs');
 
+require('dotenv').config();
+
 module.exports = function create() {
   var width = 320;
   var height = 640;
@@ -40,18 +42,21 @@ module.exports = function create() {
   });
 
   fs.mkdirSync(path.join(process.cwd(), 'profile'), { recursive: true });
-  app.setPath('sessionData', path.join(process.cwd(), 'profile'));
-  app.setPath('userData', path.join(process.cwd(), 'profile'));
-  app.setPath('temp', path.join(process.cwd(), 'profile', 'temp'));
-  app.setPath('desktop', path.join(process.cwd(), 'profile', 'others', 'desktop'));
-  app.setPath('documents', path.join(process.cwd(), 'profile', 'others', 'documents'));
-  app.setPath('downloads', path.join(process.cwd(), 'profile', 'downloads'));
-  app.setPath('music', path.join(process.cwd(), 'profile', 'music'));
-  app.setPath('pictures', path.join(process.cwd(), 'profile', 'photos'));
-  app.setPath('videos', path.join(process.cwd(), 'profile', 'movies'));
-  app.setPath('logs', path.join(process.cwd(), 'profile', 'logs'));
-  app.setPath('cache', path.join(process.cwd(), 'profile', 'cache'));
-  app.setPath('crashDumps', path.join(process.cwd(), 'profile', 'crash-dumps'));
+
+  var profileDir = path.resolve(process.env.OPENORCHID_DATA);
+
+  app.setPath('appData', profileDir);
+  app.setPath('sessionData', path.join(profileDir, 'session-data'));
+  app.setPath('temp', path.join(profileDir, 'temp'));
+  app.setPath('desktop', path.join(profileDir, 'storage', 'others', 'desktop'));
+  app.setPath('documents', path.join(profileDir, 'storage', 'others', 'documents'));
+  app.setPath('downloads', path.join(profileDir, 'storage', 'downloads'));
+  app.setPath('music', path.join(profileDir, 'storage', 'music'));
+  app.setPath('pictures', path.join(profileDir, 'storage', 'photos'));
+  app.setPath('videos', path.join(profileDir, 'storage', 'movies'));
+  app.setPath('logs', path.join(profileDir, 'logs'));
+  app.setPath('cache', path.join(profileDir, 'cache'));
+  app.setPath('crashDumps', path.join(profileDir, 'crash-dumps'));
 
   mainWindow.loadURL(url, {
     userAgent: 'Mozilla/5.0 (Linux; OpenOrchid 1.0.0; rv:114.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0 Mobile Safari/537.36 OpenOrchid/1.0.0'
