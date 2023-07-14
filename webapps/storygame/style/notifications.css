@@ -1,0 +1,129 @@
+.notification {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  padding: 10px 15px;
+  background-color: #000;
+  color: #e7e7e7;
+  font-size: 16px;
+  display: flex;
+  gap: 15px;
+  align-items: center;
+  opacity: 0;
+}
+
+.notification.show {
+  animation: notification-show 0.15s linear forwards;
+}
+
+@keyframes notification-show {
+  from {
+    transform: translateY(10px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0px);
+    opacity: 1;
+  }
+}
+
+.notification.hide {
+  animation: notification-hide 0.2s linear;
+}
+
+@keyframes notification-hide {
+  from {
+    transform: translateY(0px);
+    opacity: 1;
+  }
+  to {
+    transform: translateY(-10px);
+    opacity: 0;
+  }
+}
+
+.notification.relationship {
+  left: unset;
+  right: 20px;
+}
+
+.notification .icon {
+  display: inline-block;
+  width: 30px;
+  height: 30px;
+  background: no-repeat center / cover;
+  flex: none;
+}
+
+.notification .icon.stat_increase {
+  animation: icon-increase 2s cubic-bezier(0.2, 0.9, 0.1, 1) 0.5s;
+}
+
+@keyframes icon-increase {
+  0%, 100% {
+    transform: translateY(0px);
+    opacity: 1;
+    filter: blur(0px);
+  }
+  49.95% {
+    transform: translateY(-20px);
+    opacity: 0;
+    filter: blur(10px);
+  }
+  50% {
+    transform: translateY(20px);
+    opacity: 0;
+    filter: blur(10px);
+  }
+}
+
+.notification .icon.stat_decrease {
+  animation: icon-decrease 2s cubic-bezier(0.2, 0.9, 0.1, 1) 0.5s;
+}
+
+@keyframes icon-decrease {
+  0%, 100% {
+    transform: translateY(0px);
+    opacity: 1;
+    filter: blur(0px);
+  }
+  49.95% {
+    transform: translateY(20px);
+    opacity: 0;
+    filter: blur(10px);
+  }
+  50% {
+    transform: translateY(-20px);
+    opacity: 0;
+    filter: blur(10px);
+  }
+}
+
+.notification .message {
+  margin: 5px 0;
+  color: #e7e7e7;
+  flex-grow: 1;
+  width: 100%;
+  font-size: 16px;
+  overflow: hidden;
+}
+
+.notification.relationship .message {
+  color: #e7e7e7;
+  font-weight: lighter;
+  font-size: 32px;
+}
+
+.notification .detail {
+  position: absolute;
+  top: calc(100% - 10px);
+  left: 60px;
+  padding: 5px 10px;
+  color: #a6a6a6;
+  font-size: 12px;
+  text-transform: uppercase;
+  font-weight: bold;
+  background-color: #303030;
+  /* width: 100%; */
+  box-sizing: border-box;
+}

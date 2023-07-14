@@ -1,0 +1,20 @@
+{
+  "homescreen": {
+    "pages": [
+      [
+        "http://settings.localhost:8081/manifest.webapp",
+        "http://files.localhost:8081/manifest.webapp",
+        "http://gallery.localhost:8081/manifest.webapp",
+        "http://camera.localhost:8081/manifest.webapp",
+        "http://clock.localhost:8081/manifest.webapp",
+        "http://calculator.localhost:8081/manifest.webapp"
+      ]
+    ],
+    "dock": [
+      "http://browser.localhost:8081/manifest.webapp",
+      "http://sms.localhost:8081/manifest.webapp",
+      "http://contacts.localhost:8081/manifest.webapp",
+      "http://dialer.localhost:8081/manifest.webapp"
+    ]
+  }
+}

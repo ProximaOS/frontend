@@ -8,10 +8,6 @@
   transition: all 0.3s ease;
 }
 
-#statusbar.light {
-  filter: invert(1) hue-rotate(180deg);
-}
-
 #statusbar.hidden {
   transform: translateY(-100%);
 }
@@ -23,12 +19,10 @@
   margin: 0 var(--statusbar-padding-left) 0 var(--statusbar-padding-right);
   width: calc(100% - var(--statusbar-padding-left) - var(--statusbar-padding-right));
   height: 100%;
-  opacity: 0.8;
 }
 
 .statusbar-icons > .left {
   position: absolute;
-  left: 0;
   top: 0;
   width: 50%;
   height: 100%;
@@ -36,10 +30,15 @@
   justify-content: start;
   align-items: center;
 }
+html[dir="ltr"] .statusbar-icons > .left {
+  left: 0;
+}
+html[dir="rtl"] .statusbar-icons > .left {
+  right: 0;
+}
 
 .statusbar-icons > .right {
   position: absolute;
-  left: 50%;
   top: 0;
   width: 50%;
   height: 100%;
@@ -47,6 +46,12 @@
   justify-content: end;
   flex-direction: row-reverse;
   align-items: center;
+}
+html[dir="ltr"] .statusbar-icons > .right {
+  left: 50%;
+}
+html[dir="rtl"] .statusbar-icons > .right {
+  right: 50%;
 }
 
 .statusbar-icons > .left div,
@@ -57,7 +62,12 @@
   line-height: 2rem;
   margin: 0 0.2rem;
   text-align: center;
-  transition: all 0.3s cubic-bezier(0.2, 0.9, 0.1, 1.25) 0.3s, margin 0.3s cubic-bezier(0.2, 0.9, 0.1, 1.25);
+  transition: opacity 0.3s cubic-bezier(0.2, 0.9, 0.1, 1.25) 0.3s, transform 0.3s cubic-bezier(0.2, 0.9, 0.1, 1.25) 0.3s, visibility 0.3s cubic-bezier(0.2, 0.9, 0.1, 1.25) 0.3s, margin 0.3s cubic-bezier(0.2, 0.9, 0.1, 1.25);
+}
+
+#statusbar.light .statusbar-icons > .left div,
+#statusbar.light .statusbar-icons > .right div {
+  color: #333;
 }
 
 .statusbar-icons > .left .hidden,
@@ -66,7 +76,7 @@
   transform: scale(0.2);
   visibility: hidden;
   margin: 0 -1rem;
-  transition: all 0.3s ease, margin 0.3s cubic-bezier(0.2, 0.9, 0.1, 1) 0.3s;
+  transition: opacity 0.3s ease, transform 0.3s ease, visibility 0.3s ease, margin 0.3s cubic-bezier(0.2, 0.9, 0.1, 1) 0.3s;
 }
 
 #statusbar-notifications::before {
@@ -81,11 +91,41 @@
   font-size: 1.6rem;
 }
 
+#statusbar.light #statusbar-time {
+  color: #333;
+}
+
 #statusbar-battery::before {
   width: 2rem;
   height: 2rem;
   line-height: 2rem;
   font-size: 1.8rem;
+}
+
+#statusbar-battery.charging {
+  color: rgba(255,255,255,0.5);
+  position: relative;
+}
+
+#statusbar.light #statusbar-battery.charging {
+  color: rgba(51, 51, 51, 0.5);
+}
+
+#statusbar-battery.charging::after {
+  content: 'battery-charging';
+  position: absolute;
+  left: 0;
+  top: 0;
+  font-family: "openorchid-icons";
+  width: 2rem;
+  height: 2rem;
+  line-height: 2rem;
+  font-size: 1.8rem;
+  color: #fff;
+}
+
+#statusbar.light #statusbar-battery.charging::after {
+  color: #333;
 }
 
 #statusbar-cellular-signal {

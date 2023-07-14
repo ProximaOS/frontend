@@ -1,0 +1,186 @@
+#character-screen {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to right, #333, #333 50%, transparent 75%, transparent);
+  z-index: 10;
+  transform: scale(1.5);
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s cubic-bezier(0.2, 0.9, 0.1, 1);
+}
+
+#character-screen.visible {
+  transform: scale(1);
+  opacity: 1;
+  visibility: visible;
+}
+
+#character-screen .container {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 100%;
+  height: 100%;
+  transform: translate(-50%, -50%);
+  max-width: 76.8rem;
+  max-height: 48rem;
+  display: flex;
+}
+
+#character-screen .col {
+  width: 100%;
+  flex-grow: 1;
+  padding: 1.5rem;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+}
+
+#character-screen .col h1 {
+  margin: 0 0 1rem;
+  font-size: 4.8rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  color: #fff;
+  flex-shrink: 0;
+  opacity: 0.6;
+  font-style: italic;
+}
+
+#character-screen .col header {
+  margin: 0 0 1rem;
+  font-size: 1.6rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  color: #fff;
+  flex-shrink: 0;
+}
+
+.character-stats {
+  width: 100%;
+  margin: 0 0 1rem;
+}
+
+.character-stats #character-screen-healthbar,
+.character-stats #character-screen-stamina {
+  width: 100%;
+  margin: 0 0 1rem;
+  height: 0.5rem;
+  background-color: #858585;
+  position: relative;
+  border-radius: 0.2rem;
+  overflow: hidden;
+}
+
+.character-stats #character-screen-healthbar {
+  height: 1rem;
+}
+
+.character-stats #character-screen-stamina {
+  width: 75%;
+}
+
+.character-stats #character-screen-healthbar::before,
+.character-stats #character-screen-stamina::before {
+  content: '';
+  width: calc(100% * var(--progress, 0.6));
+  height: 100%;
+  position: absolute;
+  left: 0;
+  top: 0;
+  transition: width 0.2s ease;
+}
+
+.character-stats #character-screen-healthbar::before {
+  background-color: rgb(calc(192 + (-96 * var(--progress))), calc(255 * var(--progress)), calc(64 + (64 * var(--progress))));
+}
+
+.character-stats #character-screen-stamina::before {
+  background-color: rgb(calc(192 + (63 * var(--progress))), calc(192 * var(--progress)), calc(128 + (-128 * var(--progress))));
+}
+
+#character-screen-inventory {
+  margin: -1.5rem 0 0;
+  padding: 3rem 0;
+  box-sizing: border-box;
+  flex-grow: 1;
+  overflow-y: auto;
+  mask-image: linear-gradient(to bottom, transparent, #fff 3rem, #fff calc(100% - 3rem), transparent);
+  -webkit-mask-image: linear-gradient(to bottom, transparent, #fff 3rem, #fff calc(100% - 3rem), transparent);
+}
+
+#character-screen-inventory > li {
+  margin: 0 0 0.2rem;
+  padding: 1rem;
+  background-color: #fff;
+  display: flex;
+  align-items: center;
+  border-radius: 0.2rem;
+  list-style: none;
+}
+
+#character-screen-inventory > li img {
+  flex-shrink: 0;
+  width: 3rem;
+  height: 3rem;
+  margin-inline-end: 1rem;
+}
+
+#character-screen-inventory > li label {
+  font-size: 1.6rem;
+  color: #333;
+}
+
+#character-preview {
+  width: 100%;
+  height: 100%;
+}
+
+#character-screen-relationships {
+  margin: 0;
+  padding: 0 0 3rem;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+#character-screen-relationships > li {
+  margin: 0;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  list-style: none;
+}
+
+#character-screen-relationships > li label {
+  color: #fff;
+  font-size: 1.6rem;
+  width: 30%;
+  flex-shrink: 0;
+}
+
+#character-screen-relationships > li div {
+  width: 100%;
+  margin: 0;
+  height: 0.5rem;
+  background-color: #858585;
+  position: relative;
+  border-radius: 0.2rem;
+  flex-grow: 1;
+}
+
+#character-screen-relationships > li div::before {
+  content: '';
+  background-color: #fff;
+  width: calc(100% * var(--progress, 0.6));
+  height: 100%;
+  position: absolute;
+  left: 0;
+  top: 0;
+  border-radius: 0.2rem;
+  transition: width 0.2s ease;
+}

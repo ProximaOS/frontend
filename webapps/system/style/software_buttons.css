@@ -7,9 +7,10 @@
   display: flex;
   justify-content: center;
   z-index: 4096;
+  transition: all 0.3s ease;
 }
 
-#screen:not(.keyboard-visible) #software-buttons.light {
+#screen:not(.keyboard-visible) #software-buttons.light > button {
   filter: invert(1) hue-rotate(180deg);
 }
 
@@ -21,9 +22,21 @@
   position: relative;
   width: 8rem;
   height: 100%;
-  background: transparent no-repeat center / 1.75rem;
+  background-color: transparent;
   border: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   opacity: 0.8;
+  transition: filter 0.5s;
+}
+
+#software-buttons > button::before {
+  content: '';
+  width: 2rem;
+  height: 2rem;
+  background: transparent no-repeat center / 1.75rem;
+  transition: all 0.5s cubic-bezier(0.2, 0.9, 0.1, 1);
 }
 
 #software-buttons > button::after {
@@ -47,24 +60,31 @@
   transition: all 0.3s cubic-bezier(0.2, 0.9, 0.1, 1);
 }
 
-#software-buttons > #software-back-button {
+#software-buttons > #software-back-button::before {
   background-image: url(images/back.png);
 }
 
-#software-buttons > #software-home-button {
+#screen.keyboard-visible #software-buttons > #software-back-button::before {
+  transform: rotate(-90deg);
+}
+
+#software-buttons > #software-home-button::before {
   background-image: url(images/home.png);
 }
 
-#software-buttons > #software-recents-button {
+#software-buttons > #software-recents-button::before {
   background-image: url(images/recents.png);
 }
 
 #software-buttons > #software-keyboard-button {
-  background-image: url(images/splitscreen.png);
   position: absolute;
   top: 0;
   right: 0;
   width: 5rem;
+}
+
+#software-buttons > #software-keyboard-button::before {
+  background-image: url(images/splitscreen.png);
 }
 
 #dock {
@@ -124,5 +144,17 @@
 @media screen and (max-width: 767px) {
   #dock {
     display: none;
+  }
+}
+
+@media (prefers-color-scheme: light) {
+  #screen.keyboard-visible #software-buttons > button {
+    filter: invert(1) hue-rotate(180deg);
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  #screen.keyboard-visible #software-buttons > button {
+    filter: none;
   }
 }

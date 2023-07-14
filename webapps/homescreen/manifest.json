@@ -1,11 +1,11 @@
 {
   "version": "1.0",
   "name": "Homescreen",
+  "description": "",
   "role": "homescreen",
-  "description": "Manage your device settings",
   "launch_path": "/index.html",
   "icons": {
-    "16": "/style/icons/settings.svg"
+    "16": "/style/icons/homescreen.png"
   },
   "developer": {
     "name": "MortCodesWeb",

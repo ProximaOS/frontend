@@ -15,3 +15,8 @@
   width: 8px;
   height: 8px;
 }
+
+::selection {
+  background-color: var(--accent-color, #0061e0);
+  color: var(--accent-color-plus, rgba(255,255,255,0.75));
+}

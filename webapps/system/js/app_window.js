@@ -1,14 +1,19 @@
 const AppWindow = {
   _id: 0,
 
+  screen: document.getElementById('screen'),
   containerElement: document.getElementById('windows'),
   statusbar: document.getElementById('statusbar'),
   softwareButtons: document.getElementById('software-buttons'),
+  keyboard: document.getElementById('keyboard'),
   softwareBackButton: document.getElementById('software-back-button'),
   softwareHomeButton: document.getElementById('software-home-button'),
   dock: document.getElementById('dock'),
 
   HIDDEN_ROLES: [ 'system', 'homescreen' ],
+
+  OPEN_ANIMATION: 'expand',
+  CLOSE_ANIMATION: 'shrink',
 
   init: function () {
     this.softwareBackButton.addEventListener('click', this.onButtonClick.bind(this));
@@ -66,9 +71,9 @@ const AppWindow = {
       };
       this.dock.appendChild(icon);
 
-      icon.classList.add('expand');
+      icon.classList.add(this.OPEN_ANIMATION);
       icon.addEventListener('animationend', () => {
-        icon.classList.remove('expand');
+        icon.classList.remove(this.OPEN_ANIMATION);
       });
 
       const iconImage = document.createElement('img');
@@ -112,10 +117,25 @@ const AppWindow = {
     // Focus the app window
     this.focus(windowDiv.id);
 
-    windowDiv.classList.add('expand');
+    windowDiv.classList.add(this.OPEN_ANIMATION);
     windowDiv.addEventListener('animationend', () => {
-      windowDiv.classList.remove('expand');
+      windowDiv.classList.remove(this.OPEN_ANIMATION);
     });
+
+    var splashScreen = document.createElement('div');
+    splashScreen.classList.add('splashscreen');
+    windowDiv.appendChild(splashScreen);
+
+    var splashScreenIcon = document.createElement('img');
+    splashScreenIcon.classList.add('icon');
+    splashScreen.appendChild(splashScreenIcon);
+    if (manifest.icons) {
+      Object.entries(manifest.icons).forEach((icon) => {
+        var url = new URL(manifestUrl);
+        manifest.icons[icon[0]] = `${url.origin}${icon[1]}`;
+        splashScreenIcon.src = manifest.icons[45];
+      });
+    }
 
     // Create chrome
     var chromeContainer = document.createElement('div');
@@ -154,6 +174,8 @@ const AppWindow = {
       dockIcon.classList.add('active');
     }
     this.focusedWindow = windowDiv;
+
+    this.handleThemeColorFocusUpdated(id);
   },
 
   close: function (id) {
@@ -164,15 +186,15 @@ const AppWindow = {
     var manifestUrl = windowDiv.dataset.manifestUrl;
     var dockIcon = this.dock.querySelector(`[data-manifest-url="${manifestUrl}"]`);
 
-    windowDiv.classList.add('shrink');
+    windowDiv.classList.add(this.CLOSE_ANIMATION);
     if (dockIcon) {
-      dockIcon.classList.add('shrink');
+      dockIcon.classList.add(this.CLOSE_ANIMATION);
     }
     windowDiv.addEventListener('animationend', () => {
-      windowDiv.classList.remove('shrink');
+      windowDiv.classList.remove(this.CLOSE_ANIMATION);
       windowDiv.remove();
       if (dockIcon) {
-        dockIcon.classList.remove('shrink');
+        dockIcon.classList.remove(this.CLOSE_ANIMATION);
         dockIcon.remove();
       }
       this.focus('homescreen');
@@ -187,13 +209,13 @@ const AppWindow = {
     var manifestUrl = windowDiv.dataset.manifestUrl;
     var dockIcon = this.dock.querySelector(`[data-manifest-url="${manifestUrl}"]`);
 
-    windowDiv.classList.add('shrink');
+    windowDiv.classList.add(this.CLOSE_ANIMATION);
     if (dockIcon) {
       dockIcon.classList.add('minimized');
     }
     windowDiv.addEventListener('animationend', () => {
       windowDiv.classList.remove('active');
-      windowDiv.classList.remove('shrink');
+      windowDiv.classList.remove(this.CLOSE_ANIMATION);
       this.focus('homescreen');
     });
   },
@@ -207,12 +229,12 @@ const AppWindow = {
     var dockIcon = this.dock.querySelector(`[data-manifest-url="${manifestUrl}"]`);
 
     windowDiv.classList.add('active');
-    windowDiv.classList.add('expand');
+    windowDiv.classList.add(this.OPEN_ANIMATION);
     if (dockIcon) {
       dockIcon.classList.remove('minimized');
     }
     windowDiv.addEventListener('animationend', () => {
-      windowDiv.classList.remove('expand');
+      windowDiv.classList.remove(this.OPEN_ANIMATION);
       this.focus(id);
     });
   },
@@ -220,11 +242,16 @@ const AppWindow = {
   onButtonClick: function (event) {
     switch (event.target) {
       case this.softwareBackButton:
-        var webview = this.focusedWindow.querySelector('.browser.active');
-        if (webview.canGoBack()) {
-          webview.goBack();
+        if (!this.screen.classList.contains('keyboard-visible')) {
+          var webview = this.focusedWindow.querySelector('.browser.active');
+          if (webview.canGoBack()) {
+            webview.goBack();
+          } else {
+            this.close(this.focusedWindow.id);
+          }
         } else {
-          this.close(this.focusedWindow.id);
+          this.screen.classList.remove('keyboard-visible');
+          this.keyboard.classList.remove('visible');
         }
         break;
 
@@ -235,6 +262,50 @@ const AppWindow = {
       default:
         break;
     }
+  },
+
+  handleThemeColorFocusUpdated: function(id) {
+    var windowDiv = document.getElementById(id);
+    var webview = windowDiv.querySelector('.browser-container .browser.active');
+    var color;
+    if (webview) {
+      color = webview.dataset.themeColor;
+      if (!color) {
+        return;
+      }
+    } else {
+      return;
+    }
+
+    // Calculate the luminance of the color
+    const luminance = this.calculateLuminance(color);
+
+    // If the color is light (luminance > 0.5), add 'light' class to the status bar
+    if (luminance > 0.5) {
+      this.statusbar.classList.add('light');
+      this.softwareButtons.classList.add('light');
+      this.statusbar.classList.remove('dark');
+      this.softwareButtons.classList.remove('dark');
+    } else {
+      // Otherwise, remove 'light' class
+      this.statusbar.classList.remove('light');
+      this.softwareButtons.classList.remove('light');
+      this.statusbar.classList.add('dark');
+      this.softwareButtons.classList.add('dark');
+    }
+  },
+
+  calculateLuminance: function (color) {
+    // Convert the color to RGB values
+    const rgb = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(color);
+    const r = parseInt(rgb[1], 16);
+    const g = parseInt(rgb[2], 16);
+    const b = parseInt(rgb[3], 16);
+
+    // Calculate relative luminance
+    const luminance = (0.2126 * r + 0.7152 * g + 0.0722 * b) / 255;
+
+    return luminance;
   },
 };
 

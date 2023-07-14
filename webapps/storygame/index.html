@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="rgba(255,255,255)">
+    <title>Storybook</title>
+    <link rel="stylesheet" href="style/main.css" />
+    <link rel="stylesheet" href="style/notifications.css" />
+    <link rel="stylesheet" href="style/character_screen.css" />
+    <script src="lib/three.js"></script>
+    <script src="lib/EffectComposer.js"></script>
+    <script src="lib/ShaderPass.js"></script>
+    <script src="lib/CopyShader.js"></script>
+    <script src="lib/RenderPass.js"></script>
+    <script src="lib/UnrealBloomPass.js"></script>
+    <script src="lib/LuminosityHighPassShader.js"></script>
+    <script src="lib/GLTFLoader.js"></script>
+    <script src="lib/OutlinePass.js"></script>
+    <script defer src="js/main.js"></script>
+    <script defer src="js/shaders.js"></script>
+    <script defer src="js/utils.js"></script>
+    <script defer src="js/controls.js"></script>
+    <script defer src="js/music.js"></script>
+    <script defer src="js/items/gun.js"></script>
+    <script defer src="js/entity/characters.js"></script>
+    <script defer src="js/gui/interaction.js"></script>
+    <script defer src="js/gui/notification.js"></script>
+
+    <!-- Localization -->
+    <script src="lib/l10n.js"></script>
+    <meta name="defaultLanguage" content="en-US" />
+    <meta
+      name="availableLanguages"
+      content="en-US"
+    />
+    <link rel="localization" href="locales/main.{locale}.properties" />
+  </head>
+  <body>
+    <canvas id="viewport"></canvas>
+    <div id="logger"></div>
+
+    <div id="gui">
+      <div id="splash-screen">
+        <div class="brands">
+          <div class="brand-orchidos"></div>
+          <div class="brand-studio"></div>
+          <div class="brand-webgl"></div>
+          <div class="brand-threejs"></div>
+        </div>
+        <div class="notice"></div>
+        <div class="copyright"></div>
+      </div>
+
+      <div id="hud" class="game-ui">
+        <div id="crosshair"></div>
+        <div id="qte-container">
+          <!-- <div class="qte">
+               <svg class="timer" viewBox="0 0 36 36">
+                 <circle id="qte-timer-track" cx="18" cy="18" r="15" fill="none" stroke="#404040" stroke-width="6" />
+                 <circle id="qte-timer-fill" cx="18" cy="18" r="15" fill="none" stroke="#e0e0e0" stroke-width="6" />
+               </svg>
+               <div class="button"></div>
+             </div> -->
+        </div>
+        <div id="notifications"></div>
+        <div id="subtitles">
+          <!-- <div class="subtitle ac-green"><b>Unknown</b>: Hello, World!</div> -->
+        </div>
+        <div id="hud-stats">
+          <div id="healthbar"></div>
+          <div id="stamina"></div>
+        </div>
+        <div id="hud-info">
+          <div id="character-name"></div>
+          <div id="character-location"></div>
+          <div id="ingame-time"></div>
+        </div>
+        <div id="choice-container">
+          <div id="choices">
+            <button>Test Choice 1</button>
+            <button>Test Choice 2</button>
+            <button>Test Choice 3</button>
+            <button>Test Choice 4</button>
+          </div>
+          <div id="choices-timer"></div>
+        </div>
+
+        <div id="touch-joystick">
+          <div id="touch-joystick-thumb"></div>
+        </div>
+        <div id="touch-actions">
+          <button id="touch-actions-jump"></button>
+          <button id="touch-actions-sneak"></button>
+          <button id="touch-actions-inventory"></button>
+          <button id="switch-button" hidden></button>
+        </div>
+        <div id="touch-toolbar">
+          <button id="touch-toolbar-pause"></button>
+          <button id="touch-toolbar-info"></button>
+        </div>
+      </div>
+
+      <div id="character-screen">
+        <div class="container">
+          <section class="col">
+            <h1 id="character-screen-name"></h1>
+            <div class="character-stats">
+              <div id="character-screen-healthbar"></div>
+              <div id="character-screen-stamina"></div>
+            </div>
+            <ul id="character-screen-relationships"></ul>
+          </section>
+          <section class="col">
+            <header>Inventory</header>
+            <ul id="character-screen-inventory"></ul>
+          </section>
+          <section class="col">
+            <canvas id="character-preview"></canvas>
+          </section>
+        </div>
+      </div>
+
+      <div id="loading-screen">
+        <div id="loading-icon"></div>
+        <div id="loading-progress"></div>
+      </div>
+    </div>
+  </body>
+</html>

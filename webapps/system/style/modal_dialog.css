@@ -1,0 +1,165 @@
+#modal-dialog {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 100;
+}
+
+#modal-dialog-alert,
+#modal-dialog-confirm,
+#modal-dialog-prompt {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: all;
+  background-color: rgba(0,0,0,0.3);
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s ease;
+}
+
+#modal-dialog-alert.visible,
+#modal-dialog-confirm.visible,
+#modal-dialog-prompt.visible {
+  opacity: 1;
+  visibility: visible;
+}
+
+#modal-dialog-alert .container,
+#modal-dialog-confirm .container,
+#modal-dialog-prompt .container {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%) scale(0.9);
+  bottom: 1.5rem;
+  width: calc(100% - 2rem);
+  max-width: 40rem;
+  background-color: var(--background-plus);
+  border-radius: 2rem;
+  box-shadow: 0 1rem 2rem rgba(0,0,0,0.1);
+  transition: all 0.3s cubic-bezier(0.2, 0.9, 0.1, 1);
+}
+
+#screen.software-buttons-enabled #modal-dialog-alert .container,
+#screen.software-buttons-enabled #modal-dialog-confirm .container,
+#screen.software-buttons-enabled #modal-dialog-prompt .container {
+  bottom: calc(var(--software-buttons-height) + 1rem);
+}
+
+#modal-dialog-alert.visible .container,
+#modal-dialog-confirm.visible .container,
+#modal-dialog-prompt.visible .container {
+  transform: translateX(-50%);
+  transition: all 0.3s cubic-bezier(0.2, 0.9, 0.1, 1.3) 0.3s;
+}
+
+#modal-dialog-alert .content,
+#modal-dialog-confirm .content,
+#modal-dialog-prompt .content {
+  width: 100%;
+}
+
+#modal-dialog-alert .content > .title,
+#modal-dialog-confirm .content > .title,
+#modal-dialog-prompt .content > .title {
+  width: 100%;
+  height: 4rem;
+  line-height: 4rem;
+  font-size: 1.8rem;
+  font-weight: bold;
+  color: var(--text-color);
+  padding: 0 2rem;
+  box-sizing: border-box;
+}
+
+#modal-dialog-alert .content > .detail,
+#modal-dialog-confirm .content > .detail,
+#modal-dialog-prompt .content > .detail {
+  width: 100%;
+  line-height: 2.2rem;
+  font-size: 1.6rem;
+  font-weight: normal;
+  color: var(--text-color);
+  padding: 0 2rem 1rem;
+  box-sizing: border-box;
+}
+
+#modal-dialog-alert .content form > .inputbox,
+#modal-dialog-confirm .content form > .inputbox,
+#modal-dialog-prompt .content form > .inputbox {
+  background-color: var(--background);
+  width: calc(100% - 3rem);
+  height: 4rem;
+  line-height: 4rem;
+  padding: 0 1.5rem;
+  box-sizing: border-box;
+  border: none;
+  font-size: 1.6rem;
+  outline: none;
+  border-radius: 1rem;
+  margin: 0 1.5rem;
+}
+
+#modal-dialog-alert menu,
+#modal-dialog-confirm menu,
+#modal-dialog-prompt menu {
+  width: 100%;
+  height: 5.5rem;
+  padding: 0 1.5rem 1.5rem;
+  box-sizing: border-box;
+  display: flex;
+  gap: 0.5rem;
+  margin: 0;
+}
+
+#modal-dialog-alert menu button,
+#modal-dialog-confirm menu button,
+#modal-dialog-prompt menu button {
+  width: 100%;
+  height: 4rem;
+  line-height: 4rem;
+  padding: 0 1.5rem;
+  box-sizing: border-box;
+  border: none;
+  border-radius: 2rem;
+  font-size: 1.6rem;
+  background-color: transparent;
+  color: var(--text-color);
+  text-align: center;
+}
+
+#modal-dialog-alert menu button:hover,
+#modal-dialog-confirm menu button:hover,
+#modal-dialog-prompt menu button:hover {
+  background-color: var(--item-hover);
+}
+
+#modal-dialog-alert menu button:active,
+#modal-dialog-confirm menu button:active,
+#modal-dialog-prompt menu button:active {
+  background-color: var(--item-active);
+}
+
+#modal-dialog-alert menu button.recommend,
+#modal-dialog-confirm menu button.recommend,
+#modal-dialog-prompt menu button.recommend {
+  background-color: var(--accent-color);
+  color: var(--accent-color-plus);
+}
+
+#modal-dialog-alert menu button.recommend:hover,
+#modal-dialog-confirm menu button.recommend:hover,
+#modal-dialog-prompt menu button.recommend:hover {
+  background: var(--accent-color) linear-gradient(0deg, var(--item-hover), var(--item-hover));
+}
+
+#modal-dialog-alert menu button.recommend:active,
+#modal-dialog-confirm menu button.recommend:active,
+#modal-dialog-prompt menu button.recommend:active {
+  background: var(--accent-color) linear-gradient(0deg, var(--item-active), var(--item-active));
+}

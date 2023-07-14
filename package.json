@@ -4,23 +4,52 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "electron .",
-    "start:browser": "electron . --chrome",
+    "phone": "electron .",
+    "desktop": "electron . --desktop",
+    "smart-tv": "electron . --smart-tv",
+    "browser": "electron . --chrome",
+    "build": "electron-builder",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
     "openorchid"
   ],
-  "author": "mortcodesweb",
+  "author": "MortCodesWeb",
   "license": "GPL-2.0",
   "dependencies": {
+    "adm-zip": "^0.5.10",
+    "child_process": "^1.0.2",
+    "del": "^7.0.0",
+    "dotenv": "^16.3.1",
+    "download": "^8.0.0",
+    "electron-cookies": "^1.1.0",
+    "electron-dl": "^3.5.0",
+    "electron-is-dev": "^2.0.0",
     "electron-json-storage": "^4.6.0",
+    "electron-localshortcut": "^3.2.1",
+    "electron-protocols": "^1.0.4",
+    "electron-settings": "^4.0.2",
+    "electron-updater": "^6.1.1",
+    "fs": "^0.0.1-security",
+    "fs-extra": "^11.1.1",
+    "mime": "^3.0.0",
+    "moment": "^2.29.4",
+    "mv": "^2.1.1",
+    "natural": "^6.5.0",
+    "noble": "^1.9.1",
     "node-wifi": "^2.0.16",
-    "systeminformation": "^5.18.4"
+    "path": "^0.12.7",
+    "systeminformation": "^5.18.4",
+    "uuid": "^9.0.0",
+    "xterm": "^5.2.1",
+    "xterm-addon-web-links": "^0.8.0"
   },
   "devDependencies": {
     "electron": "^25.2.0",
-    "electron-builder": "^24.4.0"
+    "electron-builder": "^24.4.0",
+    "electron-reload": "^2.0.0-alpha.1",
+    "glob": "^10.3.3",
+    "mini-css-extract-plugin": "^2.7.6"
   },
   "build": {
     "appId": "org.openorchid.simulator",
@@ -31,22 +60,27 @@
     },
     "win": {
       "target": "nsis",
-      "icon": "res/icon.png"
+      "icon": "icons/icon.png"
     },
     "mac": {
-      "icon": "res/icon.png"
+      "target": "dmg",
+      "icon": "icons/icon.png"
     },
     "linux": {
-      "icon": "res/icon.png"
+      "target": "tar.gz",
+      "icon": "icons/icon.png"
     },
     "files": [
+      "chrome",
+      "modules",
       ".gitignore",
+      "AUTHORS",
+      "index.js",
       "LICENSE",
-      "README.md",
       "package.json",
       "package-lock.json",
-      "index.js",
-      "preload.js"
+      "preload.js",
+      "README.md"
     ],
     "extraFiles": [
       "webapps"

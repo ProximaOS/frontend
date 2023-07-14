@@ -43,5 +43,5 @@ function deleteLast() {
 function calculate() {
   var result = document.getElementById("result").value;
   var answer = eval(result.replace('÷', '/'));
-  document.getElementById("result").value = answer.toLocaleString(navigator.language);
+  document.getElementById("result").value = answer.toLocaleString(navigator.mozL10n.language.code);
 }

@@ -1,0 +1,131 @@
+#statusbar {
+  position: absolute;
+  top: 0;
+  height: var(--software-buttons-height);
+  z-index: 32767;
+}
+html[dir="ltr"] #statusbar {
+  right: 0;
+}
+html[dir="rtl"] #statusbar {
+  left: 0;
+}
+
+.statusbar-icons {
+  margin: 0 1.5rem;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  flex-direction: row-reverse;
+}
+
+.statusbar-icons div,
+.statusbar-icons div {
+  color: var(--text-color);
+  min-width: 2rem;
+  height: 2rem;
+  line-height: 2rem;
+  margin: 0 0.5rem;
+  text-align: center;
+  transition: all 0.3s cubic-bezier(0.2, 0.9, 0.1, 1.25) 0.3s, margin 0.3s cubic-bezier(0.2, 0.9, 0.1, 1.25);
+}
+
+.statusbar-icons .hidden,
+.statusbar-icons .hidden {
+  opacity: 0;
+  transform: scale(0.2);
+  visibility: hidden;
+  margin: 0 -1rem;
+  transition: all 0.3s ease, margin 0.3s cubic-bezier(0.2, 0.9, 0.1, 1) 0.3s;
+}
+
+#statusbar-notifications::before {
+  width: 2rem;
+  height: 2rem;
+  line-height: 2rem;
+  font-size: 1.8rem;
+}
+
+#statusbar-time {
+  color: var(--text-color);
+  font-size: 1.6rem;
+}
+
+#statusbar-battery::before {
+  width: 2rem;
+  height: 2rem;
+  line-height: 2rem;
+  font-size: 1.8rem;
+}
+
+#statusbar-battery.charging {
+  color: var(--text-color-faded);
+  position: relative;
+}
+
+#statusbar-battery.charging::after {
+  content: 'battery-charging';
+  position: absolute;
+  left: 0;
+  top: 0;
+  font-family: "openorchid-icons";
+  width: 2rem;
+  height: 2rem;
+  line-height: 2rem;
+  font-size: 1.8rem;
+  color: var(--text-color);
+}
+
+#statusbar-cellular-signal {
+  position: relative;
+}
+
+#statusbar-cellular-signal::before {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 2rem;
+  height: 2rem;
+  line-height: 2rem;
+  font-size: 1.8rem;
+}
+
+#statusbar-cellular-signal::after {
+  content: 'signal-5';
+  position: absolute;
+  left: 0;
+  top: 0;
+  font-family: "openorchid-icons";
+  width: 2rem;
+  height: 2rem;
+  line-height: 2rem;
+  font-size: 1.8rem;
+  opacity: 0.5;
+}
+
+#statusbar-network {
+  position: relative;
+}
+
+#statusbar-network::before {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 2rem;
+  height: 2rem;
+  line-height: 2rem;
+  font-size: 1.8rem;
+}
+
+#statusbar-network::after {
+  content: 'wifi-4';
+  position: absolute;
+  left: 0;
+  top: 0;
+  font-family: "openorchid-icons";
+  width: 2rem;
+  height: 2rem;
+  line-height: 2rem;
+  font-size: 1.8rem;
+  opacity: 0.5;
+}

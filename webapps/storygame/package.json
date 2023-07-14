@@ -1,0 +1,20 @@
+{
+  "name": "storygame",
+  "version": "1.0.0",
+  "description": "A Story Game Template Using Three.JS",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs",
+    "lib": "lib",
+    "test": "tests"
+  },
+  "scripts": {
+    "start": "electron main.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "electron": "^25.2.0"
+  }
+}

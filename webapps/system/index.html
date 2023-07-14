@@ -4,12 +4,11 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="http://shared.localhost:8081/style/theme.css" />
-  <link rel="stylesheet" href="http://shared.localhost:8081/style/fonts.css" />
+  <link rel="stylesheet" href="http://shared.localhost:8081/style/webview.css" />
   <link rel="stylesheet" href="http://shared.localhost:8081/style/icons/icons.css">
   <link rel="stylesheet" href="style/system.css">
   <link rel="stylesheet" href="style/splashscreen.css">
   <link rel="stylesheet" href="style/windows.css">
-  <link rel="stylesheet" href="style/chrome.css">
   <link rel="stylesheet" href="style/cards_view.css">
   <link rel="stylesheet" href="style/statusbar.css">
   <link rel="stylesheet" href="style/notifications.css">
@@ -19,6 +18,7 @@
   <link rel="stylesheet" href="style/brightness.css">
   <link rel="stylesheet" href="style/keyboard.css">
   <link rel="stylesheet" href="style/software_buttons.css">
+  <link rel="stylesheet" href="style/modal_dialog.css">
   <link rel="stylesheet" href="style/lockscreen.css">
   <script src="js/bootstrap.js"></script>
   <script defer src="js/splashscreen.js"></script>
@@ -29,16 +29,26 @@
   <script defer src="js/network_icon.js"></script>
   <script defer src="js/bletooth_icon.js"></script>
   <script defer src="js/app_window.js"></script>
-  <script defer src="js/chrome.js"></script>
   <script defer src="js/notification_toaster.js"></script>
   <script defer src="js/utility_tray_motion.js"></script>
   <script defer src="js/quick_settings.js"></script>
   <script defer src="js/notifications.js"></script>
   <script defer src="js/media_playback.js"></script>
   <script defer src="js/keyboard.js"></script>
-  <script defer src="js/lockscreen/motion.js"></script>
-  <script defer src="js/lockscreen/clock.js"></script>
-  <script defer src="js/lockscreen/date.js"></script>
+  <script defer src="js/modal_dialog.js"></script>
+  <script defer src="js/message_handler.js"></script>
+  <script defer src="lockscreen/js/motion.js"></script>
+  <script defer src="lockscreen/js/clock.js"></script>
+  <script defer src="lockscreen/js/date.js"></script>
+
+  <!-- Chrome -->
+  <link rel="stylesheet" href="http://shared.localhost:8081/style/chrome.css">
+  <script defer src="http://shared.localhost:8081/js/chrome.js"></script>
+
+  <script src="http://shared.localhost:8081/js/l10n.js"></script>
+  <meta name="defaultLanguage" content="en-US">
+  <meta name="availableLanguages" content="en-US, ar">
+  <link rel="localization" href="/locales/main.{locale}.properties">
 </head>
 <body>
   <div id="screen" class="software-buttons-enabled">
@@ -74,16 +84,7 @@
         <button data-icon="mic"></button>
       </div>
 
-      <div id="keyboard-languages">
-        <div class="language" data-icon="keyboard">Lang 1</div>
-        <div class="language" data-icon="keyboard">Lang 2</div>
-        <div class="language" data-icon="keyboard">Lang 3</div>
-        <div class="language" data-icon="keyboard">Lang 4</div>
-        <div class="language" data-icon="keyboard">Lang 5</div>
-        <div class="language" data-icon="keyboard">Lang 6</div>
-        <div class="language" data-icon="keyboard">Lang 7</div>
-        <div class="language" data-icon="keyboard">Lang 8</div>
-      </div>
+      <div id="keyboard-languages"></div>
     </div>
 
     <div id="lockscreen" class="visible">
@@ -98,17 +99,20 @@
           <div id="lockscreen-charging"></div>
         </div>
       </div>
-      <div class="lockscreen-hint">Swipe Up To Unlock</div>
+      <div id="lockscreen-toolbar">
+        <button data-icon="camera"></button>
+        <button data-icon="flashlight"></button>
+      </div>
     </div>
 
     <div id="utility-tray">
       <div id="utility-tray-motion">
         <div id="control-center">
           <div id="control-center-header" class="utility-tray-header">
-            <h1>Control Center</h1>
+            <h1 data-l10n-id="controlCenter"></h1>
             <menu role="toolbar">
-              <a href="#" data-icon="settings"></a>
-              <a href="#" data-icon="edit"></a>
+              <a href="#" data-icon="settings" data-l10n-id="controlCenter-settings"></a>
+              <a href="#" data-icon="edit" data-l10n-id="controlCenter-edit"></a>
             </menu>
           </div>
           <div class="control-center-row">
@@ -117,25 +121,25 @@
                 <div id="media-playback-title">Title</div>
                 <div id="media-playback-author">Author</div>
                 <div class="buttons">
-                  <button id="media-playback-previous" data-icon="media-skipbackward"></button>
-                  <button id="media-playback-playpause" data-icon="media-play"></button>
-                  <button id="media-playback-next" data-icon="media-skipforward"></button>
+                  <button id="media-playback-previous" data-icon="media-skipbackward" data-l10n-id="mediaPlayback-skipBackward"></button>
+                  <button id="media-playback-playpause" data-icon="media-play" data-l10n-id="mediaPlayback-play"></button>
+                  <button id="media-playback-next" data-icon="media-skipforward" data-l10n-id="mediaPlayback-skipForward"></button>
                 </div>
               </div>
             </div>
             <ul id="connection-settings">
-              <li><a href="#" id="quick-settings-wifi" data-icon="wifi">Wi-Fi</a></li>
-              <li><a href="#" id="quick-settings-bluetooth" data-icon="bluetooth">Bluetooth</a></li>
+              <li><a href="#" id="quick-settings-wifi" data-icon="wifi" data-l10n-id="quickSettings-wifi"></a></li>
+              <li><a href="#" id="quick-settings-bluetooth" data-icon="bluetooth" data-l10n-id="quickSettings-bluetooth"></a></li>
             </ul>
           </div>
           <div class="control-center-row">
             <div id="quick-settings">
               <ul id="quick-settings-grid">
-                <li><a href="#" id="quick-settings-cellular-data" data-icon="data"></a></li>
-                <li><a href="#" id="quick-settings-airplane" data-icon="airplane"></a></li>
-                <li><a href="#" id="quick-settings-audio" data-icon="bell"></a></li>
-                <li><a href="#" id="quick-settings-screen-record" data-icon="video"></a></li>
-                <li><a href="#" id="quick-settings-flashlight" data-icon="flashlight"></a></li>
+                <li><a href="#" id="quick-settings-cellular-data" data-icon="data" data-l10n-id="quickSettings-data"></a></li>
+                <li><a href="#" id="quick-settings-airplane" data-icon="airplane" data-l10n-id="quickSettings-airplaneMode"></a></li>
+                <li><a href="#" id="quick-settings-audio" data-icon="bell" data-l10n-id="quickSettings-audio"></a></li>
+                <li><a href="#" id="quick-settings-screen-capture" data-icon="video" data-l10n-id="quickSettings-screenCapture"></a></li>
+                <li><a href="#" id="quick-settings-flashlight" data-icon="flashlight" data-l10n-id="quickSettings-flashlight"></a></li>
               </ul>
               <div id="brightness">
                 <span data-icon="moon"></span>
@@ -149,12 +153,12 @@
           </div>
           <div class="control-center-row"></div>
         </div>
-        <div id="notifications" class="panel">
+        <div id="notifications">
           <div id="notifications-header" class="utility-tray-header">
-            <h1>Notifications</h1>
+            <h1 data-l10n-id="notifications"></h1>
             <menu role="toolbar">
-              <a href="#" data-icon="clear-all"></a>
-              <a href="#" data-icon="settings"></a>
+              <a href="#" data-icon="clear-all" data-l10n-id="notifications-clearAll"></a>
+              <a href="#" data-icon="settings" data-l10n-id="notifications-settings"></a>
             </menu>
           </div>
           <ul id="notifications-container"></ul>
@@ -164,26 +168,19 @@
 
     <div id="notification-toaster" class="notification">
       <div id="notification-titlebar" class="titlebar">
-        <img src="" id="notification-badge" class="badge"></img>
-        <div id="notification-source-name" class="source-name">App Name</div>
+        <img src="" id="notification-badge" class="badge">
+        <div id="notification-source-name" class="source-name"></div>
       </div>
       <div id="notification-content" class="content">
-        <img src="" id="notification-icon" class="icon"></img>
+        <img src="" id="notification-icon" class="icon">
         <div class="text-holder">
           <div id="notification-title" class="title"></div>
           <div id="notification-detail" class="detail"></div>
           <div id="notification-progress" class="progress"></div>
         </div>
       </div>
-      <div id="notification-media" class="media">
-        <img src="" alt="">
-        <img src="" alt="">
-        <img src="" alt="">
-      </div>
-      <div id="notification-actions" class="actions">
-        <button class="recommend">Accept</button>
-        <button>Deny</button>
-      </div>
+      <div id="notification-media" class="media"></div>
+      <div id="notification-actions" class="actions"></div>
     </div>
 
     <div id="cards-view">
@@ -192,6 +189,45 @@
       <div id="cards-view-toolbar">
         <button id="cards-view-new-window-button"></button>
         <button id="cards-view-clear-all-button"></button>
+      </div>
+    </div>
+
+    <div id="modal-dialog">
+      <div id="modal-dialog-alert">
+        <section class="container">
+          <div class="content">
+            <div class="title"></div>
+            <div class="detail"></div>
+          </div>
+          <menu class="actions">
+            <button class="recommend" data-l10n-id="ok"></button>
+          </menu>
+        </section>
+      </div>
+
+      <div id="modal-dialog-confirm">
+        <section class="container">
+          <div class="content">
+            <div class="title"></div>
+            <div class="detail"></div>
+          </div>
+          <menu class="actions"><button class="cancel" data-l10n-id="cancel"></button><button class="recommend" data-l10n-id="confirm"></button></menu>
+        </section>
+      </div>
+
+      <div id="modal-dialog-prompt">
+        <section class="container">
+          <div class="content">
+            <div class="title"></div>
+            <form action="">
+              <input type="text" name="" id="" class="inputbox">
+            </form>
+          </div>
+          <menu class="actions">
+            <button class="cancel" data-l10n-id="cancel"></button>
+            <button class="recommend" data-l10n-id="confirm"></button>
+          </menu>
+        </section>
       </div>
     </div>
 
