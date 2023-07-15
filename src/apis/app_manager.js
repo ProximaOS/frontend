@@ -6,34 +6,52 @@ const { v4 } = require("uuid");
 require("dotenv").config();
 
 module.exports = {
-  listInstalledApps: function () {
-    const appList = this.readAppList();
-    return Object.keys(appList);
-  },
-
   readAppList: function () {
-    try {
-      const appListData = fs.readFileSync(
-        process.env.OPENORCHID_WEBAPPS_CONF,
-        "utf8"
-      );
-      return JSON.parse(appListData);
-    } catch (error) {
-      console.error("Error reading app list:", error);
-      console.log("Creating a new webapps configuration file.");
+    return new Promise((resolve, reject) => {
+      try {
+        const appListData = fs.readFileSync(
+          process.env.OPENORCHID_WEBAPPS_CONF,
+          "utf8"
+        );
+        const appListJson = JSON.parse(appListData);
 
-      const webappsDir = process.env.OPENORCHID_WEBAPPS;
-      const appList = fs.readdirSync(webappsDir).map((file) => {
-        const appId = file || `{${v4()}}`;
-        const installedAt = new Date().toISOString();
-        const manifestUrl = `http://${appId}.localhost:8081/manifest.json`;
+        appListJson.forEach(async function (app, index) {
+          const response = await fetch(app.manifestUrl);
+          const manifest = await response.json();
 
-        return { appId, installedAt, manifestUrl };
-      });
+          if (manifest.icons) {
+            Object.entries(manifest.icons).forEach((icon) => {
+              manifest.icons[
+                icon[0]
+              ] = `http://${app.appId}.localhost:${location.port}${icon[1]}`;
+            });
+          }
+          if (!manifest.role) {
+            manifest.role = "webapp";
+          }
+          app.manifest = manifest;
 
-      this.writeAppList(appList);
-      return appList;
-    }
+          if (index == appListJson.length - 1) {
+            resolve(appListJson);
+          }
+        });
+      } catch (error) {
+        console.error("Error reading app list:", error);
+        console.log("Creating a new webapps configuration file.");
+
+        const webappsDir = process.env.OPENORCHID_WEBAPPS;
+        const appList = fs.readdirSync(webappsDir).map((file) => {
+          const appId = file || `{${v4()}}`;
+          const installedAt = new Date().toISOString();
+          const manifestUrl = `http://${appId}.localhost:${location.port}/manifest.json`;
+
+          return { appId, installedAt, manifestUrl };
+        });
+
+        this.writeAppList(appList);
+        return appList;
+      }
+    });
   },
 
   writeAppList: function (appList) {

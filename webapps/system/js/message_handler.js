@@ -26,6 +26,10 @@ const MessageHandler = {
           this.handleKeyboard(data);
           break;
 
+        case 'launch':
+          this.handleAppLaunch(data);
+          break;
+
         default:
           break;
       }
@@ -60,11 +64,18 @@ const MessageHandler = {
   },
 
   handleKeyboard: function (data) {
+    clearTimeout(this.keyboardTimer);
     if (data.action == 'show') {
       Keyboard.show();
     } else {
-      Keyboard.hide();
+      this.keyboardTimer = setTimeout(() => {
+        Keyboard.hide();
+      }, 500);
     }
+  },
+
+  handleAppLaunch: function (data) {
+    AppWindow.create(data.manifestUrl, { originPos: { x: data.icon_x, y: data.icon_y, width: data.icon_width, height: data.icon_height } });
   }
 }
 

@@ -1,11 +1,10 @@
 const { ipcRenderer } = require('electron');
 const { v4 } = require('uuid');
 
-module.exports = class NotificationAPI {
+class NotificationAPI {
   constructor(title, options) {
     this._id = v4();
     this.origin = location.origin;
-    this.permission = 'granted';
 
     this.title = title;
     this.options = options;
@@ -41,3 +40,7 @@ module.exports = class NotificationAPI {
     });
   }
 };
+
+NotificationAPI.permission = 'granted';
+
+module.exports = NotificationAPI;

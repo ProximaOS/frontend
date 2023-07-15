@@ -3,13 +3,34 @@ const api = require("./src/api");
 const NotificationAPI = require("./src/apis/notification");
 const ModalDialogs = require("./src/apis/modal_dialogs");
 
+window.open = function (url, options) {
+  var optionsList = options.split(',');
+  var formattedUrl;
+  if (!url.startsWith('http:') || !url.startsWith('https:')) {
+    if (url.startsWith('/')) {
+      formattedUrl = location.origin + url;
+    } else {
+      formattedUrl = `${location.origin}/${url}`;
+    }
+  } else {
+    formattedUrl = url;
+  }
+
+  ipcRenderer.send("message", {
+    type: "window",
+    action: "open",
+    url: formattedUrl,
+    options: optionsList
+  });
+};
+
 window.alert = ModalDialogs.alert;
 window.confirm = ModalDialogs.confirm;
 window.prompt = ModalDialogs.prompt;
 
 window.Notification = NotificationAPI;
 
-document.addEventListener("load", function () {
+window.addEventListener("load", function () {
   var inputAreas = document.querySelectorAll("input, textarea");
   inputAreas.forEach(function (inputElement) {
     inputElement.addEventListener("focus", function () {
@@ -70,3 +91,4 @@ if (location.host.includes("system.localhost")) {
 
 window.navigator.api = api;
 window.navigator.ipcRenderer = ipcRenderer;
+window.process = process;

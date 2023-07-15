@@ -57,29 +57,9 @@ const Grid = {
     this.gridElement.style.setProperty("--grid-rows", this.gridRows);
     this.dockElement.style.setProperty("--grid-columns", this.gridColumns);
 
-    fs.readdir(path.join('webapps'), (error, files) => {
-      if (error) {
-        throw error;
-      }
-
-      files.forEach(file => {
-        const appManifestPath = path.join('webapps', file, 'manifest.json');
-        if (!fs.existsSync(appManifestPath)) {
-          return;
-        }
-        const appManifest = JSON.parse(fs.readFileSync(appManifestPath, { encoding: 'utf-8' }));
-        console.log(appManifest);
-
-        appManifest.manifestUrl = `http://${file}.localhost:${location.port}/manifest.json`;
-        if (appManifest.icons) {
-          Object.entries(appManifest.icons).forEach((icon) => {
-            appManifest.icons[icon[0]] = `http://${file}.localhost:${location.port}${icon[1]}`;
-          });
-        }
-
-        this.apps.push(appManifest);
-      });
-
+    var apps = navigator.api.appManager.readAppList();
+    apps.then((data) => {
+      this.apps = data;
       this.createIcons();
     });
 
@@ -104,7 +84,7 @@ const Grid = {
       this.gridElement.appendChild(element);
 
       page.forEach(app => {
-        if (this.HIDDEN_ROLES.indexOf(app.role) !== -1) {
+        if (this.HIDDEN_ROLES.indexOf(app.manifest.role) !== -1) {
           return;
         }
 
@@ -125,12 +105,12 @@ const Grid = {
 
         var iconContainer = document.createElement("img");
         iconContainer.crossOrigin = 'anonymous';
-        iconContainer.src = app.icons[45];
+        iconContainer.src = app.manifest.icons[45];
         iconHolder.appendChild(iconContainer);
 
         var name = document.createElement("div");
         name.classList.add("name");
-        name.textContent = app.name;
+        name.textContent = app.manifest.name;
         icon.appendChild(name);
 
         // Add event listeners for long press and drag
@@ -166,17 +146,20 @@ const Grid = {
   longPressEnd: function (app) {
     Grid.isHolding = false;
 
-    var x = Grid.draggedIcon.getBoundingClientRect().left + (Grid.draggedIcon.offsetWidth / 2);
-    var y = Grid.draggedIcon.getBoundingClientRect().top + (Grid.draggedIcon.offsetHeight / 3);
+    var x = Grid.draggedIcon.getBoundingClientRect().left;
+    var y = Grid.draggedIcon.getBoundingClientRect().top;
+    var width = Grid.draggedIcon.offsetWidth;
+    var height = Grid.draggedIcon.offsetHeight;
 
     if (!Grid.isDragging) {
       // Dispatch the custom event with the manifest URL
-      ipcRenderer.sendToHost('open-app', {
-        data: {
-          manifestUrl: app.manifestUrl,
-          xOrigin: x,
-          yOrigin: y
-        }
+      navigator.ipcRenderer.send('message', {
+        type: 'launch',
+        manifestUrl: app.manifestUrl,
+        icon_x: x,
+        icon_y: y,
+        icon_width: width,
+        icon_height: height
       });
     }
   },

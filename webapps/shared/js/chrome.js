@@ -254,7 +254,6 @@ const Browser = {
       this.handleThemeColorUpdated.bind(this)
     );
 
-    const ipcListener = EventListener.appWindow;
     const pattern = /^http:\/\/.*\.localhost:8081\//;
     const cssURL = `http://shared.localhost:${location.port}/style/webview.css`;
     const jsURL = `http://shared.localhost:${location.port}/js/webview.js`;
@@ -303,13 +302,11 @@ const Browser = {
           webview.nodeintegrationinsubframes = true;
           webview.disablewebsecurity = true;
           webview.webpreferences = "contextIsolation=false";
-          webview.addEventListener("ipc-message", ipcListener);
         } else {
           webview.nodeintegration = false;
           webview.nodeintegrationinsubframes = false;
           webview.disablewebsecurity = false;
           webview.webpreferences = "contextIsolation=true";
-          webview.removeEventListener("ipc-message", ipcListener);
         }
 
         if (!isPrivate) {

@@ -5,6 +5,8 @@ const runtime = require("./src/runtime/app_runtime");
 const openOrchid = require("./src/openorchid");
 const protocols = require("electron-protocols");
 
+require("dotenv").config();
+
 app.allowRendererProcessReuse = true;
 
 // Disable error dialogs by overriding
@@ -73,6 +75,6 @@ app.on('window-all-closed', function () {
   }
 });
 
-require('electron-reload')(__dirname, {
+require('electron-reload')(path.resolve(process.env.OPENORCHID_WEBAPPS), {
   hardResetMethod: 'exit'
 });

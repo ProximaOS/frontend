@@ -1,8 +1,12 @@
 const { ipcRenderer } = require("electron");
-const api = require("./api");
 
 module.exports = {
   checkPermission: async function (name) {
+    const pattern = /^http:\/\/.*\.localhost:8081\//;
+    if (pattern.test(location.href)) {
+      return;
+    }
+
     // Code to read and parse the /manifest.webapp file
     // Modify this function as per your specific implementation
     const manifestUrl = `${location.origin}/manifest.json`;
@@ -21,6 +25,11 @@ module.exports = {
   },
 
   requestPermission: function (name) {
+    const pattern = /^http:\/\/.*\.localhost:8081\//;
+    if (pattern.test(location.href)) {
+      return;
+    }
+
     if (!this.checkPermission(name)) {
       return;
     }
@@ -31,6 +40,14 @@ module.exports = {
   },
 
   permissionListener: function (name, callback) {
+    const pattern = /^http:\/\/.*\.localhost:8081\//;
+    if (pattern.test(location.href)) {
+      callback({
+        permission: 'granted'
+      });
+      return;
+    }
+
     if (!this.checkPermission(name)) {
       return;
     }

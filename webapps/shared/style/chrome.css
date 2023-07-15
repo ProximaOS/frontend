@@ -482,7 +482,7 @@
   width: 100%;
   aspect-ratio: 1 / 1;
   overflow: hidden;
-  background-color: #858585;
+  background-color: var(--theme-color, var(--background));
   border-radius: 1rem;
   object-fit: cover;
   object-position: top;

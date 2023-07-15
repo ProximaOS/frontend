@@ -133,7 +133,6 @@ const Keyboard = {
           letter.textContent = keyString;
           button.addEventListener('click', () => {
             this.keySpecialSound.play();
-            this.hide();
           });
         } else {
           button.classList.add("has-popout");

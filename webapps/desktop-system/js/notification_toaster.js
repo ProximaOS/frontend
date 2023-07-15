@@ -117,6 +117,12 @@ const NotificationToaster = {
       iconElement.style.display = 'none';
       this.iconElement.style.display = 'none';
     }
+    iconElement.onerror = () => {
+      iconElement.style.display = 'none';
+    };
+    this.iconElement.onerror = () => {
+      this.iconElement.style.display = 'none';
+    };
 
     var mediaElement = notification.querySelector('.media');
     if (media && media.length > 0) {

@@ -18,6 +18,18 @@ const MessageHandler = {
           this.handleNotification(data);
           break;
 
+        case 'picture-in-picture':
+          this.handlePictureInPicture(data);
+          break;
+
+        case 'keyboard':
+          this.handleKeyboard(data);
+          break;
+
+        case 'launch':
+          this.handleAppLaunch(data);
+          break;
+
         default:
           break;
       }
@@ -41,6 +53,29 @@ const MessageHandler = {
 
   handlePrompt: function (data) {
     ModalDialog.showPrompt(data.origin, data.text, data.input);
+  },
+
+  handlePictureInPicture: function (data) {
+    if (data.action == 'enable') {
+      PictureInPicture.show();
+    } else {
+      PictureInPicture.hide();
+    }
+  },
+
+  handleKeyboard: function (data) {
+    clearTimeout(this.keyboardTimer);
+    if (data.action == 'show') {
+      Keyboard.show();
+    } else {
+      this.keyboardTimer = setTimeout(() => {
+        Keyboard.hide();
+      }, 500);
+    }
+  },
+
+  handleAppLaunch: function (data) {
+    AppWindow.create(data.manifestUrl, { originPos: { x: data.icon_x, y: data.icon_y, width: data.icon_width, height: data.icon_height } });
   }
 }
 

@@ -63,6 +63,9 @@
 #software-buttons > #software-back-button::before {
   background-image: url(images/back.png);
 }
+html[dir="rtl"] #software-buttons > #software-back-button::before {
+  transform: rotate(-180deg);
+}
 
 #screen.keyboard-visible #software-buttons > #software-back-button::before {
   transform: rotate(-90deg);
@@ -74,17 +77,6 @@
 
 #software-buttons > #software-recents-button::before {
   background-image: url(images/recents.png);
-}
-
-#software-buttons > #software-keyboard-button {
-  position: absolute;
-  top: 0;
-  right: 0;
-  width: 5rem;
-}
-
-#software-buttons > #software-keyboard-button::before {
-  background-image: url(images/splitscreen.png);
 }
 
 #dock {

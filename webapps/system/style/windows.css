@@ -171,26 +171,24 @@
   visibility: visible;
   mask-image: radial-gradient(circle at 50% 100%, transparent, transparent calc(100% / 3), white calc((100% / 3) * 2), white);
   mask-size: 300%;
-  mask-position: 0 300%;
+  mask-position: 0 0;
   -webkit-mask-image: radial-gradient(circle at 50% 100%, transparent, transparent calc(100% / 3), white calc((100% / 3) * 2), white);
   -webkit-mask-size: 100% 300%;
-  -webkit-mask-position: 0 300%;
+  -webkit-mask-position: 0 0;
   transition: all 0.3s ease;
 }
 
 .appframe .splashscreen.hidden {
   visibility: hidden;
-  mask-position: 100% 100%;
+  mask-position: 0 100%;
   -webkit-mask-position: 0 100%;
   transition: all 0.3s ease 1s;
 }
 
 .appframe .splashscreen .icon {
   position: absolute;
-  left: 50%;
-  top: 50%;
+  left: calc(50% - 3.2rem);
+  top: calc(50% - 3.2rem);
   width: 6.4rem;
   height: 6.4rem;
-  margin-left: -3.2rem;
-  margin-top: -3.2rem;
 }

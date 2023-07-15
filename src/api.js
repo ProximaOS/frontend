@@ -35,13 +35,13 @@ const api = {
   requestPermission: permissions.requestPermission,
   permissionListener: permissions.permissionListener,
 
+  appManager: appManager,
   wifiManager: wifiManager,
   bluetoothManager: bluetoothManager,
   cellularManager: cellularManager,
+  settings: settings,
   storageManager: storageManager,
   timeManager: timeManager,
-  settings: settings,
-  appManager: appManager,
 };
 
 module.exports = api;

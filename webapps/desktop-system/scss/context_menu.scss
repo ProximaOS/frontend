@@ -1,17 +1,17 @@
 /*
  * Context menu
  */
-#context-menu {
+ #context-menu {
   position: absolute;
   left: 0;
   top: 0;
-  min-width: 300px;
+  min-width: 290px;
   max-width: 512px;
   max-height: 100%;
   pointer-events: none;
   overflow: hidden;
   border-radius: 1.5rem;
-  filter: drop-shadow(0 0.5rem 1rem rgba(0, 0, 0, 0.5));
+  filter: drop-shadow(0 0.5rem 1rem rgba(0, 0, 0, 0.3));
   z-index: 2147483647 !important;
 
   #context-menu-content {
@@ -106,4 +106,11 @@ html[dir="ltr"] #context-menu-content li[data-icon]:not(.separator):before {
 
 html[dir="rtl"] #context-menu-content li[data-icon]:not(.separator):before {
   right: 1rem;
+}
+
+@media screen and (max-width: 599px) {
+  #context-menu {
+    min-width: unset;
+    max-width: 100%;
+  }
 }

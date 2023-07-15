@@ -55,7 +55,6 @@ const AppWindow = {
         launch_path: manifest.launch_path,
         width: manifest.width,
         height: manifest.height,
-        transparent: manifest.transparent,
         cli_args: ''
       },
       options
@@ -103,7 +102,7 @@ const AppWindow = {
     if (manifest.display && manifest.display !== 'standalone') {
       windowDiv.classList.add(manifest.display);
     }
-    if (windowOptions.transparent) {
+    if (manifest.transparent) {
       windowDiv.classList.add('transparent');
     }
     if (windowOptions.originPos) {
