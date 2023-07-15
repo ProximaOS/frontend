@@ -1,3 +1,4 @@
+const { ipcRenderer } = require('electron');
 const permissions = require('../permissions');
 
 module.exports = {

@@ -89,6 +89,28 @@ html[dir="rtl"] .statusbar-icons > .right {
 #statusbar-time {
   color: #fff;
   font-size: 1.6rem;
+  transition: all 0.3s cubic-bezier(0.2, 0.9, 0.1, 1), opacity 0.3s ease, transform 0.3s ease, visibility 0.3s ease, margin 0.3s cubic-bezier(0.2, 0.9, 0.1, 1) 0.3s;
+}
+
+#statusbar-time.indicator {
+  background-color: var(--accent-color);
+  color: var(--accent-color-plus) !important;
+}
+
+#statusbar-time.indicator.screen-capture {
+  background-color: #c00040;
+  color: rgba(255,255,255,0.75) !important;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.3rem 0.75rem;
+  border-radius: 2rem;
+}
+
+#statusbar-time.indicator.screen-capture::before {
+  content: 'video';
+  font-size: 2rem;
+  font-family: 'openorchid-icons';
 }
 
 #statusbar.light #statusbar-time {

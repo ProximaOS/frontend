@@ -1,3 +1,5 @@
+const si = require('systeminformation');
+
 document.addEventListener('DOMContentLoaded', function () {
   if (document.readyState === "complete") {}
 
