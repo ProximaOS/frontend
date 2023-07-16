@@ -1,6 +1,10 @@
-dist/
-!webapps/**/dist/
+.DS_Store
+
 node_modules/
-profile/
-sdcard/
+
+/plugins/
+/platforms/
+
+/dist/
 package-lock.json
+profile/
