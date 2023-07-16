@@ -1,0 +1,38 @@
+#!/bin/bash
+### BEGIN INIT INFO
+# Provides:          openorchid
+# Required-Start:    $local_fs $network $syslog
+# Required-Stop:     $local_fs $network $syslog
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: OpenOrchid
+# Description:       Service script to run OpenOrchid user interface on startup
+### END INIT INFO
+
+APP_DIR="/usr/lib/openorchid"
+ELECTRON_BIN="openorchid"
+
+case "$1" in
+  start)
+    echo "Starting My Electron App..."
+    cd "$APP_DIR"
+    "$ELECTRON_BIN"
+    ;;
+  stop)
+    echo "Stopping My Electron App..."
+    pkill -f "$ELECTRON_BIN"
+    ;;
+  restart)
+    echo "Restarting My Electron App..."
+    pkill -f "$ELECTRON_BIN"
+    sleep 1
+    cd "$APP_DIR"
+    "$ELECTRON_BIN"
+    ;;
+  *)
+    echo "Usage: $0 {start|stop|restart}"
+    exit 1
+    ;;
+esac
+
+exit 0

@@ -22,7 +22,7 @@ module.exports = function create() {
   }
 
   const mainWindow = new BrowserWindow({
-    icon: path.join(__dirname, '..', 'icons', 'icon.png'),
+    icon: path.join(__dirname, '..', 'internal', 'branding', 'icon.png'),
     title: 'OpenOrchid Simulator',
     width: width,
     height: height,

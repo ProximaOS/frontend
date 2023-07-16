@@ -5,7 +5,7 @@ const path = require('path');
 
 module.exports = function create() {
   const mainWindow = new BrowserWindow({
-    icon: path.join(__dirname, '..', 'chrome', 'icons', 'icon.png'),
+    icon: path.join(__dirname, '..', 'chrome', 'internal', 'branding', 'icon.png'),
     title: 'Orchid Browser',
     width: 1024,
     height: 640,

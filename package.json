@@ -62,15 +62,15 @@
     },
     "win": {
       "target": "nsis",
-      "icon": "icons/icon.png"
+      "icon": "internal/branding/icon.png"
     },
     "mac": {
       "target": "dmg",
-      "icon": "icons/icon.png"
+      "icon": "internal/branding/icon.png"
     },
     "linux": {
       "target": "tar.gz",
-      "icon": "icons/icon.png"
+      "icon": "internal/branding/icon.png"
     },
     "files": [
       "chrome",
@@ -86,6 +86,8 @@
       "README.md"
     ],
     "extraFiles": [
+      "addons",
+      "fonts",
       "webapps"
     ]
   }
