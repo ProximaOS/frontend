@@ -1,3 +1,7 @@
+* {
+  appearance: none;
+}
+
 *, ::placeholder {
   font-family: system-ui;
 }
@@ -14,4 +18,19 @@
   border-radius: 8px;
   width: 8px;
   height: 8px;
+}
+
+::selection {
+  background-color: var(--accent-color, #0061e0);
+  color: var(--accent-color-plus, rgba(255,255,255,0.75));
+}
+
+.openorchid-pip-button {
+  position: absolute;
+  min-width: 4rem;
+  height: 4rem;
+  background-color: rgba(51,51,51,0.75);
+  border-radius: 2.5rem;
+  right: 1rem;
+  bottom: 5rem;
 }

@@ -1,0 +1,26 @@
+{
+  "manifest_version": 2,
+  "name": "Picture in Picture",
+  "version": "1.0",
+  "description": "Shrink playing videos into a small box to keep watching.",
+  "scripts": ["index.js"],
+  "icons": {
+    "48": "icon.png"
+  },
+  "permissions": {
+    "context-menus": true
+  },
+  "browser_action": {
+    "default_popup": "popup.html",
+    "default_icon": {
+      "16": "icon.png",
+      "48": "icon.png"
+    }
+  },
+  "content_scripts": [
+    {
+      "matches": ["*://*/*"],
+      "js": ["content.js"]
+    }
+  ]
+}

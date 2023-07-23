@@ -17,6 +17,32 @@
   transition: all 0.5s cubic-bezier(0.2, 0.9, 0.1, 1.1);
 }
 
+#notifications-container {
+  position: absolute;
+  left: 1rem;
+  top: 5rem;
+  width: calc(100% - 2rem);
+  height: calc(100% - 5rem);
+  overflow-y: auto;
+  border-radius: 2rem;
+  margin: 0;
+  padding: 0;
+}
+
+#notifications-container::-webkit-scrollbar {
+  display: none;
+}
+
+#screen.software-buttons-enabled #notifications-container {
+  height: calc(100% - 5rem - var(--software-buttons-height));
+}
+
+#notifications-container .notification {
+  margin: 0 0 1rem;
+  width: 100%;
+  list-style: none;
+}
+
 .notification {
   background-color: var(--background-plus);
   border-radius: 2rem;
@@ -95,6 +121,25 @@
   white-space: nowrap;
   text-overflow: ellipsis;
   width: 100%;
+}
+
+.notification .content .text-holder .progress {
+  width: 100%;
+  height: 0.5rem;
+  border-radius: 0.5rem;
+  position: relative;
+  margin: 0.5rem 0 0;
+  background: #858585;
+}
+
+.notification .content .text-holder .progress::before {
+  content: '';
+  position: absolute;
+  width: calc(100% * var(--progress));
+  height: 0.5rem;
+  border-radius: 0.5rem;
+  background: var(--accent-color);
+  transition: all 0.3s cubic-bezier(1, 0, 0, 1);
 }
 
 .notification .media {

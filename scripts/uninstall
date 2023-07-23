@@ -1,0 +1,4 @@
+#!/bin/bash
+rm -rf $1/usr/lib/openorchid
+rm -f $1/etc/init.d/S*openorchid
+exit 0

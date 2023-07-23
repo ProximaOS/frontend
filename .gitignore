@@ -1,3 +1,10 @@
-dist/
+.DS_Store
+
 node_modules/
+
+/plugins/
+/platforms/
+
+/dist/
+package-lock.json
 profile/

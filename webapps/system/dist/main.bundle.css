@@ -1,0 +1,103 @@
+/*!*****************************************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js!./scss/context_menu.scss ***!
+  \*****************************************************************************************************************/
+/*
+ * Context menu
+ */
+#context-menu {
+  position: absolute;
+  left: 0;
+  top: 0;
+  min-width: 290px;
+  max-width: 512px;
+  max-height: 100%;
+  pointer-events: none;
+  overflow: hidden;
+  border-radius: 1.5rem;
+  filter: drop-shadow(0 0.5rem 1rem rgba(0, 0, 0, 0.3));
+  z-index: 2147483647 !important;
+}
+#context-menu #context-menu-content {
+  margin: 0;
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background: var(--background, #e7e7e7);
+  transform-origin: top;
+  pointer-events: all;
+  border-radius: 1.5rem;
+  transition: transform 0.5s cubic-bezier(0.2, 0.9, 0.1, 1), visibility 0.3s;
+  transform: translateY(-100%);
+  visibility: hidden;
+}
+#context-menu #context-menu-content li:not(.separator) {
+  width: 100%;
+  height: 4rem;
+  line-height: 4rem;
+  border-radius: 1rem;
+  margin: 0;
+  padding: 0 1rem;
+  box-sizing: border-box;
+  list-style: none;
+  color: var(--text-color, #333);
+  font-size: 1.6rem;
+  font-weight: normal;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  position: relative;
+}
+#context-menu #context-menu-content li:not(.separator):hover {
+  background: var(--translucent, rgba(0, 0, 0, 0.05));
+}
+#context-menu #context-menu-content li:not(.separator):active {
+  background: var(--translucent-plus, rgba(0, 0, 0, 0.1));
+}
+#context-menu #context-menu-content li[disabled]:not(.separator) {
+  opacity: 0.4;
+  pointer-events: none;
+}
+#context-menu #context-menu-content li[data-icon]:not(.separator) {
+  -moz-padding-start: 4rem;
+  padding-inline-start: 4rem;
+}
+#context-menu #context-menu-content li[data-icon]:not(.separator):before {
+  position: absolute;
+  top: 0;
+  width: 2rem;
+  height: 100%;
+  font-size: 2rem;
+}
+#context-menu #context-menu-content .separator {
+  list-style: none;
+  width: calc(100% - 2rem);
+  height: 0.1rem;
+  margin: 0.5rem 1rem;
+  background: rgba(0, 0, 0, 0.125);
+}
+#context-menu #context-menu-content #context-menu-content-items {
+  padding: 0.5rem;
+  box-sizing: border-box;
+}
+#context-menu.bottom #context-menu-content {
+  transform: translateY(100%);
+}
+#context-menu.visible #context-menu-content {
+  transform: translateY(0) !important;
+  visibility: visible;
+}
+
+html[dir=ltr] #context-menu-content li[data-icon]:not(.separator):before {
+  left: 1rem;
+}
+
+html[dir=rtl] #context-menu-content li[data-icon]:not(.separator):before {
+  right: 1rem;
+}
+
+@media screen and (max-width: 599px) {
+  #context-menu {
+    min-width: unset;
+    max-width: 100%;
+  }
+}

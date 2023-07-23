@@ -9,7 +9,7 @@
 }
 
 #utility-tray-motion {
-  background-color: var(--acrylic-background);
+  background-color: rgba(51, 51, 51, 0.3);
   backdrop-filter: blur(50px) saturate(180%);
   position: absolute;
   left: 0;
@@ -55,9 +55,10 @@
   margin: 0;
   font-size: 2rem;
   font-weight: normal;
-  color: var(--text-color);
+  color: #fff;
   padding: 0 1rem;
   box-sizing: border-box;
+  text-shadow: 0 0.1rem 0 #333;
 }
 
 .utility-tray-header menu[role="toolbar"] {
@@ -76,10 +77,11 @@
   padding: 0 1rem;
   box-sizing: border-box;
   margin: 0;
-  color: var(--text-color);
+  color: #fff;
   text-decoration: none;
   display: inline-block;
   border-radius: 2rem;
+  text-shadow: 0 0.1rem 0 #333;
 }
 
 .utility-tray-header menu[role="toolbar"] > a:hover {
@@ -126,10 +128,25 @@
 
 #notifications {
   position: absolute;
-  left: 100%;
   top: var(--statusbar-height);
   width: 100%;
   height: calc(100% - var(--statusbar-height));
   padding: 0 calc(50vw - 30rem);
   box-sizing: border-box;
+}
+html[dir="ltr"] #notifications {
+  left: 100%;
+}
+html[dir="rtl"] #notifications {
+  right: 100%;
+}
+
+#notifications-container {
+  transition: all 0.5s cubic-bezier(0.2, 0.9, 0.1, 1);
+}
+
+#utility-tray-motion.fade-out #notifications-container {
+  opacity: 0;
+  transform: scale(0.9);
+  visibility: hidden;
 }

@@ -43,9 +43,14 @@
   height: 1.6rem;
   background-color: var(--accent-color-plus);
   border-radius: 2rem;
-  left: calc((100% - 4rem) * var(--progress, 0.5));
   top: 0.4rem;
   transition: all 0.3s cubic-bezier(0.2, 0, 0, 1);
+}
+html[dir="ltr"] #brightness-slider > .thumb {
+  left: calc((100% - 4rem) * var(--progress, 0.5));
+}
+html[dir="rtl"] #brightness-slider > .thumb {
+  right: calc((100% - 4rem) * var(--progress, 0.5));
 }
 
 #brightness-slider:hover > .thumb {

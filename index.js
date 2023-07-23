@@ -1,90 +1,80 @@
-const { app, BrowserWindow, ipcMain, Notification, session } = require('electron');
-const path = require('path');
-const fs = require('fs');
-const http = require('http');
+const { app, autoUpdater, BrowserWindow, dialog } = require("electron");
+const path = require("path");
+const chrome = require("./src/chrome");
+const runtime = require("./src/runtime/app_runtime");
+const openOrchid = require("./src/openorchid");
+const protocols = require("electron-protocols");
 
-function createWindow() {
-  const mainWindow = new BrowserWindow({
+require("dotenv").config();
+
+app.allowRendererProcessReuse = true;
+
+// Disable error dialogs by overriding
+dialog.showErrorBox = function(title, content) {
+  console.log(`${title}\n${content}`);
+};
+
+protocols.register("openorchid", (uri) => {
+  if (uri.pathname) {
+    return path.join(__dirname, "internal", uri.host, uri.pathname);
+  }
+  return path.join(__dirname, "internal", uri.host);
+});
+
+// When the app is ready, create the main window
+app.on('ready', function () {
+  process.on('uncaughtException', error => {
+    console.error('Uncaught exception:', error);
+    // Handle the error as needed
+  });
+
+  process.on('unhandledRejection', (reason, promise) => {
+    console.error('Unhandled promise rejection:', reason);
+    // Handle the rejection as needed
+  });
+
+  const updateWindow = new BrowserWindow({
+    icon: path.join(__dirname, "..", "icons", "icon.png"),
+    title: "OpenOrchid Updater",
     width: 320,
-    height: 640,
-    autoHideMenuBar: true,
+    height: 256,
+    show: false,
+    frame: false,
+    thickFrame: true,
     webPreferences: {
-      nodeIntegration: true,
-      nodeIntegrationInSubFrames: true,
-      webviewTag: true,
-      contextIsolation: false,
-      scrollBounce: true,
-      webSecurity: false,
-      preload: path.join(__dirname, 'preload.js')
-    }
+      defaultFontFamily: "system-ui",
+      defaultMonospaceFontSize: 14,
+      disableDialogs: true,
+      devTools: require("electron-is-dev"),
+      preload: path.join(__dirname, 'src', 'update.js')
+    },
   });
+  updateWindow.loadURL("openorchid://updater/index.html");
 
-  mainWindow.loadURL('http://system.localhost:8081/index.html', {
-    userAgent: 'Mozilla/5.0 (Linux; OpenOrchid 1.0.0; rv:114.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0 Mobile Safari/537.36 OpenOrchid/1.0.0'
+  autoUpdater.setFeedURL("https://www.example.com/updates/");
+  autoUpdater.addListener("checking-for-update", () => {
+    updateWindow.show();
   });
-
-  const webAppsDir = './webapps';
-  const files = fs.readdirSync(webAppsDir);
-
-  files.forEach((dir) => {
-    const localServer = http.createServer((req, res) => {
-      // Extract the subdomain from the host header
-      const host = req.headers.host || '';
-      const subdomain = host.split('.')[0];
-
-      const filePath = path.join(webAppsDir, subdomain, req.url);
-
-      fs.readFile(filePath, (err, data) => {
-        if (err) {
-          res.writeHead(404);
-          res.end('File not found');
-          return;
-        }
-
-        // Disable CORS by setting appropriate response headers
-        res.setHeader('Access-Control-Allow-Origin', '*');
-        res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
-        res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
-
-        res.writeHead(200);
-        res.end(data);
-      });
-    });
-
-    const subdomain = dir.split('.')[0];
-    localServer.listen(8081, 'localhost', () => {
-      console.log(`Server for subdomain ${subdomain} running at http://${subdomain}.localhost:8081`);
-    });
+  autoUpdater.addListener("update-not-available", () => {
+    updateWindow.hide();
   });
+  // autoUpdater.checkForUpdates();
 
-  // Notification event
-  ipcMain.on('trigger-notification', (event, notificationData) => {
-    const { title, body } = notificationData;
-    const notification = new Notification({
-      title: title,
-      body: body
-    });
+  if (process.argv.indexOf("--chrome") !== -1) {
+    chrome();
+  } else {
+    runtime();
+    openOrchid();
+  }
+});
 
-    notification.show();
+// Quit the app when all windows are closed
+app.on('window-all-closed', function () {
+  if (process.platform !== 'darwin') {
+    app.quit();
+  }
+});
 
-    // Pass the notification event with data to the renderer process
-    mainWindow.webContents.send('notification', { event, notificationData });
-  });
-
-  // Open event
-  ipcMain.on('open-url', (event, url) => {
-    // Pass the open event with URL to the renderer process
-    mainWindow.webContents.send('open-url', { event, url });
-  });
-
-  // Permission request event
-  ipcMain.on('request-permissions', (event, permissionData) => {
-    // Handle the permission request
-    // ...
-
-    // Pass the permission request event with data to the renderer process
-    mainWindow.webContents.send('permissionrequest', { event, permissionData });
-  });
-}
-
-app.whenReady().then(createWindow);
+require('electron-reload')(path.resolve(process.env.OPENORCHID_WEBAPPS), {
+  hardResetMethod: 'exit'
+});

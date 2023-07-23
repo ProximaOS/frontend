@@ -1,0 +1,45 @@
+.panel {
+  background-color: var(--background);
+  visibility: hidden;
+  transition: all 0.5s cubic-bezier(0.2, 0.9, 0.1, 1);
+}
+
+.panel.previous {
+  transform: translateX(-50%);
+}
+
+.panel.next {
+  transform: translateX(100%);
+}
+
+.panel.visible {
+  transform: translateX(0);
+  opacity: 1;
+  visibility: visible;
+}
+
+@media screen and (min-width: 768px) {
+  #root {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 32rem;
+    height: 100%;
+    opacity: 1;
+    visibility: visible;
+    transform: none;
+    border-inline-end: solid 0.1rem var(--item-active);
+    box-sizing: border-box;
+  }
+
+  #content {
+    position: absolute;
+    left: 32rem;
+    top: 0;
+    width: calc(100% - 32rem);
+    height: 100%;
+    opacity: 1;
+    visibility: visible;
+    transform: none;
+  }
+}

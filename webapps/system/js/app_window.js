@@ -1,14 +1,19 @@
 const AppWindow = {
   _id: 0,
 
+  screen: document.getElementById('screen'),
   containerElement: document.getElementById('windows'),
   statusbar: document.getElementById('statusbar'),
   softwareButtons: document.getElementById('software-buttons'),
+  keyboard: document.getElementById('keyboard'),
   softwareBackButton: document.getElementById('software-back-button'),
   softwareHomeButton: document.getElementById('software-home-button'),
   dock: document.getElementById('dock'),
 
   HIDDEN_ROLES: [ 'system', 'homescreen' ],
+
+  OPEN_ANIMATION: 'expand',
+  CLOSE_ANIMATION: 'shrink',
 
   init: function () {
     this.softwareBackButton.addEventListener('click', this.onButtonClick.bind(this));
@@ -50,7 +55,6 @@ const AppWindow = {
         launch_path: manifest.launch_path,
         width: manifest.width,
         height: manifest.height,
-        transparent: manifest.transparent,
         cli_args: ''
       },
       options
@@ -66,9 +70,9 @@ const AppWindow = {
       };
       this.dock.appendChild(icon);
 
-      icon.classList.add('expand');
+      icon.classList.add(this.OPEN_ANIMATION);
       icon.addEventListener('animationend', () => {
-        icon.classList.remove('expand');
+        icon.classList.remove(this.OPEN_ANIMATION);
       });
 
       const iconImage = document.createElement('img');
@@ -98,7 +102,7 @@ const AppWindow = {
     if (manifest.display && manifest.display !== 'standalone') {
       windowDiv.classList.add(manifest.display);
     }
-    if (windowOptions.transparent) {
+    if (manifest.transparent) {
       windowDiv.classList.add('transparent');
     }
     if (windowOptions.originPos) {
@@ -112,113 +116,44 @@ const AppWindow = {
     // Focus the app window
     this.focus(windowDiv.id);
 
-    windowDiv.classList.add('expand');
+    windowDiv.classList.add(this.OPEN_ANIMATION);
     windowDiv.addEventListener('animationend', () => {
-      windowDiv.classList.remove('expand');
+      windowDiv.classList.remove(this.OPEN_ANIMATION);
     });
 
-    // Create webview
-    const webview = document.createElement('webview');
-    webview.classList.add('browser');
-    webview.nodeintegration = true;
-    webview.nodeintegrationinsubframes = true;
-    webview.disablewebsecurity = true;
-    webview.webpreferences = "contextIsolation=false";
-    webview.useragent = navigator.userAgent;
-    webview.preload = `file://./preload.js`;
-    windowDiv.appendChild(webview);
+    var splashScreen = document.createElement('div');
+    splashScreen.classList.add('splashscreen');
+    windowDiv.appendChild(splashScreen);
 
-    // Use timeout to delay webview changes so they happen after webview loads
-    setTimeout(() => {
-      const ipcListener = EventListener.appWindow;
-      const pattern = /^http:\/\/.*\.localhost:8081\//;
-      const cssURL = `http://shared.localhost:${location.port}/style/webview.css`;
-      const jsURL = `http://shared.localhost:${location.port}/js/webview.js`;
-
-      webview.addEventListener('did-change-theme-color', (event) => {
-        const color = event.themeColor;
-        windowDiv.dataset.themeColor = color;
-        windowDiv.style.backgroundColor = color;
-
-        // Calculate the luminance of the color
-        const luminance = this.calculateLuminance(color);
-
-        // If the color is light (luminance > 0.5), add 'light' class to the status bar
-        if (luminance > 0.5) {
-          this.statusbar.classList.add('light');
-          this.softwareButtons.classList.add('light');
-        } else {
-          // Otherwise, remove 'light' class
-          this.statusbar.classList.remove('light');
-          this.softwareButtons.classList.remove('light');
-        }
+    var splashScreenIcon = document.createElement('img');
+    splashScreenIcon.classList.add('icon');
+    splashScreen.appendChild(splashScreenIcon);
+    if (manifest.icons) {
+      Object.entries(manifest.icons).forEach((icon) => {
+        var url = new URL(manifestUrl);
+        manifest.icons[icon[0]] = `${url.origin}${icon[1]}`;
+        splashScreenIcon.src = manifest.icons[45];
       });
+    }
 
-      ['did-start-loading', 'did-start-navigation', 'did-stop-loading', 'dom-ready'].forEach((eventType) => {
-        webview.addEventListener(eventType, () => {
-          const xhr = new XMLHttpRequest();
-          xhr.open('GET', cssURL, true);
-          xhr.onreadystatechange = function () {
-            if (xhr.readyState === 4 && xhr.status === 200) {
-              const cssContent = xhr.responseText;
-              webview.insertCSS(cssContent);
-            } else if (xhr.readyState === 4) {
-              console.error('Failed to fetch CSS:', xhr.status, xhr.statusText);
-            }
-          };
-          xhr.send();
+    // Create chrome
+    var chromeContainer = document.createElement('div');
+    chromeContainer.classList.add('chrome');
+    windowDiv.appendChild(chromeContainer);
 
-          const xhr1 = new XMLHttpRequest();
-          xhr1.open('GET', jsURL, true);
-          xhr1.onreadystatechange = function () {
-            if (xhr1.readyState === 4 && xhr1.status === 200) {
-              const jsContent = xhr1.responseText;
-              webview.executeJavaScript(jsContent);
-            } else if (xhr1.readyState === 4) {
-              console.error('Failed to fetch JS:', xhr1.status, xhr1.statusText);
-            }
-          };
-          xhr1.send();
+    var isChromeEnabled = false;
+    if (manifest.chrome && manifest.chrome.navigation) {
+      isChromeEnabled = true;
+    }
 
-          if (pattern.test(webview.getURL())) {
-            webview.nodeintegration = true;
-            webview.nodeintegrationinsubframes = true;
-            webview.disablewebsecurity = true;
-            webview.webpreferences = "contextIsolation=false";
-            webview.addEventListener('ipc-message', ipcListener);
-          } else {
-            webview.nodeintegration = false;
-            webview.nodeintegrationinsubframes = false;
-            webview.disablewebsecurity = false;
-            webview.webpreferences = "contextIsolation=true";
-            webview.removeEventListener('ipc-message', ipcListener);
-          }
-        });
-      });
-
-      if (windowOptions.start_url) {
-        webview.src = windowOptions.start_url;
-      } else {
-        if (windowOptions.launch_path) {
-          const url = new URL(manifestUrl);
-          webview.src = url.origin + windowOptions.launch_path;
-        }
+    if (manifest.start_url) {
+      Browser.init(chromeContainer, manifest.start_url, isChromeEnabled);
+    } else {
+      if (manifest.launch_path) {
+        var url = new URL(manifestUrl);
+        Browser.init(chromeContainer, url.origin + manifest.launch_path, isChromeEnabled);
       }
-    }, 100);
-  },
-
-  createTabs: function (id) {
-    // Create tabs container
-    const tabsDiv = document.createElement('div');
-    tabsDiv.classList.add('tabs');
-    windowDiv.appendChild(tabsDiv);
-  },
-
-  createNavbar: function (id) {
-    // Create navigation bar
-    const navbar = document.createElement('div');
-    navbar.classList.add('navbar');
-    windowDiv.appendChild(navbar);
+    }
   },
 
   focus: function (id) {
@@ -239,23 +174,7 @@ const AppWindow = {
     }
     this.focusedWindow = windowDiv;
 
-    // var color = 'rgb(0, 0, 0)';
-    // if (windowDiv && windowDiv.dataset.themeColor) {
-    //   color = windowDiv.dataset.themeColor;
-    // }
-
-    // // Calculate the luminance of the color
-    // const luminance = this.calculateLuminance(color);
-
-    // // If the color is light (luminance > 0.5), add 'light' class to the status bar
-    // if (luminance > 0.5) {
-    //   this.statusbar.classList.add('light');
-    //   this.softwareButtons.classList.add('light');
-    // } else {
-    //   // Otherwise, remove 'light' class
-    //   this.statusbar.classList.remove('light');
-    //   this.softwareButtons.classList.remove('light');
-    // }
+    this.handleThemeColorFocusUpdated(id);
   },
 
   close: function (id) {
@@ -266,15 +185,15 @@ const AppWindow = {
     var manifestUrl = windowDiv.dataset.manifestUrl;
     var dockIcon = this.dock.querySelector(`[data-manifest-url="${manifestUrl}"]`);
 
-    windowDiv.classList.add('shrink');
+    windowDiv.classList.add(this.CLOSE_ANIMATION);
     if (dockIcon) {
-      dockIcon.classList.add('shrink');
+      dockIcon.classList.add(this.CLOSE_ANIMATION);
     }
     windowDiv.addEventListener('animationend', () => {
-      windowDiv.classList.remove('shrink');
+      windowDiv.classList.remove(this.CLOSE_ANIMATION);
       windowDiv.remove();
       if (dockIcon) {
-        dockIcon.classList.remove('shrink');
+        dockIcon.classList.remove(this.CLOSE_ANIMATION);
         dockIcon.remove();
       }
       this.focus('homescreen');
@@ -289,13 +208,13 @@ const AppWindow = {
     var manifestUrl = windowDiv.dataset.manifestUrl;
     var dockIcon = this.dock.querySelector(`[data-manifest-url="${manifestUrl}"]`);
 
-    windowDiv.classList.add('shrink');
+    windowDiv.classList.add(this.CLOSE_ANIMATION);
     if (dockIcon) {
       dockIcon.classList.add('minimized');
     }
     windowDiv.addEventListener('animationend', () => {
       windowDiv.classList.remove('active');
-      windowDiv.classList.remove('shrink');
+      windowDiv.classList.remove(this.CLOSE_ANIMATION);
       this.focus('homescreen');
     });
   },
@@ -309,17 +228,72 @@ const AppWindow = {
     var dockIcon = this.dock.querySelector(`[data-manifest-url="${manifestUrl}"]`);
 
     windowDiv.classList.add('active');
-    windowDiv.classList.add('expand');
+    windowDiv.classList.add(this.OPEN_ANIMATION);
     if (dockIcon) {
       dockIcon.classList.remove('minimized');
     }
     windowDiv.addEventListener('animationend', () => {
-      windowDiv.classList.remove('expand');
+      windowDiv.classList.remove(this.OPEN_ANIMATION);
       this.focus(id);
     });
   },
 
-  // Helper function to calculate the luminance of a color
+  onButtonClick: function (event) {
+    switch (event.target) {
+      case this.softwareBackButton:
+        if (!this.screen.classList.contains('keyboard-visible')) {
+          var webview = this.focusedWindow.querySelector('.browser.active');
+          if (webview.canGoBack()) {
+            webview.goBack();
+          } else {
+            this.close(this.focusedWindow.id);
+          }
+        } else {
+          this.screen.classList.remove('keyboard-visible');
+          this.keyboard.classList.remove('visible');
+        }
+        break;
+
+      case this.softwareHomeButton:
+        this.minimize(this.focusedWindow.id);
+        break;
+
+      default:
+        break;
+    }
+  },
+
+  handleThemeColorFocusUpdated: function(id) {
+    var windowDiv = document.getElementById(id);
+    var webview = windowDiv.querySelector('.browser-container .browser.active');
+    var color;
+    if (webview) {
+      color = webview.dataset.themeColor;
+      if (!color) {
+        return;
+      }
+    } else {
+      return;
+    }
+
+    // Calculate the luminance of the color
+    const luminance = this.calculateLuminance(color);
+
+    // If the color is light (luminance > 0.5), add 'light' class to the status bar
+    if (luminance > 0.5) {
+      this.statusbar.classList.add('light');
+      this.softwareButtons.classList.add('light');
+      this.statusbar.classList.remove('dark');
+      this.softwareButtons.classList.remove('dark');
+    } else {
+      // Otherwise, remove 'light' class
+      this.statusbar.classList.remove('light');
+      this.softwareButtons.classList.remove('light');
+      this.statusbar.classList.add('dark');
+      this.softwareButtons.classList.add('dark');
+    }
+  },
+
   calculateLuminance: function (color) {
     // Convert the color to RGB values
     const rgb = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(color);
@@ -331,26 +305,6 @@ const AppWindow = {
     const luminance = (0.2126 * r + 0.7152 * g + 0.0722 * b) / 255;
 
     return luminance;
-  },
-
-  onButtonClick: function (event) {
-    switch (event.target) {
-      case this.softwareBackButton:
-        var webview = this.focusedWindow.querySelector('webview');
-        if (webview.canGoBack()) {
-          webview.goBack();
-        } else {
-          this.close(this.focusedWindow.id);
-        }
-        break;
-
-      case this.softwareHomeButton:
-        this.minimize(this.focusedWindow.id);
-        break;
-
-      default:
-        break;
-    }
   },
 };
 

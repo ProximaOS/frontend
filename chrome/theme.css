@@ -1,0 +1,61 @@
+:root {
+  --accent-color: #0061e0;
+  --accent-color-plus: rgba(255, 255, 255, 0.75);
+  --accent-color-hover: rgba(255, 255, 255, 0.05);
+  --accent-color-active: rgba(255, 255, 255, 0.1);
+
+  --background: #f0f6ff;
+  --background-plus: #fff;
+  --background-minus: #e0edff;
+
+  --acrylic-background: rgba(224, 237, 255, 0.5);
+  --acrylic-background-plus: rgba(255, 255, 255, 0.75);
+
+  --text-color: #333;
+
+  --item-plus: rgba(0, 0, 0, 0.05);
+  --item-hover: rgba(0, 0, 0, 0.05);
+  --item-hover-plus: rgba(0, 0, 0, 0.1);
+  --item-active: rgba(0, 0, 0, 0.1);
+  --item-active-plus: rgba(0, 0, 0, 0.15);
+
+  --headerbar-r: 224;
+  --headerbar-g: 237;
+  --headerbar-b: 255;
+
+  --switch-normal: #d0e3ff;
+  --switch-hover: #c0d9ff;
+  --switch-active: #b0d0ff;
+}
+
+@media screen and (prefers-color-scheme: dark) {
+  :root {
+    --accent-color: #80c2ff;
+    --accent-color-plus: rgba(0, 0, 0, 0.75);
+    --accent-color-hover: rgba(0, 0, 0, 0.05);
+    --accent-color-active: rgba(0, 0, 0, 0.1);
+
+    --background: #000;
+    --background-plus: #212326;
+    --background-minus: #101215;
+
+    --acrylic-background: rgba(16, 18, 21, 0.5);
+    --acrylic-background-plus: rgba(33, 35, 38, 0.75);
+
+    --text-color: #e7e7e7;
+
+    --item-plus: rgba(255, 255, 255, 0.05);
+    --item-hover: rgba(255, 255, 255, 0.05);
+    --item-hover-plus: rgba(255, 255, 255, 0.1);
+    --item-active: rgba(255, 255, 255, 0.1);
+    --item-active-plus: rgba(255, 255, 255, 0.15);
+
+    --headerbar-r: 16;
+    --headerbar-g: 18;
+    --headerbar-b: 21;
+
+    --switch-normal: #101215;
+    --switch-hover: #303235;
+    --switch-active: #404245;
+  }
+}

@@ -6,7 +6,7 @@
   height: 100%;
 }
 
-#screen.keyboard.active #windows {
+#screen.keyboard-visible #windows {
   height: 60%;
 }
 
@@ -16,8 +16,9 @@
   top: 0;
   width: 100%;
   height: 100%;
-  background-color: #000;
-  transform: translateY(100%);
+  background-color: var(--theme-color, var(--background));
+  overflow: hidden;
+  transform: translateY(-100%);
   visibility: hidden;
 }
 
@@ -68,11 +69,43 @@
   }
 }
 
+.appframe.zoom-in {
+  border-radius: var(--screen-radius);
+  animation: zoom-in 0.5s cubic-bezier(0.2, 0.9, 0.1, 1) forwards;
+}
+
+@keyframes zoom-in {
+  from {
+    transform: scale(1.25);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.appframe.zoom-out {
+  border-radius: var(--screen-radius);
+  animation: zoom-out 0.3s cubic-bezier(0.8, 0.1, 0.9, 0) forwards;
+}
+
+@keyframes zoom-out {
+  from {
+    transform: scale(1);
+    opacity: 1;
+  }
+  to {
+    transform: scale(1.25);
+    opacity: 0;
+  }
+}
+
 .appframe.transparent {
   background-color: transparent;
 }
 
-.appframe > .browser {
+.appframe .chrome .browser {
   position: absolute;
   left: 0;
   top: var(--statusbar-height);
@@ -80,23 +113,82 @@
   height: calc(100% - var(--statusbar-height) - 2.5rem);
 }
 
-#screen.software-buttons-enabled .appframe > .browser {
+#screen.context-menu-visible .appframe .chrome .browser {
+  pointer-events: none;
+}
+
+.appframe .chrome.visible .browser {
+  top: calc(var(--statusbar-height) + 2.5rem + var(--chrome-tablist-height) + var(--chrome-navbar-height) + (var(--chrome-toolbar-gap) * 2));
+  height: calc(100% - var(--statusbar-height) - 2.5rem - var(--chrome-tablist-height) - var(--chrome-navbar-height) - (var(--chrome-toolbar-gap) * 2));
+}
+
+#screen.software-buttons-enabled .appframe .chrome .browser {
   height: calc(100% - var(--statusbar-height) - var(--software-buttons-height));
 }
 
-.appframe.overlay > .browser {
+#screen.software-buttons-enabled .appframe .chrome.visible .browser {
+  top: calc(var(--statusbar-height) + var(--chrome-tablist-height) + var(--chrome-navbar-height) + (var(--chrome-toolbar-gap) * 2));
+  height: calc(100% - var(--statusbar-height) - var(--software-buttons-height) - var(--chrome-tablist-height) - var(--chrome-navbar-height) - (var(--chrome-toolbar-gap) * 2));
+}
+
+.appframe.overlay .chrome .browser {
   top: 0;
   height: calc(100% - 2.5rem);
 }
 
-#screen.software-buttons-enabled .appframe.overlay > .browser {
+#screen.software-buttons-enabled .appframe.overlay .chrome .browser {
   height: calc(100% - var(--software-buttons-height));
 }
 
-.appframe.immersive > .browser,
-.appframe.fullscreen > .browser,
-#screen.software-buttons-enabled .appframe.immersive > .browser,
-#screen.software-buttons-enabled .appframe.fullscreen > .browser {
+.appframe.immersive .chrome .browser,
+.appframe.fullscreen .chrome .browser,
+#screen.software-buttons-enabled .appframe.immersive .chrome .browser,
+#screen.software-buttons-enabled .appframe.fullscreen .chrome .browser {
   top: 0;
   height: 100%;
+}
+
+@media screen and (max-width: 599px) {
+  .appframe .chrome.visible .browser {
+    top: calc(var(--statusbar-height) + 2.5rem + var(--chrome-navbar-height) + var(--chrome-toolbar-gap));
+    height: calc(100% - var(--statusbar-height) - 2.5rem - var(--chrome-navbar-height) - var(--chrome-toolbar-gap));
+  }
+
+  #screen.software-buttons-enabled .appframe .chrome.visible .browser {
+    top: calc(var(--statusbar-height) + var(--chrome-navbar-height) + var(--chrome-toolbar-gap));
+    height: calc(100% - var(--statusbar-height) - var(--software-buttons-height) - var(--chrome-navbar-height) - var(--chrome-toolbar-gap));
+  }
+}
+
+.appframe .splashscreen {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 15;
+  background-color: var(--background);
+  visibility: visible;
+  mask-image: radial-gradient(circle at 50% 100%, transparent, transparent calc(100% / 3), white calc((100% / 3) * 2), white);
+  mask-size: 300%;
+  mask-position: 0 0;
+  -webkit-mask-image: radial-gradient(circle at 50% 100%, transparent, transparent calc(100% / 3), white calc((100% / 3) * 2), white);
+  -webkit-mask-size: 100% 300%;
+  -webkit-mask-position: 0 0;
+  transition: all 0.3s ease;
+}
+
+.appframe .splashscreen.hidden {
+  visibility: hidden;
+  mask-position: 0 100%;
+  -webkit-mask-position: 0 100%;
+  transition: all 0.3s ease 1s;
+}
+
+.appframe .splashscreen .icon {
+  position: absolute;
+  left: calc(50% - 3.2rem);
+  top: calc(50% - 3.2rem);
+  width: 6.4rem;
+  height: 6.4rem;
 }
