@@ -3,22 +3,10 @@ const fs = require("fs");
 const path = require("path");
 const http = require("http");
 
-function getWebappsPath() {
-  if (os.platform() === "win32") {
-    return path.join(process.cwd(), "webapps");
-  } else if (os.platform() === "linux") {
-    if (require("electron-is-dev")) {
-      return path.join(process.cwd(), "webapps");
-    } else {
-      return path.join("data", "local", "webapps");
-    }
-  } else {
-    return path.join(os.homedir(), "webapps");
-  }
-}
+require("dotenv").config();
 
 module.exports = function() {
-  const webAppsDir = getWebappsPath();
+  const webAppsDir = process.env.OPENORCHID_WEBAPPS;
   const files = fs.readdirSync(webAppsDir);
 
   files.forEach((dir) => {

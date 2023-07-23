@@ -3,7 +3,7 @@
 }
 
 *, ::placeholder {
-  font-family: system-ui;
+  font-family: 'Jali Arabic', system-ui;
 }
 
 ::-webkit-scrollbar {

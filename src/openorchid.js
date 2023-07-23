@@ -2,8 +2,11 @@
 
 const { BrowserWindow, ipcMain, Notification, nativeTheme, app } = require('electron');
 const settings = require('electron-settings');
+const os = require('os');
 const path = require('path');
 const fs = require('fs');
+
+const appConf = require('../package.json');
 
 require('dotenv').config();
 
@@ -11,14 +14,17 @@ module.exports = function create() {
   var width = 320;
   var height = 640;
   var url = 'http://system.localhost:8081/index.html';
+  var type = 'Mobile';
   if (process.argv.indexOf('--desktop') !== -1) {
     width = 1024;
     height = 640;
     url = 'http://desktop-system.localhost:8081/index.html';
+    type = 'Desktop';
   } else if (process.argv.indexOf('--smart-tv') !== -1) {
     width = 1280;
     height = 720;
     url = 'http://smart-system.localhost:8081/index.html';
+    type = 'Smart TV';
   }
 
   const mainWindow = new BrowserWindow({
@@ -59,7 +65,7 @@ module.exports = function create() {
   app.setPath('crashDumps', path.join(profileDir, 'crash-dumps'));
 
   mainWindow.loadURL(url, {
-    userAgent: 'Mozilla/5.0 (Linux; OpenOrchid 1.0.0; rv:114.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0 Mobile Safari/537.36 OpenOrchid/1.0.0'
+    userAgent: `Mozilla/5.0 (Linux ${os.arch()}; OpenOrchid ${appConf.version}; rv:${appConf.version}) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/${process.versions.chrome} ${type} Safari/537.36 OpenOrchid/${appConf.version} ${type}`
   });
 
   if (!settings.getSync('system.theme.color-scheme')) {

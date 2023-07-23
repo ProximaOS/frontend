@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Buttons</title>
+  <link rel="stylesheet" href="../icons/icons.css">
+  <link rel="stylesheet" href="../buttons.css">
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      font-size: 10px;
+    }
+    section {
+      background-color: #f0f6ff;
+      padding: 1.5rem;
+    }
+    header {
+      padding: 1rem 2rem;
+      color: #6a6a6a;
+      font-size: 1.6rem;
+      font-weight: bold;
+      text-transform: uppercase;
+    }
+  </style>
+</head>
+<body>
+  <section>
+    <button>Default</button>
+    <button class="recommend">Recommend</button>
+    <button class="danger">Danger</button>
+    <button disabled>Default</button>
+    <button disabled class="recommend">Recommend</button>
+    <button disabled class="danger">Danger</button>
+  </section>
+  <section>
+    <div class="buttons">
+      <button data-icon="left">Previous</button>
+      <button data-icon="right">Next</button>
+    </div>
+  </section>
+</body>
+</html>

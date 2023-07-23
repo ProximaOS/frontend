@@ -1,42 +1,45 @@
 const PageController = {
-  rootPanel: document.getElementById('root'),
-  contentPanel: document.getElementById('content'),
+  rootPanel: document.getElementById("root"),
 
   init: function () {
-    const pageButtons = document.querySelectorAll('.page');
-    pageButtons.forEach(button => {
-      button.addEventListener('click', () => this.handlePageButtonClick(button));
+    const pageButtons = document.querySelectorAll("[data-page-id]");
+    pageButtons.forEach((button) => {
+      button.addEventListener("click", () => this.handlePageButtonClick(button));
+    });
+
+    const panels = document.querySelectorAll(".panel");
+    panels.forEach((panel, index) => {
+      panel.dataset.index = index;
+      panel.classList.add("next");
     });
   },
 
   handlePageButtonClick: function (button) {
     const id = button.dataset.pageId;
-    const pageUrl = `pages/${id}.html`;
+    const selectedButton = document.querySelector(".page.selected");
+    const selectedPanel = document.querySelector(".panel.visible");
 
-    this.rootPanel.classList.remove('visible');
-    this.rootPanel.classList.add('previous');
-    this.contentPanel.classList.add('visible');
-    this.contentPanel.classList.remove('next');
-
-    const selectedButton = document.querySelector('.page.selected');
     if (selectedButton) {
-      selectedButton.classList.remove('selected');
+      selectedButton.classList.remove("selected");
     }
-    button.classList.add('selected');
+    button.classList.add("selected");
 
-    // Add event listener to the iframe's content window
-    this.contentPanel.onload = () => {
-      const iframeWindow = this.contentPanel.contentWindow;
-      iframeWindow.document.querySelector('#back-button').addEventListener('click', () => {
-        window.parent.document.getElementById('root').classList.add('visible');
-        window.parent.document.getElementById('root').classList.remove('previous');
-        window.parent.document.getElementById('content').classList.remove('visible');
-        window.parent.document.getElementById('content').classList.add('next');
-      });
-    };
+    this.togglePanelVisibility(selectedPanel, id);
+  },
 
-    this.contentPanel.src = pageUrl;
-  }
+  togglePanelVisibility: function (selectedPanel, targetPanelId) {
+    const targetPanel = document.getElementById(targetPanelId);
+
+    if (selectedPanel) {
+      selectedPanel.classList.toggle("visible");
+      selectedPanel.classList.toggle("previous", selectedPanel.dataset.index <= targetPanel.dataset.index);
+      selectedPanel.classList.toggle("next", selectedPanel.dataset.index >= targetPanel.dataset.index);
+    }
+
+    targetPanel.classList.toggle("visible");
+    targetPanel.classList.toggle("previous", selectedPanel.dataset.index <= targetPanel.dataset.index);
+    targetPanel.classList.toggle("next", selectedPanel.dataset.index >= targetPanel.dataset.index);
+  },
 };
 
 PageController.init();

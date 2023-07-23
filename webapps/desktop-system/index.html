@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="http://shared.localhost:8081/style/theme.css" />
+  <link rel="stylesheet" href="http://default_theme.localhost:8081/style/index.css" />
   <link rel="stylesheet" href="http://shared.localhost:8081/style/webview.css" />
   <link rel="stylesheet" href="http://shared.localhost:8081/style/icons/icons.css">
   <link rel="stylesheet" href="dist/main.bundle.css">
@@ -21,6 +21,8 @@
   <link rel="stylesheet" href="style/software_buttons.css">
   <link rel="stylesheet" href="style/modal_dialog.css">
   <link rel="stylesheet" href="style/lockscreen.css">
+  <link rel="stylesheet" href="style/app_launcher.css">
+  <script type="module" src="http://shared.localhost:8081/services/orchid_services.js"></script>
   <script src="js/bootstrap.js"></script>
   <script defer src="js/splashscreen.js"></script>
   <script defer src="js/event_listener.js"></script>
@@ -169,6 +171,32 @@
       <div id="cards-view-toolbar">
         <button id="cards-view-new-window-button"></button>
         <button id="cards-view-clear-all-button"></button>
+      </div>
+    </div>
+
+    <div id="launcher">
+      <div class="header">
+        <div id="launcher-search" data-l10n-id="type-here-to-search"></div>
+        <button id="launcher-resize" data-icon="fullscreen"></button>
+      </div>
+
+      <div id="launcher-grid"></div>
+
+      <div class="footer">
+        <div class="left">
+          <figure>
+            <img src="" alt="">
+            <figcaption>
+              <div class="title"></div>
+              <div class="badges"></div>
+            </figcaption>
+          </figure>
+        </div>
+        <div class="right">
+          <button data-icon="power"></button>
+          <button data-icon="settings"></button>
+          <button data-icon="home"></button>
+        </div>
       </div>
     </div>
 

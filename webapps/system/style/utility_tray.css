@@ -38,7 +38,12 @@
   display: flex;
   padding: 0 1.5rem;
   box-sizing: border-box;
-  transition: all 0.5s cubic-bezier(0.2, 0.9, 0.1, 1);
+  margin: calc(1.5rem * var(--overflow-progress)) 0 0;
+  transition: transform 0.3s ease, opacity 0.3s ease, visibility 0.5s ease;
+}
+
+#utility-tray-motion.transitioning .utility-tray-header {
+  transition: all 0.5s cubic-bezier(0, 0, 0, 1.1);
 }
 
 #utility-tray-motion.fade-out .utility-tray-header {
@@ -58,7 +63,6 @@
   color: #fff;
   padding: 0 1rem;
   box-sizing: border-box;
-  text-shadow: 0 0.1rem 0 #333;
 }
 
 .utility-tray-header menu[role="toolbar"] {
@@ -81,7 +85,6 @@
   text-decoration: none;
   display: inline-block;
   border-radius: 2rem;
-  text-shadow: 0 0.1rem 0 #333;
 }
 
 .utility-tray-header menu[role="toolbar"] > a:hover {
@@ -110,14 +113,18 @@
   width: 100%;
   padding: 0 1.5rem;
   box-sizing: border-box;
-  margin: 0 0 1rem;
+  margin: calc(1.5rem * var(--overflow-progress)) 0 1rem;
   display: flex;
   gap: 1rem;
-  transition: all 0.5s cubic-bezier(0.2, 0.9, 0.1, 1);
+  transition: transform 0.3s ease, opacity 0.3s ease, visibility 0.5s ease;
+}
+
+#utility-tray-motion.transitioning .control-center-row {
+  transition: all 0.5s cubic-bezier(0, 0, 0, 1.1);
 }
 
 #utility-tray-motion .control-center-row > * {
-  transition: all 0.5s cubic-bezier(0.2, 0.9, 0.1, 1);
+  transition: all 0.3s ease;
 }
 
 #utility-tray-motion.fade-out .control-center-row > * {
@@ -142,7 +149,7 @@ html[dir="rtl"] #notifications {
 }
 
 #notifications-container {
-  transition: all 0.5s cubic-bezier(0.2, 0.9, 0.1, 1);
+  transition: all 0.3s ease;
 }
 
 #utility-tray-motion.fade-out #notifications-container {

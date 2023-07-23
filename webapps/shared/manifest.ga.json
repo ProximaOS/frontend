@@ -1,0 +1,11 @@
+{
+  "version": "1.0",
+  "name": "Roinnte",
+  "description": "",
+  "role": "system",
+  "developer": {
+    "name": "MortCodesWeb",
+    "url": "https://openorchid.github.io/"
+  },
+  "default_locale": "en"
+}

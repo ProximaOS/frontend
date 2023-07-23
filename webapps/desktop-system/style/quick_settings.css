@@ -71,7 +71,7 @@
 #connection-settings li > a[data-icon]::before,
 #quick-settings li > a[data-icon]::before {
   width: 4rem;
-  background-color: var(--item-hover);
+  background-color: var(--item-plus);
   border-radius: 2rem;
   height: 4rem;
   line-height: 4rem;

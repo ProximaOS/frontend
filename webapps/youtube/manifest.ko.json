@@ -1,0 +1,18 @@
+{
+  "version": "1.0",
+  "name": "유튜브",
+  "description": "좋아하는 동영상을 탐색하세요.",
+  "start_url": "https://www.youtube.com/",
+  "icons": {
+    "45": "/icons/youtube.png"
+  },
+  "developer": {
+    "name": "Google",
+    "url": "https://www.google.com/"
+  },
+  "default_locale": "en",
+  "orientation": "portrait-primary",
+  "background_color": "#f0f6ff",
+  "theme_color": "#ff0000",
+  "permissions": {}
+}

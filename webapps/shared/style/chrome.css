@@ -5,6 +5,7 @@
   width: 100%;
   height: 100%;
   overflow: hidden;
+  z-index: 1;
 }
 
 .chrome.light {
@@ -180,7 +181,7 @@
 }
 
 /* .chrome .tablist-holder > button {
-  background-color: var(--item-hover);
+  background-color: var(--item-plus);
 }
 
 .chrome .tablist-holder > button:hover {

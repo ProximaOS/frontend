@@ -1,0 +1,21 @@
+{
+  "version": "1.0",
+  "name": "시계",
+  "description": "알람을 관리하고, 스톱워치 랩을 생성하고, 지구 반대편에서 시간을 확인하세요.",
+  "launch_path": "/index.html",
+  "icons": {
+    "45": "/style/icons/clock.png"
+  },
+  "developer": {
+    "name": "MortCodesWeb",
+    "url": "https://openorchid.github.io/"
+  },
+  "default_locale": "en",
+  "orientation": "portrait-primary",
+  "background_color": "#f0f6ff",
+  "theme_color": "#0061e0",
+  "permissions": {
+    "nodeintegration": {}
+  },
+  "display": "immersive"
+}

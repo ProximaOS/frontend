@@ -17,5 +17,5 @@
   "permissions": {
     "nodeintegration": {}
   },
-  "statusbar": "overlay"
+  "display": "immersive"
 }

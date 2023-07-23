@@ -4,11 +4,9 @@ const Grid = {
   HIDDEN_ROLES: ["homescreen", "system", "theme"],
 
   gridElement: document.getElementById("grid"),
-  dockElement: document.getElementById("dock"),
   dropIndicatorElement: document.getElementById("drop-indicator"),
   apps: [],
   positions: {},
-  dockIcons: [],
 
   isHolding: false,
   isDragging: false,
@@ -18,14 +16,6 @@ const Grid = {
   startTranslateX: 0,
   startTranslateY: 0,
   currentPageIndex: 0,
-
-  chunkArray: function (array, chunkSize) {
-    const chunkedArray = [];
-    for (let i = 0; i < array.length; i += chunkSize) {
-      chunkedArray.push(array.slice(i, i + chunkSize));
-    }
-    return chunkedArray;
-  },
 
   savePositions: function () {
     var icons = document.getElementsByClassName("icon");
@@ -55,7 +45,6 @@ const Grid = {
   init: function () {
     this.gridElement.style.setProperty("--grid-columns", this.gridColumns);
     this.gridElement.style.setProperty("--grid-rows", this.gridRows);
-    this.dockElement.style.setProperty("--grid-columns", this.gridColumns);
 
     var apps = navigator.api.appManager.readAppList();
     apps.then((data) => {
@@ -74,53 +63,43 @@ const Grid = {
 
   createIcons: function () {
     var index = 0;
-    var pages = this.chunkArray(this.apps, (this.gridColumns * this.gridRows) + 1);
-    pages.forEach((page, pageIndex) => {
-      index = 0;
+    this.apps.forEach(app => {
+      if (this.HIDDEN_ROLES.indexOf(app.manifest.role) !== -1) {
+        return;
+      }
 
-      var element = document.createElement("div");
-      element.classList.add("page");
-      element.style.transform = `translateX(${window.innerWidth * pageIndex}px)`;
-      this.gridElement.appendChild(element);
+      var icon = document.createElement("div");
+      icon.id = `appicon${index}`;
+      icon.classList.add("icon");
+      var x = ((window.innerWidth - 20) / this.gridColumns) * (index % this.gridColumns);
+      var y = 80 * (parseInt(index / this.gridColumns) % this.gridRows);
+      icon.style.transform = `translate(${x}px, ${y}px)`;
+      if (app.type == 'widget') {
+        icon.classList.add(`widget-${app.size[0]}x${app.size[1]}`);
+      }
+      this.gridElement.appendChild(icon);
 
-      page.forEach(app => {
-        if (this.HIDDEN_ROLES.indexOf(app.manifest.role) !== -1) {
-          return;
-        }
+      var iconHolder = document.createElement("div");
+      iconHolder.classList.add("icon-holder");
+      icon.appendChild(iconHolder);
 
-        var icon = document.createElement("div");
-        icon.id = `appicon${pageIndex + index}`;
-        icon.classList.add("icon");
-        var x = ((window.innerWidth - 20) / this.gridColumns) * (index % this.gridColumns);
-        var y = ((window.innerHeight - 130) / this.gridRows) * (parseInt(index / this.gridColumns) % this.gridRows);
-        icon.style.transform = `translate(${x}px, ${y}px)`;
-        if (app.type == 'widget') {
-          icon.classList.add(`widget-${app.size[0]}x${app.size[1]}`);
-        }
-        element.appendChild(icon);
+      var iconContainer = document.createElement("img");
+      iconContainer.crossOrigin = 'anonymous';
+      iconContainer.src = app.manifest.icons[45];
+      iconHolder.appendChild(iconContainer);
 
-        var iconHolder = document.createElement("div");
-        iconHolder.classList.add("icon-holder");
-        icon.appendChild(iconHolder);
+      var name = document.createElement("div");
+      name.classList.add("name");
+      name.textContent = app.manifest.name;
+      icon.appendChild(name);
 
-        var iconContainer = document.createElement("img");
-        iconContainer.crossOrigin = 'anonymous';
-        iconContainer.src = app.manifest.icons[45];
-        iconHolder.appendChild(iconContainer);
+      // Add event listeners for long press and drag
+      icon.addEventListener("mousedown", this.longPressStart);
+      icon.addEventListener("mouseup", () => this.longPressEnd(app));
+      icon.addEventListener("touchstart", this.longPressStart);
+      icon.addEventListener("touchend", () => this.longPressEnd(app));
 
-        var name = document.createElement("div");
-        name.classList.add("name");
-        name.textContent = app.manifest.name;
-        icon.appendChild(name);
-
-        // Add event listeners for long press and drag
-        icon.addEventListener("mousedown", this.longPressStart);
-        icon.addEventListener("mouseup", () => this.longPressEnd(app));
-        icon.addEventListener("touchstart", this.longPressStart);
-        icon.addEventListener("touchend", () => this.longPressEnd(app));
-
-        index++;
-      });
+      index++;
     });
   },
 
@@ -151,11 +130,26 @@ const Grid = {
     var width = Grid.draggedIcon.offsetWidth;
     var height = Grid.draggedIcon.offsetHeight;
 
+    let langCode;
+    try {
+      langCode = navigator.mozL10n.language.code || 'en-US';
+    } catch (error) {
+      // If an error occurs, set a default value for langCode
+      langCode = 'en-US';
+    }
+
+    let manifestUrl;
+    if (app.manifestUrl[langCode]) {
+      manifestUrl = app.manifestUrl[langCode];
+    } else {
+      manifestUrl = app.manifestUrl['en-US'];
+    }
+
     if (!Grid.isDragging) {
       // Dispatch the custom event with the manifest URL
       navigator.ipcRenderer.send('message', {
         type: 'launch',
-        manifestUrl: app.manifestUrl,
+        manifestUrl: manifestUrl,
         icon_x: x,
         icon_y: y,
         icon_width: width,
@@ -170,13 +164,9 @@ const Grid = {
     Grid.draggedIcon.style.zIndex = "9999";
 
     Grid.dropIndicatorElement.classList.add("visible");
-    Grid.dockElement.classList.add("dragging-dock");
 
     var currentPage = Grid.draggedIcon.closest(".page");
     Grid.currentPageIndex = Array.from(Grid.gridElement.children).indexOf(currentPage);
-
-    // Store the icons in the dock for reference
-    Grid.dockIcons = Array.from(Grid.dockElement.getElementsByClassName("icon"));
   },
 
   dragMove: function (event) {
@@ -209,9 +199,6 @@ const Grid = {
 
       // Move icons within the grid
       Grid.moveIconsOutOfTheWay(gridX, gridY, Grid.draggedIcon);
-
-      // Move icons within the dock
-      Grid.moveIconsOutOfTheWay(0, gridY, null, Grid.dockIcons);
     }
   },
 
@@ -240,35 +227,11 @@ const Grid = {
 
       Grid.draggedIcon.style.transform = `translate(${10 + snappedX}px, ${snappedY}px)`;
       Grid.savePositions();
-
-      // Check if dropped on the dock
-      var dockRect = Grid.dockElement.getBoundingClientRect();
-      if (clientX >= dockRect.left &&
-          clientX <= dockRect.right &&
-          clientY >= dockRect.top &&
-          clientY <= dockRect.bottom) {
-        var dockIcon = document.createElement("div");
-        dockIcon.classList.add("icon", "dock-icon");
-        dockIcon.appendChild(Grid.draggedIcon);
-        Grid.dockElement.appendChild(dockIcon);
-        Grid.draggedIcon.style.transform = "";
-        Grid.dropIndicatorElement.classList.remove("visible");
-        Grid.savePositions();
-      } else {
-        // Check if dropped on a different page
-        var currentPage = Grid.draggedIcon.closest(".page");
-        var currentPageIndex = Array.from(Grid.gridElement.children).indexOf(currentPage);
-        if (currentPageIndex !== gridX) {
-          var newPage = Grid.gridElement.children[gridX];
-          newPage.appendChild(Grid.draggedIcon);
-          Grid.savePositions();
-        }
-      }
     }
   },
 
-  moveIconsOutOfTheWay: function (gridX, gridY, draggedIcon, icons) {
-    icons = icons || Array.from(document.getElementsByClassName("icon"));
+  moveIconsOutOfTheWay: function (gridX, gridY, draggedIcon) {
+    var icons = Array.from(document.getElementsByClassName("icon"));
     icons.forEach((icon) => {
       if (icon !== draggedIcon) {
         var iconRect = icon.getBoundingClientRect();
@@ -296,4 +259,6 @@ const Grid = {
   },
 };
 
-Grid.init();
+document.addEventListener('DOMContentLoaded', function () {
+  Grid.init();
+});

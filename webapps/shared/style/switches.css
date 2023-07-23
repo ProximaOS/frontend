@@ -1,6 +1,7 @@
 .pack-switch {
   width: 100%;
   display: inline-flex;
+  overflow: hidden;
 }
 
 .pack-switch > label {
@@ -79,5 +80,19 @@
 .pack-switch > span input[type="checkbox"]:checked:active::before {
   left: 0.5rem;
   transform: scale(0.8);
-  width: 4rem;
+}
+
+@media screen and (max-width: 320px) and (max-height: 240px),
+       screen and (max-width: 240px) and (max-height: 320px) {
+  .pack-switch > span input[type="checkbox"] {
+    width: 4rem;
+  }
+
+  .pack-switch > span input[type="checkbox"]:active::before {
+    width: 3rem;
+  }
+
+  .pack-switch > span input[type="checkbox"]:checked::before {
+    left: 2rem;
+  }
 }

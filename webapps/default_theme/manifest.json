@@ -3,7 +3,7 @@
   "name": "Default Theme",
   "description": "",
   "role": "theme",
-  "launch_path": "/index.html",
+  "style_path": "/style/index.css",
   "icons": {
     "45": "/style/icons/theme.png"
   },
@@ -17,6 +17,5 @@
   "theme_color": "#0061e0",
   "permissions": {
     "nodeintegration": {}
-  },
-  "statusbar": "overlay"
+  }
 }

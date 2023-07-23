@@ -1,0 +1,19 @@
+{
+  "version": "1.0",
+  "name": "Камера",
+  "description": "Снимите фотографије и видео записе као успомене.",
+  "launch_path": "/index.html",
+  "icons": {
+    "45": "/style/icons/camera.png"
+  },
+  "developer": {
+    "name": "MortCodesWeb",
+    "url": "https://openorchid.github.io/"
+  },
+  "default_locale": "en",
+  "orientation": "portrait-primary",
+  "background_color": "#000000",
+  "theme_color": "#0061e0",
+  "permissions": {},
+  "display": "immersive"
+}

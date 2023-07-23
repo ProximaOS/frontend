@@ -20,13 +20,17 @@
 #notifications-container {
   position: absolute;
   left: 1rem;
-  top: 5rem;
+  top: calc(5rem + (3rem * var(--overflow-progress)));
   width: calc(100% - 2rem);
-  height: calc(100% - 5rem);
+  height: calc(100% - (5rem + (3rem * var(--overflow-progress))));
   overflow-y: auto;
   border-radius: 2rem;
   margin: 0;
   padding: 0;
+}
+
+#utility-tray-motion.transitioning #notifications-container {
+  transition: all 0.5s cubic-bezier(0, 0, 0, 1.1);
 }
 
 #notifications-container::-webkit-scrollbar {
@@ -34,7 +38,7 @@
 }
 
 #screen.software-buttons-enabled #notifications-container {
-  height: calc(100% - 5rem - var(--software-buttons-height));
+  height: calc(100% - (5rem + (3rem * var(--overflow-progress))) - var(--software-buttons-height));
 }
 
 #notifications-container .notification {
@@ -43,8 +47,12 @@
   list-style: none;
 }
 
+#notifications-container .notification:last-child {
+  margin: 0;
+}
+
 .notification {
-  background-color: var(--background-plus);
+  background-color: var(--acrylic-background-plus);
   border-radius: 2rem;
   width: 100%;
   margin: 0 0 1rem;

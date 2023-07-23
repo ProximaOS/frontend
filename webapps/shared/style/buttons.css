@@ -1,0 +1,39 @@
+.buttons {
+  padding: 1.5rem;
+  box-sizing: border-box;
+  height: 7rem;
+  display: flex;
+  gap: 1rem;
+}
+
+.buttons > button {
+  flex-grow: 1;
+  margin: 0;
+}
+
+button,
+.button {
+  width: 100%;
+  height: 4rem;
+  line-height: 4rem;
+  background-color: #fff;
+  border: none;
+  border-radius: 2rem;
+  text-align: center;
+  color: #333;
+  font-size: 1.6rem;
+  font-weight: normal;
+  margin: 0 0 1rem;
+  padding: 0 1.5rem;
+  box-sizing: border-box;
+}
+
+button:hover,
+.button:hover {
+  background-color: #e0edff;
+}
+
+button:active,
+.button:active {
+  background-color: #d0e3fd;
+}

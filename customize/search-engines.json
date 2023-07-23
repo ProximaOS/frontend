@@ -1,0 +1,34 @@
+{
+  "searchEngines": [
+    {
+      "name": "Google",
+      "keyword": "google",
+      "url": "https://www.google.com/search?q={searchTerms}",
+      "suggestUrl": "https://www.google.com/complete/search?output=chrome&q={searchTerms}"
+    },
+    {
+      "name": "Bing",
+      "keyword": "bing",
+      "url": "https://www.bing.com/search?q={searchTerms}",
+      "suggestUrl": "https://www.bing.com/AS/Suggestions?q={searchTerms}"
+    },
+    {
+      "name": "DuckDuckGo",
+      "keyword": "duckduckgo",
+      "url": "https://duckduckgo.com/?q={searchTerms}",
+      "suggestUrl": "https://duckduckgo.com/ac/?q={searchTerms}"
+    },
+    {
+      "name": "Yahoo",
+      "keyword": "yahoo",
+      "url": "https://search.yahoo.com/search?p={searchTerms}",
+      "suggestUrl": "https://search.yahoo.com/sugg/gossip/gossip-{searchTerms}"
+    },
+    {
+      "name": "Petal Search",
+      "keyword": "petalsearch",
+      "url": "https://www.petalsearch.com/search?q={searchTerms}",
+      "suggestUrl": "https://www.petalsearch.com/api/suggestions?q={searchTerms}"
+    }
+  ]
+}

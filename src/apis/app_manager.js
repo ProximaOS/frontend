@@ -15,8 +15,23 @@ module.exports = {
         );
         const appListJson = JSON.parse(appListData);
 
-        appListJson.forEach(async function (app, index) {
-          const response = await fetch(app.manifestUrl);
+        appListJson.forEach(async (app, index) => {
+          let langCode;
+          try {
+            langCode = navigator.mozL10n.language.code || 'en-US';
+          } catch (error) {
+            // If an error occurs, set a default value for langCode
+            langCode = 'en-US';
+          }
+
+          let manifestUrl;
+          if (app.manifestUrl[langCode]) {
+            manifestUrl = app.manifestUrl[langCode];
+          } else {
+            manifestUrl = app.manifestUrl['en-US'];
+          }
+
+          const response = await fetch(manifestUrl);
           const manifest = await response.json();
 
           if (manifest.icons) {
@@ -31,8 +46,13 @@ module.exports = {
           }
           app.manifest = manifest;
 
+          var size = this.getFolderSize(path.join(process.env.OPENORCHID_WEBAPPS, app.appId));
+          app.size = size;
+
           if (index == appListJson.length - 1) {
-            resolve(appListJson);
+            setTimeout(() => {
+              resolve(appListJson);
+            }, 10);
           }
         });
       } catch (error) {
@@ -43,13 +63,30 @@ module.exports = {
         const appList = fs.readdirSync(webappsDir).map((file) => {
           const appId = file || `{${v4()}}`;
           const installedAt = new Date().toISOString();
-          const manifestUrl = `http://${appId}.localhost:${location.port}/manifest.json`;
+          var manifestUrl = {
+            'en-US': `http://${appId}.localhost:${location.port}/manifest.json`
+          };
+
+          var webappAssets = fs.readdirSync(path.join(webappsDir, file));
+          webappAssets.forEach((manifest) => {
+            if (!manifest.startsWith('manifest.')) {
+              return;
+            }
+            if (manifest == 'manifest.json') {
+              return;
+            }
+            var langCode = manifest.split('.')[1];
+            manifestUrl[langCode] = `http://${appId}.localhost:${location.port}/manifest.${langCode}.json`;
+          });
 
           return { appId, installedAt, manifestUrl };
         });
 
         this.writeAppList(appList);
-        return appList;
+        console.log(appList);
+        setTimeout(() => {
+          resolve(appList);
+        }, 10);
       }
     });
   },
@@ -110,4 +147,40 @@ module.exports = {
       console.error(`App with ID '${appId}' not found.`);
     }
   },
+
+  getFolderSize: function (folderPath) {
+    let totalSize = 0;
+
+    function calculateSize(filePath) {
+      const stats = fs.statSync(filePath);
+
+      if (stats.isFile()) {
+        totalSize += stats.size;
+      } else if (stats.isDirectory()) {
+        const nestedFiles = fs.readdirSync(filePath);
+
+        nestedFiles.forEach((file) => {
+          const nestedFilePath = path.join(filePath, file);
+          calculateSize(nestedFilePath);
+        });
+      }
+    }
+
+    calculateSize(folderPath);
+
+    // Convert the total size to a human-readable format (e.g., KB, MB, GB)
+    const sizeInBytes = totalSize;
+    const units = ['bytes', 'KB', 'MB', 'GB'];
+    let size = sizeInBytes;
+    let unitIndex = 0;
+
+    while (size > 1024 && unitIndex < units.length - 1) {
+      size /= 1024;
+      unitIndex++;
+    }
+
+    size = Math.round(size * 100) / 100; // Round to two decimal places
+
+    return `${size} ${units[unitIndex]}`;
+  }
 };

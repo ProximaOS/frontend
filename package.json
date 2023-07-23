@@ -74,6 +74,7 @@
     },
     "files": [
       "chrome",
+      "customize",
       "internal",
       "src",
       ".gitignore",

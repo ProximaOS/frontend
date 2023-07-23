@@ -16,10 +16,10 @@ const BatteryIcon = {
         this.iconElement.classList.remove('charging');
       }
 
-      ['chargingchange', 'dischargingchange', 'levelchange'].forEach(event => {
+      ['chargingchange', 'levelchange'].forEach(event => {
         battery.addEventListener(event, () => {
           level = battery.level;
-          charging = battery.isCharging;
+          charging = battery.charging;
           this.iconElement.dataset.icon = `battery-${Math.round(level * 10) * 10}`;
           if (charging) {
             this.iconElement.classList.add('charging');

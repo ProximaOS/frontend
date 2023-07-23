@@ -1,0 +1,11 @@
+{
+  "version": "1.0",
+  "name": "공유",
+  "description": "",
+  "role": "system",
+  "developer": {
+    "name": "MortCodesWeb",
+    "url": "https://openorchid.github.io/"
+  },
+  "default_locale": "en"
+}

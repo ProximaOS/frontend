@@ -3,28 +3,26 @@
   left: 0;
   top: 0;
   width: 100%;
-  height: calc(100% - 8rem);
-  overflow-x: auto;
-  overflow-y: hidden;
+  height: 100%;
+  overflow-x: hidden;
+  overflow-y: auto;
   scroll-snap-type: x mandatory;
   scrollbar-width: none;
-  z-index: 1;
+  padding: calc(var(--statusbar-height) + 6rem) 1rem 1rem;
+  box-sizing: border-box;
+  mask-image: linear-gradient(to bottom, transparent, white calc(var(--statusbar-height) + 1rem), white);
+  -webkit-mask-image: linear-gradient(to bottom, transparent, white calc(var(--statusbar-height) + 1rem), white);
 }
 
-#grid > .page {
-  position: absolute;
-  width: 100%;
-  height: calc(100% - var(--statusbar-height) - 1rem);
-  scroll-snap-align: center;
-  padding: 0 1rem;
-  box-sizing: border-box;
-  margin: calc(var(--statusbar-height) + 1rem) 0 0;
+#grid::-webkit-scrollbar {
+  display: none;
 }
 
 .icon {
   position: absolute;
+  left: 1rem;
   width: calc((100% - 2rem) / var(--grid-columns));
-  height: calc(100% / var(--grid-rows));
+  height: 8rem;
   overflow: hidden;
   transition: all 0.3s cubic-bezier(1, 0, 0, 1);
 }

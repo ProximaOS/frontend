@@ -39,6 +39,10 @@
   list-style: none;
 }
 
+#notifications-container .notification:last-child {
+  margin: 0;
+}
+
 .notification {
   background-color: var(--acrylic-background-plus);
   border-radius: 2rem;

@@ -1,11 +1,27 @@
+#alarms-clock {
+  position: relative;
+  margin: 2rem auto 3rem;
+  width: 25rem;
+  height: 25rem;
+}
+
 .analog-clock {
-  margin: 1.5rem auto;
   width: 25rem;
   height: 25rem;
   border-radius: 50%;
-  box-shadow: -1rem -1rem 1.5rem var(--background-plus), 1rem 1rem 1.5rem rgba(0, 0, 0, 0.25), inset 1rem 1rem 1.5rem var(--background-plus), inset -1rem -1rem 1.5rem rgba(0, 0, 0, 0.25);
-  background: linear-gradient(to bottom, var(--background-plus)s, transparent);
-  position: relative;
+  box-shadow: -1rem -1rem 1.5rem var(--background-plus), 1rem 1rem 1.5rem var(--background-minus), inset 1rem 1rem 1.5rem var(--background-plus), inset -1rem -1rem 1.5rem var(--background-minus);
+  background: linear-gradient(to top, var(--background-plus), transparent);
+  position: absolute;
+  transform: scale(1);
+  opacity: 1;
+  visibility: visible;
+  transition: all 0.3s cubic-bezier(0.2, 0.9, 0.1, 1);
+}
+
+#alarms-clock.digital .analog-clock {
+  transform: scale(0.9);
+  opacity: 0;
+  visibility: hidden;
 }
 
 .analog-hour {
@@ -16,11 +32,10 @@
   margin-bottom: -.5rem;
   background: var(--text-color);
   border-radius: 1rem;
-  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.25), inset 0 0.5rem 1rem rgba(255, 255, 255, 0.25);
   width: 1rem;
   height: 25%;
-  transform-origin: bottom;
-  animation: spin 216000s steps(60) infinite;
+  transform-origin: center calc(100% - 0.5rem);
+  transition: all 0.5s cubic-bezier(0.2, 0.9, 0.1, 1);
 }
 
 .analog-minute {
@@ -31,11 +46,10 @@
   margin-bottom: -.35rem;
   background: #858585;
   border-radius: 1rem;
-  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.25), inset 0 0.5rem 1rem rgba(255, 255, 255, 0.25);
   width: .75rem;
   height: 35%;
-  transform-origin: bottom;
-  animation: spin 3600s steps(60) infinite;
+  transform-origin: center calc(100% - 0.35rem);
+  transition: all 0.5s cubic-bezier(0.2, 0.9, 0.1, 1);
 }
 
 .analog-second {
@@ -46,18 +60,28 @@
   margin-bottom: -.25rem;
   background: var(--accent-color);
   border-radius: 1rem;
-  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.25), inset 0 0.5rem 1rem rgba(255, 255, 255, 0.25);
-  width: .5rem;
+  width: 0.5rem;
   height: 45%;
-  transform-origin: bottom;
-  animation: spin 60s steps(60) infinite;
+  transform-origin: center calc(100% - 0.25rem);
+  transition: all 0.5s cubic-bezier(0.2, 0.9, 0.1, 1);
 }
 
-@keyframes spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+#alarms-clock-digital {
+  position: absolute;
+  width: 25rem;
+  height: 25rem;
+  line-height: 25rem;
+  font-size: 5rem;
+  color: var(--text-color);
+  text-align: center;
+  transform: scale(1.1);
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s cubic-bezier(0.2, 0.9, 0.1, 1);
+}
+
+#alarms-clock.digital #alarms-clock-digital {
+  transform: scale(1);
+  opacity: 1;
+  visibility: visible;
 }

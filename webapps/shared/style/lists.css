@@ -45,6 +45,10 @@
   background-color: var(--item-active);
 }
 
+.lists ul li:focus {
+  outline: solid 0.2rem var(--text-color);
+}
+
 .lists ul li.selected {
   background-color: var(--accent-color);
   color: var(--accent-color-plus);
@@ -58,12 +62,17 @@
   position: absolute;
   top: 50%;
   margin-top: -1.2rem;
-  left: 1.2rem;
   color: var(--text-color);
   width: 2.4rem;
   height: 2.4rem;
   line-height: 2.4rem;
   font-size: 2.4rem;
+}
+html[dir="ltr"] .lists ul li[data-icon]::before {
+  left: 1.2rem;
+}
+html[dir="rtl"] .lists ul li[data-icon]::before {
+  right: 1.2rem;
 }
 
 .lists ul li.selected[data-icon]::before {
@@ -75,8 +84,14 @@
   font-family: "openorchid-icons";
   font-size: 2rem;
   color: #858585;
-  text-align: end;
   line-height: 5rem;
+}
+html[dir="ltr"] .lists ul li.page::after {
+  text-align: left;
+}
+html[dir="rtl"] .lists ul li.page::after {
+  transform: scaleX(-1);
+  text-align: right;
 }
 
 .lists ul li.page.selected::after {

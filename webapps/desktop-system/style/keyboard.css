@@ -3,9 +3,9 @@
   left: 0;
   bottom: 0;
   width: 100%;
-  height: 40%;
+  height: calc(40% + (2rem + var(--software-buttons-height)));
   background-color: var(--background);
-  padding: 0.5rem;
+  padding: 0.5rem 0.5rem calc(2rem + var(--software-buttons-height));
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
@@ -13,11 +13,6 @@
   direction: ltr;
   transform: translateY(100%);
   transition: all 0.5s cubic-bezier(0.8, 0.1, 0.9, 0);
-}
-
-#screen.software-buttons-enabled #keyboard {
-  height: calc(40% + var(--software-buttons-height));
-  padding-bottom: var(--software-buttons-height);
 }
 
 #keyboard.visible {
@@ -187,10 +182,6 @@
   visibility: hidden;
   opacity: 0;
   transform: translateY(-1rem);
-}
-
-#screen.software-buttons-enabled #keyboard-languages {
-  bottom: calc(var(--software-buttons-height) + 4rem);
 }
 
 #keyboard-languages .language {

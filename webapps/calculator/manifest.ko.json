@@ -1,0 +1,18 @@
+{
+  "version": "1.0",
+  "name": "계산자",
+  "description": "여기에서 세분화, 곱셈 및 빼기를 수행하십시오.",
+  "launch_path": "/index.html",
+  "icons": {
+    "45": "/style/icons/calculator.png"
+  },
+  "developer": {
+    "name": "MortCodesWeb",
+    "url": "https://openorchid.github.io/"
+  },
+  "default_locale": "en",
+  "orientation": "portrait-primary",
+  "background_color": "#f0f6ff",
+  "theme_color": "#0061e0",
+  "permissions": {}
+}

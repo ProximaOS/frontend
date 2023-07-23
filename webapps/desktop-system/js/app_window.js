@@ -303,11 +303,20 @@ const AppWindow = {
     // Create chrome
     var chromeContainer = document.createElement("div");
     chromeContainer.classList.add("chrome");
+    chromeContainer.addEventListener(
+      "mousedown",
+      this.startDrag.bind(this, windowDiv.id)
+    );
+    chromeContainer.addEventListener(
+      "touchstart",
+      this.startDrag.bind(this, windowDiv.id)
+    );
     windowDiv.appendChild(chromeContainer);
 
     var isChromeEnabled = false;
     if (manifest.chrome && manifest.chrome.navigation) {
       isChromeEnabled = true;
+      windowDiv.classList.add('chrome-visible');
     }
 
     if (manifest.start_url) {

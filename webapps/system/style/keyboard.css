@@ -11,8 +11,10 @@
   flex-direction: column;
   z-index: 2048;
   direction: ltr;
-  transform: translateY(100%);
-  transition: all 0.5s cubic-bezier(0.8, 0.1, 0.9, 0);
+  transform: translateY(3rem);
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.5s cubic-bezier(0.2, 0.9, 0.1, 1);
 }
 
 #screen.software-buttons-enabled #keyboard {
@@ -22,7 +24,8 @@
 
 #keyboard.visible {
   transform: translateY(0);
-  transition: all 0.5s cubic-bezier(0.2, 0.9, 0.1, 1);
+  opacity: 1;
+  visibility: visible;
 }
 
 #keyboard-content {

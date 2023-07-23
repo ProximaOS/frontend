@@ -162,7 +162,7 @@
 }
 
 /* .chrome .tablist-holder > button {
-  background-color: var(--item-hover);
+  background-color: var(--item-plus);
 }
 
 .chrome .tablist-holder > button:hover {

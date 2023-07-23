@@ -12,7 +12,7 @@
   },
   "default_locale": "en",
   "orientation": "portrait-primary",
-  "background_color": "#f0f6ff",
+  "background_color": "#000000",
   "theme_color": "#0061e0",
   "permissions": {},
   "display": "immersive"

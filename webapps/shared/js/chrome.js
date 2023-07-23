@@ -11,6 +11,10 @@ const Browser = {
     return this.chrome.querySelector(".tablist");
   },
 
+  profileButton: function () {
+    return this.chrome.querySelector(".profile-button");
+  },
+
   addButton: function () {
     return this.chrome.querySelector(".add-button");
   },
@@ -77,7 +81,9 @@ const Browser = {
       this.chrome.innerHTML = `
         <div class="toolbar">
           <div class="tablist-holder">
-            <button class="profile-button" data-icon="user" data-l10n-id="profile-button"></button>
+            <button class="profile-button" data-icon="user" data-l10n-id="profile-button">
+              <img src="" alt="" class="avatar">
+            </button>
             <button class="sidetabs-button" data-icon="browser-sidetabs" data-l10n-id="tablist-sideTabsButton"></button>
             <ul class="tablist"></ul>
             <button class="add-button" data-icon="browser-addtab" data-l10n-id="tablist-addButton"></button>
@@ -134,6 +140,15 @@ const Browser = {
     this.chrome.dataset.id = 0;
     this.DEFAULT_URL = url;
     this.openNewTab(false, url);
+
+    var avatarImage = this.profileButton().querySelector('.avatar');
+    if (OrchidServices) {
+      if (OrchidServices.isUserLoggedIn()) {
+        OrchidServices.getWithUpdate(`profile/${OrchidServices.userId()}`, function (data) {
+          avatarImage.src = data.profile_picture;
+        });
+      }
+    }
 
     this.addButton().addEventListener(
       "click",
@@ -451,6 +466,25 @@ const Browser = {
     );
     contextMenu.show(event.params.x, event.params.y, [
       {
+        name: "Back",
+        icon: "browser-back",
+        disabled: !webview.canGoBack(),
+        onclick: () => {
+          webview.focus();
+          webview.goBack();
+        },
+      },
+      {
+        name: "Forward",
+        icon: "browser-forward",
+        disabled: !webview.canGoForward(),
+        onclick: () => {
+          webview.focus();
+          webview.goForward();
+        },
+      },
+      { type: "separator" },
+      {
         name: "Copy",
         icon: "textselection-copy",
         disabled: !event.params.editFlags.canCopy,
@@ -494,6 +528,15 @@ const Browser = {
         onclick: () => {
           webview.focus();
           webview.delete();
+        },
+      },
+      { type: "separator" },
+      {
+        name: "Inspect Element",
+        icon: "edit",
+        onclick: () => {
+          webview.focus();
+          webview.openDevTools();
         },
       },
     ]);

@@ -1,0 +1,20 @@
+{
+  "version": "1.0",
+  "name": "Galeri",
+  "description": "Shikoni kujtimet tuaja si foto dhe video.",
+  "launch_path": "/index.html",
+  "icons": {
+    "45": "/style/icons/gallery.png"
+  },
+  "developer": {
+    "name": "MortCodesWeb",
+    "url": "https://openorchid.github.io/"
+  },
+  "default_locale": "en",
+  "orientation": "portrait-primary",
+  "background_color": "#f0f6ff",
+  "theme_color": "#0061e0",
+  "permissions": {
+    "nodeintegration": {}
+  }
+}

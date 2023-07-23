@@ -1,0 +1,19 @@
+{
+  "version": "1.0",
+  "name": "Telecamera",
+  "description": "Scatta foto e video come ricordi.",
+  "launch_path": "/index.html",
+  "icons": {
+    "45": "/style/icons/camera.png"
+  },
+  "developer": {
+    "name": "MortCodesWeb",
+    "url": "https://openorchid.github.io/"
+  },
+  "default_locale": "en",
+  "orientation": "portrait-primary",
+  "background_color": "#000000",
+  "theme_color": "#0061e0",
+  "permissions": {},
+  "display": "immersive"
+}
