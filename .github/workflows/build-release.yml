@@ -24,6 +24,10 @@ jobs:
       - name: Install dependencies
         run: npm install
 
+      - name: Get Version from package.json
+        id: get_version
+        run: echo "::set-output name=version::$(node -p "require('./package.json').version")"
+
       - name: Build Electron App for Linux (ARM 32-bit)
         run: npm run build-linux-arm
         if: matrix.platform == 'linux-arm'
@@ -62,8 +66,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: v116.0.0-b54
-          release_name: Release v116.0.0-b54
+          tag_name: v${{ steps.get_version.outputs.version }}
+          release_name: Release v${{ steps.get_version.outputs.version }}
           draft: false
           prerelease: false
 
@@ -73,8 +77,8 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./dist/openorchid-116.0.0-b54-linux-armv7l.tar.gz
-          asset_name: openorchid-116.0.0-b54-linux-armv7l.tar.gz
+          asset_path: ./dist/openorchid-${{ steps.get_version.outputs.version }}-linux-armv7l.tar.gz
+          asset_name: openorchid-${{ steps.get_version.outputs.version }}-linux-armv7l.tar.gz
           asset_content_type: application/gzip
 
       - name: Upload Linux Release Asset (ARM 64-bit)
@@ -83,8 +87,8 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./dist/openorchid-116.0.0-b54-linux-arm64.tar.gz
-          asset_name: openorchid-116.0.0-b54-linux-arm64.tar.gz
+          asset_path: ./dist/openorchid-${{ steps.get_version.outputs.version }}-linux-arm64.tar.gz
+          asset_name: openorchid-${{ steps.get_version.outputs.version }}-linux-arm64.tar.gz
           asset_content_type: application/gzip
 
       - name: Upload Linux Release Asset (x86)
@@ -93,8 +97,8 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./dist/openorchid-116.0.0-b54-linux-ia32.tar.gz
-          asset_name: openorchid-116.0.0-b54-linux-ia32.tar.gz
+          asset_path: ./dist/openorchid-${{ steps.get_version.outputs.version }}-linux-ia32.tar.gz
+          asset_name: openorchid-${{ steps.get_version.outputs.version }}-linux-ia32.tar.gz
           asset_content_type: application/gzip
 
       - name: Upload Linux Release Asset (x64)
@@ -103,8 +107,8 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./dist/openorchid-116.0.0-b54-linux-x64.tar.gz
-          asset_name: openorchid-116.0.0-b54-linux-x64.tar.gz
+          asset_path: ./dist/openorchid-${{ steps.get_version.outputs.version }}-linux-x64.tar.gz
+          asset_name: openorchid-${{ steps.get_version.outputs.version }}-linux-x64.tar.gz
           asset_content_type: application/gzip
 
       - name: Upload Windows Release Asset (x86)
@@ -113,8 +117,8 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./dist/openorchid-116.0.0-b54-win-ia32.zip
-          asset_name: openorchid-116.0.0-b54-win-ia32.zip
+          asset_path: ./dist/openorchid-${{ steps.get_version.outputs.version }}-win-ia32.zip
+          asset_name: openorchid-${{ steps.get_version.outputs.version }}-win-ia32.zip
           asset_content_type: application/octet-stream
 
       - name: Upload Windows Release Asset (x64)
@@ -123,8 +127,8 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./dist/openorchid-116.0.0-b54-win-x64.zip
-          asset_name: openorchid-116.0.0-b54-win-x64.zip
+          asset_path: ./dist/openorchid-${{ steps.get_version.outputs.version }}-win-x64.zip
+          asset_name: openorchid-${{ steps.get_version.outputs.version }}-win-x64.zip
           asset_content_type: application/octet-stream
 
       - name: Upload MacOS Release Asset (arm64)
@@ -133,8 +137,8 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./dist/openorchid-116.0.0-b54-mac-arm64.zip
-          asset_name: openorchid-116.0.0-b54-mac-arm64.zip
+          asset_path: ./dist/openorchid-${{ steps.get_version.outputs.version }}-mac-arm64.zip
+          asset_name: openorchid-${{ steps.get_version.outputs.version }}-mac-arm64.zip
           asset_content_type: application/octet-stream
 
       - name: Upload MacOS Release Asset (x64)
@@ -143,8 +147,8 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./dist/openorchid-116.0.0-b54-mac-x64.zip
-          asset_name: openorchid-116.0.0-b54-mac-x64.zip
+          asset_path: ./dist/openorchid-${{ steps.get_version.outputs.version }}-mac-x64.zip
+          asset_name: openorchid-${{ steps.get_version.outputs.version }}-mac-x64.zip
           asset_content_type: application/octet-stream
 
     strategy:
