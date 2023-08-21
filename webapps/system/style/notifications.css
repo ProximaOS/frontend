@@ -7,7 +7,6 @@
   background-color: var(--acrylic-background-plus);
   backdrop-filter: blur(20px) saturate(180%);
   box-shadow: 0 1.5rem 3rem rgba(0, 0, 0, 0.3);
-  z-index: 32768;
   transform: translateY(calc(-100% - var(--statusbar-height) - 4.5rem));
   transition: all 0.5s cubic-bezier(0.8, 0.1, 0.9, 0);
 }
@@ -20,9 +19,9 @@
 #notifications-container {
   position: absolute;
   left: 1rem;
-  top: calc(5rem + (3rem * var(--overflow-progress)));
+  top: calc(5rem + (6rem * var(--overflow-progress)));
   width: calc(100% - 2rem);
-  height: calc(100% - (5rem + (3rem * var(--overflow-progress))));
+  height: calc(100% - (5rem + (6rem * var(--overflow-progress))));
   overflow-y: auto;
   border-radius: 2rem;
   margin: 0;
@@ -38,13 +37,20 @@
 }
 
 #screen.software-buttons-enabled #notifications-container {
-  height: calc(100% - (5rem + (3rem * var(--overflow-progress))) - var(--software-buttons-height));
+  height: calc(100% - (5rem + (6rem * var(--overflow-progress))) - var(--software-buttons-height));
 }
 
 #notifications-container .notification {
   margin: 0 0 1rem;
   width: 100%;
   list-style: none;
+  transition: all 0.3s ease;
+}
+
+#utility-tray-motion:not(.visible) #notifications-container .notification,
+#utility-tray-motion.fade-out #notifications-container .notification {
+  opacity: 0;
+  transform: translateY(3rem);
 }
 
 #notifications-container .notification:last-child {

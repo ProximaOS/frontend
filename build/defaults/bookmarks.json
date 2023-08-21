@@ -1,0 +1,28 @@
+{
+  "bookmarks": [
+    {
+      "name": "Google",
+      "url": "https://www.google.com"
+    },
+    {
+      "name": "YouTube",
+      "url": "https://www.youtube.com"
+    },
+    {
+      "name": "Amazon",
+      "url": "https://www.amazon.com"
+    },
+    {
+      "name": "Facebook",
+      "url": "https://www.facebook.com"
+    },
+    {
+      "name": "Twitter",
+      "url": "https://www.twitter.com"
+    },
+    {
+      "name": "Reddit",
+      "url": "https://www.reddit.com"
+    }
+  ]
+}

@@ -1,0 +1,146 @@
+#keypad {
+  background-color: transparent;
+  z-index: 1;
+  transform: translateX(0) !important;
+}
+
+#keypad > .headerbar {
+  backdrop-filter: none;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+#keypad.visible > .headerbar {
+  opacity: 1;
+}
+
+#keypad > .content {
+  display: flex;
+  flex-direction: column;
+}
+
+#keypad-display {
+  padding: 1.5rem;
+  box-sizing: border-box;
+  width: 100%;
+  display: flex;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+#keypad.visible #keypad-display {
+  opacity: 1;
+}
+
+#keypad-display > .input {
+  width: 100%;
+  flex-grow: 1;
+  margin: 0;
+  padding: 0;
+  height: 5rem;
+  line-height: 5rem;
+  font-size: 4rem;
+  background-color: transparent;
+  color: var(--text-color);
+  border: none;
+  outline: none;
+  font-family: 'Jali Arabic', system-ui;
+  resize: none;
+}
+
+#keypad-display > .backspace-button {
+  width: 5rem;
+  height: 5rem;
+  line-height: 5rem;
+  background-color: transparent;
+  color: var(--text-color);
+  margin: 0;
+  padding: 0;
+  text-align: center;
+}
+
+.keypad-display {
+  padding: 1.5rem;
+  box-sizing: border-box;
+  width: 100%;
+  display: flex;
+}
+
+.keypad-board {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  flex-grow: 1;
+  background-color: var(--background-minus);
+  border-radius: 1.5rem 1.5rem 0 0;
+  transform: translateY(100%);
+  transition: transform 0.3s ease;
+}
+
+#keypad.visible .keypad-board {
+  transform: translateY(0);
+}
+
+.keypad-board .buttons {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+}
+
+.keypad-board .keys {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: calc(100% - 7rem);
+  padding: 1rem 1rem 0;
+  box-sizing: border-box;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(4, 1fr);
+  margin: 0;
+}
+
+.keypad-board .keys > li {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  border-radius: 1rem;
+}
+
+.keypad-board .keys > li:hover {
+  background-color: var(--item-hover);
+}
+
+.keypad-board .keys > li:active {
+  background-color: var(--item-active);
+}
+
+.keypad-board .keys > li > div {
+  display: flex;
+  gap: 1rem;
+  align-items: end;
+}
+
+.keypad-board .keys > li > div .number {
+  font-size: 4rem;
+  line-height: 4rem;
+  font-weight: 400;
+  color: var(--text-color);
+}
+
+.keypad-board .keys > li > div .symbols {
+  font-size: 1.4rem;
+  line-height: 2rem;
+  font-weight: normal;
+  color: var(--text-color-faded);
+}
+
+.keypad-board .keys > li > div .symbols[data-icon]::before {
+  font-size: 2rem;
+  font-weight: normal;
+  color: var(--text-color-faded);
+}

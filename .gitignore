@@ -2,14 +2,11 @@
 
 node_modules/
 
-/plugins/
-/platforms/
-
 /dist/
 package-lock.json
 firebaseConfig.json
-profile/
-test_media/*
+/profile/
+/webapps/{*}
 
 logs/
 *.log

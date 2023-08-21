@@ -1,0 +1,18 @@
+[
+  {
+    "origin": "http://system.localhost:8081",
+    "access": {
+      "geolocation": true,
+      "media": true,
+      "notifications": true,
+      "fullscreen": true,
+      "openExternal": true,
+      "midi": true,
+      "pointerLock": true,
+      "serial": true,
+      "clipboard-read": true,
+      "clipboard-write": true,
+      "systemPreferences": true
+    }
+  }
+]

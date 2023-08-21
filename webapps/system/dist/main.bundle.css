@@ -15,7 +15,7 @@
   overflow: hidden;
   border-radius: 1.5rem;
   filter: drop-shadow(0 0.5rem 1rem rgba(0, 0, 0, 0.3));
-  z-index: 2147483647 !important;
+
 }
 #context-menu #context-menu-content {
   margin: 0;
@@ -48,10 +48,10 @@
   position: relative;
 }
 #context-menu #context-menu-content li:not(.separator):hover {
-  background: var(--translucent, rgba(0, 0, 0, 0.05));
+  background: var(--item-hover);
 }
 #context-menu #context-menu-content li:not(.separator):active {
-  background: var(--translucent-plus, rgba(0, 0, 0, 0.1));
+  background: var(--item-active);
 }
 #context-menu #context-menu-content li[disabled]:not(.separator) {
   opacity: 0.4;

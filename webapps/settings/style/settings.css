@@ -50,11 +50,48 @@
 
 #battery-percentage {
   font-size: 4rem;
+  color: var(--text-color);
 }
 
 #battery-charge-state {
   font-size: 1.6rem;
   opacity: 0.5;
+}
+
+#storage-used-space-progress {
+  margin: 0 auto 1.5rem;
+  width: calc(100% - 3rem);
+  max-width: calc(var(--safezone-width) - 3rem);
+  height: 2.4rem;
+  background-color: #858585;
+  border-radius: 1.2rem;
+}
+
+#storage-used-space-progress > .fill {
+  width: calc((100% * var(--progress, 0)) + 1.2rem);
+  height: 100%;
+  background-color: hsl(var(--hue), 100%, 75%);
+  border-radius: 1.2rem;
+  box-shadow: 0 0.3rem 0.6rem hsla(var(--hue), 100%, 75%, 0.5);
+  display: inline-block;
+  margin-inline-start: -1.2rem;
+}
+
+.aboutInfo-header {
+  margin: 1.5rem auto;
+  width: max-content;
+}
+
+.aboutInfo-header > .logo {
+  width: 24rem;
+  height: 24rem;
+  background: url(images/logo-light.png) no-repeat center / contain;
+}
+
+@media screen and (prefers-color-scheme: dark) {
+  .aboutInfo-header > .logo {
+    background-image: url(images/logo-dark.png);
+  }
 }
 
 @media screen and (min-width: 768px) {

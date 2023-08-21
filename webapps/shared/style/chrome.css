@@ -1,21 +1,17 @@
 .chrome {
+  --screen-radius: 3.6rem;
+  --chrome-toolbar-gap: 0.5rem;
+  --chrome-tablist-height: 4rem;
+  --chrome-navbar-height: 4rem;
   position: absolute;
   left: 0;
   top: 0;
   width: 100%;
   height: 100%;
   overflow: hidden;
+  background-color: var(--theme-color, var(--background));
+  box-sizing: border-box;
   z-index: 1;
-}
-
-.chrome.light {
-  --background-plus: rgba(255,255,255,0.75);
-  --text-color: rgba(0,0,0,0.75);
-}
-
-.chrome.dark {
-  --background-plus: rgba(0,0,0,0.75);
-  --text-color: rgba(255,255,255,0.75);
 }
 
 .chrome .toolbar {
@@ -27,8 +23,9 @@
   width: 100%;
   padding: var(--statusbar-height, var(--chrome-toolbar-gap)) 0 var(--chrome-toolbar-gap);
   box-sizing: border-box;
-  background-color: var(--theme-color, var(--background));
-  transform: translateX(-100%);
+  background-color: var(--theme-color, var(--acrylic-background));
+  backdrop-filter: blur(20px) saturate(180%);
+  transform: translateY(-100%);
   visibility: hidden;
   gap: var(--chrome-toolbar-gap);
   overflow: hidden;
@@ -36,15 +33,35 @@
   transition: all 0.5s cubic-bezier(0.2, 0.9, 0.1, 1);
 }
 
+.chrome.light .toolbar {
+  --background-plus: rgba(255,255,255,0.75);
+  --text-color: rgba(0,0,0,0.75);
+}
+
+.chrome.dark .toolbar {
+  --background-plus: rgba(0,0,0,0.75);
+  --text-color: rgba(255,255,255,0.75);
+}
+
+.chrome.bottom .toolbar {
+  top: unset;
+  bottom: 0;
+  padding: var(--chrome-toolbar-gap) 0 2.5rem;
+  transform: translateY(100%);
+}
+
+#screen.software-buttons-enabled .chrome.bottom .toolbar {
+  padding: var(--chrome-toolbar-gap) 0 var(--software-buttons-height, var(--chrome-toolbar-gap));
+}
+
 .chrome.visible .toolbar {
-  transform: translateY(0);
+  transform: translateY(0) !important;
   visibility: visible;
 }
 
 .chrome .tablist-holder {
   width: 100%;
   height: 4rem;
-  background-color: var(--theme-color, var(--background));
   flex-shrink: 0;
   display: flex;
   padding: 0 0.5rem;
@@ -75,6 +92,7 @@
   padding-inline-end: 0.5rem;
   box-sizing: border-box;
   align-items: center;
+  overflow: hidden;
 }
 
 .chrome .tablist li:hover {
@@ -89,10 +107,94 @@
   background-color: var(--background-plus);
 }
 
-.chrome .tablist li > .favicon {
+.chrome .tablist li.private {
+  outline: solid 0.1rem #c080ff;
+  outline-offset: -0.1rem;
+}
+
+.chrome .tablist li.private.active {
+  background-image: linear-gradient(to right, #601880, #8020a0);
+}
+
+.chrome .tablist li.expand {
+  animation: chrome-expand 0.3s ease forwards;
+}
+
+@keyframes chrome-expand {
+  from {
+    opacity: 0;
+    transform: scale(0.75);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.chrome .tablist li.shrink {
+  animation: chrome-shrink 0.3s ease forwards;
+}
+
+@keyframes chrome-shrink {
+  from {
+    opacity: 1;
+    transform: scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: scale(0.75);
+  }
+}
+
+.chrome .tablist li > .favicons {
   width: 2rem;
   height: 2rem;
+  position: relative;
   flex-shrink: 0;
+}
+
+.chrome .tablist li > .favicons .favicon {
+  width: 2rem;
+  height: 2rem;
+  position: absolute;
+  transform: scale(1);
+  opacity: 1;
+  /* Setting it to 'visible' shows them even if tablist-holder is hidden
+     Which is why we set it to 'none' */
+  visibility: none;
+  transition: all 0.3s ease;
+}
+
+.chrome .tablist li > .favicons.loading .favicon {
+  transform: scale(0.75);
+  opacity: 0;
+  visibility: hidden;
+}
+
+.chrome .tablist li > .favicons .loading-icon {
+  width: 2rem;
+  height: 2rem;
+  transform: scale(1.25);
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s ease;
+}
+
+.chrome .tablist li > .favicons.loading .loading-icon {
+  transform: scale(1);
+  opacity: 1;
+  /* Setting it to 'visible' shows them even if tablist-holder is hidden
+     Which is why we set it to 'none' */
+  visibility: none;
+}
+
+.chrome .tablist li.private > .favicons {
+  filter: blur(0.5rem);
+  transition: all 0.3s ease;
+}
+
+.chrome .tablist li.private.active > .favicons {
+  filter: blur(0px);
 }
 
 .chrome .tablist li > .title {
@@ -105,6 +207,16 @@
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
+}
+
+.chrome .tablist li.private > .title {
+  filter: blur(0.5rem);
+  transition: all 0.3s ease;
+}
+
+.chrome .tablist li.private.active > .title {
+  color: #fff;
+  filter: blur(0px);
 }
 
 .chrome .tablist li > .mute-button,
@@ -134,13 +246,18 @@
 
 .chrome .tablist li > .mute-button[data-icon]::before,
 .chrome .tablist li > .close-button[data-icon]::before {
+  position: static;
   font-size: 1.6rem;
+}
+
+.chrome .tablist li.private.active > .mute-button,
+.chrome .tablist li.private.active > .close-button {
+  color: #fff;
 }
 
 .chrome .navbar {
   width: 100%;
   height: 4rem;
-  background-color: var(--theme-color, var(--background));
   flex-shrink: 0;
   display: flex;
   padding: 0 0.5rem;
@@ -150,6 +267,7 @@
 
 .chrome .tablist-holder > button,
 .chrome .navbar button {
+  width: max-content;
   min-width: 4rem;
   height: 4rem;
   line-height: 4rem;
@@ -351,6 +469,7 @@
   white-space: nowrap;
   text-overflow: ellipsis;
   margin: 0;
+  color: var(--text-color);
 }
 
 .chrome .tabs-view .container .headerbar > menu[role="toolbar"] {
@@ -413,6 +532,14 @@
 
 .chrome .tabs-view .container .grid .tab.active {
   background-color: var(--accent-color);
+}
+
+.chrome .tabs-view .container .grid .tab.expand {
+  animation: chrome-expand 0.3s ease forwards;
+}
+
+.chrome .tabs-view .container .grid .tab.shrink {
+  animation: chrome-shrink 0.3s ease forwards;
 }
 
 .chrome .tabs-view .container .grid .tab .header {
@@ -489,6 +616,343 @@
   object-position: top;
 }
 
+/* Browser FTU */
+.chrome .ftu-dialog {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(51, 51, 51, 0.5);
+  overflow: hidden;
+  z-index: 10;
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
+  pointer-events: none;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.5s cubic-bezier(0.8, 0.1, 0.9, 0);
+}
+
+.chrome .ftu-dialog.visible {
+  pointer-events: all;
+  opacity: 1;
+  visibility: visible;
+  transition: all 0.5s cubic-bezier(0.2, 0.9, 0.1, 1);
+}
+
+.chrome .ftu-dialog .container {
+  position: absolute;
+  left: 50%;
+  translate: -50% 0;
+  top: calc(var(--statusbar-height) + 4.5rem);
+  width: 57rem;
+  height: 40rem;
+  border-radius: 2rem;
+  overflow: hidden;
+  background-color: var(--background);
+  transform: scale(1.1);
+  transition: all 0.5s cubic-bezier(0.8, 0.1, 0.9, 0);
+}
+
+.chrome .ftu-dialog.visible .container {
+  transform: scale(1);
+  transition: all 1s cubic-bezier(0.2, 0.9, 0.1, 1);
+}
+
+.chrome .ftu-dialog.alert .container {
+  transform: scale(1.025);
+  transition: all 0.3s cubic-bezier(0.2, 0.9, 0.1, 1);
+}
+
+.chrome .ftu-dialog .container .page {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  gap: 1.5rem;
+  visibility: hidden;
+  transition: all 0.5s ease;
+}
+
+.chrome .ftu-dialog .container .page.visible {
+  visibility: visible;
+}
+
+.chrome .ftu-dialog .container .illustration {
+  width: 100%;
+  height: 100%;
+  flex-grow: 1;
+  display: flex;
+  align-items: center;
+  justify-content: end;
+}
+
+.chrome .ftu-dialog .container .illustration .illustration-art {
+  width: 25rem;
+  height: 25rem;
+  border-radius: 3rem;
+  background: no-repeat center / cover;
+  transform: scale(0.9);
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s ease;
+}
+
+.chrome .ftu-dialog .container .page.greetings .illustration .illustration-art {
+  background-image: url(chrome/images/greetings.png);
+}
+
+.chrome .ftu-dialog .container .page.customize .illustration .illustration-art {
+  background-image: url(chrome/images/customize.png);
+}
+
+.chrome .ftu-dialog .container .page.account .illustration .illustration-art {
+  background-image: url(chrome/images/account.png);
+}
+
+.chrome .ftu-dialog .container .page.visible .illustration .illustration-art {
+  transform: scale(1);
+  opacity: 1;
+  visibility: visible;
+  transition: all 0.3s ease 0.3s;
+}
+
+.chrome .ftu-dialog .container .content {
+  width: 100%;
+  height: 100%;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  overflow-x: hidden;
+  overflow-y: auto;
+  padding: 7rem 0;
+  padding-inline-end: 1.5rem;
+  box-sizing: border-box;
+  position: relative;
+  opacity: 0;
+  transition: all 0.5s cubic-bezier(1, 0, 0, 1);
+}
+
+.chrome .ftu-dialog .container .page.previous .content {
+  transform: translateX(-100%);
+}
+
+.chrome .ftu-dialog .container .page.next .content {
+  transform: translateX(100%);
+}
+
+.chrome .ftu-dialog .container .page.visible .content {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.chrome .ftu-dialog .container .content > * {
+  flex-shrink: 0;
+}
+
+.chrome .ftu-dialog .container .buttons {
+  position: absolute;
+  bottom: 0;
+  width: 50%;
+  height: 7rem;
+  background-color: var(--background);
+  padding-inline-start: 0;
+}
+html[dir="ltr"] .chrome .ftu-dialog .container .buttons {
+  right: 0;
+}
+html[dir="rtl"] .chrome .ftu-dialog .container .buttons {
+  left: 0;
+}
+
+.chrome .ftu-dialog .container .page.greetings .buttons .next-button {
+  transition: all 0.5s cubic-bezier(0.2, 0.9, 0.1, 1);
+  width: calc(50% - 1rem);
+  flex-grow: 0;
+  margin-inline-start: auto;
+  z-index: 3;
+}
+
+.chrome .ftu-dialog .container .page.greetings.visible .buttons .next-button {
+  width: 100%;
+}
+
+.chrome .ftu-dialog .container .content h3 {
+  margin: 0 0 0.5rem;
+  font-size: 2.4rem;
+  font-weight: bold;
+  color: var(--text-color);
+  line-height: 3rem;
+}
+
+.chrome .ftu-dialog .container .content p {
+  margin: 0 0 1rem;
+  font-size: 1.6rem;
+  font-weight: normal;
+  color: var(--text-color);
+  line-height: 2.2rem;
+}
+
+.chrome .ftu-dialog .container .content ul {
+  margin: 0;
+}
+
+.chrome .ftu-dialog .container .content ul li {
+  margin: 0;
+  font-size: 1.6rem;
+  font-weight: normal;
+  color: var(--text-color);
+  line-height: 2.2rem;
+}
+
+.chrome .ftu-dialog .container .content a {
+  margin: 0 0 1rem;
+  font-size: 1.6rem;
+  font-weight: normal;
+  color: var(--accent-color);
+  line-height: 2.2rem;
+  text-decoration: none;
+  width: max-content;
+  transition: box-shadow 0.2s ease;
+}
+
+.chrome .ftu-dialog .container .content a:hover {
+  box-shadow: 0 0.2rem 0 var(--accent-color);
+}
+
+.chrome .ftu-dialog .container .content a:active {
+  opacity: 0.5;
+}
+
+.chrome .ftu-dialog .container .content .accent-colors {
+  margin: 0 0 1rem;
+  display: flex;
+  justify-content: center;
+  flex-wrap: nowrap;
+  overflow-y: hidden;
+  overflow-x: auto;
+  gap: 1rem;
+  width: 100%;
+}
+
+.chrome .ftu-dialog .container .content .accent-colors > div {
+  width: 4rem;
+  height: 4rem;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.chrome .ftu-dialog .container .content .accent-colors > .red {
+  background-image: linear-gradient(45deg, #ff6040, #c00040);
+}
+
+.chrome .ftu-dialog .container .content .accent-colors > .yellow {
+  background-image: linear-gradient(45deg, #ffc000, #ff6040);
+}
+
+.chrome .ftu-dialog .container .content .accent-colors > .green {
+  background-image: linear-gradient(45deg, #60ff80, #40a060);
+}
+
+.chrome .ftu-dialog .container .content .accent-colors > .blue {
+  background-image: linear-gradient(45deg, #00ddff, #0061e0);
+}
+
+.chrome .ftu-dialog .container .content .accent-colors > .purple {
+  background-image: linear-gradient(45deg, #c060ff, #8030a0);
+}
+
+/* Side Tabs */
+.chrome.sidetabs .toolbar {
+  position: absolute;
+  height: 100%;
+  background: transparent;
+  pointer-events: none;
+  padding: 0;
+}
+
+.chrome.sidetabs .toolbar .tablist-holder {
+  position: absolute;
+  top: calc(var(--chrome-navbar-height) + (var(--chrome-toolbar-gap) * 2));
+  width: 6rem;
+  height: calc(100% - (var(--chrome-navbar-height) + (var(--chrome-toolbar-gap) * 2)));
+  flex-direction: column;
+  padding: 0 1rem;
+  pointer-events: all;
+  transition: all 0.3s ease;
+}
+html[dir="ltr"] .chrome.sidetabs .toolbar .tablist-holder {
+  left: 0;
+}
+html[dir="rtl"] .chrome.sidetabs .toolbar .tablist-holder {
+  right: 0;
+}
+
+.chrome.sidetabs .toolbar .tablist-holder:hover {
+  width: 32rem;
+  transition: all 0.3s ease 0.3s;
+}
+
+.chrome.sidetabs .toolbar .tablist-holder .tablist {
+  flex-direction: column;
+  height: unset;
+}
+
+.chrome.sidetabs .toolbar .tablist-holder .tablist > li {
+  width: 100%;
+}
+
+.chrome.sidetabs .toolbar .navbar {
+  padding: var(--chrome-toolbar-gap);
+  padding-inline-end: 15rem;
+  pointer-events: all;
+  height: calc(var(--chrome-navbar-height) + (var(--chrome-toolbar-gap) * 2));
+}
+
+.chrome.sidetabs .browser-container .browser {
+  top: 5rem;
+  width: calc(100% - 6rem);
+  height: calc(100% - 5rem);
+  overflow: hidden;
+}
+html[dir="ltr"] .chrome.sidetabs .browser-container .browser {
+  left: 6rem;
+  border-radius: 2rem 0 0 0;
+}
+html[dir="rtl"] .chrome.sidetabs .browser-container .browser {
+  right: 6rem;
+  border-radius: 0 2rem 0 0;
+}
+
+.chrome .profile-button {
+  position: relative;
+}
+
+.chrome .profile-button > img {
+  position: absolute;
+  left: 12.5%;
+  top: 12.5%;
+  width: 75%;
+  height: 75%;
+  background-color: #858585;
+  border-radius: 50%;
+  transition: all 0.3s ease;
+  opacity: 0;
+  transform: scale(0.75);
+  visibility: hidden;
+}
+
+.chrome .profile-button.logged-in > img {
+  opacity: 1;
+  transform: scale(1);
+  /* Setting it to 'visible' shows them even if tablist-holder is hidden
+     Which is why we set it to 'none' */
+  visibility: none;
+}
+
 @media screen and (max-width: 799px) {
   .chrome .navbar-downloads-button,
   .chrome .navbar-addons-button,
@@ -521,7 +985,51 @@
     padding: var(--chrome-toolbar-gap) 0;
   }
 
-  .chrome .navbar-tabs-button {
+  /* .chrome .navbar-tabs-button {
     display: none;
+  } */
+}
+
+@media screen and (max-width: 599px) {
+  .chrome .ftu-dialog .container {
+    position: absolute;
+    width: 100%;
+    height: calc(100% - 4.5rem - var(--statusbar-height));
+    border-radius: 2rem 2rem 0 0;
+  }
+
+  .chrome .ftu-dialog .container .page {
+    flex-direction: column;
+  }
+
+  .chrome .ftu-dialog .container .illustration {
+    justify-content: center;
+  }
+
+  .chrome .ftu-dialog .container .illustration .illustration-art {
+    width: 20rem;
+    height: 20rem;
+    margin: 3rem auto 0;
+  }
+
+  .chrome .ftu-dialog .container .content {
+    padding: 1.5rem 1.5rem 0;
+    margin-bottom: 8rem;
+    justify-content: unset;
+  }
+
+  #screen.software-buttons-enabled .chrome .ftu-dialog .container .content {
+    margin-bottom: calc(5.5rem + var(--software-buttons-height));
+  }
+
+  .chrome .ftu-dialog .container .buttons {
+    padding: 1.5rem 1.5rem 0;
+    bottom: 2.5rem;
+    width: 100%;
+  }
+
+  #screen.software-buttons-enabled .chrome .ftu-dialog .container .buttons {
+    bottom: var(--software-buttons-height);
+    height: 5.5rem;
   }
 }

@@ -19,27 +19,42 @@
   background-color: var(--theme-color, var(--background));
   overflow: hidden;
   transform: translateY(-100%);
-  visibility: hidden;
 }
 
 .appframe.active {
   transform: translateY(0);
-  visibility: visible;
+  z-index: 1;
+}
+
+#screen.cards-view-visible .appframe:not(.active) {
+  transform: none !important;
+  transition: none;
+  opacity: 0.01;
+}
+
+#windows.dragging .appframe {
+  pointer-events: none;
+  border-radius: var(--screen-radius);
 }
 
 #homescreen.appframe {
   transform: scale(1.5);
-  visibility: visible;
-  transition: transform 0.5s cubic-bezier(0.2, 0.9, 0.1, 1);
+  opacity: 0;
+  transition: all 0.5s ease;
 }
 
 #homescreen.appframe.active {
   transform: scale(1);
+  opacity: 1;
+}
+
+.appframe.transitioning {
+  transition: all 0.5s ease;
 }
 
 .appframe.expand {
   border-radius: var(--screen-radius);
-  animation: expand 0.5s cubic-bezier(0.2, 0.9, 0.1, 1) forwards;
+  animation: expand 0.3s ease forwards;
 }
 
 @keyframes expand {
@@ -69,9 +84,65 @@
   }
 }
 
+.appframe.from-left {
+  border-radius: var(--screen-radius);
+  animation: from-left 0.3s cubic-bezier(0.8, 0.1, 0.9, 0) forwards;
+}
+
+@keyframes from-left {
+  from {
+    transform: translateX(calc(-100% - 2rem));
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+.appframe.from-right {
+  border-radius: var(--screen-radius);
+  animation: from-right 0.3s cubic-bezier(0.8, 0.1, 0.9, 0) forwards;
+}
+
+@keyframes from-right {
+  from {
+    transform: translateX(calc(100% + 2rem));
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+.appframe.to-left {
+  border-radius: var(--screen-radius);
+  animation: to-left 0.3s cubic-bezier(0.8, 0.1, 0.9, 0) forwards;
+}
+
+@keyframes to-left {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(calc(-100% - 2rem));
+  }
+}
+
+.appframe.to-right {
+  border-radius: var(--screen-radius);
+  animation: to-right 0.3s cubic-bezier(0.8, 0.1, 0.9, 0) forwards;
+}
+
+@keyframes to-right {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(calc(100% + 2rem));
+  }
+}
+
 .appframe.zoom-in {
   border-radius: var(--screen-radius);
-  animation: zoom-in 0.5s cubic-bezier(0.2, 0.9, 0.1, 1) forwards;
+  animation: zoom-in 0.5s ease forwards;
 }
 
 @keyframes zoom-in {
@@ -101,11 +172,12 @@
   }
 }
 
-.appframe.transparent {
+.appframe.transparent,
+.appframe.transparent .chrome {
   background-color: transparent;
 }
 
-.appframe .chrome .browser {
+.appframe .chrome .browser-container > .browser {
   position: absolute;
   left: 0;
   top: var(--statusbar-height);
@@ -113,22 +185,30 @@
   height: calc(100% - var(--statusbar-height) - 2.5rem);
 }
 
-#screen.context-menu-visible .appframe .chrome .browser {
+#screen.context-menu-visible .appframe .chrome .browser-container > .browser {
   pointer-events: none;
 }
 
 .appframe .chrome.visible .browser {
-  top: calc(var(--statusbar-height) + 2.5rem + var(--chrome-tablist-height) + var(--chrome-navbar-height) + (var(--chrome-toolbar-gap) * 2));
-  height: calc(100% - var(--statusbar-height) - 2.5rem - var(--chrome-tablist-height) - var(--chrome-navbar-height) - (var(--chrome-toolbar-gap) * 2));
+  top: calc(var(--statusbar-height) + ((var(--chrome-tablist-height) + var(--chrome-navbar-height) + (var(--chrome-toolbar-gap) * 2)) * (1 - var(--scroll-progress, 0))));
+  height: calc(100% - var(--statusbar-height) - 2.5rem - ((var(--chrome-tablist-height) - var(--chrome-navbar-height) - (var(--chrome-toolbar-gap) * 2)) * (1 - var(--scroll-progress, 0))));
 }
 
-#screen.software-buttons-enabled .appframe .chrome .browser {
+.appframe .chrome.bottom.visible .browser {
+  top: var(--statusbar-height);
+}
+
+#screen.software-buttons-enabled .appframe .chrome .browser-container > .browser {
   height: calc(100% - var(--statusbar-height) - var(--software-buttons-height));
 }
 
 #screen.software-buttons-enabled .appframe .chrome.visible .browser {
   top: calc(var(--statusbar-height) + var(--chrome-tablist-height) + var(--chrome-navbar-height) + (var(--chrome-toolbar-gap) * 2));
   height: calc(100% - var(--statusbar-height) - var(--software-buttons-height) - var(--chrome-tablist-height) - var(--chrome-navbar-height) - (var(--chrome-toolbar-gap) * 2));
+}
+
+#screen.software-buttons-enabled .appframe .chrome.bottom.visible .browser {
+  top: var(--statusbar-height);
 }
 
 .appframe.overlay .chrome .browser {
@@ -150,13 +230,13 @@
 
 @media screen and (max-width: 599px) {
   .appframe .chrome.visible .browser {
-    top: calc(var(--statusbar-height) + 2.5rem + var(--chrome-navbar-height) + var(--chrome-toolbar-gap));
-    height: calc(100% - var(--statusbar-height) - 2.5rem - var(--chrome-navbar-height) - var(--chrome-toolbar-gap));
+    top: calc((var(--statusbar-height) + var(--chrome-navbar-height) + var(--chrome-toolbar-gap)) * (1 - var(--scroll-progress, 0)));
+    height: calc(100% - 2.5rem - ((var(--statusbar-height) + var(--chrome-navbar-height) + var(--chrome-toolbar-gap)) * (1 - var(--scroll-progress, 0))));
   }
 
   #screen.software-buttons-enabled .appframe .chrome.visible .browser {
-    top: calc(var(--statusbar-height) + var(--chrome-navbar-height) + var(--chrome-toolbar-gap));
-    height: calc(100% - var(--statusbar-height) - var(--software-buttons-height) - var(--chrome-navbar-height) - var(--chrome-toolbar-gap));
+    top: calc((var(--statusbar-height) + (var(--chrome-navbar-height) + var(--chrome-toolbar-gap)) * (1 - var(--scroll-progress, 0))));
+    height: calc(100% - var(var(--software-buttons-height) - ((var(--statusbar-height) - var(--chrome-navbar-height) - var(--chrome-toolbar-gap)) * (1 - var(--scroll-progress, 0)))));
   }
 }
 
@@ -191,4 +271,57 @@
   top: calc(50% - 3.2rem);
   width: 6.4rem;
   height: 6.4rem;
+}
+
+.appframe > .grippy-bar {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 2.5rem;
+  z-index: 20;
+}
+
+#screen.software-buttons-enabled .appframe > .grippy-bar {
+  visibility: hidden;
+}
+
+.appframe > .grippy-bar::before {
+  content: '';
+  position: absolute;
+  left: calc(50% - 5rem);
+  bottom: 1rem;
+  width: 10rem;
+  height: 0.5rem;
+  background-color: #fff;
+  border-radius: 1rem;
+  mix-blend-mode: difference;
+}
+
+@media screen and (min-width: 600px) {
+  .appframe .chrome.top.visible,
+  .appframe .chrome.top.visible .toolbar {
+    padding-top: var(--statusbar-height) !important;
+  }
+}
+
+@media screen and (orientation: landscape) and (max-width: 767px) {
+  .appframe .chrome {
+    width: calc(100% - var(--software-buttons-height));
+    left: unset;
+  }
+  html[dir="ltr"] .appframe .chrome {
+    right: 0;
+  }
+  html[dir="rtl"] .appframe .chrome {
+    left: 0;
+  }
+
+  #screen.software-buttons-enabled .appframe.overlay .chrome .browser {
+    height: 100%;
+  }
+
+  #screen.software-buttons-enabled .appframe.immersive .chrome .browser {
+    height: calc(100% + var(--software-buttons-height));
+  }
 }

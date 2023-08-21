@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="var(--background)">
+  <title data-l10n-id="dialer"></title>
+  <link rel="stylesheet" href="http://default_theme.localhost:8081/style/index.css" />
+  <link rel="stylesheet" href="http://shared.localhost:8081/style/layout.css" />
+  <link rel="stylesheet" href="http://shared.localhost:8081/style/icons/icons.css" />
+  <link rel="stylesheet" href="http://shared.localhost:8081/style/panels.css" />
+  <link rel="stylesheet" href="http://shared.localhost:8081/style/headers.css" />
+  <link rel="stylesheet" href="http://shared.localhost:8081/style/tablists.css" />
+  <link rel="stylesheet" href="http://shared.localhost:8081/style/buttons.css" />
+  <link rel="stylesheet" href="style/dialer.css" />
+  <link rel="stylesheet" href="style/keypad.css" />
+  <link rel="stylesheet" href="style/calllog.css" />
+  <script defer src="http://shared.localhost:8081/js/panels.js"></script>
+  <script src="js/bootstrap.js"></script>
+  <script defer src="js/views.js"></script>
+  <script defer src="js/views/keypad.js"></script>
+  <script defer src="js/views/calllog.js"></script>
+  <script defer src="js/views/contacts.js"></script>
+
+  <script src="http://shared.localhost:8081/js/l10n.js"></script>
+  <meta name="defaultLanguage" content="en-US">
+  <meta name="availableLanguages" content="en-US, ar">
+  <link rel="localization" href="/locales/main.{locale}.properties">
+</head>
+<body>
+  <div id="app" class="app">
+    <div class="tablist">
+      <ul>
+        <li><a href="#keypad" id="tab-keypad" data-icon="dialer-dialpad" data-l10n-id="keypad" class="selected"></a></li>
+        <li><a href="#calllog" id="tab-calllog" data-icon="dialer-recentcalls" data-l10n-id="calllog"></a></li>
+        <li><a href="#contacts" id="tab-contacts" data-icon="dialer-contacts" data-l10n-id="contacts"></a></li>
+      </ul>
+    </div>
+
+    <div id="views">
+      <div id="keypad" class="panel visible">
+        <div class="headerbar">
+          <h1 data-l10n-id="keypad"></h1>
+          <menu type="toolbar">
+            <a href="#" data-icon="more"></a>
+          </menu>
+        </div>
+        <div class="content">
+          <div id="keypad-display">
+            <textarea class="input"></textarea>
+            <div class="backspace-button" data-icon="dialer-delete"></div>
+          </div>
+          <div class="keypad-board">
+            <ul class="keys">
+              <li id="keypad-number1-button">
+                <div>
+                  <span class="number" data-l10n-id="keypad-num1">1</span>
+                  <span class="symbols" data-l10n-id="keypad-num1-symbols" data-icon="activecall-voicemail"></span>
+                </div>
+              </li>
+              <li id="keypad-number2-button">
+                <div>
+                  <span class="number" data-l10n-id="keypad-num2">2</span>
+                  <span class="symbols" data-l10n-id="keypad-num2-symbols">ABC</span>
+                </div>
+              </li>
+              <li id="keypad-number3-button">
+                <div>
+                  <span class="number" data-l10n-id="keypad-num3">3</span>
+                  <span class="symbols" data-l10n-id="keypad-num3-symbols">DEF</span>
+                </div>
+              </li>
+              <li id="keypad-number4-button">
+                <div>
+                  <span class="number" data-l10n-id="keypad-num4">4</span>
+                  <span class="symbols" data-l10n-id="keypad-num4-symbols">GHI</span>
+                </div>
+              </li>
+              <li id="keypad-number5-button">
+                <div>
+                  <span class="number" data-l10n-id="keypad-num5">5</span>
+                  <span class="symbols" data-l10n-id="keypad-num5-symbols">JKL</span>
+                </div>
+              </li>
+              <li id="keypad-number6-button">
+                <div>
+                  <span class="number" data-l10n-id="keypad-num6">6</span>
+                  <span class="symbols" data-l10n-id="keypad-num6-symbols">MNO</span>
+                </div>
+              </li>
+              <li id="keypad-number7-button">
+                <div>
+                  <span class="number" data-l10n-id="keypad-num7">7</span>
+                  <span class="symbols" data-l10n-id="keypad-num7-symbols">PQRS</span>
+                </div>
+              </li>
+              <li id="keypad-number8-button">
+                <div>
+                  <span class="number" data-l10n-id="keypad-num8">8</span>
+                  <span class="symbols" data-l10n-id="keypad-num8-symbols">TUV</span>
+                </div>
+              </li>
+              <li id="keypad-number9-button">
+                <div>
+                  <span class="number" data-l10n-id="keypad-num9">9</span>
+                  <span class="symbols" data-l10n-id="keypad-num9-symbols">XYZ</span>
+                </div>
+              </li>
+              <li id="keypad-star-button">
+                <div>
+                  <span class="number" data-l10n-id="keypad-star">*</span>
+                </div>
+              </li>
+              <li id="keypad-number0-button">
+                <div>
+                  <span class="number" data-l10n-id="keypad-num0">0</span>
+                </div>
+              </li>
+              <li id="keypad-hashtag-button">
+                <div>
+                  <span class="number" data-l10n-id="keypad-hashtag">#</span>
+                </div>
+              </li>
+            </ul>
+
+            <div class="buttons">
+              <button class="dial" data-l10n-id="call"></button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="calllog" class="panel visible">
+        <div class="headerbar">
+          <h1 data-l10n-id="calllog"></h1>
+          <menu type="toolbar">
+            <a href="#" data-icon="search"></a>
+          </menu>
+        </div>
+        <div class="content">
+          <ul id="calllog-list"></ul>
+        </div>
+      </div>
+
+      <div id="contacts" class="panel visible">
+        <iframe src="" frameborder="0" id="contacts-view"></iframe>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

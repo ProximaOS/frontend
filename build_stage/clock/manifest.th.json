@@ -1,0 +1,21 @@
+{
+  "version": "1.0",
+  "name": "นาฬิกา",
+  "description": "จัดการการเตือนของคุณ สร้างรอบนาฬิกาจับเวลา และดูเวลาจากอีกด้านหนึ่งของโลก",
+  "launch_path": "/index.html",
+  "icons": {
+    "48": "/style/icons/clock.png"
+  },
+  "developer": {
+    "name": "MortCodesWeb",
+    "url": "https://openorchid.github.io/"
+  },
+  "default_locale": "en",
+  "orientation": "portrait-primary",
+  "background_color": "#f0f6ff",
+  "theme_color": "#0061e0",
+  "permissions": {
+    "nodeintegration": {}
+  },
+  "display": "immersive"
+}

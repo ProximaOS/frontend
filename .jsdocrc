@@ -1,0 +1,9 @@
+{
+  "plugins": ["plugins/markdown", "build/jsdoc/nostrict"],
+  "markdown": {
+    "parser": "gfm",
+    "hardwrap": true,
+    "githubRepoName": "frontend",
+    "githubRepoOwner": "openorchid"
+  }
+}

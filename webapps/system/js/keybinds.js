@@ -1,5 +1,9 @@
-const Keybinds = {
-  init: function () {}
-}
+!(function (exports) {
+  'use strict';
 
-Keybinds.init();
+  const Keybinds = {
+    init: function () {}
+  };
+
+  Keybinds.init();
+})(window);

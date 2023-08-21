@@ -1,88 +1,88 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>FTU</title>
+  <link rel="stylesheet" href="http://default_theme.localhost:8081/style/index.css">
+  <link rel="stylesheet" href="http://shared.localhost:8081/style/icons/icons.css">
+  <link rel="stylesheet" href="http://shared.localhost:8081/style/layout.css">
+  <link rel="stylesheet" href="http://shared.localhost:8081/style/buttons.css">
   <link rel="stylesheet" href="style/ftu.css">
+  <script defer src="js/ftu.js"></script>
+
+  <script src="http://shared.localhost:8081/js/l10n.js"></script>
+  <meta name="defaultLanguage" content="en-US">
+  <meta name="availableLanguages" content="en-US, ar">
+  <link rel="localization" href="/locales/main.{locale}.properties">
 </head>
+
 <body>
-  <div id="background"></div>
-  <div id="content">
-    <div id="content-box">
-      <div class="panel visible">
-        <div class="illustration">
-          <video src=""></video>
-        </div>
-        <div class="content-holder">
-          <header>
-            <h1>Language</h1>
-          </header>
-          <section>
-            <ul id="languages">
-              <li><a href="#">Lang 1</a></li>
-              <li><a href="#">Lang 2</a></li>
-              <li><a href="#">Lang 3</a></li>
-              <li><a href="#">Lang 4</a></li>
-              <li><a href="#">Lang 5</a></li>
-              <li><a href="#">Lang 6</a></li>
-              <li><a href="#">Lang 7</a></li>
-              <li><a href="#">Lang 8</a></li>
-              <li><a href="#">Lang 9</a></li>
-              <li><a href="#">Lang 10</a></li>
-              <li><a href="#">Lang 11</a></li>
-              <li><a href="#">Lang 12</a></li>
-              <li><a href="#">Lang 13</a></li>
-              <li><a href="#">Lang 14</a></li>
-              <li><a href="#">Lang 15</a></li>
-              <li><a href="#">Lang 16</a></li>
+  <div id="app" class="app">
+    <div id="splashscreen">
+      <div class="logo"></div>
+      <div class="warning" data-l10n-id="epillepsyWarning"></div>
+    </div>
+
+    <div id="background"></div>
+    <div id="content">
+      <div class="container">
+        <div class="greetings page visible">
+          <div class="illustration">
+            <div class="illustration-art"></div>
+          </div>
+          <div class="content">
+            <h3>Hello!</h3>
+            <p>lorem ipsum</p>
+            <ul>
+              <li>lorem ipsum</li>
+              <li>lorem ipsum</li>
+              <li>lorem ipsum</li>
             </ul>
-          </section>
-          <menu>
-            <button id="languages-confirm-button" class="recommend"></button>
-          </menu>
+          </div>
+          <div class="buttons">
+            <button class="next-button next recommend" data-icon="forward" data-page-id="customize">Next</button>
+          </div>
         </div>
-      </div>
-
-      <div class="panel">
-        <div class="illustration">
-          <video src=""></video>
+        <div class="customize page">
+          <div class="illustration">
+            <div class="illustration-art"></div>
+          </div>
+          <div class="content">
+            <h3>Customize</h3>
+            <p>Pick your preferred profile picture and accent color.</p>
+            <div class="accent-colors">
+              <div class="red"></div>
+              <div class="yellow"></div>
+              <div class="green"></div>
+              <div class="blue default"></div>
+              <div class="purple"></div>
+            </div>
+          </div>
+          <div class="buttons">
+            <button class="previous-button previous" data-icon="back" data-page-id="greetings">Previous</button>
+            <button class="next-button next recommend" data-icon="forward" data-page-id="account">Next</button>
+          </div>
         </div>
-        <div class="content-holder">
-          <header>
-            <h1>Header 2</h1>
-          </header>
-          <section></section>
-          <menu><button></button><button></button></menu>
-        </div>
-      </div>
-
-      <div class="panel">
-        <div class="illustration">
-          <video src=""></video>
-        </div>
-        <div class="content-holder">
-          <header>
-            <h1>Header 3</h1>
-          </header>
-          <section></section>
-          <menu><button></button><button></button></menu>
-        </div>
-      </div>
-
-      <div class="panel">
-        <div class="illustration">
-          <video src=""></video>
-        </div>
-        <div class="content-holder">
-          <header>
-            <h1>Header 4</h1>
-          </header>
-          <section></section>
-          <menu><button></button><button></button></menu>
+        <div class="account page">
+          <div class="illustration">
+            <div class="illustration-art"></div>
+          </div>
+          <div class="content">
+            <h3>Orchid Account</h3>
+            <p>Login or sign up to sync your data between your Orchid devices.</p>
+            <button>Login</button>
+            <a href="#">Or sign up instead</a>
+          </div>
+          <div class="buttons">
+            <button class="previous-button previous" data-icon="back" data-page-id="customize">Previous</button>
+            <button class="done-button next recommend" data-icon="forward">Done</button>
+          </div>
         </div>
       </div>
     </div>
   </div>
 </body>
+
 </html>

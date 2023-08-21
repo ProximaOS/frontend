@@ -1,0 +1,21 @@
+{
+  "version": "1.0",
+  "name": "デフォルトのテーマ",
+  "description": "",
+  "role": "theme",
+  "style_path": "/style/index.css",
+  "icons": {
+    "48": "/style/icons/theme.png"
+  },
+  "developer": {
+    "name": "MortCodesWeb",
+    "url": "https://openorchid.github.io/"
+  },
+  "default_locale": "en",
+  "orientation": "portrait-primary",
+  "background_color": "#f0f6ff",
+  "theme_color": "#0061e0",
+  "permissions": {
+    "nodeintegration": {}
+  }
+}

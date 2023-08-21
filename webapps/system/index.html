@@ -3,9 +3,15 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Shared stylesheets -->
   <link rel="stylesheet" href="http://default_theme.localhost:8081/style/index.css" />
   <link rel="stylesheet" href="http://shared.localhost:8081/style/webview.css" />
   <link rel="stylesheet" href="http://shared.localhost:8081/style/icons/icons.css">
+  <link rel="stylesheet" href="http://shared.localhost:8081/style/buttons.css" />
+  <link rel="stylesheet" href="http://shared.localhost:8081/style/snackbars.css" />
+
+  <!-- Local stylesheets -->
   <link rel="stylesheet" href="dist/main.bundle.css">
   <link rel="stylesheet" href="style/system.css">
   <link rel="stylesheet" href="style/splashscreen.css">
@@ -17,30 +23,55 @@
   <link rel="stylesheet" href="style/media_playback.css">
   <link rel="stylesheet" href="style/quick_settings.css">
   <link rel="stylesheet" href="style/brightness.css">
-  <link rel="stylesheet" href="style/keyboard.css">
+  <link rel="stylesheet" href="style/devices.css">
+  <link rel="stylesheet" href="style/keyboards.css">
   <link rel="stylesheet" href="style/software_buttons.css">
   <link rel="stylesheet" href="style/modal_dialog.css">
   <link rel="stylesheet" href="style/lockscreen.css">
+  <link rel="stylesheet" href="style/text_selection.css">
+  <link rel="stylesheet" href="style/volume_rocker.css">
+  <link rel="stylesheet" href="style/z_indexes.css">
+
+  <!-- Online scripts -->
   <script type="module" src="http://shared.localhost:8081/services/orchid_services.js"></script>
+
+  <!-- Initial scripts -->
   <script src="js/bootstrap.js"></script>
+  <script defer src="js/webapps.js"></script>
+
+  <!-- Feature scripts -->
   <script defer src="js/splashscreen.js"></script>
   <script defer src="js/event_listener.js"></script>
   <script defer src="js/time_icon.js"></script>
   <script defer src="js/battery_icon.js"></script>
   <script defer src="js/data_icon.js"></script>
+  <script defer src="js/cellular_data_icon.js"></script>
   <script defer src="js/network_icon.js"></script>
   <script defer src="js/bletooth_icon.js"></script>
   <script defer src="js/app_window.js"></script>
   <script defer src="js/notification_toaster.js"></script>
   <script defer src="js/utility_tray_motion.js"></script>
-  <script defer src="js/quick_settings.js"></script>
-  <script defer src="js/notifications.js"></script>
   <script defer src="js/media_playback.js"></script>
-  <script defer src="js/keyboard.js"></script>
+  <script defer src="js/keyboards.js"></script>
   <script defer src="js/modal_dialog.js"></script>
   <script defer src="js/message_handler.js"></script>
-  <script defer src="js/context_menu.js"></script>
   <script defer src="js/screen_capture.js"></script>
+  <script defer src="js/screen_rotate.js"></script>
+  <script defer src="js/cards_view.js"></script>
+  <script defer src="js/gesture_panels.js"></script>
+  <script defer src="js/alarms_handler.js"></script>
+  <script defer src="js/dialer_handler.js"></script>
+  <script defer src="js/keybinds.js"></script>
+  <script defer src="js/utility_tray.js"></script>
+  <script defer src="js/homescreen_launcher.js"></script>
+  <script defer src="js/gesture_panels.js"></script>
+  <script defer src="js/text_selection.js"></script>
+  <script defer src="js/context_menu.js"></script>
+  <script defer src="js/syncing_data.js"></script>
+  <script defer src="js/snackbars.js"></script>
+  <script defer src="js/volume_rocker.js"></script>
+  <script defer src="js/hardware_buttons.js"></script>
+  <script defer src="js/permissions.js"></script>
   <script defer src="lockscreen/js/motion.js"></script>
   <script defer src="lockscreen/js/clock.js"></script>
   <script defer src="lockscreen/js/date.js"></script>
@@ -55,43 +86,38 @@
   <link rel="localization" href="/locales/main.{locale}.properties">
 </head>
 <body>
-  <div id="screen" class="software-buttons-enabled">
-    <div id="splashscreen">
+  <div id="screen">
+    <div id="splashscreen" data-z-index-layer="splashscreen">
       <video src="" id="splashscreen-video"></video>
     </div>
 
-    <div id="statusbar">
+    <div id="statusbar" data-z-index-layer="statusbar">
       <div class="statusbar-icons">
         <div class="left">
           <div id="statusbar-notifications" class="hidden" data-icon="notifications"></div>
+          <div id="statusbar-playing" class="hidden" data-icon="play"></div>
+          <div id="statusbar-camera" class="hidden" data-icon="camera"></div>
+          <div id="statusbar-microphone" class="hidden" data-icon="mic"></div>
+          <div id="statusbar-video" class="hidden" data-icon="video"></div>
           <div id="statusbar-time"></div>
         </div>
         <div class="right">
           <div id="statusbar-battery" class="hidden" data-icon="battery-70"></div>
           <div id="statusbar-cellular-signal" class="hidden" data-icon="signal-4"></div>
-          <div id="statusbar-network" class="hidden" data-icon="wifi-3"></div>
+          <div id="statusbar-data" class="hidden" data-icon="data"></div>
+          <div id="statusbar-airplane-mode" class="hidden" data-icon="airplane"></div>
+          <div id="statusbar-wifi" class="hidden" data-icon="wifi-3"></div>
           <div id="statusbar-bluetooth" class="hidden" data-icon="bluetooth"></div>
+          <div id="statusbar-warm-colors" class="hidden" data-icon="accessibility"></div>
         </div>
       </div>
     </div>
 
-    <div id="windows"></div>
+    <div id="windows" data-z-index-layer="windows"></div>
 
-    <div id="keyboard">
-      <div id="keyboard-auto-correct"></div>
-      <div id="keyboard-content"></div>
-      <div id="keyboard-toolbar">
-        <button id="keyboard-languages-button" data-icon="web"></button>
-        <button data-icon="emojis"></button>
-        <button data-icon="stickers"></button>
-        <div class="spacer"></div>
-        <button data-icon="mic"></button>
-      </div>
+    <div id="keyboards" data-z-index-layer="keyboards"></div>
 
-      <div id="keyboard-languages"></div>
-    </div>
-
-    <div id="lockscreen" class="visible">
+    <div id="lockscreen" data-z-index-layer="lockscreen" class="visible">
       <div id="lockscreen-background"></div>
       <div id="lockscreen-container">
         <div class="lockscreen-row">
@@ -103,13 +129,14 @@
           <div id="lockscreen-charging"></div>
         </div>
       </div>
+      <div id="lockscreen-notifications"></div>
       <div id="lockscreen-toolbar">
         <button data-icon="camera"></button>
         <button data-icon="flashlight"></button>
       </div>
     </div>
 
-    <div id="utility-tray">
+    <div id="utility-tray" data-z-index-layer="utility-tray">
       <div id="utility-tray-motion">
         <div id="control-center">
           <div id="control-center-header" class="utility-tray-header">
@@ -155,7 +182,15 @@
               <div class="grippy-bar"></div>
             </div>
           </div>
-          <div class="control-center-row"></div>
+          <div class="control-center-row">
+            <div id="devices">
+              <header>
+                <h1>Devices</h1>
+                <button data-icon="add"></button>
+              </header>
+              <div id="devices-list"></div>
+            </div>
+          </div>
         </div>
         <div id="notifications">
           <div id="notifications-header" class="utility-tray-header">
@@ -170,7 +205,7 @@
       </div>
     </div>
 
-    <div id="notification-toaster" class="notification">
+    <div id="notification-toaster" data-z-index-layer="notification-toaster" class="notification">
       <div id="notification-titlebar" class="titlebar">
         <img src="" id="notification-badge" class="badge">
         <div id="notification-source-name" class="source-name"></div>
@@ -187,16 +222,15 @@
       <div id="notification-actions" class="actions"></div>
     </div>
 
-    <div id="cards-view">
+    <div id="cards-view" data-z-index-layer="cards-view">
       <ul id="cards-view-list"></ul>
-
       <div id="cards-view-toolbar">
-        <button id="cards-view-new-window-button"></button>
-        <button id="cards-view-clear-all-button"></button>
+        <button id="cards-view-new-window-button" data-icon="add"></button>
+        <button id="cards-view-clear-all-button" data-icon="clear-all"></button>
       </div>
     </div>
 
-    <div id="modal-dialog">
+    <div id="modal-dialog" data-z-index-layer="modal-dialogs">
       <div id="modal-dialog-alert">
         <section class="container">
           <div class="content">
@@ -235,7 +269,7 @@
       </div>
     </div>
 
-    <div id="software-buttons">
+    <div id="software-buttons" data-z-index-layer="software-buttons">
       <button id="software-back-button"></button>
       <button id="software-home-button"></button>
       <button id="software-recents-button"></button>
@@ -243,11 +277,35 @@
       <div id="dock"></div>
     </div>
 
-    <div id="context-menu">
-      <div id="context-menu-content">
-        <div id="context-menu-content-items"></div>
+    <div id="system-overlays" data-z-index-layer="system-overlays">
+      <div id="power-screen"></div>
+
+      <div id="volume-rocker">
+        <div id="volume-rocker-progress"></div>
+      </div>
+
+      <div id="text-selection">
+        <button id="text-selection-copy-button" data-icon="textselection-copy"></button>
+        <button id="text-selection-cut-button" data-icon="textselection-cut"></button>
+        <button id="text-selection-paste-button" data-icon="textselection-paste"></button>
+        <button id="text-selection-select-all-button" data-icon="textselection-selectall"></button>
+      </div>
+
+      <div id="snackbar" class="snackbar hidden">
+        <div id="snackbar-label" class="label"></div>
+      </div>
+
+      <div id="context-menu">
+        <div id="context-menu-content">
+          <div id="context-menu-content-items"></div>
+        </div>
       </div>
     </div>
+
+    <div id="top-panel" data-z-index-layer="gesture-panel"></div>
+    <div id="left-panel" data-z-index-layer="gesture-panel"></div>
+    <div id="right-panel" data-z-index-layer="gesture-panel"></div>
+    <div id="bottom-panel" data-z-index-layer="gesture-panel"></div>
   </div>
 </body>
 </html>

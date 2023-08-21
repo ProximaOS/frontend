@@ -1,0 +1,12 @@
+#calllog {
+  transform: translateX(0) !important;
+}
+
+#calllog > .headerbar {
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+#calllog.visible > .headerbar {
+  opacity: 1;
+}

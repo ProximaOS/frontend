@@ -1,6 +1,8 @@
-const PageController = {
-  rootPanel: document.getElementById("root"),
+!(function (exports) {
 
+'use strict';
+
+const PageController = {
   init: function () {
     const pageButtons = document.querySelectorAll("[data-page-id]");
     pageButtons.forEach((button) => {
@@ -43,3 +45,7 @@ const PageController = {
 };
 
 PageController.init();
+
+exports.PageController = PageController;
+
+})(window);

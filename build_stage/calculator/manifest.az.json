@@ -1,0 +1,18 @@
+{
+  "version": "1.0",
+  "name": "Kalkulyator",
+  "description": "Bölmə, vurma və çıxma əməliyyatlarınızı burada edin.",
+  "launch_path": "/index.html",
+  "icons": {
+    "48": "/style/icons/calculator.png"
+  },
+  "developer": {
+    "name": "MortCodesWeb",
+    "url": "https://openorchid.github.io/"
+  },
+  "default_locale": "en",
+  "orientation": "portrait-primary",
+  "background_color": "#f0f6ff",
+  "theme_color": "#0061e0",
+  "permissions": {}
+}

@@ -1,32 +1,53 @@
-window.addEventListener('DOMContentLoaded', () => {
-  // Fetch available networks and populate the list
-  const webappsList = document.getElementById('webapps-list');
+!(function (exports) {
+  'use strict';
 
-  var apps = navigator.api.appManager.readAppList();
-  apps.then((data) => {
-    data.forEach(item => {
-      var element = document.createElement('li');
-      webappsList.appendChild(element);
+  const Webapps = {
+    webappsList: document.getElementById('webapps-list'),
 
-      var icon = document.createElement('img');
-      if (item.manifest.icons) {
-        icon.src = item.manifest.icons[45];
-      }
-      icon.onerror = () => {
-        icon.src = '/images/default.png';
-      };
-      element.appendChild(icon);
+    APP_ICON_SIZE: 40,
 
-      var textHolder = document.createElement('div');
-      element.appendChild(textHolder);
+    init: function () {
+      // Fetch available networks and populate the list
+      const apps = _session.appsManager.getAll();
+      apps.then((data) => {
+        data.forEach((item) => {
+          const element = document.createElement('li');
+          element.dataset.pageId = 'webappInfo';
+          this.webappsList.appendChild(element);
 
-      var name = document.createElement('p');
-      name.textContent = item.manifest.name;
-      textHolder.appendChild(name);
+          const icon = document.createElement('img');
+          icon.crossOrigin = 'anonymous';
+          if (item.manifest.icons) {
+            Object.entries(item.manifest.icons).forEach((entry) => {
+              if (entry[0] <= this.APP_ICON_SIZE) {
+                return;
+              }
+              icon.src = entry[1];
+            });
+          } else {
+            icon.src = '/images/default.png';
+          }
+          icon.onerror = () => {
+            icon.src = '/images/default.png';
+          };
+          element.appendChild(icon);
 
-      var size = document.createElement('p');
-      size.textContent = item.size;
-      textHolder.appendChild(size);
-    });
-  });
-});
+          const textHolder = document.createElement('div');
+          element.appendChild(textHolder);
+
+          const name = document.createElement('p');
+          name.textContent = item.manifest.name;
+          textHolder.appendChild(name);
+
+          const size = document.createElement('p');
+          size.textContent = item.size;
+          textHolder.appendChild(size);
+
+          PageController.init();
+        });
+      });
+    }
+  };
+
+  Webapps.init();
+})(window);

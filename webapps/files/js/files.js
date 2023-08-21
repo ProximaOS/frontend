@@ -1,53 +1,230 @@
-const { path } = require('path');
+!(function (exports) {
+  'use strict';
 
-const Files = {
-  DEFAULT_SHORTCUTS: [
-    {
-      name: 'audio',
-      icon: 'audio_folder',
-      path: path.join(require('os').homedir, 'audio')
-    },
-    {
-      name: 'books',
-      icon: 'books_folder',
-      path: path.join(require('os').homedir, 'books')
-    },
-    {
-      name: 'downloads',
-      icon: 'downloads_folder',
-      path: path.join(require('os').homedir, 'downloads')
-    },
-    {
-      name: 'movies',
-      icon: 'movies_folder',
-      path: path.join(require('os').homedir, 'movies')
-    },
-    {
-      name: 'photos',
-      icon: 'photos_folder',
-      path: path.join(require('os').homedir, 'photos')
-    },
-    {
-      name: 'others',
-      icon: 'others_folder',
-      path: path.join(require('os').homedir, 'others')
-    }
-  ],
+  const Files = {
+    currentPath: '',
 
-  init: function () {
-    navigator.api.settings.getValue('files.quick-access').then(data => {
-      if (!data) {
-        settings.set('files.quick-access', this.DEFAULT_SHORTCUTS);
+    quickAccess: document.getElementById('quick-access'),
+    fileContainer: document.getElementById('content-files'),
+    gridButton: document.getElementById('content-grid-button'),
+    reloadButton: document.getElementById('content-reload-button'),
+    pathName: document.getElementById('path-name'),
+
+    DEFAULT_SHORTCUTS: [
+      {
+        name: 'home',
+        icon: 'home_folder',
+        path: '/'
+      },
+      {
+        name: 'audio',
+        icon: 'audio_folder',
+        path: '/audio'
+      },
+      {
+        name: 'books',
+        icon: 'books_folder',
+        path: '/books'
+      },
+      {
+        name: 'downloads',
+        icon: 'downloads_folder',
+        path: '/downloads'
+      },
+      {
+        name: 'movies',
+        icon: 'movies_folder',
+        path: '/movies'
+      },
+      {
+        name: 'photos',
+        icon: 'photos_folder',
+        path: '/photos'
+      },
+      {
+        name: 'others',
+        icon: 'others_folder',
+        path: '/others'
+      }
+    ],
+
+    init: function () {
+      this.gridButton.addEventListener(
+        'click',
+        this.handleGridButton.bind(this)
+      );
+      this.reloadButton.addEventListener(
+        'click',
+        this.handleReloadButton.bind(this)
+      );
+
+      _session.settings.getValue('files.quick-access').then((data) => {
+        if (!Array.isArray(data)) {
+          _session.settings.setValue(
+            'files.quick-access',
+            this.DEFAULT_SHORTCUTS
+          );
+        }
+
+        data.forEach((item) => {
+          const shortcut = document.createElement('li');
+          shortcut.classList.add('page');
+          shortcut.classList.add(item.icon);
+          shortcut.dataset.pageId = 'content';
+
+          shortcut.onclick = () => {
+            this.goTo(item.path);
+          };
+
+          const shortcutName = document.createElement('p');
+          shortcutName.textContent = item.name;
+          shortcut.appendChild(shortcutName);
+
+          this.quickAccess.appendChild(shortcut);
+
+          PageController.init();
+        });
+      });
+    },
+
+    goTo: function (path) {
+      this.currentPath = path;
+
+      this.fileContainer.innerHTML = '';
+      this.pathName.innerHTML = path.replaceAll('//', '/');
+      _session.storageManager.list(path).then((files) => {
+        files.sort();
+        files.forEach((file) => {
+          const item = document.createElement('div');
+          item.classList.add('file');
+          _session.storageManager
+            .getFileStats(`${path}/${file}`)
+            .then((stat) => {
+              if (stat.isDirectory()) {
+                item.classList.add('folder');
+                item.onclick = () => {
+                  this.goTo(`${path}/${file}`);
+                };
+                this.fileContainer.appendChild(item);
+              } else {
+                item.classList.add('file');
+
+                if (file.startsWith('.')) {
+                  item.classList.add('hidden');
+                }
+                if (file.endsWith('.orchidApp')) {
+                  item.onclick = () => {
+                    ModalDialog.showConfirm(
+                      `Install ${file}`,
+                      `Do you want to install a 3rd-party app from ${file}? It could be a malicious app.`,
+                      (result) => {
+                        if (result) {
+                          _session.appsManager.installPackage(
+                            `${path}/${file}`
+                          );
+                        }
+                      }
+                    );
+                  };
+                }
+
+                _session.storageManager
+                  .getMime(`${path}/${file}`)
+                  .then((mime) => {
+                    if (mime.startsWith('text/')) {
+                      item.classList.add('text');
+                    } else if (mime.startsWith('image/')) {
+                      item.classList.add('image');
+                      _session.storageManager
+                        .read(`${path}/${file}`, { encoding: 'base64' })
+                        .then((data) => {
+                          // Call a function to generate the HTML content with the Base64-encoded image data
+                          item.style.setProperty(
+                            '--thumbnail',
+                            `url("data:${mime};base64,${data}")`
+                          );
+                        });
+                    } else if (mime.startsWith('audio/')) {
+                      item.classList.add('audio');
+                    } else if (mime.startsWith('video/')) {
+                      item.classList.add('video');
+                    }
+                  });
+                setTimeout(() => {
+                  this.fileContainer.appendChild(item);
+                }, 10);
+              }
+            });
+
+          const itemIcon = document.createElement('div');
+          itemIcon.classList.add('icon');
+          item.appendChild(itemIcon);
+
+          const itemTextHolder = document.createElement('div');
+          itemTextHolder.classList.add('text-holder');
+          item.appendChild(itemTextHolder);
+
+          const itemName = document.createElement('div');
+          itemName.classList.add('name');
+          itemName.textContent = file;
+          itemTextHolder.appendChild(itemName);
+
+          const itemSize = document.createElement('div');
+          itemSize.classList.add('size');
+          itemSize.textContent = this.getFolderSize(`${path}/${file}`);
+          itemTextHolder.appendChild(itemSize);
+        });
+      });
+    },
+
+    getFolderSize: function (folderPath) {
+      let totalSize = 0;
+
+      async function calculateSize (filePath) {
+        const stats = await _session.storageManager.getFileStats(filePath);
+        if (stats.isFile()) {
+          totalSize += stats.size;
+        } else if (stats.isDirectory()) {
+          const nestedFiles = await _session.storageManager.list(filePath);
+
+          nestedFiles.forEach((file) => {
+            const nestedFilePath = path.join(filePath, file);
+            calculateSize(nestedFilePath);
+          });
+        }
       }
 
-      data.forEach(item => {
-        var shortcut = document.createElement('li');
-        shortcut.classList.add('page');
-        shortcut.textContent = item.name;
-        quickAccess.appendItem(shortcut);
-      });
-    });
-  }
-};
+      calculateSize(folderPath);
 
-Files.init();
+      // Convert the total size to a human-readable format (e.g., KB, MB, GB)
+      const sizeInBytes = totalSize;
+      const units = ['bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB'];
+      let size = sizeInBytes;
+      let unitIndex = 0;
+
+      while (size > 1024 && unitIndex < units.length - 1) {
+        size /= 1024;
+        unitIndex++;
+      }
+
+      size = Math.round(size * 100) / 100; // Round to two decimal places
+
+      return `${size} ${units[unitIndex]}`;
+    },
+
+    handleGridButton: function () {
+      this.fileContainer.classList.toggle('grid');
+      if (this.fileContainer.classList.contains('grid')) {
+        this.gridButton.dataset.icon = 'menu';
+      } else {
+        this.gridButton.dataset.icon = 'grid';
+      }
+    },
+
+    handleReloadButton: function () {
+      this.goTo(this.currentPath);
+    }
+  };
+
+  Files.init();
+})(window);

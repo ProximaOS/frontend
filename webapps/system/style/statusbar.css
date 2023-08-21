@@ -4,8 +4,20 @@
   top: 0;
   width: 100%;
   height: var(--statusbar-height);
-  z-index: 32767;
-  transition: all 0.3s ease;
+  transition: background-color 0.3s ease;
+}
+
+#statusbar.tray-open {
+  left: 50%;
+  /* We use the special translate property for X-axis translation to avoid janky 'transform: translateX()' transition */
+  translate: -50% 0;
+  max-width: var(--safezone-width);
+  transform: translateY(calc(var(--statusbar-height) * (var(--motion-progress, 0) + var(--overflow-progress))));
+  transition: none;
+}
+
+#statusbar.tray-open.transitioning {
+  transition: transform 0.5s ease;
 }
 
 #statusbar.hidden {
@@ -16,9 +28,11 @@
   position: absolute;
   left: 0;
   top: 0;
-  margin: 0 var(--statusbar-padding-left) 0 var(--statusbar-padding-right);
-  width: calc(100% - var(--statusbar-padding-left) - var(--statusbar-padding-right));
+  margin-left: calc((var(--statusbar-padding-left) * (1 - var(--motion-progress, 0))) + (3rem * var(--motion-progress, 0)));
+  margin-right: calc((var(--statusbar-padding-right) * (1 - var(--motion-progress, 0))) + (3rem * var(--motion-progress, 0)));
+  width: calc(100% - calc((var(--statusbar-padding-left) * (1 - var(--motion-progress, 0))) + (3rem * var(--motion-progress, 0))) - calc((var(--statusbar-padding-right) * (1 - var(--motion-progress, 0))) + (3rem * var(--motion-progress, 0))));
   height: 100%;
+  pointer-events: none;
 }
 
 .statusbar-icons > .left {
@@ -65,8 +79,8 @@ html[dir="rtl"] .statusbar-icons > .right {
   transition: opacity 0.3s cubic-bezier(0.2, 0.9, 0.1, 1.25) 0.3s, transform 0.3s cubic-bezier(0.2, 0.9, 0.1, 1.25) 0.3s, visibility 0.3s cubic-bezier(0.2, 0.9, 0.1, 1.25) 0.3s, margin 0.3s cubic-bezier(0.2, 0.9, 0.1, 1.25);
 }
 
-#statusbar.light .statusbar-icons > .left div,
-#statusbar.light .statusbar-icons > .right div {
+#statusbar:not(.tray-open).light .statusbar-icons > .left div,
+#statusbar:not(.tray-open).light .statusbar-icons > .right div {
   color: #333;
 }
 
@@ -83,6 +97,22 @@ html[dir="rtl"] .statusbar-icons > .right {
   width: 2rem;
   height: 2rem;
   line-height: 2rem;
+  font-size: 1.8rem;
+}
+
+#statusbar-playing::before {
+  font-size: 1.8rem;
+}
+
+#statusbar-camera::before {
+  font-size: 1.8rem;
+}
+
+#statusbar-microphone::before {
+  font-size: 1.8rem;
+}
+
+#statusbar-video::before {
   font-size: 1.8rem;
 }
 
@@ -105,12 +135,6 @@ html[dir="rtl"] .statusbar-icons > .right {
   gap: 0.5rem;
   padding: 0.3rem 0.75rem;
   border-radius: 2rem;
-}
-
-#statusbar-time.indicator.screen-capture::before {
-  content: 'video';
-  font-size: 2rem;
-  font-family: 'openorchid-icons';
 }
 
 #statusbar.light #statusbar-time {
@@ -177,11 +201,19 @@ html[dir="rtl"] .statusbar-icons > .right {
   opacity: 0.5;
 }
 
-#statusbar-network {
+#statusbar-data::before {
+  font-size: 1.8rem;
+}
+
+#statusbar-airplane-mode::before {
+  font-size: 1.8rem;
+}
+
+#statusbar-wifi {
   position: relative;
 }
 
-#statusbar-network::before {
+#statusbar-wifi::before {
   position: absolute;
   left: 0;
   top: 0;
@@ -191,7 +223,7 @@ html[dir="rtl"] .statusbar-icons > .right {
   font-size: 1.8rem;
 }
 
-#statusbar-network::after {
+#statusbar-wifi::after {
   content: 'wifi-4';
   position: absolute;
   left: 0;
@@ -202,4 +234,25 @@ html[dir="rtl"] .statusbar-icons > .right {
   line-height: 2rem;
   font-size: 1.8rem;
   opacity: 0.5;
+}
+
+#statusbar-bluetooth::before {
+  font-size: 1.8rem;
+}
+
+#statusbar-warm-colors::before {
+  font-size: 1.8rem;
+}
+
+@media screen and (orientation: landscape) and (max-width: 767px) {
+  #statusbar {
+    width: calc(100% - var(--software-buttons-height));
+    left: unset;
+  }
+  html[dir="ltr"] #statusbar {
+    right: 0;
+  }
+  html[dir="rtl"] #statusbar {
+    left: 0;
+  }
 }

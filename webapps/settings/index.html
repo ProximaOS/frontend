@@ -16,15 +16,18 @@
   <link rel="stylesheet" href="http://shared.localhost:8081/style/buttons.css" />
   <link rel="stylesheet" href="http://shared.localhost:8081/style/lists.css" />
   <link rel="stylesheet" href="http://shared.localhost:8081/style/switches.css" />
-  <link rel="stylesheet" href="http://shared.localhost:8081/style/toolbars.css" />
+  <link rel="stylesheet" href="http://shared.localhost:8081/style/checkboxes.css" />
+  <link rel="stylesheet" href="http://shared.localhost:8081/style/seekbars.css" />
   <link rel="stylesheet" href="style/settings.css" />
   <script defer src="http://shared.localhost:8081/js/panels.js"></script>
   <script src="js/bootstrap.js"></script>
   <script defer src="js/pages.js"></script>
   <script defer src="js/pages/wifi/main.js"></script>
   <script defer src="js/pages/bluetooth/main.js"></script>
+  <script defer src="js/pages/general/main.js"></script>
   <script defer src="js/pages/webapps/main.js"></script>
   <script defer src="js/pages/battery/main.js"></script>
+  <script defer src="js/pages/storage/main.js"></script>
 
   <script src="http://shared.localhost:8081/js/l10n.js"></script>
   <meta name="defaultLanguage" content="en-US">
@@ -113,8 +116,8 @@
           <li class="page" data-icon="user" data-page-id="profiles">
             <p data-l10n-id="profiles"></p>
           </li>
-          <li class="page" data-icon="power" data-page-id="systemInfo">
-            <p data-l10n-id="systemInfo"></p>
+          <li class="page" data-icon="power" data-page-id="system">
+            <p data-l10n-id="system"></p>
           </li>
           <li class="page" data-icon="info" data-page-id="aboutInfo">
             <p data-l10n-id="aboutInfo"></p>
@@ -126,7 +129,7 @@
     <div id="wifi" class="panel">
       <div class="headerbar">
         <div class="safezone">
-          <a href="#" id="wifi-back-button" data-icon="back" data-page-id="root"></a>
+          <a href="#" data-icon="browser-back" data-page-id="root"></a>
           <h1 data-l10n-id="wifi"></h1>
         </div>
       </div>
@@ -167,7 +170,7 @@
     <div id="bluetooth" class="panel">
       <div class="headerbar">
         <div class="safezone">
-          <a href="#" id="bluetooth-back-button" data-icon="back" data-page-id="root"></a>
+          <a href="#" data-icon="browser-back" data-page-id="root"></a>
           <h1 data-l10n-id="bluetooth"></h1>
         </div>
       </div>
@@ -185,7 +188,7 @@
             </div>
           </li>
           <li id="reload-button" data-icon="reload">
-            <p data-l10n-id="bluetooth-reload"></p>
+            <p data-l10n-id="bluetoothReload"></p>
           </li>
         </ul>
 
@@ -207,12 +210,26 @@
     <div id="general" class="panel">
       <div class="headerbar">
         <div class="safezone">
-          <a href="#" id="general-back-button" data-icon="back" data-page-id="root"></a>
+          <a href="#" data-icon="browser-back" data-page-id="root"></a>
           <h1 data-l10n-id="general"></h1>
         </div>
       </div>
 
       <div class="content lists">
+        <header data-l10n-id="system"></header>
+        <ul>
+          <li data-icon="gestures">
+            <div class="pack-checkbox">
+              <label for="general-softwareButtons-checkbox">
+                <p data-l10n-id="enableSoftwareButtons"></p>
+              </label>
+              <span>
+                <input type="checkbox" name="general-softwareButtons-checkbox" id="general-softwareButtons-checkbox" checked />
+              </span>
+            </div>
+          </li>
+        </ul>
+
         <header data-l10n-id="webapps"></header>
         <ul>
           <li id="general-webapps-button" class="page" data-icon="apps" data-page-id="webapps">
@@ -222,12 +239,12 @@
             <p data-l10n-id="addons"></p>
           </li>
           <li data-icon="download">
-            <div class="pack-switch">
-              <label for="general-3rdpartyinstall-switch">
-                <p data-l10n-id="webapps-enable3rdParty"></p>
+            <div class="pack-checkbox">
+              <label for="general-enable3rdParty-checkbox">
+                <p data-l10n-id="enable3rdParty"></p>
               </label>
               <span>
-                <input type="checkbox" name="general-3rdpartyinstall-switch" id="general-3rdpartyinstall-switch" checked />
+                <input type="checkbox" name="general-enable3rdParty-checkbox" id="general-enable3rdParty-checkbox" checked />
               </span>
             </div>
           </li>
@@ -245,7 +262,7 @@
     <div id="webapps" class="panel">
       <div class="headerbar">
         <div class="safezone">
-          <a href="#" id="webapps-back-button" data-icon="back" data-page-id="general"></a>
+          <a href="#" data-icon="browser-back" data-page-id="general"></a>
           <h1 data-l10n-id="webapps"></h1>
         </div>
       </div>
@@ -255,11 +272,11 @@
       </div>
     </div>
 
-    <div id="webapp-info" class="panel">
+    <div id="webappInfo" class="panel">
       <div class="headerbar">
         <div class="safezone">
-          <a href="#" id="webapp-info-back-button" data-icon="back" data-page-id="webapps"></a>
-          <h1 id="webapp-info-header"></h1>
+          <a href="#" data-icon="browser-back" data-page-id="webapps"></a>
+          <h1 id="webappInfo-header"></h1>
         </div>
       </div>
 
@@ -267,18 +284,76 @@
         <div class="webapp-header">
           <div class="hbox"></div>
           <div class="buttons">
-            <button id="webapp-info-uninstall-button" class="danger" data-l10n-id="webappsInfo-uninstall"></button>
-            <button id="webapp-info-store-button" data-l10n-id="webappsInfo-store"></button>
+            <button id="webappInfo-uninstall-button" class="danger" data-l10n-id="webappInfo-uninstall"></button>
+            <button id="webappInfo-store-button" data-l10n-id="webappInfo-store"></button>
           </div>
         </div>
         <ul id="webapps-list"></ul>
       </div>
     </div>
 
+    <div id="display" class="panel">
+      <div class="headerbar">
+        <div class="safezone">
+          <a href="#" data-icon="browser-back" data-page-id="root"></a>
+          <h1 data-l10n-id="display"></h1>
+        </div>
+      </div>
+
+      <div class="content lists">
+        <ul>
+          <li data-icon="brightness">
+            <div class="pack-seekbar">
+              <label for="display-brightness-seekbar">
+                <p data-l10n-id="display-brightness"></p>
+              </label>
+              <span>
+                <input type="range" name="display-brightness-seekbar" id="display-brightness-seekbar" checked />
+              </span>
+            </div>
+          </li>
+        </ul>
+
+        <header data-l10n-id="display-interface"></header>
+        <ul>
+          <li data-icon="moon">
+            <div class="pack-switch">
+              <label for="display-darkMode-switch">
+                <p data-l10n-id="enableDarkMode"></p>
+              </label>
+              <span>
+                <input type="checkbox" name="display-darkMode-switch" id="display-darkMode-switch" checked />
+              </span>
+            </div>
+          </li>
+          <li data-icon="accessibility">
+            <div class="pack-switch">
+              <label for="display-eBook-switch">
+                <p data-l10n-id="enableEBook"></p>
+              </label>
+              <span>
+                <input type="checkbox" name="display-eBook-switch" id="display-eBook-switch" checked />
+              </span>
+            </div>
+          </li>
+          <li data-icon="day">
+            <div class="pack-switch">
+              <label for="display-warmColors-switch">
+                <p data-l10n-id="enableWarmColors"></p>
+              </label>
+              <span>
+                <input type="checkbox" name="display-warmColors-switch" id="display-warmColors-switch" checked />
+              </span>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+
     <div id="battery" class="panel">
       <div class="headerbar">
         <div class="safezone">
-          <a href="#" id="battery-back-button" data-icon="back" data-page-id="root"></a>
+          <a href="#" data-icon="browser-back" data-page-id="root"></a>
           <h1 data-l10n-id="battery"></h1>
         </div>
       </div>
@@ -298,6 +373,72 @@
                 <input type="checkbox" name="power-saver-switch" id="power-saver-switch" />
               </span>
             </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <div id="storage" class="panel">
+      <div class="headerbar">
+        <div class="safezone">
+          <a href="#" data-icon="browser-back" data-page-id="root"></a>
+          <h1 data-l10n-id="storage"></h1>
+        </div>
+      </div>
+
+      <div class="content lists">
+        <div id="storage-used-space-progress"></div>
+        <ul>
+          <li></li>
+          <li></li>
+          <li></li>
+          <li></li>
+          <li></li>
+        </ul>
+      </div>
+    </div>
+
+    <div id="system" class="panel">
+      <div class="headerbar">
+        <div class="safezone">
+          <a href="#" data-icon="browser-back" data-page-id="root"></a>
+          <h1 data-l10n-id="system"></h1>
+        </div>
+      </div>
+
+      <div class="content lists">
+        <ul></ul>
+      </div>
+    </div>
+
+    <div id="aboutInfo" class="panel">
+      <div class="headerbar">
+        <div class="safezone">
+          <a href="#" data-icon="browser-back" data-page-id="root"></a>
+          <h1 data-l10n-id="aboutInfo"></h1>
+        </div>
+      </div>
+
+      <div class="content lists">
+        <div class="aboutInfo-header">
+          <div class="logo"></div>
+        </div>
+        <ul>
+          <li class="noclick">
+            <p data-l10n-id="aboutInfo-name"></p>
+            <p id="aboutInfo-name">OpenOrchid</p>
+          </li>
+          <li class="noclick">
+            <p data-l10n-id="aboutInfo-version"></p>
+            <p id="aboutInfo-version">116.0</p>
+          </li>
+          <li class="noclick">
+            <p data-l10n-id="aboutInfo-buildNumber"></p>
+            <p id="aboutInfo-buildNumber">0123456789abcdef</p>
+          </li>
+          <li class="noclick">
+            <p data-l10n-id="aboutInfo-kernelVersion"></p>
+            <p id="aboutInfo-kernelVersion">Linux 5.12</p>
           </li>
         </ul>
       </div>

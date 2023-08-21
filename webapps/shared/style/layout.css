@@ -14,6 +14,7 @@ html, body {
 .app {
   --statusbar-height: 4rem;
   --software-buttons-height: 4rem;
+  --safezone-width: 75rem;
   position: fixed;
   left: 0;
   top: 0;
@@ -52,8 +53,9 @@ html, body {
   bottom: 0;
   width: 100%;
   height: var(--software-buttons-height);
-  background-color: var(--background);
-  opacity: 0.75;
+  background-color: var(--acrylic-background);
+  backdrop-filter: blur(20px);
+  z-index: 5;
 }
 
 .panel > .content aside {
@@ -118,9 +120,19 @@ html, body {
   flex-direction: column;
 }
 
+.start {
+  align-items: start;
+  justify-content: start;
+}
+
 .center {
   align-items: center;
   justify-content: center;
+}
+
+.end {
+  align-items: end;
+  justify-content: end;
 }
 
 .fit {

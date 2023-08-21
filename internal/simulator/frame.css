@@ -1,0 +1,8 @@
+#frame {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 426px;
+  height: 745px;
+  background: url(frame.png) no-repeat center / cover;
+}

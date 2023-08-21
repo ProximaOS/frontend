@@ -3,30 +3,47 @@
   src: url(http://shared.localhost:8081/fonts/JaliArabic-Regular.ttf);
 }
 
+*, ::placeholder {
+  font-family: 'Jali Arabic', system-ui;
+}
+
 html, body {
   margin: 0;
   padding: 0;
   font-size: 10px;
-  font-family: system-ui;
+  font-family: 'Jali Arabic', system-ui;
+  touch-action: none;
   -webkit-tap-highlight-color: transparent;
+  background-color: #000;
 }
 
 #screen {
-  --statusbar-height: 4rem;
-  --statusbar-padding-left: 3rem;
+  --statusbar-height: 4.5rem;
+  --statusbar-padding-left: 6rem;
   --statusbar-padding-right: 3rem;
   --software-buttons-height: 4rem;
   --screen-radius: 3.6rem;
   --chrome-toolbar-gap: 0.5rem;
   --chrome-tablist-height: 4rem;
   --chrome-navbar-height: 4rem;
+  --safezone-width: 60rem;
   position: fixed;
   left: 0;
   top: 0;
   width: 100%;
   height: 100%;
   background: #000 url(/resources/wallpapers/default.png) no-repeat center / cover;
-  transition: transform 0.5s cubic-bezier(1, 0, 0, 1);
+  overflow: hidden;
+  transition: transform 0.5s cubic-bezier(1, 0, 0, 1), opacity 0.3s ease;
+}
+
+#screen.poweroff {
+  opacity: 0;
+  pointer-events: none;
+}
+
+#screen.poweroff > * {
+  pointer-events: none !important;
 }
 
 #screen.rotated-right {
@@ -49,4 +66,17 @@ html, body {
   translate: -50% -50%;
   width: 100vh;
   height: 100vw;
+}
+
+#system-overlays {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+#system-overlays > * {
+  pointer-events: all;
 }

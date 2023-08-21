@@ -158,3 +158,20 @@ html[dir="rtl"] #quick-settings li > a[data-icon]::before {
   background-color: var(--item-hover);
   border-radius: 0.5rem;
 }
+
+@media screen and (orientation: landscape) {
+  #connection-settings li {
+    height: 9.5rem;
+  }
+
+  #connection-settings li > a {
+    flex-direction: column;
+    padding: 0 0 1rem;
+    text-align: center;
+  }
+
+  #connection-settings li > a[data-icon]::before {
+    position: static;
+    margin: 1.5rem auto 0.5rem;
+  }
+}

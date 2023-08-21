@@ -1,35 +1,43 @@
-const BatteryIcon = {
-  iconElement: document.getElementById("statusbar-battery"),
+!(function (exports) {
+  'use strict';
 
-  init: function () {
-    navigator.getBattery().then((battery) => {
-      this.battery = battery;
+  const BatteryIcon = {
+    iconElement: document.getElementById('statusbar-battery'),
 
-      this.iconElement.classList.remove("hidden");
+    init: function () {
+      navigator.getBattery().then((battery) => {
+        this.battery = battery;
 
-      var level = battery.level;
-      var charging = battery.charging;
-      this.iconElement.dataset.icon = `battery-${Math.round(level * 10) * 10}`;
-      if (charging) {
-        this.iconElement.classList.add('charging');
-      } else {
-        this.iconElement.classList.remove('charging');
-      }
+        this.iconElement.classList.remove('hidden');
 
-      ['chargingchange', 'levelchange'].forEach(event => {
-        battery.addEventListener(event, () => {
-          level = battery.level;
-          charging = battery.charging;
-          this.iconElement.dataset.icon = `battery-${Math.round(level * 10) * 10}`;
-          if (charging) {
-            this.iconElement.classList.add('charging');
-          } else {
-            this.iconElement.classList.remove('charging');
-          }
+        let level = battery.level;
+        let charging = battery.charging;
+        this.iconElement.dataset.icon = `battery-${
+          Math.round(level * 10) * 10
+        }`;
+        if (charging) {
+          this.iconElement.classList.add('charging');
+        } else {
+          this.iconElement.classList.remove('charging');
+        }
+
+        ['chargingchange', 'levelchange'].forEach((event) => {
+          battery.addEventListener(event, () => {
+            level = battery.level;
+            charging = battery.charging;
+            this.iconElement.dataset.icon = `battery-${
+              Math.round(level * 10) * 10
+            }`;
+            if (charging) {
+              this.iconElement.classList.add('charging');
+            } else {
+              this.iconElement.classList.remove('charging');
+            }
+          });
         });
       });
-    });
-  }
-}
+    }
+  };
 
-BatteryIcon.init();
+  BatteryIcon.init();
+})(window);

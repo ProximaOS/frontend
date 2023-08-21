@@ -1,0 +1,21 @@
+{
+  "version": "1.0",
+  "name": "钟",
+  "description": "管理您的闹钟、创建秒表圈数并查看世界另一端的时间。",
+  "launch_path": "/index.html",
+  "icons": {
+    "48": "/style/icons/clock.png"
+  },
+  "developer": {
+    "name": "MortCodesWeb",
+    "url": "https://openorchid.github.io/"
+  },
+  "default_locale": "en",
+  "orientation": "portrait-primary",
+  "background_color": "#f0f6ff",
+  "theme_color": "#0061e0",
+  "permissions": {
+    "nodeintegration": {}
+  },
+  "display": "immersive"
+}

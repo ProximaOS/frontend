@@ -1,0 +1,64 @@
+#launcher {
+  position: absolute;
+  left: 50%;
+  bottom: calc(var(--software-buttons-height) + 2rem);
+  translate: -50% 0;
+  width: 57rem;
+  height: 40rem;
+  background-color: var(--background);
+  border-radius: 2rem;
+  visibility: hidden;
+}
+
+#launcher .header {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 7rem;
+  padding: 1.5rem;
+  box-sizing: border-box;
+  display: flex;
+  gap: 1rem;
+}
+
+#launcher-search {
+  width: 100%;
+  height: 4rem;
+  line-height: 4rem;
+  padding: 0 1.5rem;
+  box-sizing: border-box;
+  background-color: var(--background-plus);
+  border-radius: 2rem;
+  color: var(--text-color-faded);
+}
+
+#launcher .footer {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 7rem;
+  padding: 1.5rem;
+  box-sizing: border-box;
+  display: flex;
+  gap: 1rem;
+}
+
+#launcher .footer > div {
+  display: flex;
+  gap: 1rem;
+  width: 100%;
+  flex-grow: 1;
+}
+
+#launcher .footer > .right {
+  flex-direction: row-reverse;
+}
+
+#launcher .header button,
+#launcher .footer button {
+  width: 4rem;
+  padding: 0 1rem;
+  box-sizing: border-box;
+}

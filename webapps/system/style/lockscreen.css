@@ -8,7 +8,6 @@
   opacity: 0;
   visibility: hidden;
   pointer-events: none;
-  z-index: 16384;
   transition: all 0.3s cubic-bezier(0.2, 0.9, 0.1, 1);
 }
 
@@ -139,7 +138,6 @@
   width: calc(100% - 4rem);
   display: flex;
   justify-content: space-between;
-  opacity: 1;
   visibility: visible;
   transform: scale(calc(1 - (0.125 * (1 - var(--motion-progress, 1)))));
   opacity: var(--motion-progress, 1);
@@ -154,6 +152,7 @@
 #lockscreen-toolbar > button {
   width: 5rem;
   height: 5rem;
+  line-height: 5rem;
   border-radius: 50%;
   background-color: rgba(51, 51, 51, 0.3);
   backdrop-filter: blur(20px) saturate(180%);
@@ -177,5 +176,39 @@
 }
 
 #lockscreen-toolbar > button::before {
+  position: static;
   font-size: 2.4rem;
+}
+
+#lockscreen-notifications {
+  position: absolute;
+  left: 1rem;
+  top: 40%;
+  width: calc(100% - 2rem);
+  height: calc(60% - 10rem);
+  overflow-y: auto;
+  border-radius: 2rem;
+  margin: 0;
+  padding: 0;
+}
+
+#lockscreen-notifications .notification {
+  backdrop-filter: blur(20px) saturate(180%);
+  transition: all 0.3s ease;
+}
+
+#lockscreen.low-power #lockscreen-notifications .notification {
+  opacity: 0;
+  transform: translateY(3rem);
+  visibility: hidden;
+}
+
+#lockscreen-notifications::-webkit-scrollbar {
+  display: none;
+}
+
+#lockscreen-notifications .notification {
+  margin: 0 0 1rem;
+  width: 100%;
+  list-style: none;
 }

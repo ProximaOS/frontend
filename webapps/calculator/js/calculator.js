@@ -1,47 +1,53 @@
-document.addEventListener("DOMContentLoaded", function() {
-  // Get the calculator buttons
-  var buttons = document.getElementsByClassName("button");
+!(function (exports) {
+  'use strict';
 
-  // Attach onclick event handler to each button
-  for (var i = 0; i < buttons.length; i++) {
-    buttons[i].addEventListener("click", buttonClickHandler);
+  document.addEventListener('DOMContentLoaded', function () {
+    // Get the calculator buttons
+    const buttons = document.getElementsByClassName('button');
+
+    // Attach onclick event handler to each button
+    for (let i = 0; i < buttons.length; i++) {
+      buttons[i].addEventListener('click', buttonClickHandler);
+    }
+  });
+
+  function buttonClickHandler (event) {
+    const value = event.target.innerHTML;
+
+    switch (value) {
+      case 'C':
+        clearResult();
+        break;
+      case '←':
+        deleteLast();
+        break;
+      case '=':
+        calculate();
+        break;
+      default:
+        appendToResult(value);
+        break;
+    }
   }
-});
 
-function buttonClickHandler(event) {
-  var value = event.target.innerHTML;
-
-  switch (value) {
-    case "C":
-      clearResult();
-      break;
-    case "←":
-      deleteLast();
-      break;
-    case "=":
-      calculate();
-      break;
-    default:
-      appendToResult(value);
-      break;
+  function appendToResult (value) {
+    document.getElementById('result').value += value;
   }
-}
 
-function appendToResult(value) {
-  document.getElementById("result").value += value;
-}
+  function clearResult () {
+    document.getElementById('result').value = '';
+  }
 
-function clearResult() {
-  document.getElementById("result").value = "";
-}
+  function deleteLast () {
+    const result = document.getElementById('result').value;
+    document.getElementById('result').value = result.slice(0, -1);
+  }
 
-function deleteLast() {
-  var result = document.getElementById("result").value;
-  document.getElementById("result").value = result.slice(0, -1);
-}
-
-function calculate() {
-  var result = document.getElementById("result").value;
-  var answer = eval(result.replace('÷', '/'));
-  document.getElementById("result").value = answer.toLocaleString(navigator.mozL10n.language.code);
-}
+  function calculate () {
+    const result = document.getElementById('result').value;
+    const answer = result.replace('÷', '/');
+    document.getElementById('result').value = answer.toLocaleString(
+      navigator.mozL10n.language.code
+    );
+  }
+})(window);

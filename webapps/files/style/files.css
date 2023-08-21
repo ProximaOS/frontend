@@ -1,11 +1,11 @@
 .panel {
   background-color: var(--background);
   visibility: hidden;
-  transition: all 0.5s cubic-bezier(0.2, 0.9, 0.1, 1);
+  transition: all 0.5s cubic-bezier(1, 0, 0, 1);
 }
 
 .panel.previous {
-  transform: translateX(-50%);
+  transform: translateX(-100%);
 }
 
 .panel.next {
@@ -18,10 +18,177 @@
   visibility: visible;
 }
 
+#content .safezone {
+  margin: 0;
+  max-width: unset;
+}
+
+#quick-access {
+  width: 100%;
+  max-width: var(--safezone-width);
+  padding: 0 1.5rem;
+  box-sizing: border-box;
+}
+
+#quick-access li {
+  flex-direction: row;
+  justify-content: unset;
+  align-items: center;
+}
+
+ul li::before {
+  content: '';
+  width: 3rem;
+  height: 3rem;
+  background: url(images/folder.png) no-repeat center / cover;
+  margin-inline-end: 1rem;
+  flex-shrink: 0;
+}
+
+ul li.home_folder::before {
+  background-image: url(images/folder-home.png);
+}
+
+ul li.audio_folder::before {
+  background-image: url(images/folder-audio.png);
+}
+
+ul li.books_folder::before {
+  background-image: url(images/folder-books.png);
+}
+
+ul li.downloads_folder::before {
+  background-image: url(images/folder-downloads.png);
+}
+
+ul li.movies_folder::before {
+  background-image: url(images/folder-movies.png);
+}
+
+ul li.music_folder::before {
+  background-image: url(images/folder-audio.png);
+}
+
+ul li.others_folder::before {
+  background-image: url(images/folder-others.png);
+}
+
+ul li.photos_folder::before {
+  background-image: url(images/folder-photos.png);
+}
+
+#content-files {
+  padding: 0 1rem;
+}
+
+.file {
+  width: 100%;
+  display: flex;
+  padding: 0.4rem 1rem;
+  box-sizing: border-box;
+  gap: 0.5rem;
+  border-radius: 0.3rem;
+}
+
+.file:hover {
+  background-color: var(--item-hover);
+}
+
+.file:active {
+  background-color: var(--item-active);
+}
+
+.file .icon {
+  width: 2rem;
+  height: 2rem;
+  background: url(images/file.png) no-repeat center / contain;
+  flex-shrink: 0;
+}
+
+.file.hidden .icon {
+  opacity: 0.5;
+}
+
+.file.text .icon {
+  background-image: url(images/file-text.png);
+}
+
+.file.image .icon {
+  background-image: var(--thumbnail, url(images/file-image.png));
+}
+
+.file.audio .icon {
+  background-image: url(images/file-audio.png);
+}
+
+.file.video .icon {
+  background-image: url(images/file-video.png);
+}
+
+.file.folder .icon {
+  background-image: url(images/folder.png);
+}
+
+.file .text-holder {
+  display: flex;
+  gap: 0.5rem;
+  flex-grow: 1;
+  width: 100%;
+  overflow: hidden;
+}
+
+.file.hidden .text-holder {
+  opacity: 0.5;
+}
+
+.file .text-holder .name {
+  font-size: 1.4rem;
+  color: var(--text-color);
+  margin-inline-end: auto;
+  flex-grow: 1;
+  width: 100%;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.file .text-holder .size {
+  font-size: 1.4rem;
+  color: var(--text-color-faded);
+  flex-shrink: 0;
+}
+
+#content-files.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(9rem, 1fr));
+}
+
+#content-files.grid .file {
+  flex-direction: column;
+}
+
+#content-files.grid .file .icon {
+  margin: 0 auto;
+  width: 4rem;
+  height: 4rem;
+}
+
+#content-files.grid .file .text-holder {
+  flex-direction: column;
+  text-align: center;
+  gap: 0;
+}
+
+#content-files.grid .file .text-holder .size {
+  width: 100%;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
 @media screen and (min-width: 768px) {
   #root {
     position: absolute;
-    left: 0;
     top: 0;
     width: 32rem;
     height: 100%;
@@ -30,16 +197,30 @@
     transform: none;
     border-inline-end: solid 0.1rem var(--item-active);
     box-sizing: border-box;
+    z-index: 1;
+  }
+  html[dir="ltr"] #root {
+    left: 0;
+  }
+  html[dir="rtl"] #root {
+    right: 0;
   }
 
-  #content {
+  #root.visible {
+    width: 100%;
+    border-inline-end: none;
+  }
+
+  .panel:not(#root) {
     position: absolute;
-    left: 32rem;
     top: 0;
     width: calc(100% - 32rem);
     height: 100%;
-    opacity: 1;
-    visibility: visible;
-    transform: none;
+  }
+  html[dir="ltr"] .panel:not(#root) {
+    left: 32rem;
+  }
+  html[dir="rtl"] .panel:not(#root) {
+    right: 32rem;
   }
 }

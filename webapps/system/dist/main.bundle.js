@@ -1,3 +1,7 @@
+!(function (exports) {
+
+'use strict';
+
 /*
  * ATTENTION: The "eval" devtool has been used (maybe by default in mode: "development").
  * This devtool is neither made for production nor for readable output files.
@@ -77,3 +81,4 @@ eval("__webpack_require__.r(__webpack_exports__);\n// extracted by mini-css-extr
 /******/ 	
 /******/ })()
 ;
+})(window);

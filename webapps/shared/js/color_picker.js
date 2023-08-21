@@ -1,3 +1,5 @@
+!(function (exports) {
+
 'use strict';
 
 function colorPicker(url, _config = {}) {
@@ -27,10 +29,10 @@ function colorPicker(url, _config = {}) {
     });
 
     /**
-     * @param {*} element 
-     * @param {*} imageUrl 
-     * @param {*} callback 
-     * @returns 
+     * @param {*} element
+     * @param {*} imageUrl
+     * @param {*} callback
+     * @returns
      */
     function useCanvas(element, imageUrl, callback) {
       // XXX: We create a new 'img' to draw and load the image.
@@ -54,3 +56,7 @@ function colorPicker(url, _config = {}) {
     }
   });
 }
+
+exports.colorPicker = colorPicker;
+
+})(window);

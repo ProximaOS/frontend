@@ -1,117 +1,318 @@
-'use strict';
+!(function () {
+  'use strict';
 
-const { BrowserWindow, ipcMain, Notification, nativeTheme, app } = require('electron');
-const settings = require('electron-settings');
-const os = require('os');
-const path = require('path');
-const fs = require('fs');
+  const {
+    BrowserWindow,
+    ipcMain,
+    nativeTheme,
+    Menu,
+    app
+  } = require('electron');
+  const settings = require('./services/settings');
+  const os = require('os');
+  const path = require('path');
+  const fs = require('fs');
+  const isDev = require('electron-is-dev');
+  const electronLocalshortcut = require('electron-localshortcut');
 
-const appConf = require('../package.json');
+  const appConf = require('../package.json');
 
-require('dotenv').config();
+  require('dotenv').config();
 
-module.exports = function create() {
-  var width = 320;
-  var height = 640;
-  var url = 'http://system.localhost:8081/index.html';
-  var type = 'Mobile';
-  if (process.argv.indexOf('--desktop') !== -1) {
-    width = 1024;
-    height = 640;
-    url = 'http://desktop-system.localhost:8081/index.html';
-    type = 'Desktop';
-  } else if (process.argv.indexOf('--smart-tv') !== -1) {
-    width = 1280;
-    height = 720;
-    url = 'http://smart-system.localhost:8081/index.html';
-    type = 'Smart TV';
-  }
+  require('./default_presets');
 
-  const mainWindow = new BrowserWindow({
-    icon: path.join(__dirname, '..', 'internal', 'branding', 'icon.png'),
-    title: 'OpenOrchid Simulator',
-    width: width,
-    height: height,
-    webPreferences: {
-      nodeIntegration: true,
-      nodeIntegrationInSubFrames: true,
-      webviewTag: true,
-      contextIsolation: false,
-      scrollBounce: true,
-      webSecurity: false,
-      defaultFontFamily: 'system-ui',
-      defaultMonospaceFontSize: 14,
-      disableDialogs: true,
-      devTools: require('electron-is-dev'),
-      preload: path.join(__dirname, '..', 'preload.js')
+  module.exports = function () {
+    let width = 320;
+    let height = 640;
+    let url = 'http://system.localhost:8081/index.html';
+    let type = 'Mobile';
+    if (process.argv.indexOf('desktop') !== -1) {
+      width = 1024;
+      height = 640;
+      url = 'http://desktop-system.localhost:8081/index.html';
+      type = 'Desktop';
+    } else if (process.argv.indexOf('smart-tv') !== -1) {
+      width = 1280;
+      height = 720;
+      url = 'http://smart-system.localhost:8081/index.html';
+      type = 'Smart TV';
     }
-  });
 
-  fs.mkdirSync(path.join(process.cwd(), 'profile'), { recursive: true });
+    let isSimulatingMobile = false;
+    if (process.argv.indexOf('mobile-frame') !== -1) {
+      isSimulatingMobile = true;
+    }
 
-  var profileDir = path.resolve(process.env.OPENORCHID_DATA);
-
-  app.setPath('appData', profileDir);
-  app.setPath('sessionData', path.join(profileDir, 'session-data'));
-  app.setPath('temp', path.join(profileDir, 'temp'));
-  app.setPath('desktop', path.join(profileDir, 'storage', 'others', 'desktop'));
-  app.setPath('documents', path.join(profileDir, 'storage', 'others', 'documents'));
-  app.setPath('downloads', path.join(profileDir, 'storage', 'downloads'));
-  app.setPath('music', path.join(profileDir, 'storage', 'music'));
-  app.setPath('pictures', path.join(profileDir, 'storage', 'photos'));
-  app.setPath('videos', path.join(profileDir, 'storage', 'movies'));
-  app.setPath('logs', path.join(profileDir, 'logs'));
-  app.setPath('cache', path.join(profileDir, 'cache'));
-  app.setPath('crashDumps', path.join(profileDir, 'crash-dumps'));
-
-  mainWindow.loadURL(url, {
-    userAgent: `Mozilla/5.0 (Linux ${os.arch()}; OpenOrchid ${appConf.version}; rv:${appConf.version}) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/${process.versions.chrome} ${type} Safari/537.36 OpenOrchid/${appConf.version} ${type}`
-  });
-
-  if (!settings.getSync('system.theme.color-scheme')) {
-    settings.setSync('system.theme.color-scheme', 'light');
-  }
-  nativeTheme.themeSource = settings.getSync('system.theme.color-scheme');
-
-  // Notification event
-  ipcMain.on('trigger-notification', (event, notificationData) => {
-    const { title, body } = notificationData;
-    const notification = new Notification({
-      title: title,
-      body: body
+    const mainWindow = new BrowserWindow({
+      icon: path.join(__dirname, '..', 'internal', 'branding', 'icon.png'),
+      title: 'OpenOrchid Simulator',
+      width: isSimulatingMobile ? width : width + 14,
+      height: isSimulatingMobile ? height : height + 37,
+      frame: !isSimulatingMobile,
+      fullscreenable: false,
+      resizable: !isSimulatingMobile,
+      webPreferences: {
+        nodeIntegration: true,
+        nodeIntegrationInSubFrames: true,
+        webviewTag: true,
+        contextIsolation: false,
+        scrollBounce: true,
+        webSecurity: false,
+        defaultFontFamily: 'system-ui',
+        defaultMonospaceFontSize: 14,
+        disableDialogs: true,
+        devTools: isDev,
+        preload: path.join(__dirname, 'preload.js')
+      }
     });
 
-    notification.show();
+    if (isDev) {
+      mainWindow.webContents.openDevTools({ mode: 'detach' });
+    }
 
-    // Pass the notification event with data to the renderer process
-    mainWindow.webContents.send('notification', { event, notificationData });
-  });
-
-  // Open event
-  ipcMain.on('open-url', (event, url) => {
-    // Pass the open event with URL to the renderer process
-    mainWindow.webContents.send('open-url', { event, url });
-  });
-
-  // Permission request event
-  ipcMain.on('request-permissions', (event, permissionData) => {
-    // Pass the permission request event with data to the renderer process
-    mainWindow.webContents.send('permissionrequest', { event, permissionData });
-  });
-
-  ipcMain.on('message', (event, data) => {
-    mainWindow.webContents.send('message', data);
-    ipcMain.on('message-reply', (event, data) => {
-      event.reply('message-reply', { data, isAllowed: true });
+    mainWindow.webContents.session.setPermissionRequestHandler((webContents, permission, callback) => {
+      mainWindow.webContents.send('permissionrequest', { type: permission });
+      ipcMain.on('permissionrequest', (event, data) => {
+        callback(data.decision);
+      });
     });
-  });
 
-  ipcMain.on('settings-getvalue', (event, key) => {
-    const value = settings.get(key.name);
-    event.reply('settings-getvalue-reply', value);
-  });
+    Menu.setApplicationMenu(null);
+    electronLocalshortcut.register(mainWindow, ['Ctrl+R', 'F5'], () => {
+      mainWindow.reload();
+    });
+    electronLocalshortcut.register(mainWindow, ['Ctrl+F', 'F11'], () => {
+      mainWindow.setFullScreen(!mainWindow.isFullScreen());
+    });
+    electronLocalshortcut.register(mainWindow, ['Ctrl+I', 'F12'], () => {
+      mainWindow.openDevTools();
+    });
 
-  ipcMain.on('settings-setvalue', (event, key) => {
-    settings.set(key.name, key.value);
-  });
-}
+    electronLocalshortcut.register(mainWindow, 'Ctrl+J', () => {
+      mainWindow.webContents.send('rotate', { rotation: '-90deg' });
+    });
+    electronLocalshortcut.register(mainWindow, 'Ctrl+K', () => {
+      mainWindow.webContents.send('rotate', { rotation: '0deg' });
+    });
+    electronLocalshortcut.register(mainWindow, 'Ctrl+L', () => {
+      mainWindow.webContents.send('rotate', { rotation: '90deg' });
+    });
+    electronLocalshortcut.register(mainWindow, 'Ctrl+H', () => {
+      mainWindow.webContents.send('rotate', { rotation: '180deg' });
+    });
+
+    if (isDev) {
+      const controlsWindow = new BrowserWindow({
+        icon: path.join(__dirname, '..', 'internal', 'branding', 'icon.png'),
+        title: 'OpenOrchid Simulator Controls',
+        width: 70,
+        minWidth: 70,
+        maxWidth: 70,
+        height: mainWindow.getSize()[1],
+        frame: false,
+        fullscreenable: false,
+        transparent: true,
+        skipTaskbar: true,
+        focusable: false,
+        resizable: false,
+        webPreferences: {
+          nodeIntegration: true,
+          nodeIntegrationInSubFrames: true,
+          contextIsolation: false,
+          defaultFontFamily: 'system-ui',
+          defaultMonospaceFontSize: 14,
+          disableDialogs: true,
+          devTools: isDev,
+          preload: path.join(__dirname, 'preload.js')
+        }
+      });
+
+      controlsWindow.loadFile(
+        path.join(__dirname, '..', 'internal', 'simulator', 'controls.html')
+      );
+
+      let frameWindow = null;
+      if (isSimulatingMobile) {
+        frameWindow = new BrowserWindow({
+          icon: path.join(__dirname, '..', 'internal', 'branding', 'icon.png'),
+          title: 'OpenOrchid Simulator Frame',
+          width: 426,
+          height: 745,
+          frame: false,
+          fullscreenable: false,
+          transparent: true,
+          skipTaskbar: true,
+          focusable: false,
+          resizable: false
+        });
+
+        frameWindow.loadFile(
+          path.join(__dirname, '..', 'internal', 'simulator', 'frame.html')
+        );
+        frameWindow.setIgnoreMouseEvents(true);
+      }
+
+      let currentSize = mainWindow.getSize();
+      let newPosition = mainWindow.getPosition();
+
+      controlsWindow.setPosition(
+        currentSize[0] + newPosition[0] + (isSimulatingMobile ? 32 : 0),
+        newPosition[1],
+        false
+      );
+
+      // Calculate the center position for the frameWindow
+      const centerX = parseInt(newPosition[0] - ((426 - width) / 2));
+      const centerY = parseInt(newPosition[1] - ((745 - height) / 2) + 24);
+
+      if (frameWindow) {
+        // Set the position of the frameWindow at the calculated center
+        frameWindow.setPosition(centerX, centerY, false);
+      }
+
+      mainWindow.on('moved', () => {
+        currentSize = mainWindow.getSize();
+        newPosition = mainWindow.getPosition();
+        controlsWindow.setPosition(
+          currentSize[0] + newPosition[0] + (isSimulatingMobile ? 32 : 0),
+          newPosition[1],
+          false
+        );
+        if (frameWindow) {
+          // Set the position of the frameWindow at the calculated center
+          frameWindow.setPosition(centerX, centerY, false);
+        }
+      });
+
+      let newSize = mainWindow.getSize();
+      controlsWindow.setSize(70, newSize[1], false);
+      mainWindow.on('resized', () => {
+        newSize = mainWindow.getSize();
+        newPosition = mainWindow.getPosition();
+        controlsWindow.setSize(70, newSize[1], false);
+        controlsWindow.setPosition(
+          newSize[0] + newPosition[0],
+          newPosition[1],
+          false
+        );
+      });
+
+      mainWindow.on('focus', () => {
+        if (controlsWindow) {
+          controlsWindow.show();
+          controlsWindow.setAlwaysOnTop(true);
+        }
+
+        if (frameWindow) {
+          frameWindow.show();
+          frameWindow.setAlwaysOnTop(true);
+        }
+      });
+
+      mainWindow.on('blur', () => {
+        if (controlsWindow) {
+          controlsWindow.hide();
+          controlsWindow.setAlwaysOnTop(false);
+        }
+
+        if (frameWindow) {
+          frameWindow.hide();
+          frameWindow.setAlwaysOnTop(false);
+        }
+      });
+
+      mainWindow.on('restore', () => {
+        if (controlsWindow) {
+          controlsWindow.show();
+          controlsWindow.setAlwaysOnTop(true);
+        }
+
+        if (frameWindow) {
+          frameWindow.show();
+          frameWindow.setAlwaysOnTop(true);
+        }
+      });
+
+      mainWindow.on('minimize', () => {
+        if (controlsWindow) {
+          controlsWindow.hide();
+          controlsWindow.setAlwaysOnTop(false);
+        }
+
+        if (frameWindow) {
+          frameWindow.hide();
+          frameWindow.setAlwaysOnTop(false);
+        }
+      });
+
+      mainWindow.on('closed', () => {
+        if (controlsWindow) {
+          controlsWindow.close();
+        }
+
+        if (frameWindow) {
+          frameWindow.close();
+        }
+      });
+
+      electronLocalshortcut.register(controlsWindow, ['Ctrl+R', 'F5'], () => {
+        controlsWindow.reload();
+      });
+      electronLocalshortcut.register(controlsWindow, ['Ctrl+I', 'F12'], () => {
+        controlsWindow.openDevTools();
+      });
+    }
+
+    fs.mkdirSync(path.join(process.cwd(), 'profile'), { recursive: true });
+
+    const userAgent = `Mozilla/5.0 (OpenOrchid ${
+      appConf.version
+    } ${type}; Linux ${os.arch()}) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/${
+      process.versions.chrome
+    }${type === 'Mobile' ? ' ' + type : false} Safari/537.36`;
+
+    console.log(userAgent);
+    mainWindow.loadURL(url, {
+      userAgent
+    });
+
+    settings.getValue('video.dark_mode.enabled').then((result) => {
+      nativeTheme.themeSource = result ? 'dark' : 'light';
+    });
+
+    // Open event
+    app.on('open-url', (event, url) => {
+      // Pass the open event with URL to the renderer process
+      mainWindow.webContents.send('open-url', { event, url });
+    });
+
+    ipcMain.on('message', (event, data) => {
+      mainWindow.webContents.send('message', data);
+      ipcMain.on('message-reply', (event, data) => {
+        event.reply('message-reply', { data, isAllowed: true });
+      });
+    });
+
+    ipcMain.on('powerstart', (event, data) => {
+      mainWindow.webContents.send('powerstart', data);
+    });
+    ipcMain.on('powerend', (event, data) => {
+      mainWindow.webContents.send('powerend', data);
+    });
+
+    ipcMain.on('volumeup', (event, data) => {
+      mainWindow.webContents.send('volumeup', data);
+    });
+    ipcMain.on('volumedown', (event, data) => {
+      mainWindow.webContents.send('volumedown', data);
+    });
+
+    ipcMain.on('shortcut', (event, data) => {
+      mainWindow.webContents.send('shortcut', data);
+    });
+
+    ipcMain.on('rotate', (event, data) => {
+      mainWindow.webContents.send('rotate', data);
+    });
+  };
+})();

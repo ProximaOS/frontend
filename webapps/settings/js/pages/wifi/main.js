@@ -1,46 +1,58 @@
-const si = require('systeminformation');
+!(function (exports) {
+  'use strict';
 
-window.addEventListener('DOMContentLoaded', () => {
-  // Fetch available networks and populate the list
-  const availableNetworksList = document.getElementById('available-networks');
+  const Wifi = {
+    toggleSwitch: document.getElementById('wifi-switch'),
+    reloadButton: document.getElementById('wifi-reload-button'),
+    availableNetworksList: document.getElementById('available-networks'),
 
-  async function searchNetworks() {
-    try {
-      const networks = await si.wifiNetworks();
-      availableNetworksList.innerHTML = '';
-      networks.forEach(network => {
-        // Convert signal strength to percentage
-        const signalStrengthPercentage = network.quality;
+    init: function () {
+      // Add event listener to the Wi-Fi switch
+      this.toggleSwitch.addEventListener(
+        'change',
+        this.handleToggleSwitch.bind(this)
+      );
 
-        const listItem = document.createElement('li');
-        listItem.dataset.icon = `wifi-${Math.round(
-          signalStrengthPercentage / 25
-        )}`;
-        availableNetworksList.appendChild(listItem);
+      // Add event listener to the reload button
+      this.reloadButton.addEventListener(
+        'click',
+        this.searchNetworks.bind(this)
+      );
 
-        const listName = document.createElement('p');
-        listName.textContent = network.ssid;
-        listItem.appendChild(listName);
+      this.searchNetworks();
+    },
 
-        const listSecurity = document.createElement('p');
-        listSecurity.textContent = network.security[0];
-        listItem.appendChild(listSecurity);
-      });
-    } catch (error) {
-      console.error('Error fetching available networks:', error);
+    handleToggleSwitch: function () {
+      // ...
+    },
+
+    searchNetworks: async function () {
+      try {
+        const networks = await _session.wifiManager.scan();
+        this.availableNetworksList.innerHTML = '';
+        networks.forEach((network) => {
+          // Convert signal strength to percentage
+          const signalStrengthPercentage = network.quality;
+
+          const listItem = document.createElement('li');
+          listItem.dataset.icon = `wifi-${Math.round(
+            signalStrengthPercentage / 25
+          )}`;
+          this.availableNetworksList.appendChild(listItem);
+
+          const listName = document.createElement('p');
+          listName.textContent = network.ssid;
+          listItem.appendChild(listName);
+
+          const listSecurity = document.createElement('p');
+          listSecurity.textContent = network.security;
+          listItem.appendChild(listSecurity);
+        });
+      } catch (error) {
+        console.error('Error fetching available networks:', error);
+      }
     }
-  }
-  searchNetworks();
+  };
 
-  // Add event listener to the Wi-Fi switch
-  const wifiSwitch = document.getElementById('wifi-switch');
-  wifiSwitch.addEventListener('change', () => {
-    const isChecked = wifiSwitch.checked;
-    // Handle Wi-Fi switch change event here
-    console.log('Wi-Fi switch state changed:', isChecked);
-  });
-
-  // Add event listener to the reload button
-  const wifiReload = document.getElementById('wifi-reload-button');
-  wifiReload.addEventListener('click', searchNetworks);
-});
+  Wifi.init();
+})(window);

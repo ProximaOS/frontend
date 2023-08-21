@@ -1,5 +1,4 @@
-import firebaseConfig from '../../firebaseConfig.json';
-import { getAnalytics } from 'https://www.gstatic.com/firebasejs/9.10.0/firebase-analytics.js';
+import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.10.0/firebase-app.js';
 import {
   getFirestore,
   doc,
@@ -18,67 +17,67 @@ import {
 } from 'https://www.gstatic.com/firebasejs/9.10.0/firebase-storage.js';
 
 // Initialize Firebase
-const app = initializeApp(firebaseConfig);
+const app = initializeApp(await (await fetch('http://shared.localhost:8081/firebaseConfig.json')).json());
 const db = getFirestore(app);
 const storage = getStorage(app);
 
 // A formatted version of a popular md5 implementation.
 // Original copyright (c) Paul Johnston & Greg Holt.
 // The function itself is now 42 lines long.
-function MD5(inputString) {
-  var hc = '0123456789abcdef';
-  function rh(n) {
-    var j,
-      s = '';
-    for (j = 0; j <= 3; j++)
+function MD5 (inputString) {
+  const hc = '0123456789abcdef';
+  function rh (n) {
+    let j;
+    let s = '';
+    for (j = 0; j <= 3; j++) {
       s +=
         hc.charAt((n >> (j * 8 + 4)) & 0x0f) + hc.charAt((n >> (j * 8)) & 0x0f);
+    }
     return s;
   }
-  function ad(x, y) {
-    var l = (x & 0xffff) + (y & 0xffff);
-    var m = (x >> 16) + (y >> 16) + (l >> 16);
+  function ad (x, y) {
+    const l = (x & 0xffff) + (y & 0xffff);
+    const m = (x >> 16) + (y >> 16) + (l >> 16);
     return (m << 16) | (l & 0xffff);
   }
-  function rl(n, c) {
+  function rl (n, c) {
     return (n << c) | (n >>> (32 - c));
   }
-  function cm(q, a, b, x, s, t) {
+  function cm (q, a, b, x, s, t) {
     return ad(rl(ad(ad(a, q), ad(x, t)), s), b);
   }
-  function ff(a, b, c, d, x, s, t) {
+  function ff (a, b, c, d, x, s, t) {
     return cm((b & c) | (~b & d), a, b, x, s, t);
   }
-  function gg(a, b, c, d, x, s, t) {
+  function gg (a, b, c, d, x, s, t) {
     return cm((b & d) | (c & ~d), a, b, x, s, t);
   }
-  function hh(a, b, c, d, x, s, t) {
+  function hh (a, b, c, d, x, s, t) {
     return cm(b ^ c ^ d, a, b, x, s, t);
   }
-  function ii(a, b, c, d, x, s, t) {
+  function ii (a, b, c, d, x, s, t) {
     return cm(c ^ (b | ~d), a, b, x, s, t);
   }
-  function sb(x) {
-    var i;
-    var nblk = ((x.length + 8) >> 6) + 1;
-    var blks = new Array(nblk * 16);
+  function sb (x) {
+    let i;
+    const nblk = ((x.length + 8) >> 6) + 1;
+    const blks = new Array(nblk * 16);
     for (i = 0; i < nblk * 16; i++) blks[i] = 0;
-    for (i = 0; i < x.length; i++)
-      blks[i >> 2] |= x.charCodeAt(i) << ((i % 4) * 8);
+    for (i = 0; i < x.length; i++) { blks[i >> 2] |= x.charCodeAt(i) << ((i % 4) * 8); }
     blks[i >> 2] |= 0x80 << ((i % 4) * 8);
     blks[nblk * 16 - 2] = x.length * 8;
     return blks;
   }
-  var i,
-    x = sb(inputString),
-    a = 1732584193,
-    b = -271733879,
-    c = -1732584194,
-    d = 271733878,
-    olda,
-    oldb,
-    oldc,
-    oldd;
+  let i;
+  const x = sb(inputString);
+  let a = 1732584193;
+  let b = -271733879;
+  let c = -1732584194;
+  let d = 271733878;
+  let olda;
+  let oldb;
+  let oldc;
+  let oldd;
   for (i = 0; i < x.length; i += 16) {
     olda = a;
     oldb = b;
@@ -156,23 +155,23 @@ function MD5(inputString) {
   return rh(a) + rh(b) + rh(c) + rh(d);
 }
 
-var OrchidServices = {
-  _generateUUID: function os__generateUUID() {
+const OrchidServices = {
+  _generateUUID: function generateUUID () {
     // Public Domain/MIT
-    var d = new Date().getTime(); //Timestamp
-    var d2 =
+    let d = new Date().getTime(); // Timestamp
+    let d2 =
       (typeof performance !== 'undefined' &&
         performance.now &&
         performance.now() * 1000) ||
-      0; //Time in microseconds since page-load or 0 if unsupported
+      0; // Time in microseconds since page-load or 0 if unsupported
     return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
-      var r = Math.random() * 16; //random number between 0 and 16
+      let r = Math.random() * 16; // random number between 0 and 16
       if (d > 0) {
-        //Use timestamp until depleted
+        // Use timestamp until depleted
         r = (d + r) % 16 | 0;
         d = Math.floor(d / 16);
       } else {
-        //Use microseconds since page-load if supported
+        // Use microseconds since page-load if supported
         r = (d2 + r) % 16 | 0;
         d2 = Math.floor(d2 / 16);
       }
@@ -182,7 +181,7 @@ var OrchidServices = {
 
   DEBUG: (location.href === 'http://localhost:5500' || location.href === 'http://127.0.0.1:5500/'),
 
-  init: function os_init() {
+  init: function init () {
     window.addEventListener('load', () => {
       if (this.isUserLoggedIn) {
         this.set('profile/' + this.userId(), {
@@ -205,12 +204,15 @@ var OrchidServices = {
    * Tells us if the user is logged in or not through the token.
    * @returns {boolean}
    */
-  isUserLoggedIn: function os_isUserLoggedIn() {
-    var data = localStorage.hasOwnProperty('ws.login.userId');
+  isUserLoggedIn: function isUserLoggedIn () {
+    let data = false;
+    if (localStorage.getItem('ws.login.userId')) {
+      data = true;
+    }
     return data;
   },
 
-  userId: function os_userId() {
+  userId: function userId () {
     return localStorage.getItem('ws.login.userId');
   },
 
@@ -219,7 +221,7 @@ var OrchidServices = {
    * @param {string} path
    * @returns {object}
    */
-  get: async function os_get(path) {
+  get: async function get (path) {
     const docRef = doc(db, path);
     const docSnap = await getDoc(docRef);
 
@@ -241,7 +243,7 @@ var OrchidServices = {
    * @param {string} path
    * @param {function} callback
    */
-  getWithUpdate: function os_getWithUpdate(path, callback) {
+  getWithUpdate: function getWithUpdate (path, callback) {
     onSnapshot(doc(db, path), (doc) => {
       if (this.DEBUG) {
         console.log('Document data: ', doc.data());
@@ -256,7 +258,7 @@ var OrchidServices = {
    * @param {function} callback
    * @returns {object}
    */
-  getList: async function os_getList(path, callback) {
+  getList: async function getList (path, callback) {
     const querySnapshot = await getDocs(collection(db, path));
     querySnapshot.forEach((doc) => {
       // doc.data() is never undefined for query doc snapshots
@@ -273,7 +275,7 @@ var OrchidServices = {
    * @param {function} callback
    * @returns {object}
    */
-  getArrayList: async function os_getList(path, callback) {
+  getArrayList: async function getList (path, callback) {
     const querySnapshot = await getDocs(collection(db, path));
     callback(querySnapshot);
   },
@@ -283,7 +285,7 @@ var OrchidServices = {
    * @param {string} path
    * @param {object} value
    */
-  set: function os_set(path, value) {
+  set: function set (path, value) {
     const docRef = doc(db, path);
     setDoc(docRef, value, { merge: true });
   },
@@ -294,7 +296,7 @@ var OrchidServices = {
      * @param {string} path
      * @param {string} blob
      */
-    add: function os_storage_add(path, blob) {
+    add: function storageAdd (path, blob) {
       const storageRef = ref(storage, path);
 
       // 'blob' comes from the Blob or File API
@@ -309,7 +311,7 @@ var OrchidServices = {
      * Removes a storage file using it's path.
      * @param {string} path
      */
-    remove: function os_storage_remove(path) {
+    remove: function storageRemove (path) {
       // Create a reference to the file to delete
       const storageRef = ref(storage, path);
       // Delete the file
@@ -329,7 +331,7 @@ var OrchidServices = {
      * Lists storage files using the specified path to where it's going to list files.
      * @param {string} path
      */
-    list: function os_storage_list(path) {
+    list: function storageList (path) {
       const listRef = ref(storage, 'files/uid');
 
       // Find all the prefixes and items.
@@ -343,17 +345,14 @@ var OrchidServices = {
             // All the items under listRef.
           });
         })
-        .catch((error) => {
-          // Uh-oh, an error occurred!
-        });
-    },
+    }
   },
 
   auth: {
-    login: function os_auth_login(username, password) {
+    login: function authLogin (username, password) {
       OrchidServices.getList('profile', (user) => {
-        if (user.username == username || user.email == username || user.phone_number == username) {
-          if (user.password == MD5(password)) {
+        if (user.username === username || user.email === username || user.phone_number === username) {
+          if (user.password === MD5(password)) {
             OrchidServices.auth.loginWithToken(user.token);
           } else {
             if (this.DEBUG) {
@@ -372,7 +371,7 @@ var OrchidServices = {
      * Logs in using a specified existing user token.
      * @param {string} token
      */
-    loginWithToken: function os_auth_loginWithToken(token) {
+    loginWithToken: function authLoginWithToken (token) {
       localStorage.setItem('ws.login.userId', token);
     },
 
@@ -383,16 +382,16 @@ var OrchidServices = {
      * @param {string} password
      * @param {string} birthDate
      */
-    signUp: async function os_auth_signUp(username, email, password, birthDate) {
-      var token = OrchidServices._generateUUID();
+    signUp: async function authSignUp (username, email, password, birthDate) {
+      const token = OrchidServices._generateUUID();
       OrchidServices.set('profile/' + token, {
-        username: username,
-        email: email,
+        username,
+        email,
         password: MD5(password),
         profile_picture: '',
         phone_number: '',
         birth_date: birthDate,
-        token: token,
+        token,
         custom_badges: [],
         description: '',
         orchid_points: 0,
@@ -418,7 +417,7 @@ var OrchidServices = {
       if (this.DEBUG) {
         console.log('Added document with ID: ', token);
       }
-    },
+    }
   }
 };
 

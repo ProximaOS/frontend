@@ -1,26 +1,33 @@
-const LockscreenClock = {
-  clockElement: document.getElementById('lockscreen-clock'),
-  is12HourFormat: true, // Set this flag to true for 12-hour format, or false for 24-hour format
+!(function (exports) {
+  'use strict';
 
-  init: function () {
-    this.clockElement.classList.remove('hidden');
+  const LockscreenClock = {
+    clockElement: document.getElementById('lockscreen-clock'),
+    is12HourFormat: true, // Set this flag to true for 12-hour format, or false for 24-hour format
 
-    this.update();
-  },
+    init: function () {
+      this.clockElement.classList.remove('hidden');
 
-  update: function () {
-    var currentTime = new Date();
-    var langCode = navigator.mozL10n.language.code === 'ar' ? 'ar-SA' : navigator.mozL10n.language.code;
+      this.update();
+    },
 
-    this.clockElement.innerText = currentTime.toLocaleTimeString(langCode, {
-      hour12: this.is12HourFormat,
-      hour: 'numeric',
-      minute: '2-digit'
-    });
+    update: function () {
+      const currentTime = new Date();
+      const langCode =
+        navigator.mozL10n.language.code === 'ar'
+          ? 'ar-SA'
+          : navigator.mozL10n.language.code;
 
-    clearTimeout(this.timer);
-    this.timer = setTimeout(this.update.bind(this), 1000);
-  }
-};
+      this.clockElement.innerText = currentTime.toLocaleTimeString(langCode, {
+        hour12: this.is12HourFormat,
+        hour: 'numeric',
+        minute: '2-digit'
+      }).split(' ')[0];
 
-LockscreenClock.init();
+      clearTimeout(this.timer);
+      this.timer = setTimeout(this.update.bind(this), 1000);
+    }
+  };
+
+  LockscreenClock.init();
+})(window);

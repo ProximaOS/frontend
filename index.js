@@ -1,29 +1,49 @@
-const { app, autoUpdater, BrowserWindow, dialog } = require("electron");
-const path = require("path");
-const chrome = require("./src/chrome");
-const runtime = require("./src/runtime/app_runtime");
-const openOrchid = require("./src/openorchid");
-const protocols = require("electron-protocols");
+const { app, dialog } = require('electron');
+const path = require('path');
+const chrome = require('./src/chrome');
+const runtime = require('./src/app_runtime');
+const openOrchid = require('./src/openorchid');
+const protocols = require('electron-protocols');
+const isDev = require('electron-is-dev');
+const update = require('./src/update');
+const electronDl = require('electron-dl');
 
-require("dotenv").config();
+require('dotenv').config();
+
+electronDl();
 
 app.allowRendererProcessReuse = true;
 
+const profileDir = path.resolve(process.env.OPENORCHID_DATA);
+app.setPath('appData', profileDir);
+app.setPath('userData', profileDir);
+app.setPath('sessionData', path.join(profileDir));
+app.setPath('temp', path.join(profileDir, 'temp'));
+app.setPath('desktop', path.join(profileDir, 'storage', 'others', 'desktop'));
+app.setPath('documents', path.join(profileDir, 'storage', 'documents'));
+app.setPath('downloads', path.join(profileDir, 'storage', 'downloads'));
+app.setPath('music', path.join(profileDir, 'storage', 'music'));
+app.setPath('pictures', path.join(profileDir, 'storage', 'photos'));
+app.setPath('videos', path.join(profileDir, 'storage', 'movies'));
+app.setPath('logs', path.join(profileDir, 'logs'));
+app.setPath('cache', path.join(profileDir, 'cache'));
+app.setPath('crashDumps', path.join(profileDir, 'crash-dumps'));
+
 // Disable error dialogs by overriding
-dialog.showErrorBox = function(title, content) {
+dialog.showErrorBox = function (title, content) {
   console.log(`${title}\n${content}`);
 };
 
-protocols.register("openorchid", (uri) => {
+protocols.register('openorchid', (uri) => {
   if (uri.pathname) {
-    return path.join(__dirname, "internal", uri.host, uri.pathname);
+    return path.join(__dirname, 'internal', uri.host, uri.pathname);
   }
-  return path.join(__dirname, "internal", uri.host);
+  return path.join(__dirname, 'internal', uri.host);
 });
 
 // When the app is ready, create the main window
 app.on('ready', function () {
-  process.on('uncaughtException', error => {
+  process.on('uncaughtException', (error) => {
     console.error('Uncaught exception:', error);
     // Handle the error as needed
   });
@@ -33,37 +53,12 @@ app.on('ready', function () {
     // Handle the rejection as needed
   });
 
-  const updateWindow = new BrowserWindow({
-    icon: path.join(__dirname, "..", "icons", "icon.png"),
-    title: "OpenOrchid Updater",
-    width: 320,
-    height: 256,
-    show: false,
-    frame: false,
-    thickFrame: true,
-    webPreferences: {
-      defaultFontFamily: "system-ui",
-      defaultMonospaceFontSize: 14,
-      disableDialogs: true,
-      devTools: require("electron-is-dev"),
-      preload: path.join(__dirname, 'src', 'update.js')
-    },
-  });
-  updateWindow.loadURL("openorchid://updater/index.html");
+  update.init();
 
-  autoUpdater.setFeedURL("https://www.example.com/updates/");
-  autoUpdater.addListener("checking-for-update", () => {
-    updateWindow.show();
-  });
-  autoUpdater.addListener("update-not-available", () => {
-    updateWindow.hide();
-  });
-  // autoUpdater.checkForUpdates();
-
-  if (process.argv.indexOf("--chrome") !== -1) {
+  runtime();
+  if (process.argv.indexOf('--chrome') !== -1) {
     chrome();
   } else {
-    runtime();
     openOrchid();
   }
 });
@@ -75,6 +70,8 @@ app.on('window-all-closed', function () {
   }
 });
 
-require('electron-reload')(path.resolve(process.env.OPENORCHID_WEBAPPS), {
-  hardResetMethod: 'exit'
-});
+if (isDev) {
+  require('electron-reload')(path.resolve(process.env.OPENORCHID_WEBAPPS), {
+    hardResetMethod: 'exit'
+  });
+}

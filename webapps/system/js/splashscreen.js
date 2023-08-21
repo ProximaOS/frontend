@@ -1,18 +1,23 @@
-const Splashscreen = {
-  splashElement: document.getElementById('splashscreen'),
-  videoElement: document.getElementById('splashscreen-video'),
+!(function (exports) {
+  'use strict';
 
-  bootAnimationFile: '/resources/videos/splashscreen.mp4',
+  const Splashscreen = {
+    splashElement: document.getElementById('splashscreen'),
+    videoElement: document.getElementById('splashscreen-video'),
 
-  init: function () {
-    this.videoElement.src = this.bootAnimationFile;
-    this.videoElement.play();
-    document.addEventListener('DOMContentLoaded', this.onLoad.bind(this));
-  },
+    bootAnimationFile: '/resources/videos/splashscreen.mp4',
 
-  onLoad: function () {
-    this.splashElement.classList.add('hidden');
-  }
-};
+    init: function () {
+      this.videoElement.src = this.bootAnimationFile;
+      this.videoElement.play();
+    },
 
-Splashscreen.init();
+    hide: function () {
+      this.splashElement.classList.add('hidden');
+    }
+  };
+
+  Splashscreen.init();
+
+  exports.Splashscreen = Splashscreen;
+})(window);

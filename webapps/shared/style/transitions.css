@@ -1,0 +1,21 @@
+.from-scale {
+  transform-origin: top left;
+  animation: from-scale 0.5s cubic-bezier(0.2, 0.9, 0.1, 1);
+}
+
+.to-scale {
+  transform-origin: top left;
+  animation: to-scale 0.5s cubic-bezier(0.2, 0.9, 0.1, 1);
+}
+
+@keyframes from-scale {
+  to {
+    transform: scale(var(--scale-x), var(--scale-y)) translate(var(--pos-x), var(--pos-y));
+  }
+}
+
+@keyframes to-scale {
+  from {
+    transform: scale(var(--scale-x), var(--scale-y)) translate(var(--pos-x), var(--pos-y));
+  }
+}

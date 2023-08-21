@@ -2,9 +2,9 @@
   "version": "1.0",
   "name": "Browser",
   "description": "Browse the web.",
-  "start_url": "https://www.google.com/",
+  "launch_path": "/index.html",
   "icons": {
-    "45": "/icons/browser.png"
+    "48": "/icons/browser.png"
   },
   "developer": {
     "name": "MortCodesWeb",

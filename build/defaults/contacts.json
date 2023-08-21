@@ -1,0 +1,20 @@
+{
+  "contacts": [
+    {
+      "name": "Help Center",
+      "avatar": null,
+      "phone": [],
+      "email": [
+        "mortcodesweb+help@proton.me"
+      ]
+    },
+    {
+      "name": "User Support",
+      "avatar": null,
+      "phone": [],
+      "email": [
+        "mortcodesweb+support@proton.me"
+      ]
+    }
+  ]
+}
