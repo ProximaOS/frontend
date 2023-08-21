@@ -149,4 +149,4 @@ jobs:
 
     strategy:
       matrix:
-        platform: [linux-arm, linux-arm64, linux-x64, win-ia32, win-x64, mac-x64]
+        platform: [linux-arm, linux-arm64, linux-ia32, linux-x64, win-ia32, win-x64, mac-arm64, mac-x64]
