@@ -32,15 +32,15 @@ jobs:
         run: npm run build-linux-arm64
         if: matrix.platform == 'linux-arm64'
 
-      - name: Build Electron App for Linux (ia32)
+      - name: Build Electron App for Linux (x86)
         run: npm run build-linux-ia32
         if: matrix.platform == 'linux-ia32'
 
       - name: Build Electron App for Linux (x64)
-        run: npm run build-linux-amd64
+        run: npm run build-linux-x64
         if: matrix.platform == 'linux-x64'
 
-      - name: Build Electron App for Windows (ia32)
+      - name: Build Electron App for Windows (x86)
         run: npm run build-win-ia32
         if: matrix.platform == 'win-ia32'
 
@@ -48,9 +48,9 @@ jobs:
         run: npm run build-win-x64
         if: matrix.platform == 'win-x64'
 
-      - name: Build Electron App for macOS (amd64)
-        run: npm run build-mac-amd64
-        if: matrix.platform == 'mac-amd64'
+      - name: Build Electron App for macOS (arm64)
+        run: npm run build-mac-arm64
+        if: matrix.platform == 'mac-arm64'
 
       - name: Build Electron App for macOS (x64)
         run: npm run build-mac-x64
@@ -67,7 +67,7 @@ jobs:
           draft: false
           prerelease: false
 
-      - name: Upload Linux Release Asset (armv7l)
+      - name: Upload Linux Release Asset (ARM 32-bit)
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -77,7 +77,7 @@ jobs:
           asset_name: openorchid-116.0.0-b54-linux-armv7l.tar.gz
           asset_content_type: application/gzip
 
-      - name: Upload Linux Release Asset (arm64)
+      - name: Upload Linux Release Asset (ARM 64-bit)
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -87,7 +87,7 @@ jobs:
           asset_name: openorchid-116.0.0-b54-linux-arm64.tar.gz
           asset_content_type: application/gzip
 
-      - name: Upload Linux Release Asset (ia32)
+      - name: Upload Linux Release Asset (x86)
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -107,7 +107,7 @@ jobs:
           asset_name: openorchid-116.0.0-b54-linux-x64.tar.gz
           asset_content_type: application/gzip
 
-      - name: Upload Windows Release Asset (ia32)
+      - name: Upload Windows Release Asset (x86)
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
