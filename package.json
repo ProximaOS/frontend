@@ -1,6 +1,6 @@
 {
   "name": "openorchid",
-  "version": "116.0a",
+  "version": "116.0.0.54",
   "description": "Open source web OS Orchid project",
   "main": "index.js",
   "scripts": {
