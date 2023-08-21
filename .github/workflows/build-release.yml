@@ -25,19 +25,19 @@ jobs:
         run: npm install
 
       - name: Build Electron App for Linux (ARM 32-bit)
-        run: npm run build-linux-tar.gz
+        run: npm run build-linux-arm
         if: matrix.platform == 'linux-arm'
 
       - name: Build Electron App for Linux (ARM 64-bit)
-        run: npm run build-linux-tar.gz
+        run: npm run build-linux-arm64
         if: matrix.platform == 'linux-arm64'
 
       - name: Build Electron App for Linux (ia32)
-        run: npm run build-linux-tar.gz
+        run: npm run build-linux-ia32
         if: matrix.platform == 'linux-ia32'
 
       - name: Build Electron App for Linux (x64)
-        run: npm run build-linux-tar.gz
+        run: npm run build-linux-amd64
         if: matrix.platform == 'linux-x64'
 
       - name: Build Electron App for Windows (ia32)
@@ -47,6 +47,10 @@ jobs:
       - name: Build Electron App for Windows (x64)
         run: npm run build-win-x64
         if: matrix.platform == 'win-x64'
+
+      - name: Build Electron App for macOS (amd64)
+        run: npm run build-mac-amd64
+        if: matrix.platform == 'mac-amd64'
 
       - name: Build Electron App for macOS (x64)
         run: npm run build-mac-x64
