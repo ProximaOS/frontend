@@ -11,6 +11,7 @@
     "build": "electron-builder",
     "build-linux-arm": "electron-builder --linux --armv7l",
     "build-linux-arm64": "electron-builder --linux --arm64",
+    "build-linux-ia32": "electron-builder --linux --ia32",
     "build-linux-x64": "electron-builder --linux --x64",
     "build-win-ia32": "electron-builder --win --ia32",
     "build-win-x64": "electron-builder --win --x64",
