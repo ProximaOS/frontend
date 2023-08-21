@@ -1,6 +1,6 @@
 const fs = require('fs');
 
-const packageJsonPath = 'package.json';
+const packageJsonPath = '../package.json';
 const packageJson = require(packageJsonPath);
 
 const [major, minor, patch, build] = packageJson.version.split('.');
