@@ -9,6 +9,13 @@
     "smart-tv": "electron . smart-tv",
     "browser": "electron . --chrome",
     "build": "electron-builder",
+    "build-linux-arm": "electron-builder --linux --armv7i",
+    "build-linux-arm64": "electron-builder --linux --arm64",
+    "build-linux-x64": "electron-builder --linux --x64",
+    "build-win-ia32": "electron-builder --win --ia32",
+    "build-win-x64": "electron-builder --win --x64",
+    "build-mac-arm64": "electron-builder --mac --arm64",
+    "build-mac-x64": "electron-builder --mac --x64",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
@@ -20,6 +27,8 @@
     "vulpos",
     "aluminum",
     "aluminumos",
+    "aluminium",
+    "aluminiumos",
     "wos"
   ],
   "author": "MortCodesWeb",

@@ -16,7 +16,10 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v2
         with:
-          node-version: 14
+          node-version: 18
+
+      - name: Increment Package Version Build Number
+        run: node contrib/increment_version.js
 
       - name: Install dependencies
         run: npm install
@@ -33,6 +36,10 @@ jobs:
         run: npm run build-linux-x64
         if: matrix.platform == 'linux-x64'
 
+      - name: Build Electron App for Windows (ia32)
+        run: npm run build-win-ia32
+        if: matrix.platform == 'win-ia32'
+
       - name: Build Electron App for Windows (x64)
         run: npm run build-win-x64
         if: matrix.platform == 'win-x64'
@@ -47,8 +54,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: v1.0.0 # Change this to your desired tag
-          release_name: Release v1.0.0
+          tag_name: v${{ env.PACKAGE_VERSION }}
+          release_name: Release v${{ env.PACKAGE_VERSION }}
           draft: false
           prerelease: false
 
@@ -58,10 +65,10 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./dist/your-app-setup.exe # Replace with the actual path to your built Electron app installer
-          asset_name: your-app-setup.exe
+          asset_path: ./dist/openorchid-setup.exe
+          asset_name: openorchid-setup.exe
           asset_content_type: application/octet-stream
 
     strategy:
       matrix:
-        platform: [linux-arm, linux-arm64, linux-x64, win-x64, mac-x64]
+        platform: [linux-arm, linux-arm64, linux-x64, win-ia32, win-x64, mac-x64]
