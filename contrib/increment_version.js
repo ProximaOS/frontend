@@ -1,6 +1,6 @@
 const fs = require('fs');
 
-const packageJsonPath = 'path/to/your/package.json';
+const packageJsonPath = 'package.json';
 const packageJson = JSON.parse(fs.readFileSync(packageJsonPath, 'utf-8'));
 
 const currentVersion = packageJson.version;
