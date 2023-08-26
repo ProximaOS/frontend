@@ -138,6 +138,7 @@
       mainWindow.webContents.send('rotate', { rotation: '180deg' });
     });
 
+    fs.mkdirSync(path.join(process.env.OPENORCHID_DATA, 'extensions'), { recursive: true });
     fs.readdirSync(process.env.OPENORCHID_ADDONS).forEach(extensionName => {
       const extensionPath = path.join(process.env.OPENORCHID_ADDONS, extensionName);
       mainWindow.webContents.session.loadExtension(extensionPath);
@@ -305,7 +306,7 @@
       });
     }
 
-    fs.mkdirSync(path.join(process.cwd(), 'profile'), { recursive: true });
+    fs.mkdirSync(path.join(process.env.OPENORCHID_DATA), { recursive: true });
 
     const userAgent = `Mozilla/5.0 (OpenOrchid ${
       appConf.version

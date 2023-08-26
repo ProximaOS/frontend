@@ -11,6 +11,7 @@
     process.env.OPENORCHID_DATA,
     'bookmarks.json'
   );
+  const permissionsPath = path.join(process.env.OPENORCHID_DATA, 'permissions.json');
   const contactsPath = path.join(process.env.OPENORCHID_DATA, 'contacts.json');
   const storagePath = process.env.OPENORCHID_STORAGE
     ? process.env.OPENORCHID_STORAGE
@@ -25,6 +26,11 @@
     process.cwd(),
     'defaults',
     'bookmarks.json'
+  );
+  const permissionsInternalPath = path.join(
+    process.cwd(),
+    'defaults',
+    'permissions.json'
   );
   const contactsInternalPath = path.join(
     process.cwd(),
@@ -41,6 +47,12 @@
   if (!fs.existsSync(bookmarksPath)) {
     if (fs.existsSync(bookmarksInternalPath)) {
       fs.copyFileSync(bookmarksInternalPath, bookmarksPath);
+    }
+  }
+
+  if (!fs.existsSync(permissionsPath)) {
+    if (fs.existsSync(permissionsInternalPath)) {
+      fs.copyFileSync(permissionsInternalPath, permissionsPath);
     }
   }
 

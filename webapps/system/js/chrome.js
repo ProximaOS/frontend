@@ -576,34 +576,26 @@
     },
 
     handleNavbarBackButton: function () {
-      const webview = this.chrome().querySelector(
-        '.browser-container .browser.active'
-      );
+      const webview = this.browserContainer().querySelector('.browser.active');
       if (webview.canGoBack()) {
         webview.goBack();
       }
     },
 
     handleNavbarForwardButton: function () {
-      const webview = this.chrome().querySelector(
-        '.browser-container .browser.active'
-      );
+      const webview = this.browserContainer().querySelector('.browser.active');
       if (webview.canGoForward()) {
         webview.goForward();
       }
     },
 
     handleNavbarReloadButton: function () {
-      const webview = this.chrome().querySelector(
-        '.browser-container .browser.active'
-      );
+      const webview = this.browserContainer().querySelector('.browser.active');
       webview.reload();
     },
 
     handleNavbarHomeButton: function () {
-      const webview = this.chrome().querySelector(
-        '.browser-container .browser.active'
-      );
+      const webview = this.browserContainer().querySelector('.browser.active');
       webview.src = this.DEFAULT_URL;
     },
 
@@ -632,11 +624,9 @@
     },
 
     handleIpcMessage: function (event) {
-      const tab = this.chrome().querySelector('.tablist .tab.active');
-      const gridTab = this.chrome().querySelector('.tabs-view .tab.active');
-      const webview = this.chrome().querySelector(
-        '.browser-container .browser.active'
-      );
+      const tab = this.tablist().querySelector('.active');
+      const gridTab = this.tabsViewList().querySelector('.active');
+      const webview = this.browserContainer().querySelector('.browser.active');
 
       const scrollPosition = event.args[0].top;
       let progress = scrollPosition / 80;
@@ -661,9 +651,7 @@
     },
 
     handleContextMenu: function (event) {
-      const webview = this.chrome().querySelector(
-        '.browser-container .browser.active'
-      );
+      const webview = this.browserContainer().querySelector('.browser.active');
       ContextMenu.show(event.params.x, event.params.y, [
         {
           name: 'Back',
@@ -751,27 +739,21 @@
     },
 
     handlePageFaviconUpdated: function (event) {
-      const favicon = this.chrome().querySelector('.tablist .active .favicon');
-      const gridFavicon = this.chrome().querySelector(
-        '.tabs-view .active .favicon'
-      );
+      const favicon = this.tablist().querySelector('.active .favicon');
+      const gridFavicon = this.tabsViewList().querySelector('.active .favicon');
       favicon.src = event.favicons[0];
       gridFavicon.src = event.favicons[0];
     },
 
     handlePageTitleUpdated: function (event) {
-      const title = this.chrome().querySelector('.tablist .active .title');
-      const gridTitle = this.chrome().querySelector(
-        '.tabs-view .active .title'
-      );
+      const title = this.tablist().querySelector('.active .title');
+      const gridTitle = this.tabsViewList().querySelector('.active .title');
       title.textContent = event.title;
       gridTitle.textContent = event.title;
     },
 
     handleDidStartNavigation: function () {
-      const webview = this.chrome().querySelector(
-        '.browser-container .browser.active'
-      );
+      const webview = this.browserContainer().querySelector('.browser.active');
       this.urlbarInput().value = webview.getURL();
 
       if (webview.getURL() === this.DEFAULT_URL) {
@@ -789,9 +771,7 @@
     },
 
     handleThemeColorUpdated: function (event) {
-      const webview = this.chrome().querySelector(
-        '.browser-container .browser.active'
-      );
+      const webview = this.browserContainer().querySelector('.browser.active');
       const color = event.themeColor;
       if (color) {
         webview.dataset.themeColor = (color + 'C0').toLowerCase();
