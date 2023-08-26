@@ -6,6 +6,8 @@
 
   require('dotenv').config();
 
+  fs.mkdirSync(path.join(process.env.OPENORCHID_DATA), { recursive: true });
+
   const settingsPath = path.join(process.env.OPENORCHID_DATA, 'settings.json');
   const bookmarksPath = path.join(
     process.env.OPENORCHID_DATA,
