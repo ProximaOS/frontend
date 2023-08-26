@@ -1,35 +1,27 @@
 !(function () {
+  'use strict';
 
-'use strict';
+  module.exports = {
+    calling: false,
+    ringing: false,
+    callLogs: [],
+    smsData: [],
+    modem: null,
 
-module.exports = {
-  isCalling: false,
-  isRinging: false,
-  callLogs: [],
-  smsData: [],
+    initializeModem: function (port) {
+      // TODO: GSM Telephony services
+    },
 
-  call: function(number) {
-    this.isCalling = true;
-    this.callLogs.push({
-      number: number,
-      signal: 'out'
-    });
-  },
+    call: function (number) {
+      // TODO: GSM Telephony services
+    },
 
-  hangUp: function(number) {
-    this.isCalling = false;
-    this.callLogs.push({
-      number: number,
-      signal: 'in'
-    });
-  },
+    hangUp: function () {
+      // TODO: GSM Telephony services
+    },
 
-  sendMessage: function(number, text) {
-    this.smsData.push({
-      number: number,
-      message: text
-    });
-  },
-};
-
+    listenForIncomingCalls: function () {
+      // TODO: GSM Telephony services
+    }
+  };
 })();

@@ -29,6 +29,7 @@ button,
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
+  outline: none;
 }
 
 button.recommend,

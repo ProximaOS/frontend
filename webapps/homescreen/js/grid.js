@@ -3,7 +3,7 @@
 
   const Grid = {
     gridColumns: 4,
-    HIDDEN_ROLES: ['homescreen', 'system', 'theme'],
+    HIDDEN_ROLES: ['homescreen', 'keyboard', 'system', 'theme'],
     APP_ICON_SIZE: 45,
 
     gridElement: document.getElementById('grid'),
@@ -288,7 +288,9 @@
     }
   };
 
-  document.addEventListener('DOMContentLoaded', function () {
-    Grid.init();
+  window.addEventListener('load', function () {
+    setTimeout(() => {
+      Grid.init();
+    }, 1000);
   });
 })(window);

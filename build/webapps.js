@@ -3,7 +3,7 @@ const path = require('path');
 const AdmZip = require('adm-zip');
 const glob = require('glob');
 
-const sourceDir = './webapps';
+const sourceDir = process.argv[2] || './webapps';
 const outputDir = './build_stage';
 
 // Create the output directory if it doesn't exist

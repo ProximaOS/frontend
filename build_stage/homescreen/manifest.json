@@ -1,11 +1,16 @@
 {
   "version": "1.0",
+  "role": "homescreen",
   "name": "Homescreen",
   "description": "",
-  "role": "homescreen",
   "launch_path": "/index.html",
   "icons": {
-    "16": "/style/icons/homescreen.png"
+    "16": "/style/icons/homescreen_16.png",
+    "32": "/style/icons/homescreen_32.png",
+    "48": "/style/icons/homescreen_48.png",
+    "64": "/style/icons/homescreen_64.png",
+    "128": "/style/icons/homescreen_128.png",
+    "256": "/style/icons/homescreen_256.png"
   },
   "developer": {
     "name": "MortCodesWeb",
@@ -16,7 +21,7 @@
   "background_color": "#f0f6ff",
   "theme_color": "#0061e0",
   "permissions": {
-    "nodeintegration": {}
+    "device-storage:apps": {}
   },
   "transparent": true,
   "statusbar": "overlay"

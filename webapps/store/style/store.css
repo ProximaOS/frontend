@@ -23,3 +23,23 @@
   opacity: 1;
   visibility: visible;
 }
+
+#webapps .headerbar h1 {
+  display: flex;
+  gap: 0.4rem;
+}
+
+html[lang="ar"] #webapps .headerbar h1 {
+  justify-content: start;
+  flex-direction: row-reverse;
+}
+
+@font-face {
+  font-family: 'Readex Pro';
+  src: url(/fonts/ReadexPro-VariableFont_HEXP.ttf);
+}
+
+.headerbar h1 > .logo {
+  font-family: 'Readex Pro';
+  font-weight: 600;
+}

@@ -20,8 +20,12 @@
     OPEN_ANIMATION: 'expand',
     CLOSE_ANIMATION: 'shrink',
 
-    startY: null,
     isDragging: false,
+    isResizing: false,
+    startX: null,
+    startY: null,
+    startWidth: null,
+    startHeight: null,
 
     init: function () {
       this.softwareBackButton.addEventListener(
@@ -82,7 +86,8 @@
           launch_path: manifest.launch_path,
           width: manifest.width,
           height: manifest.height,
-          cli_args: ''
+          windowed: window.matchMedia('(min-width: 768px)').matches,
+          cli_args: []
         },
         options
       );
@@ -187,6 +192,85 @@
       );
       windowDiv.appendChild(grippyBar);
 
+      if (windowOptions.windowed) {
+        if (windowDiv.id !== 'homescreen') {
+          windowDiv.classList.add('window');
+
+          windowDiv.style.left = '32px';
+          windowDiv.style.top = '32px';
+          windowDiv.style.width = '1024px';
+          windowDiv.style.height = '640px';
+
+          const titlebar = document.createElement('div');
+          titlebar.classList.add('titlebar');
+          titlebar.addEventListener(
+            'mousedown',
+            this.startDrag.bind(this, windowDiv.id)
+          );
+          titlebar.addEventListener(
+            'touchstart',
+            this.startDrag.bind(this, windowDiv.id)
+          );
+          windowDiv.appendChild(titlebar);
+
+          const closeButton = document.createElement('button');
+          closeButton.classList.add('close-button');
+          closeButton.addEventListener(
+            'click',
+            this.close.bind(this, windowId)
+          );
+          titlebar.appendChild(closeButton);
+
+          const resizeButton = document.createElement('button');
+          resizeButton.classList.add('resize-button');
+          resizeButton.addEventListener(
+            'click',
+            this.maximize.bind(this, windowId)
+          );
+          titlebar.appendChild(resizeButton);
+
+          const minimizeButton = document.createElement('button');
+          minimizeButton.classList.add('minimize-button');
+          minimizeButton.addEventListener(
+            'click',
+            this.minimize.bind(this, windowId)
+          );
+          titlebar.appendChild(minimizeButton);
+        }
+
+        const resizeHandlers = [];
+
+        // Create and append the resize handlers in all directions
+        for (let i = 0; i < 9; i++) {
+          const resizeHandler = document.createElement('div');
+          resizeHandler.classList.add('resize-handler');
+          windowDiv.appendChild(resizeHandler);
+          resizeHandlers.push(resizeHandler);
+        }
+
+        // Set the cursor style for each resize handler
+        resizeHandlers[0].classList.add('nw-resize');
+        resizeHandlers[1].classList.add('n-resize');
+        resizeHandlers[2].classList.add('ne-resize');
+        resizeHandlers[3].classList.add('w-resize');
+        resizeHandlers[4].classList.add('e-resize');
+        resizeHandlers[5].classList.add('sw-resize');
+        resizeHandlers[6].classList.add('s-resize');
+        resizeHandlers[7].classList.add('se-resize');
+
+        // Attach event listeners to each resize handler
+        resizeHandlers.forEach((resizeHandler, index) => {
+          resizeHandler.addEventListener(
+            'mousedown',
+            this.startResize.bind(this)
+          );
+          resizeHandler.addEventListener(
+            'touchstart',
+            this.startResize.bind(this)
+          );
+        });
+      }
+
       // Create chrome
       const chromeContainer = document.createElement('div');
       chromeContainer.classList.add('chrome');
@@ -249,7 +333,11 @@
         element.classList.remove('active');
       });
 
-      if (this.focusedWindow && this.focusedWindow.id !== 'homescreen' && windowDiv.id !== 'homescreen') {
+      if (
+        this.focusedWindow &&
+        this.focusedWindow.id !== 'homescreen' &&
+        windowDiv.id !== 'homescreen'
+      ) {
         this.focusedWindow.classList.add('to-left');
         this.focusedWindow.addEventListener('animationend', () => {
           this.focusedWindow.classList.remove('to-left');
@@ -371,6 +459,18 @@
       });
     },
 
+    maximize: function (id) {
+      if (id === 'homescreen') {
+        return;
+      }
+      const windowDiv = document.getElementById(id);
+      windowDiv.classList.add('transitioning');
+      windowDiv.classList.toggle('maximized');
+      windowDiv.addEventListener('animationend', () => {
+        windowDiv.classList.remove('transitioning');
+      });
+    },
+
     onButtonClick: function (event) {
       switch (event.target) {
         case this.softwareBackButton:
@@ -442,6 +542,56 @@
       return luminance;
     },
 
+    // Attach event listeners for mouse/touch events to handle dragging
+    startDrag: function (windowId, event) {
+      event.preventDefault();
+      AppWindow.containerElement.classList.add('dragging');
+      const windowDiv = document.getElementById(windowId);
+
+      // Get initial position
+      const initialX = event.pageX || event.touches[0].pageX;
+      const initialY = event.pageY || event.touches[0].pageY;
+
+      // Get initial window position
+      const initialWindowX = windowDiv.offsetLeft;
+      const initialWindowY = windowDiv.offsetTop;
+
+      // Calculate the offset between the initial position and the window position
+      const offsetX = initialX - initialWindowX;
+      const offsetY = initialY - initialWindowY;
+
+      // Attach event listeners for dragging
+      document.addEventListener('mousemove', dragWindow);
+      document.addEventListener('touchmove', dragWindow);
+      document.addEventListener('mouseup', stopDrag);
+      document.addEventListener('touchend', stopDrag);
+
+      // Function to handle dragging
+      function dragWindow (event) {
+        event.preventDefault();
+        const x = event.pageX || event.touches[0].pageX;
+        const y = event.pageY || event.touches[0].pageY;
+
+        // Calculate the new position of the window
+        const newWindowX = x - offsetX;
+        const newWindowY = y - offsetY;
+
+        // Set the new position of the window
+        windowDiv.style.left = newWindowX + 'px';
+        windowDiv.style.top = newWindowY + 'px';
+      }
+
+      // Function to stop dragging
+      function stopDrag (event) {
+        event.preventDefault();
+        AppWindow.containerElement.classList.remove('dragging');
+        document.removeEventListener('mousemove', dragWindow);
+        document.removeEventListener('touchmove', dragWindow);
+        document.removeEventListener('mouseup', stopDrag);
+        document.removeEventListener('touchend', stopDrag);
+      }
+    },
+
     // Add the following event handler for touchstart and pointerdown events on the grippy bar
     handlePointerDown: function (event) {
       event.preventDefault();
@@ -455,7 +605,7 @@
       event.preventDefault();
       if (this.isDragging) {
         const currentYPosition = event.clientY;
-        const distanceY = currentYPosition - this.startY;
+        const distanceY = currentYPosition - this.this.startY;
 
         // Move the window along the Y-axis based on the dragging distance
         if (!this.focusedWindow.dataset.oldTransformOrigin) {
@@ -473,7 +623,7 @@
       event.preventDefault();
       if (this.isDragging) {
         const currentYPosition = event.clientY;
-        const distanceY = currentYPosition - this.startY;
+        const distanceY = currentYPosition - this.this.startY;
 
         // Reset the window transform
         this.focusedWindow.style.transformOrigin =
@@ -497,6 +647,95 @@
           });
         }
       }
+    },
+
+    startResize: function (event) {
+      event.preventDefault();
+      isResizing = true;
+
+      startX = event.pageX || event.touches[0].pageX;
+      startY = event.pageY || event.touches[0].pageY;
+      startWidth = windowDiv.offsetWidth;
+      startHeight = windowDiv.offsetHeight;
+
+      document.addEventListener('mousemove', resize);
+      document.addEventListener('touchmove', resize);
+      document.addEventListener('mouseup', stopResize);
+      document.addEventListener('touchend', stopResize);
+    },
+
+    resize: function (event) {
+      event.preventDefault();
+      if (!isResizing) return;
+      AppWindow.containerElement.classList.add('dragging');
+
+      const currentX = event.pageX || event.touches[0].pageX;
+      const currentY = event.pageY || event.touches[0].pageY;
+
+      let width = startWidth;
+      let height = startHeight;
+      let left = windowDiv.offsetLeft;
+      let top = windowDiv.offsetTop;
+
+      // Calculate the new dimensions based on the resize handler's index
+      switch (index) {
+        case 0: // Top Left
+          width = startWidth + (startX - currentX);
+          height = startHeight + (startY - currentY);
+          left = windowDiv.offsetLeft - (startX - currentX);
+          top = windowDiv.offsetTop - (startY - currentY);
+          break;
+        case 1: // Top
+          height = startHeight + (startY - currentY);
+          top = windowDiv.offsetTop - (startY - currentY);
+          break;
+        case 2: // Top Right
+          width = startWidth + (currentX - startX);
+          height = startHeight + (startY - currentY);
+          top = windowDiv.offsetTop - (startY - currentY);
+          break;
+        case 3: // Left
+          width = startWidth + (startX - currentX);
+          left = windowDiv.offsetLeft - (startX - currentX);
+          break;
+        case 4: // Right
+          width = startWidth + (currentX - startX);
+          break;
+        case 5: // Bottom Left
+          width = startWidth + (startX - currentX);
+          height = startHeight + (currentY - startY);
+          left = windowDiv.offsetLeft - (startX - currentX);
+          break;
+        case 6: // Bottom
+          height = startHeight + (currentY - startY);
+          break;
+        case 7: // Bottom Right
+          width = startWidth + (currentX - startX);
+          height = startHeight + (currentY - startY);
+          break;
+        case 8: // Center (move window)
+          left = windowDiv.offsetLeft + (currentX - startX);
+          top = windowDiv.offsetTop + (currentY - startY);
+          break;
+        default:
+          break;
+      }
+
+      // Update the position and dimensions of the window
+      windowDiv.style.width = `${width}px`;
+      windowDiv.style.height = `${height}px`;
+      windowDiv.style.left = `${left}px`;
+      windowDiv.style.top = `${top}px`;
+    },
+
+    stopResize: function (event) {
+      event.preventDefault();
+      isResizing = false;
+      AppWindow.containerElement.classList.remove('dragging');
+      document.removeEventListener('mousemove', resize);
+      document.removeEventListener('touchmove', resize);
+      document.removeEventListener('mouseup', stopResize);
+      document.removeEventListener('touchend', stopResize);
     }
   };
 

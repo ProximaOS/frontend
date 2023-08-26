@@ -15,9 +15,7 @@
       this.overlay.classList.add('visible');
       this.containerElement.innerHTML = '';
 
-      document.onclick = () => {
-        this.hide();
-      };
+      document.addEventListener('click', this.hide.bind(this));
 
       array.forEach((item) => {
         const element = document.createElement('li');
@@ -67,6 +65,8 @@
     },
 
     hide: function () {
+      document.removeEventListener('click', this.hide.bind(this));
+
       if (this.screen) {
         this.screen.classList.remove('context-menu-visible');
       } else {

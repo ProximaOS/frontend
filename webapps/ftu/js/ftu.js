@@ -3,9 +3,11 @@
 
   const FTU = {
     content: document.getElementById('content'),
+    splashscreen: document.getElementById('splashscreen'),
 
     init: function () {
       this.setup();
+      this.splashscreen.classList.add('hidden');
     },
 
     setup: function () {
@@ -39,7 +41,7 @@
 
       const doneButton = this.content.querySelector('.done-button');
       doneButton.onclick = () => {
-        this.content.classList.remove('visible');
+        window.close();
       };
 
       const accentColorRed = this.content.querySelector('.accent-colors .red');

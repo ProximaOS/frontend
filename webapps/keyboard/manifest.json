@@ -1,0 +1,21 @@
+{
+  "version": "1.0",
+  "role": "keyboard",
+  "name": "Keyboard",
+  "description": "",
+  "launch_path": "/index.html",
+  "icons": {
+    "48": "/style/icons/keyboard.png"
+  },
+  "developer": {
+    "name": "MortCodesWeb",
+    "url": "https://openorchid.github.io/"
+  },
+  "default_locale": "en",
+  "orientation": "portrait-primary",
+  "background_color": "#f0f6ff",
+  "theme_color": "#858585",
+  "permissions": {
+    "nodeintegration": {}
+  }
+}

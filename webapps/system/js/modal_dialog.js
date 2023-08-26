@@ -1,81 +1,79 @@
 !(function (exports) {
+  'use strict';
 
-'use strict';
+  const ModalDialog = {
+    dialogAlert: document.getElementById('modal-dialog-alert'),
+    dialogConfirm: document.getElementById('modal-dialog-confirm'),
+    dialogPrompt: document.getElementById('modal-dialog-prompt'),
 
-var ModalDialog = {
-  dialogAlert: document.getElementById('modal-dialog-alert'),
-  dialogConfirm: document.getElementById('modal-dialog-confirm'),
-  dialogPrompt: document.getElementById('modal-dialog-prompt'),
+    showAlert: function (title, message) {
+      this.dialogAlert.querySelector('.title').textContent = title;
+      this.dialogAlert.querySelector('.detail').textContent = message;
 
-  showAlert: function (title, message) {
-    this.dialogAlert.querySelector('.title').textContent = title;
-    this.dialogAlert.querySelector('.detail').textContent = message;
+      const okButton = this.dialogAlert.querySelector('.recommend');
+      okButton.addEventListener('click', this.handleAlertButtonClick);
 
-    var okButton = this.dialogAlert.querySelector('.recommend');
-    okButton.addEventListener('click', this.handleAlertButtonClick);
+      this.dialogAlert.classList.add('visible');
+    },
 
-    this.dialogAlert.classList.add('visible');
-  },
+    showConfirm: function (title, message, callback) {
+      this.dialogConfirm.querySelector('.title').textContent = title;
+      this.dialogConfirm.querySelector('.detail').textContent = message;
 
-  showConfirm: function (title, message, callback) {
-    this.dialogConfirm.querySelector('.title').textContent = title;
-    this.dialogConfirm.querySelector('.detail').textContent = message;
+      const cancelButton = this.dialogConfirm.querySelector('.cancel');
+      cancelButton.addEventListener(
+        'click',
+        this.handleCancelButtonClick.bind(this, callback, false)
+      );
 
-    var cancelButton = this.dialogConfirm.querySelector('.cancel');
-    cancelButton.addEventListener(
-      'click',
-      this.handleCancelButtonClick.bind(this, callback, false)
-    );
+      const confirmButton = this.dialogConfirm.querySelector('.recommend');
+      confirmButton.addEventListener(
+        'click',
+        this.handleConfirmButtonClick.bind(this, callback, true)
+      );
 
-    var confirmButton = this.dialogConfirm.querySelector('.recommend');
-    confirmButton.addEventListener(
-      'click',
-      this.handleConfirmButtonClick.bind(this, callback, true)
-    );
+      this.dialogConfirm.classList.add('visible');
+    },
 
-    this.dialogConfirm.classList.add('visible');
-  },
+    showPrompt: function (title, message, callback) {
+      this.dialogPrompt.querySelector('.title').textContent = title;
+      this.dialogPrompt.querySelector('.detail').textContent = message;
 
-  showPrompt: function (title, message, callback) {
-    this.dialogPrompt.querySelector('.title').textContent = title;
-    this.dialogPrompt.querySelector('.detail').textContent = message;
+      const cancelButton = this.dialogPrompt.querySelector('.cancel');
+      cancelButton.addEventListener(
+        'click',
+        this.handleCancelButtonClick.bind(this, callback, null)
+      );
 
-    var cancelButton = this.dialogPrompt.querySelector('.cancel');
-    cancelButton.addEventListener(
-      'click',
-      this.handleCancelButtonClick.bind(this, callback, null)
-    );
+      const confirmButton = this.dialogPrompt.querySelector('.recommend');
+      confirmButton.addEventListener(
+        'click',
+        this.handlePromptConfirmButtonClick.bind(this, callback)
+      );
 
-    var confirmButton = this.dialogPrompt.querySelector('.recommend');
-    confirmButton.addEventListener(
-      'click',
-      this.handlePromptConfirmButtonClick.bind(this, callback)
-    );
+      this.dialogPrompt.classList.add('visible');
+    },
 
-    this.dialogPrompt.classList.add('visible');
-  },
+    handleAlertButtonClick: function () {
+      ModalDialog.dialogAlert.classList.remove('visible');
+    },
 
-  handleAlertButtonClick: function () {
-    ModalDialog.dialogAlert.classList.remove('visible');
-  },
+    handleCancelButtonClick: function (callback, value) {
+      ModalDialog.dialogConfirm.classList.remove('visible');
+      callback(value);
+    },
 
-  handleCancelButtonClick: function (callback, value) {
-    ModalDialog.dialogConfirm.classList.remove('visible');
-    callback(value);
-  },
+    handleConfirmButtonClick: function (callback, value) {
+      ModalDialog.dialogConfirm.classList.remove('visible');
+      callback(value);
+    },
 
-  handleConfirmButtonClick: function (callback, value) {
-    ModalDialog.dialogConfirm.classList.remove('visible');
-    callback(value);
-  },
+    handlePromptConfirmButtonClick: function (callback) {
+      const input = ModalDialog.dialogPrompt.querySelector('.inputbox').value;
+      ModalDialog.dialogPrompt.classList.remove('visible');
+      callback(input);
+    }
+  };
 
-  handlePromptConfirmButtonClick: function (callback) {
-    var input = ModalDialog.dialogPrompt.querySelector('.inputbox').value;
-    ModalDialog.dialogPrompt.classList.remove('visible');
-    callback(input);
-  },
-};
-
-exports.ModalDialog = ModalDialog;
-
+  exports.ModalDialog = ModalDialog;
 })(window);

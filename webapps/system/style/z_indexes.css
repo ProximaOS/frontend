@@ -3,7 +3,7 @@
 }
 
 [data-z-index-layer="statusbar"] {
-  z-index: 32767;
+  z-index: 32769;
 }
 
 [data-z-index-layer="windows"] {
@@ -15,7 +15,7 @@
 }
 
 [data-z-index-layer="lockscreen"] {
-  z-index: 2048;
+  z-index: 32768;
 }
 
 [data-z-index-layer="utility-tray"] {
@@ -35,7 +35,7 @@
 }
 
 [data-z-index-layer="software-buttons"] {
-  z-index: 32768;
+  z-index: 32767;
 }
 
 [data-z-index-layer="system-overlays"] {

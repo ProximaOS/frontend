@@ -10,12 +10,5 @@
   "developer": {
     "name": "MortCodesWeb",
     "url": "https://openorchid.github.io/"
-  },
-  "default_locale": "en",
-  "orientation": "portrait-primary",
-  "background_color": "#f0f6ff",
-  "theme_color": "#0061e0",
-  "permissions": {
-    "nodeintegration": {}
   }
 }

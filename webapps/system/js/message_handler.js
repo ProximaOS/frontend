@@ -46,15 +46,15 @@
     },
 
     handleAlert: function (data) {
-      ModalDialog.showAlert(data.origin, data.text);
+      ModalDialog.showAlert(data.title || data.origin, data.text);
     },
 
     handleConfirm: function (data) {
-      ModalDialog.showConfirm(data.origin, data.text);
+      ModalDialog.showConfirm(data.title || data.origin, data.text);
     },
 
     handlePrompt: function (data) {
-      ModalDialog.showPrompt(data.origin, data.text, data.input);
+      ModalDialog.showPrompt(data.title || data.origin, data.text, data.input);
     },
 
     handleNotification: function (data) {

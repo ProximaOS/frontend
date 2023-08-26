@@ -3,7 +3,7 @@
 
   const { ipcRenderer } = require('electron');
 
-  const permissions = require('./permissions');
+  const manifests = require('./manifests');
   const wifiManager = require('./services/wifi_manager');
   const bluetoothManager = require('./services/bluetooth');
   const storageManager = require('./services/storage_manager');
@@ -40,22 +40,32 @@
         const { data } = event;
         callback(data);
       });
-    }
+    },
+
+    storageManager: {}
   };
 
-  if (permissions.checkPermission('wifi-manage')) { api.wifiManager = wifiManager; }
-  if (permissions.checkPermission('bluetooth')) { api.bluetoothManager = bluetoothManager; }
-  if (permissions.checkPermission('settings')) { api.settings = settings; }
-  if (permissions.checkPermission('storage')) { api.storageManager = storageManager; }
-  if (permissions.checkPermission('device-storage:apps')) { api.appsManager = appsManager; }
-  if (permissions.checkPermission('time')) { api.timeManager = timeManager; }
-  if (permissions.checkPermission('virtualization')) { api.virtualManager = virtualManager; }
-  if (permissions.checkPermission('child-process')) { api.childProcess = childProcess; }
-  if (permissions.checkPermission('power')) { api.powerManager = powerManager; }
-  if (permissions.checkPermission('rtlsdr')) { api.rtlSdrListener = rtlSdrListener; }
-  if (permissions.checkPermission('users')) { api.usersManager = usersManager; }
-  if (permissions.checkPermission('telephony')) { api.telephonyManager = telephonyManager; }
-  if (permissions.checkPermission('sms')) { api.smsManager = smsManager; }
+  manifests.checkPermission('wifi-manage').then((result) => { if (result) { api.wifiManager = wifiManager; } });
+  manifests.checkPermission('bluetooth').then((result) => { if (result) { api.bluetoothManager = bluetoothManager; } });
+  manifests.checkPermission('settings').then((result) => { if (result) { api.settings = settings; } });
+  manifests.checkPermission('storage').then((result) => { if (result) { api.storageManager = storageManager; } });
+  manifests.checkPermission('device-storage:audio').then((result) => { if (result) { api.storageManager.audioAccess = true; } });
+  manifests.checkPermission('device-storage:books').then((result) => { if (result) { api.storageManager.booksAccess = true; } });
+  manifests.checkPermission('device-storage:downloads').then((result) => { if (result) { api.storageManager.downloadsAccess = true; } });
+  manifests.checkPermission('device-storage:movies').then((result) => { if (result) { api.storageManager.moviesAccess = true; } });
+  manifests.checkPermission('device-storage:music').then((result) => { if (result) { api.storageManager.musicAccess = true; } });
+  manifests.checkPermission('device-storage:others').then((result) => { if (result) { api.storageManager.othersAccess = true; } });
+  manifests.checkPermission('device-storage:photos').then((result) => { if (result) { api.storageManager.photosAccess = true; } });
+  manifests.checkPermission('device-storage:home').then((result) => { if (result) { api.storageManager.homeAccess = true; } });
+  manifests.checkPermission('device-storage:apps').then((result) => { if (result) { api.appsManager = appsManager; } });
+  manifests.checkPermission('time').then((result) => { if (result) { api.timeManager = timeManager; } });
+  manifests.checkPermission('virtualization').then((result) => { if (result) { api.virtualManager = virtualManager; } });
+  manifests.checkPermission('child-process').then((result) => { if (result) { api.childProcess = childProcess; } });
+  manifests.checkPermission('power').then((result) => { if (result) { api.powerManager = powerManager; } });
+  manifests.checkPermission('fm-radio').then((result) => { if (result) { api.rtlSdrListener = rtlSdrListener; } });
+  manifests.checkPermission('users').then((result) => { if (result) { api.usersManager = usersManager; } });
+  manifests.checkPermission('telephony').then((result) => { if (result) { api.telephonyManager = telephonyManager; } });
+  manifests.checkPermission('sms').then((result) => { if (result) { api.smsManager = smsManager; } });
 
   module.exports = api;
 })(window);

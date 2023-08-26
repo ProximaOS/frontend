@@ -117,7 +117,6 @@ html[dir="rtl"] .statusbar-icons > .right {
 }
 
 #statusbar-time {
-  color: #fff;
   font-size: 1.6rem;
   transition: all 0.3s cubic-bezier(0.2, 0.9, 0.1, 1), opacity 0.3s ease, transform 0.3s ease, visibility 0.3s ease, margin 0.3s cubic-bezier(0.2, 0.9, 0.1, 1) 0.3s;
 }
@@ -125,11 +124,6 @@ html[dir="rtl"] .statusbar-icons > .right {
 #statusbar-time.indicator {
   background-color: var(--accent-color);
   color: var(--accent-color-plus) !important;
-}
-
-#statusbar-time.indicator.screen-capture {
-  background-color: #c00040;
-  color: rgba(255,255,255,0.75) !important;
   display: flex;
   align-items: center;
   gap: 0.5rem;
@@ -137,8 +131,9 @@ html[dir="rtl"] .statusbar-icons > .right {
   border-radius: 2rem;
 }
 
-#statusbar.light #statusbar-time {
-  color: #333;
+#statusbar-time.indicator.screen-capture {
+  background-color: #c00040;
+  color: rgba(255,255,255,0.75) !important;
 }
 
 #statusbar-battery::before {
@@ -153,7 +148,7 @@ html[dir="rtl"] .statusbar-icons > .right {
   position: relative;
 }
 
-#statusbar.light #statusbar-battery.charging {
+#statusbar:not(.tray-open).light #statusbar-battery.charging {
   color: rgba(51, 51, 51, 0.5);
 }
 
@@ -170,7 +165,7 @@ html[dir="rtl"] .statusbar-icons > .right {
   color: #fff;
 }
 
-#statusbar.light #statusbar-battery.charging::after {
+#statusbar:not(.tray-open).light #statusbar-battery.charging::after {
   color: #333;
 }
 
@@ -242,6 +237,21 @@ html[dir="rtl"] .statusbar-icons > .right {
 
 #statusbar-warm-colors::before {
   font-size: 1.8rem;
+}
+
+@media screen and (min-width: 768px) {
+  #statusbar:not(.tray-open).light .statusbar-icons > .left div,
+  #statusbar:not(.tray-open).light .statusbar-icons > .right div {
+    color: #333;
+  }
+
+  #statusbar:not(.tray-open).light #statusbar-battery.charging {
+    color: rgba(51, 51, 51, 0.5);
+  }
+
+  #statusbar:not(.tray-open).light #statusbar-battery.charging::after {
+    color: #333;
+  }
 }
 
 @media screen and (orientation: landscape) and (max-width: 767px) {

@@ -1,0 +1,124 @@
+@font-face {
+  font-family: 'Readex Pro';
+  src: url(/fonts/ReadexPro-VariableFont_HEXP.ttf);
+}
+
+.app {
+  overflow-y: auto;
+  padding-bottom: 5rem;
+  box-sizing: border-box;
+}
+
+.homepage-header {
+  width: 100%;
+  padding: 1.5rem;
+  padding-top: 10rem;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.homepage-header .logo-holder {
+  width: 100%;
+  max-width: calc(var(--safezone-width) - 3rem);
+  aspect-ratio: 3 / 1;
+  margin-bottom: 1.5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--item-plus);
+  border-radius: 1.5rem;
+}
+
+.homepage-header .logo-holder > .logo {
+  padding: 1rem;
+  backdrop-filter: blur(10px);
+  display: flex;
+  align-items: center;
+  border-radius: 1rem;
+}
+
+.homepage-header .logo-holder > .logo .wordmark {
+  color: var(--text-color);
+  font-size: 3.6rem;
+  font-weight: 600;
+  font-family: 'Readex Pro';
+  margin-inline-end: 0.25em;
+}
+
+.homepage-header .logo-holder > .logo .name {
+  color: var(--text-color);
+  font-size: 3.6rem;
+  font-weight: normal;
+}
+
+.homepage-header .searchbox {
+  width: 100%;
+  max-width: calc(var(--safezone-width) - 3rem);
+  height: 4.4rem;
+  background: var(--background-plus) url(icons/browser_64.png) no-repeat left 1.5rem center / 2.4rem;
+  border-radius: 2.2rem;
+  display: flex;
+  box-shadow: 0 1.5rem 3rem rgba(0,0,0,0.25);
+  margin-bottom: 1.5rem;
+}
+
+.homepage-header .searchbox input[type="text"] {
+  width: 100%;
+  flex-grow: 1;
+  background-color: transparent;
+  border: none;
+  outline: none;
+  color: var(--text-color);
+  font-size: 1.6rem;
+  padding: 0;
+  padding-inline-start: 5rem;
+  box-sizing: border-box;
+}
+
+.homepage-header .searchbox button[type="submit"] {
+  width: 4.4rem;
+  height: 3.4rem;
+  line-height: 3.4rem;
+  flex-shrink: 0;
+  background-color: transparent;
+  border: none;
+  outline: none;
+  color: var(--accent-color-plus);
+  margin: 0.5rem;
+  background-color: var(--accent-color);
+  border-radius: 2rem;
+}
+
+.homepage-header .searchbox button[type="submit"][data-icon]::before {
+  position: static;
+  font-size: 2rem;
+}
+
+.homepage-row {
+  width: calc(100% - 3rem);
+  max-width: calc(var(--safezone-width) - 3rem);
+  margin: 0 auto;
+  margin-bottom: 1.5rem;
+}
+
+.homepage-row > header {
+  width: 100%;
+  height: 3rem;
+  line-height: 3rem;
+  color: var(--text-color);
+  font-size: 1.6rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  padding: 0 0.5rem;
+  box-sizing: border-box;
+}
+
+.homepage-row > div {
+  width: 100%;
+  padding: 0.5rem;
+  box-sizing: border-box;
+  background-color: var(--background-plus);
+  border-radius: 1.5rem;
+}

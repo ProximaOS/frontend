@@ -29,8 +29,15 @@
   "video.ebook_mode.enabled": false,
   "video.timeout_duration": 15000,
   "homescreen.manifest_url": "http://homescreen.localhost:8081/manifest.json",
-  "homescreen.accent_color.rgb": { "r": 0, "g": 128, "b": 255 },
-  "homescreen.grid": { "columns": 4, "rows": 5 },
+  "homescreen.accent_color.rgb": {
+    "r": 64,
+    "g": 160,
+    "b": 96
+  },
+  "homescreen.grid": {
+    "columns": 4,
+    "rows": 5
+  },
   "privacy.block_tracking.enabled": true,
   "privacy.indicators.enabled": true,
   "privacy.indicators.camera.enabled": true,
@@ -40,5 +47,17 @@
   "developer.enabled": false,
   "developer.touch_pointer.enabled": false,
   "developer.debugging.enabled": false,
-  "orchidaccount.token": ""
+  "orchidaccount.token": "",
+  "orchidaccount.profile_picture": "",
+  "orchidaccount.username": "",
+  "ftu.enabled": true,
+  "files.quick-access": [
+    { "name": "home", "icon": "home_folder", "path": "/" },
+    { "name": "audio", "icon": "audio_folder", "path": "/audio" },
+    { "name": "books", "icon": "books_folder", "path": "/books" },
+    { "name": "downloads", "icon": "downloads_folder", "path": "/downloads" },
+    { "name": "movies", "icon": "movies_folder", "path": "/movies" },
+    { "name": "photos", "icon": "photos_folder", "path": "/photos" },
+    { "name": "others", "icon": "others_folder", "path": "/others" }
+  ]
 }

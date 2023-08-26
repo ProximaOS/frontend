@@ -1,0 +1,152 @@
+<div class="toolbar">
+  <div class="tablist-holder">
+    <button class="profile-button" data-icon="user" data-l10n-id="profile-button">
+      <img src="" alt="" class="avatar">
+    </button>
+    <button class="side-tabs-button" data-icon="browser-sidetabs" data-l10n-id="tablist-sideTabsButton"></button>
+    <ul class="tablist"></ul>
+    <button class="add-button" data-icon="browser-addtab" data-l10n-id="tablist-addButton"></button>
+  </div>
+  <div class="navbar">
+    <button class="navbar-back-button" data-icon="browser-back" data-l10n-id="navbar-backButton"></button>
+    <button class="navbar-forward-button" data-icon="browser-forward" data-l10n-id="navbar-forwardButton"></button>
+    <button class="navbar-reload-button" data-icon="browser-reload" data-l10n-id="navbar-reloadButton"></button>
+    <button class="navbar-home-button" data-icon="browser-home" data-l10n-id="navbar-homeButton"></button>
+    <div class="urlbar">
+      <button class="urlbar-ssl" data-icon="browser-ssl" data-l10n-id="urlbar-sslButton"></button>
+      <input type="url" class="urlbar-input" />
+      <div class="urlbar-display-url" data-l10n-id="urlbar"></div>
+      <button class="urlbar-bookmark" data-icon="browser-bookmark" data-l10n-id="urlbar-bookmarkButton"></button>
+      <button class="urlbar-go" data-icon="browser-forward" data-l10n-id="urlbar-goButton"></button>
+      <div class="suggestions"></div>
+    </div>
+    <button class="navbar-tabs-button" data-icon="browser-windows" data-l10n-id="navbar-tabsButton"></button>
+    <button class="navbar-downloads-button" data-icon="browser-downloads"
+      data-l10n-id="navbar-downloadsButton"></button>
+    <button class="navbar-library-button" data-icon="browser-library" data-l10n-id="navbar-libraryButton"></button>
+    <button class="navbar-addons-button" data-icon="browser-addons" data-l10n-id="navbar-addonsButton"></button>
+    <button class="navbar-options-button" data-icon="browser-options" data-l10n-id="navbar-optionsButton"></button>
+  </div>
+</div>
+<div class="browser-container"></div>
+
+<menu class="dropdown">
+  <div class="dropdown-panel options">
+    <button data-icon="browser-add" data-l10n-id="dropdown-newTab"></button>
+    <button data-icon="do-not-track" data-l10n-id="dropdown-newPrivateTab"></button>
+    <div class="separator"></div>
+    <button data-icon="browser-library" data-l10n-id="dropdown-library" data-dropdown-id="library"></button>
+    <button data-icon="browser-downloads" data-l10n-id="dropdown-downloads" data-dropdown-id="downloads"></button>
+    <button data-icon="browser-history" data-l10n-id="dropdown-history" data-dropdown-id="history"></button>
+    <div class="separator"></div>
+    <button data-icon="apps" data-l10n-id="dropdown-webapps"></button>
+    <button data-icon="browser-addons" data-l10n-id="dropdown-addons" data-dropdown-id="addons"></button>
+    <button data-icon="settings" data-l10n-id="dropdown-settings"></button>
+    <button data-icon="power" data-l10n-id="dropdown-quit"></button>
+  </div>
+
+  <div class="dropdown-panel downloads">
+    <header>
+      <a href="#" data-icon="back" data-dropdown-id="options"></a>
+      <h1 data-l10n-id="dropdown-downloads"></h1>
+    </header>
+    <ul class="downloads-list"></ul>
+  </div>
+
+  <div class="dropdown-panel library">
+    <header>
+      <a href="#" data-icon="back" data-dropdown-id="options"></a>
+      <h1 data-l10n-id="dropdown-library"></h1>
+    </header>
+    <ul class="library-list"></ul>
+  </div>
+
+  <div class="dropdown-panel addons">
+    <header>
+      <a href="#" data-icon="back" data-dropdown-id="options"></a>
+      <h1 data-l10n-id="dropdown-addons"></h1>
+    </header>
+    <ul class="addons-list"></ul>
+  </div>
+
+  <div class="dropdown-panel history">
+    <header>
+      <a href="#" data-icon="back" data-dropdown-id="options"></a>
+      <h1 data-l10n-id="dropdown-history"></h1>
+    </header>
+    <ul class="history-list"></ul>
+    <menu>
+      <button class="history-clear-all-button" data-l10n-id="dropdown-history-clearAllButton"></button>
+    </menu>
+  </div>
+</menu>
+
+<div class="tabs-view">
+  <div class="container">
+    <div class="grippy-bar"></div>
+    <div class="headerbar">
+      <h1 data-l10n-id="tabsView"></h1>
+      <menu role="toolbar">
+        <a href="#" class="tabs-view-add-button" data-icon="add" data-l10n-id="tabsView-newButton"></a>
+        <a href="#" class="tabs-view-close-button" data-icon="close" data-l10n-id="tabsView-closeButton"></a>
+      </menu>
+    </div>
+    <div class="grid"></div>
+  </div>
+</div>
+<div class="ftu-dialog">
+  <div class="container">
+    <div class="greetings page visible">
+      <div class="illustration">
+        <div class="illustration-art"></div>
+      </div>
+      <div class="content">
+        <h3>Hello!</h3>
+        <p>lorem ipsum</p>
+        <ul>
+          <li>lorem ipsum</li>
+          <li>lorem ipsum</li>
+          <li>lorem ipsum</li>
+        </ul>
+      </div>
+      <div class="buttons">
+        <button class="next-button next recommend" data-icon="forward" data-page-id="customize">Next</button>
+      </div>
+    </div>
+    <div class="customize page">
+      <div class="illustration">
+        <div class="illustration-art"></div>
+      </div>
+      <div class="content">
+        <h3>Customize</h3>
+        <p>Pick your preferred profile picture and accent color.</p>
+        <div class="accent-colors">
+          <div class="red"></div>
+          <div class="yellow"></div>
+          <div class="green"></div>
+          <div class="blue default"></div>
+          <div class="purple"></div>
+        </div>
+      </div>
+      <div class="buttons">
+        <button class="previous-button" data-icon="back" data-page-id="greetings">Previous</button>
+        <button class="next-button next recommend" data-icon="forward" data-page-id="account">Next</button>
+      </div>
+    </div>
+    <div class="account page">
+      <div class="illustration">
+        <div class="illustration-art"></div>
+      </div>
+      <div class="content">
+        <h3>Orchid Account</h3>
+        <p>Login or sign up to sync your data between your Orchid devices.</p>
+        <button>Login</button>
+        <a href="#">Or sign up instead</a>
+      </div>
+      <div class="buttons">
+        <button class="previous-button" data-icon="back" data-page-id="customize">Previous</button>
+        <button class="done-button next recommend" data-icon="forward">Done</button>
+      </div>
+    </div>
+  </div>
+</div>

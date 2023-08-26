@@ -1,7 +1,7 @@
 !(function () {
   'use strict';
 
-  const { BrowserWindow, ipcMain, Notification } = require('electron');
+  const { BrowserWindow, ipcMain } = require('electron');
   const path = require('path');
 
   module.exports = function create () {
@@ -11,7 +11,8 @@
         '..',
         'internal',
         'branding',
-        'icon.png'
+        'browser',
+        'browser_64.png'
       ),
       title: 'Orchid Browser',
       width: 1024,
@@ -25,64 +26,124 @@
         contextIsolation: false,
         scrollBounce: true,
         webSecurity: false,
-        preload: path.join(__dirname, '..', 'src', 'preload.js')
+        preload: path.join(__dirname, 'preload.js')
       }
     });
 
     mainWindow.loadFile(path.join(__dirname, '..', 'chrome', 'index.html'));
 
-    // Notification event
-    ipcMain.on('trigger-notification', (event, notificationData) => {
-      const { title, body } = notificationData;
-      const notification = new Notification({
-        title,
-        body
-      });
+    // Intercept download requests using the webContents' session
+    mainWindow.webContents.session.on(
+      'will-download',
+      (event, item, webContents) => {
+        // Send an event to the renderer process to get download path and decision
+        mainWindow.webContents.send('downloadrequest', {
+          url: item.getURL(),
+          suggestedFilename: item.getFilename(),
+          lastModified: item.getLastModifiedTime(),
+          size: item.getTotalBytes(),
+          mime: item.getMimeType()
+        });
 
-      notification.show();
+        // Listen for the response from the renderer process
+        ipcMain.once('downloadresponse', (event, downloadData) => {
+          if (downloadData.shouldDownload) {
+            // Set the download path and start the download
+            item.setSavePath(downloadData.path);
+          } else {
+            // Cancel the download
+            item.cancel();
+          }
+        });
 
-      // Pass the notification event with data to the renderer process
-      mainWindow.webContents.send('notification', { event, notificationData });
+        // Listen for download progress events
+        item.on('updated', (event, state) => {
+          if (state === 'progressing') {
+            // Get download progress
+            const progress = item.getReceivedBytes() / item.getTotalBytes();
+            mainWindow.webContents.send('downloadprogress', {
+              url: item.getURL(),
+              suggestedFilename: item.getFilename(),
+              lastModified: item.getLastModifiedTime(),
+              size: item.getTotalBytes(),
+              mime: item.getMimeType(),
+              progress
+            });
+          }
+        });
+      }
+    );
+
+    mainWindow.webContents.session.setPermissionRequestHandler(
+      (webContents, permission, callback) => {
+        mainWindow.webContents.send('permissionrequest', { type: permission });
+        ipcMain.on('permissionrequest', (event, data) => {
+          callback(data.decision);
+        });
+      }
+    );
+
+    fs.readdirSync(process.env.OPENORCHID_ADDONS).forEach(extensionName => {
+      const extensionPath = path.join(process.env.OPENORCHID_ADDONS, extensionName);
+      mainWindow.webContents.session.loadExtension(extensionPath);
     });
-
-    // Open event
-    ipcMain.on('open-url', (event, url) => {
-      // Pass the open event with URL to the renderer process
-      mainWindow.webContents.send('open-url', { event, url });
-    });
-
-    // Permission request event
-    ipcMain.on('request-permissions', (event, permissionData) => {
-      // Handle the permission request
-      // ...
-
-      // Pass the permission request event with data to the renderer process
-      mainWindow.webContents.send('permissionrequest', {
-        event,
-        permissionData
-      });
-    });
-
-    // Get the current window instance
-    const currentWindow = BrowserWindow.getFocusedWindow();
 
     // Close window
     ipcMain.on('close-window', () => {
-      currentWindow.close();
+      mainWindow.close();
     });
 
     // Maximize window
     ipcMain.on('maximize-window', () => {
-      if (currentWindow.isMaximized()) {
-        currentWindow.restore();
+      if (mainWindow.isMaximized()) {
+        mainWindow.restore();
       } else {
-        currentWindow.maximize();
+        mainWindow.maximize();
       }
     });
 
     // Minimize window
     ipcMain.on('minimize-window', () => {
-      currentWindow.minimize();
+      mainWindow.minimize();
+    });
+
+    // Open event
+    app.on('open-url', (event, url) => {
+      // Pass the open event with URL to the renderer process
+      mainWindow.webContents.send('open-url', { event, url });
+    });
+
+    ipcMain.on('message', (event, data) => {
+      mainWindow.webContents.send('message', data);
+      ipcMain.on('message-reply', (event, data) => {
+        mainWindow.webContents.send('message-reply', { data, isAllowed: true });
+      });
+    });
+
+    ipcMain.on('request-extension-list', (event, data) => {
+      mainWindow.webContents.send('extension-list', mainWindow.webContents.session.getAllExtensions());
+    });
+
+    ipcMain.on('powerstart', (event, data) => {
+      mainWindow.webContents.send('powerstart', data);
+    });
+    ipcMain.on('powerend', (event, data) => {
+      mainWindow.webContents.send('powerend', data);
+    });
+
+    ipcMain.on('volumeup', (event, data) => {
+      mainWindow.webContents.send('volumeup', data);
+    });
+    ipcMain.on('volumedown', (event, data) => {
+      mainWindow.webContents.send('volumedown', data);
+    });
+
+    ipcMain.on('shortcut', (event, data) => {
+      mainWindow.webContents.send('shortcut', data);
+    });
+
+    ipcMain.on('rotate', (event, data) => {
+      mainWindow.webContents.send('rotate', data);
     });
   };
 })();

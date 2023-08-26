@@ -4,6 +4,26 @@
   document.addEventListener('DOMContentLoaded', function () {
     const screen = document.getElementById('screen');
 
+    if (platform === 'mobile') {
+      LazyLoader([]);
+    } else if (platform === 'smart-tv') {
+      LazyLoader([]);
+    } else if (platform === 'vr') {
+      LazyLoader([]);
+    } else if (platform === 'homepad') {
+      LazyLoader([]);
+    } else if (platform === 'wear') {
+      LazyLoader([]);
+    } else if (platform === 'desktop') {
+      LazyLoader([
+        '/desktop/style/launcher.css',
+        '/desktop/style/software_buttons.css',
+        '/desktop/style/statusbar.css',
+        '/desktop/style/utility_tray.css',
+        '/desktop/style/windows.css'
+      ]);
+    }
+
     _session.settings
       .getValue('general.software_buttons.enabled')
       .then((value) => {
@@ -17,12 +37,21 @@
     );
 
     _session.settings.getValue('homescreen.manifest_url').then((value) => {
-      AppWindow.create(value);
+      AppWindow.create(value, {});
     });
     _session.settings.addObserver('homescreen.manifest_url', (value) => {
-      AppWindow.create(value);
+      AppWindow.create(value, {});
     });
 
-    Splashscreen.hide();
+    _session.appsManager.getAll().then(() => {
+      Splashscreen.hide();
+
+      _session.settings.getValue('ftu.enabled').then((value) => {
+        if (value) {
+          LockscreenMotion.hideMotionElement();
+          AppWindow.create('http://ftu.localhost:8081/manifest.json', {});
+        }
+      });
+    });
   });
 })(window);

@@ -5,6 +5,7 @@
   width: 100%;
   height: 100%;
   pointer-events: none;
+  z-index: 100;
 }
 
 #modal-dialog-alert,
@@ -35,13 +36,10 @@
 #modal-dialog-alert .container,
 #modal-dialog-confirm .container,
 #modal-dialog-prompt .container {
-  position: absolute;
-  bottom: 1rem;
   transform: scale(0.9);
   margin: 0 0 1.5rem;
   width: calc(100% - 2rem);
   max-width: 40rem;
-  height: max-content;
   background-color: var(--background-plus);
   border-radius: 2rem;
   box-shadow: 0 1rem 2rem rgba(0,0,0,0.1);
@@ -51,7 +49,7 @@
 #screen.software-buttons-enabled #modal-dialog-alert .container,
 #screen.software-buttons-enabled #modal-dialog-confirm .container,
 #screen.software-buttons-enabled #modal-dialog-prompt .container {
-  bottom: var(--software-buttons-height);
+  bottom: calc(var(--software-buttons-height) + 1rem);
 }
 
 #modal-dialog-alert.visible .container,

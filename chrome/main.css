@@ -36,14 +36,8 @@ body {
 }
 
 .chrome:not(.sidetabs) .browser-container {
-  top: calc(
-    var(--chrome-tablist-height) + var(--chrome-navbar-height) +
-      (var(--chrome-toolbar-gap) * 3)
-  ) !important;
-  height: calc(
-    100% - var(--chrome-tablist-height) - var(--chrome-navbar-height) -
-      (var(--chrome-toolbar-gap) * 3)
-  ) !important;
+  top: 0;
+  height: calc(100% + 4rem);
 }
 
 .context-menu-visible .browser {

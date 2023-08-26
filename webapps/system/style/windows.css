@@ -84,7 +84,7 @@
   }
 }
 
-.appframe.from-left {
+.appframe:not(.window).from-left {
   border-radius: var(--screen-radius);
   animation: from-left 0.3s cubic-bezier(0.8, 0.1, 0.9, 0) forwards;
 }
@@ -98,7 +98,7 @@
   }
 }
 
-.appframe.from-right {
+.appframe:not(.window).from-right {
   border-radius: var(--screen-radius);
   animation: from-right 0.3s cubic-bezier(0.8, 0.1, 0.9, 0) forwards;
 }
@@ -112,7 +112,7 @@
   }
 }
 
-.appframe.to-left {
+.appframe:not(.window).to-left {
   border-radius: var(--screen-radius);
   animation: to-left 0.3s cubic-bezier(0.8, 0.1, 0.9, 0) forwards;
 }
@@ -126,7 +126,7 @@
   }
 }
 
-.appframe.to-right {
+.appframe:not(.window).to-right {
   border-radius: var(--screen-radius);
   animation: to-right 0.3s cubic-bezier(0.8, 0.1, 0.9, 0) forwards;
 }
@@ -177,6 +177,25 @@
   background-color: transparent;
 }
 
+.appframe.window {
+  border-radius: 2.5rem !important;
+  box-shadow: 0 1rem 2rem rgba(0,0,0,0.25);
+  transform: translateY(0);
+}
+
+.appframe.window.active {
+  box-shadow: 0 2rem 4rem rgba(0,0,0,0.25);
+}
+
+.appframe.window.maximized {
+  position: absolute;
+  left: 0 !important;
+  top: var(--statusbar-height) !important;
+  width: 100% !important;
+  height: calc(100% - var(--statusbar-height) - var(--software-buttons-height)) !important;
+  box-shadow: none;
+}
+
 .appframe .chrome .browser-container > .browser {
   position: absolute;
   left: 0;
@@ -190,8 +209,8 @@
 }
 
 .appframe .chrome.visible .browser {
-  top: calc(var(--statusbar-height) + ((var(--chrome-tablist-height) + var(--chrome-navbar-height) + (var(--chrome-toolbar-gap) * 2)) * (1 - var(--scroll-progress, 0))));
-  height: calc(100% - var(--statusbar-height) - 2.5rem - ((var(--chrome-tablist-height) - var(--chrome-navbar-height) - (var(--chrome-toolbar-gap) * 2)) * (1 - var(--scroll-progress, 0))));
+  top: calc(var(--statusbar-height) + var(--chrome-tablist-height) + var(--chrome-navbar-height) + (var(--chrome-toolbar-gap) * 2));
+  height: calc(100% - var(--statusbar-height) - 2.5rem - var(--chrome-tablist-height) - var(--chrome-navbar-height) - (var(--chrome-toolbar-gap) * 2));
 }
 
 .appframe .chrome.bottom.visible .browser {
@@ -202,9 +221,18 @@
   height: calc(100% - var(--statusbar-height) - var(--software-buttons-height));
 }
 
+#screen .appframe.window .chrome .browser-container > .browser {
+  height: 100%;
+}
+
 #screen.software-buttons-enabled .appframe .chrome.visible .browser {
   top: calc(var(--statusbar-height) + var(--chrome-tablist-height) + var(--chrome-navbar-height) + (var(--chrome-toolbar-gap) * 2));
   height: calc(100% - var(--statusbar-height) - var(--software-buttons-height) - var(--chrome-tablist-height) - var(--chrome-navbar-height) - (var(--chrome-toolbar-gap) * 2));
+}
+
+#screen .appframe.window .chrome.visible .browser {
+  top: calc(var(--chrome-tablist-height) + var(--chrome-navbar-height) + (var(--chrome-toolbar-gap) * 2));
+  height: calc(100% - var(--chrome-tablist-height) - var(--chrome-navbar-height) - (var(--chrome-toolbar-gap) * 2));
 }
 
 #screen.software-buttons-enabled .appframe .chrome.bottom.visible .browser {
@@ -228,15 +256,20 @@
   height: 100%;
 }
 
+.appframe.window.immersive
+#screen.software-buttons-enabled .appframe.window.immersive {
+  height: calc(100% + var(--software-buttons-height));
+}
+
 @media screen and (max-width: 599px) {
   .appframe .chrome.visible .browser {
-    top: calc((var(--statusbar-height) + var(--chrome-navbar-height) + var(--chrome-toolbar-gap)) * (1 - var(--scroll-progress, 0)));
-    height: calc(100% - 2.5rem - ((var(--statusbar-height) + var(--chrome-navbar-height) + var(--chrome-toolbar-gap)) * (1 - var(--scroll-progress, 0))));
+    top: calc(var(--statusbar-height) + var(--chrome-navbar-height) + var(--chrome-toolbar-gap));
+    height: calc(100% - var(--statusbar-height) - 2.5rem - var(--chrome-navbar-height) - var(--chrome-toolbar-gap));
   }
 
   #screen.software-buttons-enabled .appframe .chrome.visible .browser {
-    top: calc((var(--statusbar-height) + (var(--chrome-navbar-height) + var(--chrome-toolbar-gap)) * (1 - var(--scroll-progress, 0))));
-    height: calc(100% - var(var(--software-buttons-height) - ((var(--statusbar-height) - var(--chrome-navbar-height) - var(--chrome-toolbar-gap)) * (1 - var(--scroll-progress, 0)))));
+    top: calc(var(--statusbar-height) + var(--chrome-navbar-height) + var(--chrome-toolbar-gap));
+    height: calc(100% - var(--statusbar-height) - var(--software-buttons-height) - var(--chrome-navbar-height) - var(--chrome-toolbar-gap));
   }
 }
 
@@ -298,10 +331,157 @@
   mix-blend-mode: difference;
 }
 
+.appframe .titlebar {
+  position: absolute;
+  top: 0;
+  width: 100%;
+  padding: 0.75rem 1.5rem;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: row-reverse;
+  gap: 1rem;
+  z-index: 5;
+}
+html[dir="ltr"] .appframe .titlebar {
+  right: 0;
+}
+html[dir="rtl"] .appframe .titlebar {
+  left: 0;
+}
+
+.appframe.chrome-visible .titlebar {
+  width: max-content;
+  padding: 1.25rem 1.5rem;
+}
+
+.appframe .titlebar button {
+  width: 2.5rem;
+  height: 2.5rem;
+  line-height: 2.5rem;
+  border-radius: 50%;
+  background-color: var(--item-plus);
+  border: none;
+  position: relative;
+  padding: 0;
+}
+
+.appframe .titlebar button:hover {
+  background-color: var(--item-hover-plus);
+}
+
+.appframe .titlebar button:active {
+  background-color: var(--item-active-plus);
+}
+
+.appframe .titlebar button::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background: transparent no-repeat center / 1.6rem;
+  opacity: 0.8;
+}
+
+.appframe .titlebar .close-button::before {
+  background-image: url(images/close.png);
+}
+
+.appframe .titlebar .resize-button::before {
+  background-image: url(images/maximize.png);
+}
+
+.appframe.maximized .titlebar .resize-button::before {
+  background-image: url(images/restore.png);
+}
+
+.appframe .titlebar .minimize-button::before {
+  background-image: url(images/minimize.png);
+}
+
+.appframe.light .titlebar button::before {
+  filter: invert(1);
+}
+
+.appframe.dark .titlebar button::before {
+  filter: none;
+}
+
+@media screen and (prefers-color-scheme: light) {
+  .appframe.light .titlebar button::before {
+    filter: invert(1);
+  }
+}
+
+.resize-handler {
+  position: absolute;
+  width: 0.75rem;
+  height: 0.75rem;
+  z-index: 100;
+}
+
+.resize-handler.resize-ne { /* Top Left */
+  top: 0;
+  left: 0;
+  cursor: ne-resize;
+}
+
+.resize-handler.resize-n { /* Top */
+  top: 0;
+  left: 1rem;
+  width: calc(100% - 2rem);
+  cursor: n-resize;
+}
+
+.resize-handler.resize-nw { /* Top Right */
+  top: 0;
+  right: 0;
+  cursor: nw-resize;
+}
+
+.resize-handler.resize-e { /* Left */
+  top: 1rem;
+  left: 0;
+  height: calc(100% - 2rem);
+  cursor: w-resize;
+}
+
+.resize-handler.resize-w { /* Right */
+  top: 1rem;
+  right: 0;
+  height: calc(100% - 2rem);
+  cursor: e-resize;
+}
+
+.resize-handler.resize-se { /* Bottom Left */
+  bottom: 0;
+  left: 0;
+  cursor: se-resize;
+}
+
+.resize-handler.resize-s { /* Bottom */
+  bottom: 0;
+  left: 1rem;
+  width: calc(100% - 2rem);
+  cursor: s-resize;
+}
+
+.resize-handler.resize-sw { /* Bottom Right */
+  bottom: 0;
+  right: 0;
+  cursor: sw-resize;
+}
+
 @media screen and (min-width: 600px) {
   .appframe .chrome.top.visible,
   .appframe .chrome.top.visible .toolbar {
     padding-top: var(--statusbar-height) !important;
+  }
+
+  .appframe.window .chrome.top.visible,
+  .appframe.window .chrome.top.visible .toolbar {
+    padding-top: var(--chrome-toolbar-gap) !important;
   }
 }
 

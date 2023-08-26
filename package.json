@@ -4,9 +4,7 @@
   "description": "Open source web OS Orchid project",
   "main": "index.js",
   "scripts": {
-    "phone": "electron .",
-    "desktop": "electron . desktop",
-    "smart-tv": "electron . smart-tv",
+    "start": "electron .",
     "browser": "electron . --chrome",
     "build": "electron-builder",
     "build-linux-arm": "electron-builder --linux --armv7l",
@@ -48,9 +46,9 @@
     "mv": "^2.1.1",
     "natural": "^6.5.0",
     "noble": "^1.9.1",
+    "node-gsm-modem": "^1.0.0",
     "node-wifi": "^2.0.16",
     "path": "^0.12.7",
-    "plivo": "^4.55.0",
     "sqlite3": "^5.1.6",
     "systeminformation": "^5.18.4",
     "uuid": "^9.0.0"
@@ -76,23 +74,32 @@
     "webpack-cli": "^5.1.4"
   },
   "build": {
-    "appId": "org.openorchid.simulator",
+    "appId": "org.openorchid.interface",
     "productName": "openorchid",
     "directories": {
       "output": "dist",
       "buildResources": "res"
     },
     "win": {
-      "target": "zip",
-      "icon": "internal/branding/icon.png"
+      "target": [
+        "zip",
+        "nsis"
+      ],
+      "icon": "internal/branding/browser/browser_256.png"
     },
     "mac": {
-      "target": "dmg",
-      "icon": "internal/branding/icon.png"
+      "target": [
+        "zip",
+        "dmg"
+      ],
+      "icon": "internal/branding/browser/browser_256.png"
     },
     "linux": {
-      "target": "tar.gz",
-      "icon": "internal/branding/icon.png"
+      "target": [
+        "tar.gz",
+        "deb"
+      ],
+      "icon": "internal/branding/browser/browser_256.png"
     },
     "files": [
       "chrome",

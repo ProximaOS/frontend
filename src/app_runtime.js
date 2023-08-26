@@ -5,11 +5,10 @@
   const path = require('path');
   const http = require('http');
   const AdmZip = require('adm-zip');
-  const { app } = require('electron');
 
   require('dotenv').config();
 
-  module.exports = function () {
+  module.exports = function (app) {
     const webAppsDir = process.env.OPENORCHID_WEBAPPS;
     const files = fs.readdirSync(webAppsDir);
 
@@ -67,7 +66,8 @@
         );
       });
 
-      app.on('window-all-closed', () => {
+      app.on('will-quit', () => {
+        console.log('Closing...');
         localServer.close(() => {
           console.log('Ending webapp runtime server...');
         });

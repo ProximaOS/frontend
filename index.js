@@ -6,11 +6,8 @@ const openOrchid = require('./src/openorchid');
 const protocols = require('electron-protocols');
 const isDev = require('electron-is-dev');
 const update = require('./src/update');
-const electronDl = require('electron-dl');
 
 require('dotenv').config();
-
-electronDl();
 
 app.allowRendererProcessReuse = true;
 
@@ -55,7 +52,7 @@ app.on('ready', function () {
 
   update.init();
 
-  runtime();
+  runtime(app);
   if (process.argv.indexOf('--chrome') !== -1) {
     chrome();
   } else {

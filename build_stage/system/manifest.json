@@ -1,8 +1,8 @@
 {
   "version": "1.0",
+  "role": "system",
   "name": "System",
   "description": "OpenOrchid System",
-  "role": "system",
   "launch_path": "/index.html",
   "icons": {},
   "developer": {
@@ -13,11 +13,18 @@
   "background_color": "#f0f6ff",
   "theme_color": "#0061e0",
   "permissions": {
-    "wifimanager": true,
-    "bluetooth": true,
-    "notifications": true,
-    "timemanager": true,
-    "settings": true,
-    "appmanager": true
+    "bluetooth": {},
+    "settings": {},
+    "storage": {},
+    "device-storage:apps": {},
+    "time": {},
+    "virtualization": {},
+    "child-process": {},
+    "power": {},
+    "fm-radio": {},
+    "users": {},
+    "wifi-manage": {},
+    "telephony": {},
+    "sms": {}
   }
 }

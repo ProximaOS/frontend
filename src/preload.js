@@ -27,6 +27,10 @@
     });
   };
 
+  window.close = function () {
+    ipcRenderer.sendToHost('close', {});
+  };
+
   window.alert = ModalDialogs.alert;
   window.confirm = ModalDialogs.confirm;
   window.prompt = ModalDialogs.prompt;
@@ -64,20 +68,19 @@
 
       const button = document.createElement('button');
       button.classList.add('openorchid-pip-button');
-      button.dataset.enabled = false;
       button.addEventListener('click', function () {
-        if (button.dataset.enabled) {
-          ipcRenderer.send('message', {
-            type: 'picture-in-picture',
-            action: 'disable'
-          });
-        } else {
+        button.classList.toggle('enabled');
+        if (button.classList.contains('enabled')) {
           ipcRenderer.send('message', {
             type: 'picture-in-picture',
             action: 'enable'
           });
+        } else {
+          ipcRenderer.send('message', {
+            type: 'picture-in-picture',
+            action: 'disable'
+          });
         }
-        button.dataset.enabled = !button.dataset.enabled;
       });
       videoElement.parentElement.appendChild(button);
     });
@@ -167,9 +170,11 @@
     });
   });
 
-  const pattern = /^http:\/\/.*\.localhost:8081\//;
-  if (!pattern.test(location.href)) {
-    return;
+  if (!process && navigator.userAgent.includes('OpenOrchid')) {
+    const pattern = /^http:\/\/.*\.localhost:8081\//;
+    if (!pattern.test(location.href)) {
+      return;
+    }
   }
 
   window._session = api;

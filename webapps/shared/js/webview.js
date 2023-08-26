@@ -1,6 +1,3 @@
 !(function (exports) {
-
-'use strict';
-
-
+  'use strict';
 })(window);

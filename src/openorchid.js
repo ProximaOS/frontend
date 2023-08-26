@@ -58,7 +58,7 @@
         contextIsolation: false,
         scrollBounce: true,
         webSecurity: false,
-        defaultFontFamily: 'system-ui',
+        defaultFontFamily: 'Jali Arabic',
         defaultMonospaceFontSize: 14,
         disableDialogs: true,
         devTools: isDev,
@@ -70,12 +70,49 @@
       mainWindow.webContents.openDevTools({ mode: 'detach' });
     }
 
-    mainWindow.webContents.session.setPermissionRequestHandler((webContents, permission, callback) => {
-      mainWindow.webContents.send('permissionrequest', { type: permission });
-      ipcMain.on('permissionrequest', (event, data) => {
-        callback(data.decision);
-      });
-    });
+    // Intercept download requests using the webContents' session
+    mainWindow.webContents.session.on(
+      'will-download',
+      (event, item, webContents) => {
+        // Send an event to the renderer process to get download path and decision
+        mainWindow.webContents.send('downloadrequest', {
+          url: item.getURL(),
+          suggestedFilename: item.getFilename(),
+          lastModified: item.getLastModifiedTime(),
+          size: item.getTotalBytes(),
+          mime: item.getMimeType()
+        });
+
+        // Listen for the response from the renderer process
+        ipcMain.once('downloadresponse', (event, downloadData) => {
+          if (downloadData.shouldDownload) {
+            // Set the download path and start the download
+            item.setSavePath(downloadData.path);
+          } else {
+            // Cancel the download
+            item.cancel();
+          }
+        });
+
+        // Listen for download progress events
+        item.on('updated', (event, state) => {
+          if (state === 'progressing') {
+            // Get download progress
+            const progress = item.getReceivedBytes() / item.getTotalBytes();
+            mainWindow.webContents.send('download-progress', progress);
+          }
+        });
+      }
+    );
+
+    mainWindow.webContents.session.setPermissionRequestHandler(
+      (webContents, permission, callback) => {
+        mainWindow.webContents.send('permissionrequest', { type: permission });
+        ipcMain.on('permissionrequest', (event, data) => {
+          callback(data.decision);
+        });
+      }
+    );
 
     Menu.setApplicationMenu(null);
     electronLocalshortcut.register(mainWindow, ['Ctrl+R', 'F5'], () => {
@@ -99,6 +136,11 @@
     });
     electronLocalshortcut.register(mainWindow, 'Ctrl+H', () => {
       mainWindow.webContents.send('rotate', { rotation: '180deg' });
+    });
+
+    fs.readdirSync(process.env.OPENORCHID_ADDONS).forEach(extensionName => {
+      const extensionPath = path.join(process.env.OPENORCHID_ADDONS, extensionName);
+      mainWindow.webContents.session.loadExtension(extensionPath);
     });
 
     if (isDev) {
@@ -162,8 +204,8 @@
       );
 
       // Calculate the center position for the frameWindow
-      const centerX = parseInt(newPosition[0] - ((426 - width) / 2));
-      const centerY = parseInt(newPosition[1] - ((745 - height) / 2) + 24);
+      const centerX = parseInt(newPosition[0] - (426 - width) / 2);
+      const centerY = parseInt(newPosition[1] - (745 - height) / 2 + 24);
 
       if (frameWindow) {
         // Set the position of the frameWindow at the calculated center
@@ -289,8 +331,12 @@
     ipcMain.on('message', (event, data) => {
       mainWindow.webContents.send('message', data);
       ipcMain.on('message-reply', (event, data) => {
-        event.reply('message-reply', { data, isAllowed: true });
+        mainWindow.webContents.send('message-reply', { data, isAllowed: true });
       });
+    });
+
+    ipcMain.on('request-extension-list', (event, data) => {
+      mainWindow.webContents.send('extension-list', mainWindow.webContents.session.getAllExtensions());
     });
 
     ipcMain.on('powerstart', (event, data) => {
@@ -313,6 +359,14 @@
 
     ipcMain.on('rotate', (event, data) => {
       mainWindow.webContents.send('rotate', data);
+    });
+
+    ipcMain.on('shutdown', (event, data) => {
+      app.quit();
+    });
+    ipcMain.on('restart', (event, data) => {
+      app.relaunch();
+      app.quit();
     });
   };
 })();

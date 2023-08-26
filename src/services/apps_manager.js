@@ -119,30 +119,31 @@
           'webapps',
           `{${appId}}`
         );
-        const appList = this.getAll();
 
-        fs.mkdirSync(appDir, { recursive: true });
+        this.getAll().then((appList) => {
+          fs.mkdirSync(appDir, { recursive: true });
 
-        try {
-          const zip = new AdmZip(
-            path.join(process.env.OPENORCHID_STORAGE, zipFilePath)
-          );
-          zip.extractAllTo(appDir, true);
+          try {
+            const zip = new AdmZip(
+              path.join(process.env.OPENORCHID_STORAGE, zipFilePath)
+            );
+            zip.extractAllTo(appDir, true);
 
-          const appEntry = {
-            appId: `{${appId}}`,
-            installedAt: new Date().toISOString(),
-            manifestUrl: `http://{${appId}}.localhost:8081/manifest.json`
-          };
+            const appEntry = {
+              appId: `{${appId}}`,
+              installedAt: new Date().toISOString(),
+              manifestUrl: `http://{${appId}}.localhost:8081/manifest.json`
+            };
 
-          appList.push(appEntry);
-          this.writeAppList(appList);
+            appList.push(appEntry);
+            this.writeAppList(appList);
 
-          resolve(appId);
-        } catch (error) {
-          console.error('Error extracting app:', error);
-          reject(error);
-        }
+            resolve(appId);
+          } catch (error) {
+            console.error('Error extracting app:', error);
+            reject(error);
+          }
+        });
       });
     },
 
@@ -164,7 +165,7 @@
     getFolderSize: function (folderPath) {
       let totalSize = 0;
 
-      function calculateSize (filePath) {
+      function calculateSize(filePath) {
         const stats = fs.statSync(filePath);
 
         if (stats.isFile()) {

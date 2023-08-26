@@ -30,10 +30,16 @@
   <link rel="stylesheet" href="style/lockscreen.css">
   <link rel="stylesheet" href="style/text_selection.css">
   <link rel="stylesheet" href="style/volume_rocker.css">
+  <link rel="stylesheet" href="style/launcher.css">
+  <link rel="stylesheet" href="style/dashboard.css">
+  <link rel="stylesheet" href="style/power_screen.css">
   <link rel="stylesheet" href="style/z_indexes.css">
 
   <!-- Online scripts -->
   <script type="module" src="http://shared.localhost:8081/services/orchid_services.js"></script>
+
+  <!-- Shared scripts -->
+  <script src="http://shared.localhost:8081/js/platform.js"></script>
 
   <!-- Initial scripts -->
   <script src="js/bootstrap.js"></script>
@@ -72,13 +78,14 @@
   <script defer src="js/volume_rocker.js"></script>
   <script defer src="js/hardware_buttons.js"></script>
   <script defer src="js/permissions.js"></script>
+  <script defer src="js/power_screen.js"></script>
   <script defer src="lockscreen/js/motion.js"></script>
   <script defer src="lockscreen/js/clock.js"></script>
   <script defer src="lockscreen/js/date.js"></script>
 
   <!-- Chrome -->
-  <link rel="stylesheet" href="http://shared.localhost:8081/style/chrome.css">
-  <script defer src="http://shared.localhost:8081/js/chrome.js"></script>
+  <link rel="stylesheet" href="style/chrome.css">
+  <script defer src="js/chrome.js"></script>
 
   <script src="http://shared.localhost:8081/js/l10n.js"></script>
   <meta name="defaultLanguage" content="en-US">
@@ -119,6 +126,7 @@
 
     <div id="lockscreen" data-z-index-layer="lockscreen" class="visible">
       <div id="lockscreen-background"></div>
+      <div id="lockscreen-foreground"></div>
       <div id="lockscreen-container">
         <div class="lockscreen-row">
           <span id="lockscreen-icon" data-icon="lock"></span>
@@ -171,6 +179,12 @@
                 <li><a href="#" id="quick-settings-audio" data-icon="bell" data-l10n-id="quickSettings-audio"></a></li>
                 <li><a href="#" id="quick-settings-screen-capture" data-icon="video" data-l10n-id="quickSettings-screenCapture"></a></li>
                 <li><a href="#" id="quick-settings-flashlight" data-icon="flashlight" data-l10n-id="quickSettings-flashlight"></a></li>
+
+                <li><a href="#" id="quick-settings-focus-mode" data-icon="moon" data-l10n-id="quickSettings-focusMode"></a></li>
+                <li><a href="#" id="quick-settings-bike-mode" data-icon="airplane" data-l10n-id="quickSettings-bikeMode"></a></li>
+                <li><a href="#" id="quick-settings-dark-mode" data-icon="settings-brightness" data-l10n-id="quickSettings-darkMode"></a></li>
+                <li><a href="#" id="quick-settings-warm-colors" data-icon="accessibility" data-l10n-id="quickSettings-warmColors"></a></li>
+                <li><a href="#" id="quick-settings-cast" data-icon="cast" data-l10n-id="quickSettings-cast"></a></li>
               </ul>
               <div id="brightness">
                 <span data-icon="moon"></span>
@@ -270,15 +284,63 @@
     </div>
 
     <div id="software-buttons" data-z-index-layer="software-buttons">
-      <button id="software-back-button"></button>
-      <button id="software-home-button"></button>
-      <button id="software-recents-button"></button>
+      <div class="mobile">
+        <button id="software-back-button"></button>
+        <button id="software-home-button"></button>
+        <button id="software-recents-button"></button>
+      </div>
+      <div class="desktop">
+        <button id="software-launcher-button"></button>
+        <button id="software-search-button"></button>
+        <button id="software-dashboard-button"></button>
+      </div>
 
       <div id="dock"></div>
     </div>
 
+    <div id="launcher">
+      <div class="header">
+        <div id="launcher-search" data-l10n-id="type-here-to-search"></div>
+        <button id="launcher-resize" data-icon="fullscreen"></button>
+      </div>
+
+      <div id="launcher-grid"></div>
+
+      <div class="footer">
+        <div class="left">
+          <figure>
+            <img src="" alt="" class="avatar">
+            <figcaption>
+              <div class="title"></div>
+              <div class="badges"></div>
+            </figcaption>
+          </figure>
+        </div>
+        <div class="right">
+          <button data-icon="power"></button>
+          <button data-icon="settings"></button>
+          <button data-icon="home"></button>
+        </div>
+      </div>
+    </div>
+
+    <div id="dashboard">
+      <webview src="" id="dashboard-browser"></webview>
+    </div>
+
     <div id="system-overlays" data-z-index-layer="system-overlays">
-      <div id="power-screen"></div>
+      <div id="power-screen">
+        <div class="buttons">
+          <button id="power-screen-shutdown-button" data-icon="power" data-l10n-id="powerScreen-shutdown"></button>
+          <button id="power-screen-restart-button" data-icon="reload" data-l10n-id="powerScreen-restart"></button>
+        </div>
+        <div class="toolbar">
+          <button id="power-screen-emergency-button" class="danger" data-l10n-id="powerScreen-emergency"></button>
+        </div>
+        <div class="notice">
+          <div data-l10n-id="powerScreenNotice"></div>
+        </div>
+      </div>
 
       <div id="volume-rocker">
         <div id="volume-rocker-progress"></div>

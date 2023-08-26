@@ -1,5 +1,6 @@
 {
   "version": "1.0",
+  "role": "system",
   "name": "FTU",
   "description": "First time use",
   "launch_path": "/index.html",
@@ -17,5 +18,5 @@
   "permissions": {
     "nodeintegration": {}
   },
-  "statusbar": "overlay"
+  "display": "immersive"
 }

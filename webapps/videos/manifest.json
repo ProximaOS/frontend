@@ -13,7 +13,7 @@
   "default_locale": "en",
   "orientation": "portrait-primary",
   "background_color": "#f0f6ff",
-  "theme_color": "#0061e0",
+  "theme_color": "#ff6040",
   "permissions": {
     "nodeintegration": {}
   }

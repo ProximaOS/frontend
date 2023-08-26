@@ -15,7 +15,27 @@
   "background_color": "#f0f6ff",
   "theme_color": "#0061e0",
   "permissions": {
-    "nodeintegration": {}
+    "bluetooth": {},
+    "settings": {},
+    "storage": {},
+    "device-storage:audio": {},
+    "device-storage:books": {},
+    "device-storage:downloads": {},
+    "device-storage:movies": {},
+    "device-storage:music": {},
+    "device-storage:others": {},
+    "device-storage:photos": {},
+    "device-storage:home": {},
+    "device-storage:apps": {},
+    "time": {},
+    "virtualization": {},
+    "child-process": {},
+    "power": {},
+    "fm-radio": {},
+    "users": {},
+    "wifi-manage": {},
+    "telephony": {},
+    "sms": {}
   },
   "display": "immersive"
 }

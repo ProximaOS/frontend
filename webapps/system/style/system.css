@@ -77,6 +77,8 @@ html, body {
   pointer-events: none;
 }
 
-#system-overlays > * {
+#system-overlays > #power-screen,
+#system-overlays > #volume-rocker,
+#system-overlays > #text-selection {
   pointer-events: all;
 }
