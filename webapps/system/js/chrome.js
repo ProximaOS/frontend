@@ -775,6 +775,7 @@
       const color = event.themeColor;
       if (color) {
         webview.dataset.themeColor = (color + 'C0').toLowerCase();
+        this.chrome().parentElement.dataset.themeColor = color;
         this.chrome().parentElement.style.setProperty('--theme-color', color);
         this.toolbar().style.setProperty(
           '--theme-color',

@@ -5,7 +5,6 @@
   width: 100%;
   height: 100%;
   pointer-events: none;
-  z-index: 100;
 }
 
 #modal-dialog-alert,
@@ -49,7 +48,7 @@
 #screen.software-buttons-enabled #modal-dialog-alert .container,
 #screen.software-buttons-enabled #modal-dialog-confirm .container,
 #screen.software-buttons-enabled #modal-dialog-prompt .container {
-  bottom: calc(var(--software-buttons-height) + 1rem);
+  margin-bottom: calc(var(--software-buttons-height) + 1rem);
 }
 
 #modal-dialog-alert.visible .container,

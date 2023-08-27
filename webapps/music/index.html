@@ -12,16 +12,18 @@
   <link rel="stylesheet" href="http://shared.localhost:8081/style/headers.css" />
   <link rel="stylesheet" href="http://shared.localhost:8081/style/tablists.css" />
   <link rel="stylesheet" href="http://shared.localhost:8081/style/buttons.css" />
-  <link rel="stylesheet" href="style/gallery.css" />
-  <link rel="stylesheet" href="style/library.css" />
-  <link rel="stylesheet" href="style/folders.css" />
-  <link rel="stylesheet" href="style/memories.css" />
+  <link rel="stylesheet" href="style/music.css" />
+  <link rel="stylesheet" href="style/grid.css" />
+  <link rel="stylesheet" href="style/playlists.css" />
+  <link rel="stylesheet" href="style/artists.css" />
+  <link rel="stylesheet" href="style/albums.css" />
   <script defer src="http://shared.localhost:8081/js/panels.js"></script>
   <script src="js/bootstrap.js"></script>
   <script defer src="js/views.js"></script>
-  <script defer src="js/views/library.js"></script>
-  <script defer src="js/views/folders.js"></script>
-  <script defer src="js/views/memories.js"></script>
+  <script defer src="js/views/grid.js"></script>
+  <script defer src="js/views/playlists.js"></script>
+  <script defer src="js/views/artists.js"></script>
+  <script defer src="js/views/albums.js"></script>
 
   <script src="http://shared.localhost:8081/js/l10n.js"></script>
   <meta name="defaultLanguage" content="en-US">
@@ -32,14 +34,15 @@
   <div id="app" class="app">
     <div class="tablist">
       <ul>
-        <li><a href="#library" id="tab-library" data-icon="library" data-l10n-id="library" class="selected"></a></li>
-        <li><a href="#folders" id="tab-folders" data-icon="folder" data-l10n-id="folders"></a></li>
-        <li><a href="#memories" id="tab-memories" data-icon="tree" data-l10n-id="memories"></a></li>
+        <li><a href="#grid" id="tab-grid" data-icon="music-gridview" data-l10n-id="grid" class="selected"></a></li>
+        <li><a href="#playlists" id="tab-playlists" data-icon="music-playlist" data-l10n-id="playlists"></a></li>
+        <li><a href="#artists" id="tab-artists" data-icon="music-artist" data-l10n-id="artists"></a></li>
+        <li><a href="#albums" id="tab-albums" data-icon="music-album" data-l10n-id="albums"></a></li>
       </ul>
     </div>
 
     <div id="views">
-      <div id="library" class="panel visible">
+      <div id="grid" class="panel visible">
         <div class="headerbar">
           <h1 data-l10n-id="title"></h1>
           <menu type="toolbar">
@@ -49,9 +52,9 @@
         <div class="content"></div>
       </div>
 
-      <div id="folders" class="panel">
+      <div id="playlists" class="panel">
         <div class="headerbar">
-          <h1 data-l10n-id="folders"></h1>
+          <h1 data-l10n-id="playlists"></h1>
           <menu type="toolbar">
             <a href="#" data-icon="more"></a>
           </menu>
@@ -59,9 +62,19 @@
         <div class="content"></div>
       </div>
 
-      <div id="memories" class="panel">
+      <div id="artists" class="panel">
         <div class="headerbar">
-          <h1 data-l10n-id="memories"></h1>
+          <h1 data-l10n-id="artists"></h1>
+          <menu type="toolbar">
+            <a href="#" data-icon="more"></a>
+          </menu>
+        </div>
+        <div class="content"></div>
+      </div>
+
+      <div id="albums" class="panel">
+        <div class="headerbar">
+          <h1 data-l10n-id="albums"></h1>
           <menu type="toolbar">
             <a href="#" data-icon="more"></a>
           </menu>

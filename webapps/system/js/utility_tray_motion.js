@@ -2,6 +2,7 @@
   'use strict';
 
   const UtilityTrayMotion = {
+    topPanel: document.getElementById('top-panel'),
     statusbar: document.getElementById('statusbar'),
     motionElement: document.getElementById('utility-tray-motion'),
     controlCenter: document.getElementById('control-center'),
@@ -12,22 +13,33 @@
     threshold: 0.75, // Adjust the threshold as desired (0.0 to 1.0)
 
     init: function () {
-      this.statusbar.addEventListener(
-        'pointerdown',
+      this.topPanel.addEventListener(
+        'mousedown',
+        this.onPointerDown.bind(this)
+      );
+      this.topPanel.addEventListener(
+        'touchstart',
         this.onPointerDown.bind(this)
       );
       this.motionElement.addEventListener(
-        'pointerdown',
+        'mousedown',
         this.onPointerDown.bind(this)
       );
-      document.addEventListener('pointermove', this.onPointerMove.bind(this));
-      document.addEventListener('pointerup', this.onPointerUp.bind(this));
-      document.addEventListener('pointerleave', this.onPointerUp.bind(this));
+      this.motionElement.addEventListener(
+        'touchstart',
+        this.onPointerDown.bind(this)
+      );
+      document.addEventListener('mousemove', this.onPointerMove.bind(this));
+      document.addEventListener('touchmove', this.onPointerMove.bind(this));
+      document.addEventListener('mouseup', this.onPointerUp.bind(this));
+      document.addEventListener('touchend', this.onPointerUp.bind(this));
+      document.addEventListener('mouseleave', this.onPointerUp.bind(this));
+      document.addEventListener('touchcancel', this.onPointerUp.bind(this));
     },
 
     onPointerDown: function (event) {
       event.preventDefault();
-      this.startY = event.clientY;
+      this.startY = event.pageY || event.touches[0].pageY;
       this.currentY = this.startY;
       this.isDragging = true;
       this.statusbar.classList.add('tray-open');
@@ -37,8 +49,8 @@
       event.preventDefault();
 
       if (this.isDragging) {
-        if (event.target === this.statusbar && this.motionElement.classList.contains('visible')) {
-          if (event.clientX >= window.innerWidth / 2) {
+        if (event.target === this.topPanel && this.motionElement.classList.contains('visible')) {
+          if ((event.pageX || event.touches[0].pageX) >= window.innerWidth / 2) {
             this.controlCenter.classList.add('hidden');
             this.notifications.classList.remove('hidden');
           } else {
@@ -47,7 +59,7 @@
           }
         }
 
-        this.currentY = event.clientY;
+        this.currentY = event.pageY || event.touches[0].pageY;
         const offsetY = this.startY - this.currentY;
         const maxHeight = this.motionElement.offsetHeight;
         const progress = offsetY / maxHeight;

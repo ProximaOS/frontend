@@ -59,6 +59,10 @@
 
     const video = document.querySelectorAll('video');
     video.forEach(function (videoElement) {
+      if (location.host.includes('system.localhost')) {
+        return;
+      }
+
       const existingButton = videoElement.parentElement.querySelector(
         '.openorchid-pip-button'
       );
@@ -68,11 +72,28 @@
 
       const button = document.createElement('button');
       button.classList.add('openorchid-pip-button');
+      button.style.left = `${
+        videoElement.getBoundingClientRect().left +
+        videoElement.getBoundingClientRect().width / 2 -
+        100
+      }px`;
+      button.style.top = `${
+        videoElement.getBoundingClientRect().top +
+        videoElement.getBoundingClientRect().height / 2
+      }px`;
       button.addEventListener('click', function () {
         button.classList.toggle('enabled');
         if (button.classList.contains('enabled')) {
+          videoElement.pause();
           ipcRenderer.send('message', {
             type: 'picture-in-picture',
+            videoUrl: (
+              videoElement.src || videoElement.querySelector('source').src
+            ).startsWith('http')
+              ? videoElement.src || videoElement.querySelector('source').src
+              : location.origin +
+                (videoElement.src || videoElement.querySelector('source').src),
+            timestamp: videoElement.currentTime,
             action: 'enable'
           });
         } else {
@@ -82,7 +103,7 @@
           });
         }
       });
-      videoElement.parentElement.appendChild(button);
+      document.body.appendChild(button);
     });
 
     if ('_session' in window) {

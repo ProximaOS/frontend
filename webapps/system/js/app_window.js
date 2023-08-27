@@ -193,7 +193,7 @@
       windowDiv.appendChild(grippyBar);
 
       if (windowOptions.windowed) {
-        if (windowDiv.id !== 'homescreen') {
+        if (windowDiv !== this.homescreenElement) {
           windowDiv.classList.add('window');
 
           windowDiv.style.left = '32px';
@@ -215,25 +215,22 @@
 
           const closeButton = document.createElement('button');
           closeButton.classList.add('close-button');
-          closeButton.addEventListener(
-            'click',
-            this.close.bind(this, windowId)
+          closeButton.addEventListener('click', (event) =>
+            this.close(windowId)
           );
           titlebar.appendChild(closeButton);
 
           const resizeButton = document.createElement('button');
           resizeButton.classList.add('resize-button');
-          resizeButton.addEventListener(
-            'click',
-            this.maximize.bind(this, windowId)
+          resizeButton.addEventListener('click', (event) =>
+            this.maximize(windowId)
           );
           titlebar.appendChild(resizeButton);
 
           const minimizeButton = document.createElement('button');
           minimizeButton.classList.add('minimize-button');
-          minimizeButton.addEventListener(
-            'click',
-            this.minimize.bind(this, windowId)
+          minimizeButton.addEventListener('click', (event) =>
+            this.minimize(windowId)
           );
           titlebar.appendChild(minimizeButton);
         }
@@ -315,6 +312,7 @@
       const dockIcon = this.dock.querySelector(
         `[data-manifest-url="${manifestUrl}"]`
       );
+      const focusedWindow = this.focusedWindow;
 
       windowDiv.style.transform = '';
 
@@ -333,32 +331,32 @@
         element.classList.remove('active');
       });
 
-      if (
-        this.focusedWindow &&
-        this.focusedWindow.id !== 'homescreen' &&
-        windowDiv.id !== 'homescreen'
-      ) {
-        this.focusedWindow.classList.add('to-left');
-        this.focusedWindow.addEventListener('animationend', () => {
-          this.focusedWindow.classList.remove('to-left');
+      windowDiv.classList.add('active');
+      if (dockIcon) {
+        dockIcon.classList.add('active');
+      }
+      this.focusedWindow = windowDiv;
 
-          windowDiv.classList.add('active');
-          if (dockIcon) {
-            dockIcon.classList.add('active');
-          }
-          this.focusedWindow = windowDiv;
+      if (
+        focusedWindow &&
+        focusedWindow !== this.homescreenElement &&
+        windowDiv !== this.homescreenElement
+      ) {
+        if (windowDiv === focusedWindow) {
+          return;
+        }
+
+        focusedWindow.classList.add('to-left');
+        focusedWindow.addEventListener('animationend', () => {
+          focusedWindow.classList.remove('from-right');
+          focusedWindow.classList.remove('to-left');
         });
 
         windowDiv.classList.add('from-right');
         windowDiv.addEventListener('animationend', () => {
           windowDiv.classList.remove('from-right');
+          windowDiv.classList.remove('to-left');
         });
-      } else {
-        windowDiv.classList.add('active');
-        if (dockIcon) {
-          dockIcon.classList.add('active');
-        }
-        this.focusedWindow = windowDiv;
       }
 
       this.handleThemeColorFocusUpdated(id);
@@ -447,14 +445,15 @@
         `[data-manifest-url="${manifestUrl}"]`
       );
 
-      windowDiv.classList.add('active');
-      windowDiv.classList.add(this.OPEN_ANIMATION);
+      if (windowDiv === this.focusedWindow) {
+        return;
+      }
+
       if (dockIcon) {
         dockIcon.classList.remove('minimized');
       }
       windowDiv.addEventListener('animationend', () => {
         windowDiv.style.transform = '';
-        windowDiv.classList.remove(this.OPEN_ANIMATION);
         this.focus(id);
       });
     },
@@ -511,17 +510,24 @@
         return;
       }
 
-      // Calculate the luminance of the color
-      const luminance = this.calculateLuminance(color);
+      if (color) {
+        // Calculate the luminance of the color
+        const luminance = this.calculateLuminance(color);
 
-      // If the color is light (luminance > 0.5), add 'light' class to the status bar
-      if (luminance > 0.5) {
-        this.statusbar.classList.add('light');
-        this.softwareButtons.classList.add('light');
-        this.statusbar.classList.remove('dark');
-        this.softwareButtons.classList.remove('dark');
+        // If the color is light (luminance > 0.5), add 'light' class to the status bar
+        if (luminance > 0.5) {
+          this.statusbar.classList.add('light');
+          this.softwareButtons.classList.add('light');
+          this.statusbar.classList.remove('dark');
+          this.softwareButtons.classList.remove('dark');
+        } else {
+          // Otherwise, remove 'light' class
+          this.statusbar.classList.remove('light');
+          this.softwareButtons.classList.remove('light');
+          this.statusbar.classList.add('dark');
+          this.softwareButtons.classList.add('dark');
+        }
       } else {
-        // Otherwise, remove 'light' class
         this.statusbar.classList.remove('light');
         this.softwareButtons.classList.remove('light');
         this.statusbar.classList.add('dark');
@@ -548,6 +554,12 @@
       AppWindow.containerElement.classList.add('dragging');
       const windowDiv = document.getElementById(windowId);
 
+      windowDiv.classList.add('transitioning-bouncy');
+      windowDiv.addEventListener('transitionend', () =>
+        windowDiv.classList.remove('transitioning-bouncy')
+      );
+      windowDiv.classList.add('dragging');
+
       // Get initial position
       const initialX = event.pageX || event.touches[0].pageX;
       const initialY = event.pageY || event.touches[0].pageY;
@@ -560,6 +572,8 @@
       const offsetX = initialX - initialWindowX;
       const offsetY = initialY - initialWindowY;
 
+      windowDiv.style.transformOrigin = `${offsetX}px ${offsetY}px`;
+
       // Attach event listeners for dragging
       document.addEventListener('mousemove', dragWindow);
       document.addEventListener('touchmove', dragWindow);
@@ -567,7 +581,7 @@
       document.addEventListener('touchend', stopDrag);
 
       // Function to handle dragging
-      function dragWindow (event) {
+      function dragWindow(event) {
         event.preventDefault();
         const x = event.pageX || event.touches[0].pageX;
         const y = event.pageY || event.touches[0].pageY;
@@ -582,9 +596,16 @@
       }
 
       // Function to stop dragging
-      function stopDrag (event) {
+      function stopDrag(event) {
         event.preventDefault();
         AppWindow.containerElement.classList.remove('dragging');
+
+        windowDiv.classList.add('transitioning-bouncy');
+        windowDiv.addEventListener('transitionend', () =>
+          windowDiv.classList.remove('transitioning-bouncy')
+        );
+        windowDiv.classList.remove('dragging');
+
         document.removeEventListener('mousemove', dragWindow);
         document.removeEventListener('touchmove', dragWindow);
         document.removeEventListener('mouseup', stopDrag);

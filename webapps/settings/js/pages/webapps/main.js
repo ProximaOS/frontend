@@ -3,6 +3,9 @@
 
   const Webapps = {
     webappsList: document.getElementById('webapps-list'),
+    webappInfoIcon: document.getElementById('webappInfo-icon'),
+    webappInfoName: document.getElementById('webappInfo-name'),
+    webappInfoVersion: document.getElementById('webappInfo-version'),
 
     APP_ICON_SIZE: 40,
 
@@ -10,15 +13,18 @@
       // Fetch available networks and populate the list
       const apps = _session.appsManager.getAll();
       apps.then((data) => {
-        data.forEach((item) => {
+        data.forEach((app) => {
           const element = document.createElement('li');
           element.dataset.pageId = 'webappInfo';
+          element.addEventListener('click', (event) =>
+            this.handleWebappInfo(app, element)
+          );
           this.webappsList.appendChild(element);
 
           const icon = document.createElement('img');
           icon.crossOrigin = 'anonymous';
-          if (item.manifest.icons) {
-            Object.entries(item.manifest.icons).forEach((entry) => {
+          if (app.manifest.icons) {
+            Object.entries(app.manifest.icons).forEach((entry) => {
               if (entry[0] <= this.APP_ICON_SIZE) {
                 return;
               }
@@ -36,16 +42,38 @@
           element.appendChild(textHolder);
 
           const name = document.createElement('p');
-          name.textContent = item.manifest.name;
+          name.textContent = app.manifest.name;
           textHolder.appendChild(name);
 
           const size = document.createElement('p');
-          size.textContent = item.size;
+          size.textContent = app.size;
           textHolder.appendChild(size);
 
           PageController.init();
         });
       });
+    },
+
+    handleWebappInfo: function (app, element) {
+      element.classList.remove('selected');
+
+      this.webappInfoIcon.crossOrigin = 'anonymous';
+      if (app.manifest.icons) {
+        Object.entries(app.manifest.icons).forEach((entry) => {
+          if (entry[0] <= this.APP_ICON_SIZE) {
+            return;
+          }
+          this.webappInfoIcon.src = entry[1];
+        });
+      } else {
+        this.webappInfoIcon.src = '/images/default.png';
+      }
+      this.webappInfoIcon.onerror = () => {
+        this.webappInfoIcon.src = '/images/default.png';
+      };
+
+      this.webappInfoName.textContent = app.manifest.name;
+      this.webappInfoVersion.textContent = app.manifest.version;
     }
   };
 

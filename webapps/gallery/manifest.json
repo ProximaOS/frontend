@@ -16,5 +16,6 @@
   "theme_color": "#0061e0",
   "permissions": {
     "nodeintegration": {}
-  }
+  },
+  "display": "immersive"
 }

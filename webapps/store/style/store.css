@@ -24,6 +24,10 @@
   visibility: visible;
 }
 
+#webapps {
+  --safezone-width: 100rem;
+}
+
 #webapps .headerbar h1 {
   display: flex;
   gap: 0.4rem;

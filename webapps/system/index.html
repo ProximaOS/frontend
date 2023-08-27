@@ -33,6 +33,8 @@
   <link rel="stylesheet" href="style/launcher.css">
   <link rel="stylesheet" href="style/dashboard.css">
   <link rel="stylesheet" href="style/power_screen.css">
+  <link rel="stylesheet" href="style/picture_in_picture.css">
+  <link rel="stylesheet" href="style/gesture_panels.css">
   <link rel="stylesheet" href="style/z_indexes.css">
 
   <!-- Online scripts -->
@@ -79,6 +81,7 @@
   <script defer src="js/hardware_buttons.js"></script>
   <script defer src="js/permissions.js"></script>
   <script defer src="js/power_screen.js"></script>
+  <script defer src="js/picture_in_picture.js"></script>
   <script defer src="lockscreen/js/motion.js"></script>
   <script defer src="lockscreen/js/clock.js"></script>
   <script defer src="lockscreen/js/date.js"></script>
@@ -329,6 +332,16 @@
     </div>
 
     <div id="system-overlays" data-z-index-layer="system-overlays">
+      <div id="picture-in-picture">
+        <video src="" id="picture-in-picture-video"></video>
+        <button id="picture-in-picture-close-button" data-icon="close"></button>
+        <div class="controls">
+          <button id="picture-in-picture-skip-back-button" data-icon="skip-back"></button>
+          <button id="picture-in-picture-play-button" data-icon="play"></button>
+          <button id="picture-in-picture-skip-forward-button" data-icon="skip-forward"></button>
+        </div>
+      </div>
+
       <div id="power-screen">
         <div class="buttons">
           <button id="power-screen-shutdown-button" data-icon="power" data-l10n-id="powerScreen-shutdown"></button>

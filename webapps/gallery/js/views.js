@@ -3,7 +3,7 @@
 
   const PageController = {
     init: function () {
-      const pageButtons = document.querySelectorAll('[data-page-id]');
+      const pageButtons = document.querySelectorAll('.tablist li > a');
       pageButtons.forEach((button) => {
         button.addEventListener('click', () =>
           this.handlePageButtonClick(button)
@@ -18,8 +18,8 @@
     },
 
     handlePageButtonClick: function (button) {
-      const id = button.dataset.pageId;
-      const selectedButton = document.querySelector('.page.selected');
+      const id = button.id.substring(4);
+      const selectedButton = document.querySelector('.selected');
       const selectedPanel = document.querySelector('.panel.visible');
 
       if (selectedButton) {

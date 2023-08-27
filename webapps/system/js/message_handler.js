@@ -98,7 +98,7 @@
 
     handlePictureInPicture: function (data) {
       if (data.action === 'enable') {
-        PictureInPicture.show();
+        PictureInPicture.show(data.videoUrl, data.timestamp);
       } else {
         PictureInPicture.hide();
       }

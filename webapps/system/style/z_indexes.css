@@ -42,6 +42,6 @@
   z-index: 65534;
 }
 
-[data-z-index-layer="gesture-panels"] {
+[data-z-index-layer="gesture-panel"] {
   z-index: 65535;
 }

@@ -77,6 +77,7 @@ html, body {
   pointer-events: none;
 }
 
+#system-overlays > #picture-in-picture,
 #system-overlays > #power-screen,
 #system-overlays > #volume-rocker,
 #system-overlays > #text-selection {

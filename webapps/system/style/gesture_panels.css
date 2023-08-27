@@ -1,0 +1,47 @@
+#top-panel {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 2rem;
+}
+
+#left-panel {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 2rem;
+  height: 100%;
+}
+
+#right-panel {
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 2rem;
+  height: 100%;
+}
+
+#bottom-panel {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 2.5rem;
+}
+
+#screen.software-buttons-enabled #bottom-panel {
+  visibility: hidden;
+}
+
+#bottom-panel::before {
+  content: '';
+  position: absolute;
+  left: calc(50% - 5rem);
+  bottom: 1rem;
+  width: 10rem;
+  height: 0.5rem;
+  background-color: #fff;
+  border-radius: 1rem;
+  mix-blend-mode: difference;
+}
