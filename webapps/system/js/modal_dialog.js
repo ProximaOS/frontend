@@ -5,6 +5,7 @@
     dialogAlert: document.getElementById('modal-dialog-alert'),
     dialogConfirm: document.getElementById('modal-dialog-confirm'),
     dialogPrompt: document.getElementById('modal-dialog-prompt'),
+    dialogPermissionRequest: document.getElementById('modal-dialog-permission-request'),
 
     showAlert: function (title, message) {
       this.dialogAlert.querySelector('.title').textContent = title;
@@ -52,6 +53,25 @@
       );
 
       this.dialogPrompt.classList.add('visible');
+    },
+
+    showPermissionRequest: function (title, message, callback) {
+      this.dialogPermissionRequest.querySelector('.title').textContent = title;
+      this.dialogPermissionRequest.querySelector('.detail').textContent = message;
+
+      const cancelButton = this.dialogPermissionRequest.querySelector('.cancel');
+      cancelButton.addEventListener(
+        'click',
+        this.handleCancelButtonClick.bind(this, callback, false)
+      );
+
+      const PermissionRequestButton = this.dialogPermissionRequest.querySelector('.recommend');
+      PermissionRequestButton.addEventListener(
+        'click',
+        this.handleConfirmButtonClick.bind(this, callback, true)
+      );
+
+      this.dialogPermissionRequest.classList.add('visible');
     },
 
     handleAlertButtonClick: function () {

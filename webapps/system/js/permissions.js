@@ -12,12 +12,13 @@
     },
 
     handlePermissionRequest: async function (event, data) {
-      ModalDialog.showConfirm(
+      ModalDialog.showPermissionRequest(
         navigator.mozL10n.get(`permission-${data.type}`),
         navigator.mozL10n.get(`permissionDetail-${data.type}`),
         (decision) => {
           ipcRenderer.send('permissionrequest', {
-            permission: type.permission,
+            permission: data.type,
+            origin: data.origin,
             decision
           });
         }

@@ -14,6 +14,19 @@
   opacity: 1;
 }
 
+#keypad > .headerbar h1 {
+  transition: all 0.3s ease;
+  transform: translateY(4.5rem) scale(1.25);
+  height: 4rem;
+  line-height: 4rem;
+}
+
+#keypad.visible > .headerbar h1 {
+  transform: scale(1);
+  height: 5rem;
+  line-height: 5rem;
+}
+
 #keypad > .content {
   display: flex;
   flex-direction: column;
@@ -57,13 +70,6 @@
   margin: 0;
   padding: 0;
   text-align: center;
-}
-
-.keypad-display {
-  padding: 1.5rem;
-  box-sizing: border-box;
-  width: 100%;
-  display: flex;
 }
 
 .keypad-board {

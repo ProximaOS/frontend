@@ -135,6 +135,7 @@
 
             if (isChromeEnabled) {
               this.chrome().classList.add('visible');
+              this.chrome().parentElement.classList.add('chrome-visible');
               this.openFtuDialog();
             }
 
@@ -407,6 +408,20 @@
         }
       });
 
+      webview.addEventListener('close', () => {
+        tab.remove();
+        gridTab.remove();
+        webview.remove();
+
+        if (this.browserContainer().children.length === 0) {
+          if ('AppWindow' in window) {
+            AppWindow.close(this.chrome().parentElement.id);
+          } else {
+            window.close();
+          }
+        }
+      });
+
       [
         'did-start-loading',
         'did-start-navigation',
@@ -542,6 +557,15 @@
           data[1].forEach((item) => {
             const suggestion = document.createElement('div');
             suggestion.classList.add('suggestion');
+            suggestion.addEventListener('click', () => {
+              const webview = this.chrome().querySelector(
+                '.browser-container .browser.active'
+              );
+              webview.src = this.searchUrl.replace(
+                '{searchTerms}',
+                encodeURI(item)
+              );
+            });
             this.suggestions().appendChild(suggestion);
 
             const favicon = document.createElement('img');
@@ -564,12 +588,34 @@
     },
 
     handleUrlbarInputKeydown: function (event) {
+      function checkURL(url) {
+        const urlPattern =
+          /^(https?:\/\/)?([\w-]+\.)*[\w-]+(:\d+)?(\/[\w-./?%&=]*)?$/;
+
+        const isURL = urlPattern.test(url);
+        const hasProtocol = /^(https?:\/\/)/.test(url);
+
+        return {
+          isURL,
+          hasProtocol
+        };
+      }
+
       if (event.key === 'Enter') {
         const webview = this.chrome().querySelector(
           '.browser-container .browser.active'
         );
-        const url = event.target.value;
-        webview.src = url;
+        const input = event.target.value;
+        if (checkURL(input).isURL && checkURL(input).hasProtocol) {
+          webview.src = input;
+        } else if (checkURL(input).isURL && !checkURL(input).hasProtocol) {
+          webview.src = `https://${input}`;
+        } else {
+          webview.src = this.searchUrl.replace(
+            '{searchTerms}',
+            encodeURI(input)
+          );
+        }
       } else {
         this.updateSuggestions();
       }
@@ -624,20 +670,12 @@
     },
 
     handleIpcMessage: function (event) {
-      const tab = this.tablist().querySelector('.active');
-      const gridTab = this.tabsViewList().querySelector('.active');
       const webview = this.browserContainer().querySelector('.browser.active');
 
       const scrollPosition = event.args[0].top;
       let progress = scrollPosition / 80;
 
       switch (event.channel) {
-        case 'close':
-          tab.remove();
-          gridTab.remove();
-          webview.remove();
-          break;
-
         case 'scroll':
           if (progress >= 1) {
             progress = 1;

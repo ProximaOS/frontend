@@ -1,0 +1,11 @@
+#screen.desktop #software-buttons {
+  position: absolute;
+  left: 1rem;
+  right: 1rem;
+  bottom: 1rem;
+  width: calc(100% - 2rem);
+  height: var(--software-buttons-height);
+  background-color: var(--acrylic-background);
+  backdrop-filter: blur(20px) saturate(180%);
+  border-radius: calc(var(--software-buttons-height) / 2);
+}

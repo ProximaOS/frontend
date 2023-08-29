@@ -19,6 +19,10 @@
   transform: translateY(calc(var(--statusbar-height) * (var(--motion-progress, 0) + var(--overflow-progress))));
 }
 
+#statusbar.hidden.tray-open {
+  transform: translateY(calc((var(--statusbar-height) * -1) + (var(--statusbar-height) * ((var(--motion-progress, 0) + var(--overflow-progress)) * 2))));
+}
+
 #statusbar.tray-open.transitioning {
   transition: transform 0.5s ease;
 }

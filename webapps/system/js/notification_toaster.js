@@ -2,10 +2,6 @@
   'use strict';
 
   const NotificationToaster = {
-    startX: 0,
-    currentX: 0,
-    threshold: 0.5,
-
     _index: 0,
 
     notificationsContainer: document.getElementById('notifications-container'),
@@ -24,6 +20,11 @@
       'lockscreen-notifications'
     ),
 
+    isDragging: false,
+    startX: 0,
+    currentX: 0,
+    threshold: 0.5,
+
     notifierSound: new Audio(
       'http://shared.localhost:8081/resources/notifications/notifier_orchid.wav'
     ),
@@ -35,7 +36,7 @@
 
       const notification = document.createElement('li');
       notification.classList.add('notification');
-      notification.style.transitionDelay = (this._index * 50) + 'ms';
+      notification.style.transitionDelay = this._index * 50 + 'ms';
       notification.innerHTML = `
         <div class="titlebar">
           <img src="" class="badge">
@@ -54,40 +55,15 @@
       `;
       this.notificationsContainer.appendChild(notification);
 
-      notification.addEventListener('pointerdown', function (event) {
-        this.startX = event.clientX;
-        this.currentX = this.startX;
-      });
-
-      notification.addEventListener('pointermove', function (event) {
-        event.preventDefault();
-        this.currentX = event.clientX;
-
-        const distanceX = this.currentX - this.startX;
-        notification.style.transform = `translateX(${distanceX})`;
-      });
-
-      notification.addEventListener('pointerup', function (event) {
-        const distanceX = this.currentX - this.startX;
-        const thresholdX = this.threshold * notification.offsetWidth;
-
-        if (distanceX >= thresholdX) {
-          // Swipe right
-          notification.style.transform = 'translateX(100%)';
-          setTimeout(function () {
-            notification.remove();
-          }, 300);
-        } else if (distanceX <= -thresholdX) {
-          // Swipe left
-          notification.style.transform = 'translateX(-100%)';
-          setTimeout(function () {
-            notification.remove();
-          }, 300);
-        } else {
-          // Reset position
-          notification.style.transform = 'translateX(0)';
-        }
-      });
+      notification.addEventListener('pointerdown', (event) =>
+        this.onPointerDown(event, notification)
+      );
+      notification.addEventListener('pointermove', (event) =>
+        this.onPointerMove(event, notification)
+      );
+      notification.addEventListener('pointerup', (event) =>
+        this.onPointerUp(event, notification)
+      );
 
       const titleElement = notification.querySelector('.title');
       titleElement.innerText = title;
@@ -201,6 +177,59 @@
 
     hideNotification: function () {
       this.notificationElement.classList.remove('visible');
+    },
+
+    onPointerDown: function (event, notification) {
+      this.startX = event.clientX;
+      this.currentX = this.startX;
+      this.isDragging = true;
+      notification.classList.remove('transitioning');
+    },
+
+    onPointerMove: function (event, notification) {
+      if (!this.isDragging) {
+        return;
+      }
+      event.preventDefault();
+      event.stopPropagation();
+      this.currentX = event.clientX;
+
+      const distanceX = this.currentX - this.startX;
+      notification.style.translate = `${distanceX}px 0`;
+    },
+
+    onPointerUp: function (event, notification) {
+      if (!this.isDragging) {
+        return;
+      }
+      const distanceX = this.currentX - this.startX;
+      const thresholdX = this.threshold * notification.offsetWidth;
+
+      if (distanceX >= thresholdX) {
+        // Swipe right
+        notification.style.translate = '100%';
+        notification.classList.add('transitioning');
+        notification.addEventListener('transitionend', () => {
+          notification.classList.remove('transitioning');
+          notification.remove();
+        });
+      } else if (distanceX <= -thresholdX) {
+        // Swipe left
+        notification.style.translate = '-100%';
+        notification.classList.add('transitioning');
+        notification.addEventListener('transitionend', () => {
+          notification.classList.remove('transitioning');
+          notification.remove();
+        });
+      } else {
+        // Reset position
+        notification.style.translate = '0';
+        notification.classList.add('transitioning');
+        notification.addEventListener('transitionend', function () {
+          notification.classList.remove('transitioning');
+        });
+      }
+      this.isDragging = false;
     }
   };
 

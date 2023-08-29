@@ -27,10 +27,6 @@
     });
   };
 
-  window.close = function () {
-    ipcRenderer.sendToHost('close', {});
-  };
-
   window.alert = ModalDialogs.alert;
   window.confirm = ModalDialogs.confirm;
   window.prompt = ModalDialogs.prompt;

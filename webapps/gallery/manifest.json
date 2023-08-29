@@ -15,7 +15,10 @@
   "background_color": "#f0f6ff",
   "theme_color": "#0061e0",
   "permissions": {
-    "nodeintegration": {}
+    "settings": {},
+    "storage": {},
+    "device-storage:home": {},
+    "device-storage:photos": {}
   },
   "display": "immersive"
 }

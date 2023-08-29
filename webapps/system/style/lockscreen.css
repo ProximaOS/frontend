@@ -185,9 +185,11 @@
   color: #333;
 }
 
-#lockscreen-toolbar > button::before {
+#lockscreen-toolbar > button[data-icon]::before {
   position: static;
   font-size: 2.4rem;
+  text-align: center;
+  width: 100%;
 }
 
 #lockscreen-notifications {

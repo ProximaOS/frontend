@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,7 +10,10 @@
   <link rel="stylesheet" href="http://shared.localhost:8081/style/webview.css" />
   <link rel="stylesheet" href="http://shared.localhost:8081/style/icons/icons.css">
   <link rel="stylesheet" href="http://shared.localhost:8081/style/buttons.css" />
+  <link rel="stylesheet" href="http://shared.localhost:8081/style/seekbars.css" />
   <link rel="stylesheet" href="http://shared.localhost:8081/style/snackbars.css" />
+  <link rel="stylesheet" href="http://shared.localhost:8081/style/radios.css" />
+  <link rel="stylesheet" href="http://shared.localhost:8081/style/checkboxes.css" />
 
   <!-- Local stylesheets -->
   <link rel="stylesheet" href="dist/main.bundle.css">
@@ -36,6 +40,10 @@
   <link rel="stylesheet" href="style/picture_in_picture.css">
   <link rel="stylesheet" href="style/gesture_panels.css">
   <link rel="stylesheet" href="style/z_indexes.css">
+  <link rel="stylesheet" href="desktop/style/desktop_system.css">
+  <link rel="stylesheet" href="desktop/style/desktop_statusbar.css">
+  <link rel="stylesheet" href="desktop/style/desktop_software_buttons.css">
+  <link rel="stylesheet" href="desktop/style/desktop_utility_tray.css">
 
   <!-- Online scripts -->
   <script type="module" src="http://shared.localhost:8081/services/orchid_services.js"></script>
@@ -71,6 +79,7 @@
   <script defer src="js/dialer_handler.js"></script>
   <script defer src="js/keybinds.js"></script>
   <script defer src="js/utility_tray.js"></script>
+  <script defer src="js/wallpaper_manager.js"></script>
   <script defer src="js/homescreen_launcher.js"></script>
   <script defer src="js/gesture_panels.js"></script>
   <script defer src="js/text_selection.js"></script>
@@ -82,9 +91,11 @@
   <script defer src="js/permissions.js"></script>
   <script defer src="js/power_screen.js"></script>
   <script defer src="js/picture_in_picture.js"></script>
-  <script defer src="lockscreen/js/motion.js"></script>
-  <script defer src="lockscreen/js/clock.js"></script>
-  <script defer src="lockscreen/js/date.js"></script>
+  <script defer src="js/download_manager.js"></script>
+  <script defer src="js/platform_classifier.js"></script>
+  <script defer src="js/lockscreen/motion.js"></script>
+  <script defer src="js/lockscreen/clock.js"></script>
+  <script defer src="js/lockscreen/date.js"></script>
 
   <!-- Chrome -->
   <link rel="stylesheet" href="style/chrome.css">
@@ -95,6 +106,7 @@
   <meta name="availableLanguages" content="en-US, ar">
   <link rel="localization" href="/locales/main.{locale}.properties">
 </head>
+
 <body>
   <div id="screen">
     <div id="splashscreen" data-z-index-layer="splashscreen">
@@ -163,25 +175,33 @@
                 <div id="media-playback-title">Title</div>
                 <div id="media-playback-author">Author</div>
                 <div class="buttons">
-                  <button id="media-playback-previous" data-icon="media-skipbackward" data-l10n-id="mediaPlayback-skipBackward"></button>
-                  <button id="media-playback-playpause" data-icon="media-play" data-l10n-id="mediaPlayback-play"></button>
-                  <button id="media-playback-next" data-icon="media-skipforward" data-l10n-id="mediaPlayback-skipForward"></button>
+                  <button id="media-playback-previous" data-icon="media-skipbackward"
+                    data-l10n-id="mediaPlayback-skipBackward"></button>
+                  <button id="media-playback-playpause" data-icon="media-play"
+                    data-l10n-id="mediaPlayback-play"></button>
+                  <button id="media-playback-next" data-icon="media-skipforward"
+                    data-l10n-id="mediaPlayback-skipForward"></button>
                 </div>
               </div>
             </div>
             <ul id="connection-settings">
               <li><a href="#" id="quick-settings-wifi" data-icon="wifi" data-l10n-id="quickSettings-wifi"></a></li>
-              <li><a href="#" id="quick-settings-bluetooth" data-icon="bluetooth" data-l10n-id="quickSettings-bluetooth"></a></li>
+              <li><a href="#" id="quick-settings-bluetooth" data-icon="bluetooth"
+                  data-l10n-id="quickSettings-bluetooth"></a></li>
             </ul>
           </div>
           <div class="control-center-row">
             <div id="quick-settings">
               <ul id="quick-settings-grid">
-                <li><a href="#" id="quick-settings-cellular-data" data-icon="data" data-l10n-id="quickSettings-data"></a></li>
-                <li><a href="#" id="quick-settings-airplane" data-icon="airplane" data-l10n-id="quickSettings-airplaneMode"></a></li>
+                <li><a href="#" id="quick-settings-cellular-data" data-icon="data"
+                    data-l10n-id="quickSettings-data"></a></li>
+                <li><a href="#" id="quick-settings-airplane" data-icon="airplane"
+                    data-l10n-id="quickSettings-airplaneMode"></a></li>
                 <li><a href="#" id="quick-settings-audio" data-icon="bell" data-l10n-id="quickSettings-audio"></a></li>
-                <li><a href="#" id="quick-settings-screen-capture" data-icon="video" data-l10n-id="quickSettings-screenCapture"></a></li>
-                <li><a href="#" id="quick-settings-flashlight" data-icon="flashlight" data-l10n-id="quickSettings-flashlight"></a></li>
+                <li><a href="#" id="quick-settings-screen-capture" data-icon="video"
+                    data-l10n-id="quickSettings-screenCapture"></a></li>
+                <li><a href="#" id="quick-settings-flashlight" data-icon="flashlight"
+                    data-l10n-id="quickSettings-flashlight"></a></li>
 
                 <!-- <li><a href="#" id="quick-settings-focus-mode" data-icon="moon" data-l10n-id="quickSettings-focusMode"></a></li>
                 <li><a href="#" id="quick-settings-bike-mode" data-icon="airplane" data-l10n-id="quickSettings-bikeMode"></a></li>
@@ -191,9 +211,7 @@
               </ul>
               <div id="brightness">
                 <span data-icon="moon"></span>
-                <div id="brightness-slider" class="slider">
-                  <div class="thumb"></div>
-                </div>
+                <input type="range" id="brightness-slider" min="0" max="100" step="1">
                 <span data-icon="brightness"></span>
               </div>
               <div class="grippy-bar"></div>
@@ -253,6 +271,14 @@
           <div class="content">
             <div class="title"></div>
             <div class="detail"></div>
+            <form action="">
+              <div class="pack-checkbox">
+                <label for="modal-dialog-alert-block">Don't show this ever again!</label>
+                <span>
+                  <input type="checkbox" id="modal-dialog-alert-block">
+                </span>
+              </div>
+            </form>
           </div>
           <menu class="actions">
             <button class="recommend" data-l10n-id="ok"></button>
@@ -266,7 +292,10 @@
             <div class="title"></div>
             <div class="detail"></div>
           </div>
-          <menu class="actions"><button class="cancel" data-l10n-id="cancel"></button><button class="recommend" data-l10n-id="confirm"></button></menu>
+          <menu class="actions">
+            <button class="cancel" data-l10n-id="cancel"></button>
+            <button class="recommend" data-l10n-id="confirm"></button>
+          </menu>
         </section>
       </div>
 
@@ -276,6 +305,33 @@
             <div class="title"></div>
             <form action="">
               <input type="text" name="" id="" class="inputbox">
+            </form>
+          </div>
+          <menu class="actions">
+            <button class="cancel" data-l10n-id="cancel"></button>
+            <button class="recommend" data-l10n-id="confirm"></button>
+          </menu>
+        </section>
+      </div>
+
+      <div id="modal-dialog-permission-request">
+        <section class="container">
+          <div class="content">
+            <div class="title"></div>
+            <div class="detail"></div>
+            <form action="">
+              <div class="pack-radio">
+                <label for="modal-dialog-permission-request-constant">Ask Everytime</label>
+                <span>
+                  <input type="radio" name="permission-request-radios" id="modal-dialog-permission-request-constant">
+                </span>
+              </div>
+              <div class="pack-radio">
+                <label for="modal-dialog-permission-request-once">Never ask again</label>
+                <span>
+                  <input type="radio" name="permission-request-radios" id="modal-dialog-permission-request-once">
+                </span>
+              </div>
             </form>
           </div>
           <menu class="actions">
@@ -383,4 +439,5 @@
     <div id="bottom-panel" data-z-index-layer="gesture-panel"></div>
   </div>
 </body>
+
 </html>

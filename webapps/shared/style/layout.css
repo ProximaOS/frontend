@@ -58,6 +58,12 @@ html, body {
   z-index: 5;
 }
 
+.panel > .content form.search {
+  width: calc(100% - 3rem);
+  max-width: calc(var(--safezone-width) - 3rem);
+  margin: 0 auto;
+}
+
 .panel > .content aside {
   margin: 0 auto 1.5rem;
   padding: 0;
@@ -91,6 +97,7 @@ html, body {
 .panel > .content aside ul li {
   min-height: 3.2rem;
   background-color: transparent;
+  list-style: none;
 }
 
 .panel > .content aside ul li > a {

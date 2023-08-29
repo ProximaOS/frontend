@@ -24,17 +24,14 @@
   module.exports = function () {
     let width = 320;
     let height = 640;
-    let url = 'http://system.localhost:8081/index.html';
     let type = 'Mobile';
     if (process.argv.indexOf('desktop') !== -1) {
       width = 1024;
       height = 640;
-      url = 'http://desktop-system.localhost:8081/index.html';
       type = 'Desktop';
     } else if (process.argv.indexOf('smart-tv') !== -1) {
       width = 1280;
       height = 720;
-      url = 'http://smart-system.localhost:8081/index.html';
       type = 'Smart TV';
     }
 
@@ -66,10 +63,6 @@
       }
     });
 
-    if (isDev) {
-      mainWindow.webContents.openDevTools({ mode: 'detach' });
-    }
-
     // Intercept download requests using the webContents' session
     mainWindow.webContents.session.on(
       'will-download',
@@ -99,7 +92,14 @@
           if (state === 'progressing') {
             // Get download progress
             const progress = item.getReceivedBytes() / item.getTotalBytes();
-            mainWindow.webContents.send('download-progress', progress);
+            mainWindow.webContents.send('downloadprogress', {
+              url: item.getURL(),
+              suggestedFilename: item.getFilename(),
+              lastModified: item.getLastModifiedTime(),
+              size: item.getTotalBytes(),
+              mime: item.getMimeType(),
+              progress
+            });
           }
         });
       }
@@ -107,8 +107,12 @@
 
     mainWindow.webContents.session.setPermissionRequestHandler(
       (webContents, permission, callback) => {
-        mainWindow.webContents.send('permissionrequest', { type: permission });
-        ipcMain.on('permissionrequest', (event, data) => {
+        mainWindow.webContents.send('permissionrequest', {
+          type: permission,
+          origin: webContents.getURL(),
+          title: webContents.getTitle()
+        });
+        ipcMain.once('permissionrequest', (event, data) => {
           callback(data.decision);
         });
       }
@@ -138,9 +142,14 @@
       mainWindow.webContents.send('rotate', { rotation: '180deg' });
     });
 
-    fs.mkdirSync(path.join(process.env.OPENORCHID_DATA, 'extensions'), { recursive: true });
-    fs.readdirSync(process.env.OPENORCHID_ADDONS).forEach(extensionName => {
-      const extensionPath = path.join(process.env.OPENORCHID_ADDONS, extensionName);
+    fs.mkdirSync(path.join(process.env.OPENORCHID_DATA, 'extensions'), {
+      recursive: true
+    });
+    fs.readdirSync(process.env.OPENORCHID_ADDONS).forEach((extensionName) => {
+      const extensionPath = path.join(
+        process.env.OPENORCHID_ADDONS,
+        extensionName
+      );
       mainWindow.webContents.session.loadExtension(extensionPath);
     });
 
@@ -314,8 +323,7 @@
       process.versions.chrome
     }${type === 'Mobile' ? ' ' + type : false} Safari/537.36`;
 
-    console.log(userAgent);
-    mainWindow.loadURL(url, {
+    mainWindow.loadURL('http://system.localhost:8081/index.html', {
       userAgent
     });
 
@@ -337,7 +345,10 @@
     });
 
     ipcMain.on('request-extension-list', (event, data) => {
-      mainWindow.webContents.send('extension-list', mainWindow.webContents.session.getAllExtensions());
+      mainWindow.webContents.send(
+        'extension-list',
+        mainWindow.webContents.session.getAllExtensions()
+      );
     });
 
     ipcMain.on('powerstart', (event, data) => {

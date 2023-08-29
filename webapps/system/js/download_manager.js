@@ -6,20 +6,30 @@
   const DownloadManager = {
     init: function () {
       ipcRenderer.on('downloadrequest', this.handleDownloadRequest.bind(this));
-      ipcRenderer.on('downloadprogress', this.handleDownloadProgress.bind(this));
+      ipcRenderer.on(
+        'downloadprogress',
+        this.handleDownloadProgress.bind(this)
+      );
     },
 
     handleDownloadRequest: function (event, data) {
-      NotificationToaster.showNotification(navigator.mozL10n.get('downloading'), {
-        body: `${data.suggestedFilename}\n${data.url}`
-      });
+      NotificationToaster.showNotification(
+        navigator.mozL10n.get('downloading'),
+        {
+          body: data.suggestedFilename
+        }
+      );
     },
 
     handleDownloadProgress: function (event, data) {
-      NotificationToaster.showNotification(navigator.mozL10n.get('downloading'), {
-        body: `${data.suggestedFilename}\n${data.progress} - ${data.size} - ${data.lastModified}`,
-        tag: data.url
-      });
+      NotificationToaster.showNotification(
+        navigator.mozL10n.get('downloading'),
+        {
+          body: data.suggestedFilename,
+          progress: data.progress * 100,
+          tag: data.url
+        }
+      );
     }
   };
 

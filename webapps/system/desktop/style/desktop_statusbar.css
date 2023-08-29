@@ -1,0 +1,34 @@
+#screen.desktop #statusbar {
+  position: absolute;
+  bottom: 1rem;
+  top: unset;
+  width: max-content;
+  height: var(--software-buttons-height);
+}
+html[dir="ltr"] #screen.desktop #statusbar {
+  right: 1rem;
+}
+html[dir="rtl"] #screen.desktop #statusbar {
+  left: 1rem;
+}
+
+#screen.desktop #statusbar.tray-open {
+  transform: none;
+}
+
+#screen.desktop .statusbar-icons {
+  margin: 0 1.5rem;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  flex-direction: row-reverse;
+}
+
+#screen.desktop .statusbar-icons > div {
+  position: static;
+  width: max-content;
+}
+
+#screen.desktop #statusbar-time {
+  margin-inline-start: 1rem;
+}

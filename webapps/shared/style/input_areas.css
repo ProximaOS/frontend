@@ -1,2 +1,51 @@
+form.search {
+  width: 100%;
+  height: 4rem;
+  display: flex;
+  background-color: var(--item-plus);
+  border-radius: 2rem;
+}
 
-})(window);
+form.search input[type="text"],
+form.search input[type="username"],
+form.search input[type="email"],
+form.search input[type="password"],
+form.search input[type="search"],
+form.search input[type="url"] {
+  width: 100%;
+  flex-grow: 1;
+  background-color: transparent;
+  border: none;
+  color: var(--text-color);
+  font-size: 1.6rem;
+  font-weight: normal;
+  padding-inline-start: 1rem;
+  box-sizing: border-box;
+  outline: none;
+}
+
+form.search button {
+  width: 4rem;
+  height: 4rem;
+  line-height: 4rem;
+  background-color: transparent;
+  color: var(--text-color);
+  padding: 0 1rem;
+  flex-shrink: 0;
+}
+
+form.search button[type="submit"] {
+  width: 5rem;
+  height: 3rem;
+  line-height: 3rem;
+  background-color: var(--accent-color);
+  color: var(--accent-color-plus);
+  padding: 0 1.5rem;
+  margin: 0.5rem;
+  margin-inline-start: 0;
+}
+
+form.search button[data-icon]::before {
+  position: static;
+  font-size: 2rem;
+}

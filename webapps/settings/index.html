@@ -18,6 +18,7 @@
   <link rel="stylesheet" href="http://shared.localhost:8081/style/switches.css" />
   <link rel="stylesheet" href="http://shared.localhost:8081/style/checkboxes.css" />
   <link rel="stylesheet" href="http://shared.localhost:8081/style/seekbars.css" />
+  <link rel="stylesheet" href="http://shared.localhost:8081/style/input_areas.css" />
   <link rel="stylesheet" href="style/settings.css" />
   <script defer src="http://shared.localhost:8081/js/panels.js"></script>
   <script src="js/bootstrap.js"></script>
@@ -49,6 +50,12 @@
       </div>
 
       <div class="content lists">
+        <form action="" class="search" id="searchbox">
+          <input type="text" name="" id="" data-l10n-id="type-here-to-search">
+          <button type="reset" data-icon="close"></button>
+          <button type="submit" data-icon="search"></button>
+        </form>
+
         <header data-l10n-id="networking"></header>
         <ul>
           <li data-icon="airplane">

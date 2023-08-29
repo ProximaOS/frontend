@@ -8,6 +8,11 @@
   z-index: 10;
   flex-shrink: 0;
   backdrop-filter: blur(20px) saturate(calc(100% + (80% * var(--progress, 0))));
+  outline: solid 0.1rem rgba(255, 255, 255, calc(0.1 * var(--progress, 0)));
+}
+
+.headerbar.compact {
+  height: calc(var(--statusbar-height) + 5rem);
 }
 
 .headerbar .safezone {
@@ -15,6 +20,7 @@
   max-width: calc(var(--safezone-width) - 2rem);
   margin: 0 auto;
   display: flex;
+  gap: 0.5rem;
 }
 
 .headerbar h1 {
@@ -39,6 +45,12 @@ html[dir="ltr"] .headerbar h1 {
 }
 html[dir="rtl"] .headerbar h1 {
   transform-origin: right;
+}
+
+.headerbar.compact h1 {
+  height: 5rem;
+  line-height: 5rem;
+  transform: scale(1);
 }
 
 html[dir="ltr"] .headerbar a + h1 {
@@ -84,7 +96,12 @@ html[dir="rtl"] .headerbar a + h1 {
   flex-shrink: 0;
   margin: 0;
   padding: 0;
+  gap: 0.5rem;
   /* transform: translate(0, calc(50% * (1 - var(--progress, 0)))); */
+}
+
+.headerbar form.search {
+  margin: 0.5rem 0;
 }
 
 @media screen and (max-width: 320px) and (max-height: 240px),

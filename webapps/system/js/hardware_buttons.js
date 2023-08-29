@@ -7,8 +7,12 @@
     screen: document.getElementById('screen'),
 
     powerTimer: null,
-    startTime: null,
-    currentTime: null,
+    isPowerHeld: false,
+    isPowerLongHeld: false,
+    isPowerScreenVisible: false,
+
+    POWER_HOLD_DURATION: 1000,
+    POWER_RESET_DURATION: 5000,
 
     init: function () {
       ipcRenderer.on('powerstart', this.handlePowerStart.bind(this));
@@ -19,18 +23,31 @@
     },
 
     handlePowerStart: function () {
-      this.startTime = new Date().getTime();
-      this.powerTimer = 0;
+      this.isPowerHeld = true;
+      this.isPowerLongHeld = true;
+      this.powerTimer = setTimeout(() => {
+        if (this.isPowerHeld) {
+          PowerScreen.toggle();
+          this.isPowerScreenVisible = true;
+        } else {
+          LockscreenMotion.showMotionElement();
+          LockscreenMotion.resetMotionElement();
+          LockscreenMotion.isDragging = false;
+
+          this.screen.classList.toggle('poweroff');
+        }
+
+        this.powerTimer = setTimeout(() => {
+          if (this.isPowerLongHeld) {
+            ipcRenderer.send('restart', {});
+          }
+        }, this.POWER_RESET_DURATION);
+      }, this.POWER_HOLD_DURATION);
     },
 
     handlePowerEnd: function () {
-      this.currentTime = new Date().getTime();
-      const timeElapsed = (this.currentTime - this.startTime);
-      console.log(this.startTime, this.currentTime, timeElapsed);
-
-      if (timeElapsed >= 2000) {
-        PowerScreen.toggle();
-      } else {
+      this.isPowerHeld = true;
+      if (!this.isPowerScreenVisible) {
         LockscreenMotion.showMotionElement();
         LockscreenMotion.resetMotionElement();
         LockscreenMotion.isDragging = false;

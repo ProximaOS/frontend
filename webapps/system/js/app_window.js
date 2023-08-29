@@ -22,6 +22,7 @@
 
     isDragging: false,
     isResizing: false,
+    resizingWindow: null,
     startX: null,
     startY: null,
     startWidth: null,
@@ -215,23 +216,29 @@
 
           const closeButton = document.createElement('button');
           closeButton.classList.add('close-button');
-          closeButton.addEventListener('click', (event) =>
-            this.close(windowId)
-          );
+          closeButton.addEventListener('click', (event) => {
+            event.preventDefault();
+            event.stopPropagation();
+            this.close(windowId);
+          });
           titlebar.appendChild(closeButton);
 
           const resizeButton = document.createElement('button');
           resizeButton.classList.add('resize-button');
-          resizeButton.addEventListener('click', (event) =>
-            this.maximize(windowId)
-          );
+          resizeButton.addEventListener('click', (event) => {
+            event.preventDefault();
+            event.stopPropagation();
+            this.maximize(windowId);
+          });
           titlebar.appendChild(resizeButton);
 
           const minimizeButton = document.createElement('button');
           minimizeButton.classList.add('minimize-button');
-          minimizeButton.addEventListener('click', (event) =>
-            this.minimize(windowId)
-          );
+          minimizeButton.addEventListener('click', (event) => {
+            event.preventDefault();
+            event.stopPropagation();
+            this.minimize(windowId);
+          });
           titlebar.appendChild(minimizeButton);
         }
 
@@ -257,13 +264,11 @@
 
         // Attach event listeners to each resize handler
         resizeHandlers.forEach((resizeHandler, index) => {
-          resizeHandler.addEventListener(
-            'mousedown',
-            this.startResize.bind(this)
+          resizeHandler.addEventListener('mousedown', (event) =>
+            this.startResize(event, windowDiv)
           );
-          resizeHandler.addEventListener(
-            'touchstart',
-            this.startResize.bind(this)
+          resizeHandler.addEventListener('touchstart', (event) =>
+            this.startResize(event, windowDiv)
           );
         });
       }
@@ -474,7 +479,7 @@
       switch (event.target) {
         case this.softwareBackButton:
           if (!this.screen.classList.contains('keyboard-visible')) {
-            const webview = this.focusedWindow.querySelector('.browser.active');
+            const webview = this.focusedWindow.querySelector('.browser-container .browser.active');
             if (webview.canGoBack()) {
               webview.goBack();
             } else {
@@ -670,93 +675,91 @@
       }
     },
 
-    startResize: function (event) {
+    startResize: function (event, windowDiv) {
       event.preventDefault();
-      isResizing = true;
+      this.isResizing = true;
+      this.resizingWindow = windowDiv;
 
-      startX = event.pageX || event.touches[0].pageX;
-      startY = event.pageY || event.touches[0].pageY;
-      startWidth = windowDiv.offsetWidth;
-      startHeight = windowDiv.offsetHeight;
+      this.startX = event.pageX || event.touches[0].pageX;
+      this.startY = event.pageY || event.touches[0].pageY;
+      this.startWidth = this.resizingWindow.offsetWidth;
+      this.startHeight = this.resizingWindow.offsetHeight;
 
-      document.addEventListener('mousemove', resize);
-      document.addEventListener('touchmove', resize);
-      document.addEventListener('mouseup', stopResize);
-      document.addEventListener('touchend', stopResize);
+      document.addEventListener('mousemove', (event1) => this.resize(event1, event.target));
+      document.addEventListener('touchmove', (event1) => this.resize(event1, event.target));
+      document.addEventListener('mouseup', (event1) => this.stopResize(event1, event.target));
+      document.addEventListener('touchend', (event1) => this.stopResize(event1, event.target));
     },
 
-    resize: function (event) {
+    resize: function (event, gripper) {
       event.preventDefault();
-      if (!isResizing) return;
+      if (!this.isResizing) return;
       AppWindow.containerElement.classList.add('dragging');
 
       const currentX = event.pageX || event.touches[0].pageX;
       const currentY = event.pageY || event.touches[0].pageY;
 
-      let width = startWidth;
-      let height = startHeight;
-      let left = windowDiv.offsetLeft;
-      let top = windowDiv.offsetTop;
+      let width = this.startWidth;
+      let height = this.startHeight;
+      let left = this.resizingWindow.offsetLeft;
+      let top = this.resizingWindow.offsetTop;
 
-      // Calculate the new dimensions based on the resize handler's index
-      switch (index) {
-        case 0: // Top Left
-          width = startWidth + (startX - currentX);
-          height = startHeight + (startY - currentY);
-          left = windowDiv.offsetLeft - (startX - currentX);
-          top = windowDiv.offsetTop - (startY - currentY);
-          break;
-        case 1: // Top
-          height = startHeight + (startY - currentY);
-          top = windowDiv.offsetTop - (startY - currentY);
-          break;
-        case 2: // Top Right
-          width = startWidth + (currentX - startX);
-          height = startHeight + (startY - currentY);
-          top = windowDiv.offsetTop - (startY - currentY);
-          break;
-        case 3: // Left
-          width = startWidth + (startX - currentX);
-          left = windowDiv.offsetLeft - (startX - currentX);
-          break;
-        case 4: // Right
-          width = startWidth + (currentX - startX);
-          break;
-        case 5: // Bottom Left
-          width = startWidth + (startX - currentX);
-          height = startHeight + (currentY - startY);
-          left = windowDiv.offsetLeft - (startX - currentX);
-          break;
-        case 6: // Bottom
-          height = startHeight + (currentY - startY);
-          break;
-        case 7: // Bottom Right
-          width = startWidth + (currentX - startX);
-          height = startHeight + (currentY - startY);
-          break;
-        case 8: // Center (move window)
-          left = windowDiv.offsetLeft + (currentX - startX);
-          top = windowDiv.offsetTop + (currentY - startY);
-          break;
-        default:
-          break;
+      // Calculate the new dimensions based on the resize handler
+      if (gripper.classList.contains('resize-nw')) {
+        // Top Left
+        width = this.startWidth + (this.startX - currentX);
+        height = this.startHeight + (this.startY - currentY);
+        left = this.resizingWindow.offsetLeft - (this.startX - currentX);
+        top = this.resizingWindow.offsetTop - (this.startY - currentY);
+      } else if (gripper.classList.contains('resize-n')) {
+        // Top
+        height = this.startHeight + (this.startY - currentY);
+        top = this.resizingWindow.offsetTop - (this.startY - currentY);
+      } else if (gripper.classList.contains('resize-ne')) {
+        // Top Right
+        width = this.startWidth + (currentX - this.startX);
+        height = this.startHeight + (this.startY - currentY);
+        top = this.resizingWindow.offsetTop - (this.startY - currentY);
+      } else if (gripper.classList.contains('resize-w')) {
+        // Left
+        width = this.startWidth + (this.startX - currentX);
+        left = this.resizingWindow.offsetLeft - (this.startX - currentX);
+      } else if (gripper.classList.contains('resize-e')) {
+        // Right
+        width = this.startWidth + (currentX - this.startX);
+      } else if (gripper.classList.contains('resize-sw')) {
+        // Bottom Left
+        width = this.startWidth + (this.startX - currentX);
+        height = this.startHeight + (currentY - this.startY);
+        left = this.resizingWindow.offsetLeft - (this.startX - currentX);
+      } else if (gripper.classList.contains('resize-s')) {
+        // Bottom
+        height = this.startHeight + (currentY - this.startY);
+      } else if (gripper.classList.contains('resize-se')) {
+        // Bottom Right
+        width = this.startWidth + (currentX - this.startX);
+        height = this.startHeight + (currentY - this.startY);
+      } else if (gripper.classList.contains('move-center')) {
+        // Center (move window)
+        left = this.resizingWindow.offsetLeft + (currentX - this.startX);
+        top = this.resizingWindow.offsetTop + (currentY - this.startY);
       }
 
       // Update the position and dimensions of the window
-      windowDiv.style.width = `${width}px`;
-      windowDiv.style.height = `${height}px`;
-      windowDiv.style.left = `${left}px`;
-      windowDiv.style.top = `${top}px`;
+      this.resizingWindow.style.width = `${width}px`;
+      this.resizingWindow.style.height = `${height}px`;
+      this.resizingWindow.style.left = `${left}px`;
+      this.resizingWindow.style.top = `${top}px`;
     },
 
     stopResize: function (event) {
       event.preventDefault();
-      isResizing = false;
+      this.isResizing = false;
       AppWindow.containerElement.classList.remove('dragging');
-      document.removeEventListener('mousemove', resize);
-      document.removeEventListener('touchmove', resize);
-      document.removeEventListener('mouseup', stopResize);
-      document.removeEventListener('touchend', stopResize);
+      document.removeEventListener('mousemove', this.resize.bind(this));
+      document.removeEventListener('touchmove', this.resize.bind(this));
+      document.removeEventListener('mouseup', this.stopResize.bind(this));
+      document.removeEventListener('touchend', this.stopResize.bind(this));
     }
   };
 

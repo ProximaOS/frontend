@@ -13,16 +13,21 @@
   <link rel="stylesheet" href="../switches.css">
   <link rel="stylesheet" href="../checkboxes.css">
   <link rel="stylesheet" href="../radios.css">
+  <link rel="stylesheet" href="../input_areas.css">
   <link rel="stylesheet" href="../chrome.css">
   <script defer src="../../js/panels.js"></script>
 </head>
 <body>
   <div class="app">
     <div class="panel">
-      <div class="headerbar">
+      <div class="headerbar compact">
         <div class="safezone">
           <a href="#" data-icon="menu"></a>
-          <h1>App Name</h1>
+          <form action="" class="search">
+            <input type="text" name="" id="" placeholder="Type here to search...">
+            <button type="reset" data-icon="close"></button>
+            <button type="submit" data-icon="search"></button>
+          </form>
           <menu role="toolbar">
             <a href="#" data-icon="search"></a>
           </menu>
@@ -153,51 +158,6 @@
             </div>
           </li>
         </ul>
-
-        <header>Chrome</header>
-        <div class="chrome visible" style="position: relative; height: 10rem; max-width: 76.8rem; margin: 0 auto;">
-          <div class="toolbar">
-            <div class="tablist-holder">
-              <button class="profile-button" data-icon="user">
-                <img src="" alt="" class="avatar">
-              </button>
-              <button class="side-tabs-button" data-icon="browser-sidetabs"></button>
-              <ul class="tablist">
-                <li class="active">
-                  <img src="" alt="" class="favicon">
-                  <div class="title">Hey there!</div>
-                  <button class="close-button" data-icon="close"></button>
-                </li>
-                <li>
-                  <img src="" alt="" class="favicon">
-                  <div class="title">I'm a tab</div>
-                  <button class="close-button" data-icon="close"></button>
-                </li>
-              </ul>
-              <button class="add-button" data-icon="browser-addtab"></button>
-            </div>
-            <div class="navbar">
-              <button class="navbar-back-button" data-icon="browser-back"></button>
-              <button class="navbar-forward-button" data-icon="browser-forward"></button>
-              <button class="navbar-reload-button" data-icon="browser-reload"></button>
-              <button class="navbar-home-button" data-icon="browser-home"></button>
-              <div class="urlbar">
-                <button class="urlbar-ssl" data-icon="browser-ssl"></button>
-                <input type="url" class="urlbar-input" />
-                <div class="urlbar-display-url">
-                  <div class="ignored">Type here to search...</div>
-                </div>
-                <button class="urlbar-bookmark" data-icon="browser-bookmark"></button>
-                <button class="urlbar-go" data-icon="browser-forward"></button>
-              </div>
-              <button class="navbar-tabs-button" data-icon="browser-windows"></button>
-              <button class="navbar-downloads-button" data-icon="browser-downloads"></button>
-              <button class="navbar-library-button" data-icon="browser-library"></button>
-              <button class="navbar-addons-button" data-icon="browser-addons"></button>
-              <button class="navbar-options-button" data-icon="browser-options"></button>
-            </div>
-          </div>
-        </div>
 
         <header>Flex HBox</header>
         <ul class="hbox">

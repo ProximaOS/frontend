@@ -40,6 +40,36 @@
   flex-direction: column;
 }
 
+.webapp-header figure {
+  margin: 0 1.5rem;
+  width: calc(100% - 3rem);
+  display: flex;
+  gap: 1rem;
+}
+
+.webapp-header figure > figcaption {
+  width: 100%;
+  flex-grow: 1;
+}
+
+#webappInfo-icon {
+  width: 6rem;
+  height: 6rem;
+  flex-shrink: 0;
+}
+
+#webappInfo-name {
+  color: var(--text-color);
+  font-size: 1.6rem;
+  line-height: 2.2rem;
+}
+
+#webappInfo-version {
+  color: var(--text-color-faded);
+  font-size: 1.4rem;
+  line-height: 2rem;
+}
+
 .battery-header {
   padding: 1.5rem;
   box-sizing: border-box;

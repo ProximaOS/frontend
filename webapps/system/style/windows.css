@@ -26,12 +26,6 @@
   z-index: 1;
 }
 
-#screen.cards-view-visible .appframe:not(.active) {
-  transform: none !important;
-  transition: none;
-  opacity: 0.01;
-}
-
 #windows.dragging .appframe {
   pointer-events: none;
   border-radius: var(--screen-radius);
@@ -41,13 +35,23 @@
   transform: scale(0.25);
 }
 
-#homescreen.appframe {
+#screen.cards-view-visible #windows {
+  pointer-events: none;
+}
+
+#screen.cards-view-visible .appframe {
+  transform: none;
+  transition: none;
+  opacity: 0.0000000000000001;
+}
+
+#screen:not(.cards-view-visible) #homescreen.appframe {
   transform: scale(1.5);
   opacity: 0;
   transition: all 0.5s ease;
 }
 
-#homescreen.appframe.active {
+#screen:not(.cards-view-visible) #homescreen.appframe.active {
   transform: scale(1);
   opacity: 1;
 }
@@ -78,7 +82,7 @@
 
 .appframe.shrink {
   border-radius: var(--screen-radius);
-  animation: shrink 0.3s cubic-bezier(0.8, 0.1, 0.9, 0) forwards;
+  animation: shrink 0.3s ease forwards;
 }
 
 @keyframes shrink {
@@ -166,7 +170,7 @@
 
 .appframe.zoom-out {
   border-radius: var(--screen-radius);
-  animation: zoom-out 0.3s cubic-bezier(0.8, 0.1, 0.9, 0) forwards;
+  animation: zoom-out 0.3s ease forwards;
 }
 
 @keyframes zoom-out {
@@ -180,6 +184,38 @@
   }
 }
 
+.appframe.from-cards-view {
+  border-radius: var(--screen-radius);
+  transform-origin: center !important;
+  opacity: 1;
+  animation: from-cards-view 0.5s ease;
+}
+
+@keyframes from-cards-view {
+  from {
+    transform: scale(0.65);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+
+.appframe.to-cards-view {
+  border-radius: var(--screen-radius);
+  transform-origin: center !important;
+  opacity: 1 !important;
+  animation: to-cards-view 0.5s ease;
+}
+
+@keyframes to-cards-view {
+  from {
+    transform: scale(1);
+  }
+  to {
+    transform: scale(0.65);
+  }
+}
+
 .appframe.transparent,
 .appframe.transparent .chrome {
   background-color: transparent;
@@ -187,12 +223,12 @@
 
 .appframe.window {
   border-radius: 2.5rem !important;
-  box-shadow: 0 1rem 2rem rgba(0,0,0,0.25);
+  box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.25);
   transform: translateY(0);
 }
 
 .appframe.window.active {
-  box-shadow: 0 2rem 4rem rgba(0,0,0,0.25);
+  box-shadow: 0 2rem 4rem rgba(0, 0, 0, 0.25);
 }
 
 .appframe.window.maximized {
@@ -200,7 +236,9 @@
   left: 0 !important;
   top: var(--statusbar-height) !important;
   width: 100% !important;
-  height: calc(100% - var(--statusbar-height) - var(--software-buttons-height)) !important;
+  height: calc(
+    100% - var(--statusbar-height) - var(--software-buttons-height)
+  ) !important;
   box-shadow: none;
 }
 
@@ -217,15 +255,25 @@
 }
 
 .appframe .chrome.visible .browser {
-  top: calc(var(--statusbar-height) + var(--chrome-tablist-height) + var(--chrome-navbar-height) + (var(--chrome-toolbar-gap) * 2));
-  height: calc(100% - var(--statusbar-height) - 2.5rem - var(--chrome-tablist-height) - var(--chrome-navbar-height) - (var(--chrome-toolbar-gap) * 2));
+  top: calc(
+    var(--statusbar-height) + var(--chrome-tablist-height) +
+      var(--chrome-navbar-height) + (var(--chrome-toolbar-gap) * 2)
+  );
+  height: calc(
+    100% - var(--statusbar-height) - 2.5rem - var(--chrome-tablist-height) -
+      var(--chrome-navbar-height) - (var(--chrome-toolbar-gap) * 2)
+  );
 }
 
 .appframe .chrome.bottom.visible .browser {
   top: var(--statusbar-height);
 }
 
-#screen.software-buttons-enabled .appframe .chrome .browser-container > .browser {
+#screen.software-buttons-enabled
+  .appframe
+  .chrome
+  .browser-container
+  > .browser {
   height: calc(100% - var(--statusbar-height) - var(--software-buttons-height));
 }
 
@@ -234,13 +282,26 @@
 }
 
 #screen.software-buttons-enabled .appframe .chrome.visible .browser {
-  top: calc(var(--statusbar-height) + var(--chrome-tablist-height) + var(--chrome-navbar-height) + (var(--chrome-toolbar-gap) * 2));
-  height: calc(100% - var(--statusbar-height) - var(--software-buttons-height) - var(--chrome-tablist-height) - var(--chrome-navbar-height) - (var(--chrome-toolbar-gap) * 2));
+  top: calc(
+    var(--statusbar-height) + var(--chrome-tablist-height) +
+      var(--chrome-navbar-height) + (var(--chrome-toolbar-gap) * 2)
+  );
+  height: calc(
+    100% - var(--statusbar-height) - var(--software-buttons-height) -
+      var(--chrome-tablist-height) - var(--chrome-navbar-height) -
+      (var(--chrome-toolbar-gap) * 2)
+  );
 }
 
 #screen .appframe.window .chrome.visible .browser {
-  top: calc(var(--chrome-tablist-height) + var(--chrome-navbar-height) + (var(--chrome-toolbar-gap) * 2));
-  height: calc(100% - var(--chrome-tablist-height) - var(--chrome-navbar-height) - (var(--chrome-toolbar-gap) * 2));
+  top: calc(
+    var(--chrome-tablist-height) + var(--chrome-navbar-height) +
+      (var(--chrome-toolbar-gap) * 2)
+  );
+  height: calc(
+    100% - var(--chrome-tablist-height) - var(--chrome-navbar-height) -
+      (var(--chrome-toolbar-gap) * 2)
+  );
 }
 
 #screen.software-buttons-enabled .appframe .chrome.bottom.visible .browser {
@@ -265,19 +326,32 @@
 }
 
 .appframe.window.immersive
-#screen.software-buttons-enabled .appframe.window.immersive {
+  #screen.software-buttons-enabled
+  .appframe.window.immersive {
   height: calc(100% + var(--software-buttons-height));
 }
 
 @media screen and (max-width: 599px) {
   .appframe .chrome.visible .browser {
-    top: calc(var(--statusbar-height) + var(--chrome-navbar-height) + var(--chrome-toolbar-gap));
-    height: calc(100% - var(--statusbar-height) - 2.5rem - var(--chrome-navbar-height) - var(--chrome-toolbar-gap));
+    top: calc(
+      var(--statusbar-height) + var(--chrome-navbar-height) +
+        var(--chrome-toolbar-gap)
+    );
+    height: calc(
+      100% - var(--statusbar-height) - 2.5rem - var(--chrome-navbar-height) -
+        var(--chrome-toolbar-gap)
+    );
   }
 
   #screen.software-buttons-enabled .appframe .chrome.visible .browser {
-    top: calc(var(--statusbar-height) + var(--chrome-navbar-height) + var(--chrome-toolbar-gap));
-    height: calc(100% - var(--statusbar-height) - var(--software-buttons-height) - var(--chrome-navbar-height) - var(--chrome-toolbar-gap));
+    top: calc(
+      var(--statusbar-height) + var(--chrome-navbar-height) +
+        var(--chrome-toolbar-gap)
+    );
+    height: calc(
+      100% - var(--statusbar-height) - var(--software-buttons-height) -
+        var(--chrome-navbar-height) - var(--chrome-toolbar-gap)
+    );
   }
 }
 
@@ -290,10 +364,23 @@
   z-index: 15;
   background-color: var(--background);
   visibility: visible;
-  mask-image: radial-gradient(circle at 50% 100%, transparent, transparent calc(100% / 3), white calc((100% / 3) * 2), white);
+  cursor: wait;
+  mask-image: radial-gradient(
+    circle at 50% 100%,
+    transparent,
+    transparent calc(100% / 3),
+    white calc((100% / 3) * 2),
+    white
+  );
   mask-size: 300%;
   mask-position: 0 0;
-  -webkit-mask-image: radial-gradient(circle at 50% 100%, transparent, transparent calc(100% / 3), white calc((100% / 3) * 2), white);
+  -webkit-mask-image: radial-gradient(
+    circle at 50% 100%,
+    transparent,
+    transparent calc(100% / 3),
+    white calc((100% / 3) * 2),
+    white
+  );
   -webkit-mask-size: 100% 300%;
   -webkit-mask-position: 0 0;
   transition: all 0.3s ease;
@@ -350,10 +437,10 @@
   gap: 1rem;
   z-index: 5;
 }
-html[dir="ltr"] .appframe .titlebar {
+html[dir='ltr'] .appframe .titlebar {
   right: 0;
 }
-html[dir="rtl"] .appframe .titlebar {
+html[dir='rtl'] .appframe .titlebar {
   left: 0;
 }
 
@@ -429,53 +516,61 @@ html[dir="rtl"] .appframe .titlebar {
   z-index: 100;
 }
 
-.resize-handler.resize-ne { /* Top Left */
+.resize-handler.nw-resize {
+  /* Top Left */
   top: 0;
   left: 0;
   cursor: ne-resize;
 }
 
-.resize-handler.resize-n { /* Top */
+.resize-handler.n-resize {
+  /* Top */
   top: 0;
   left: 1rem;
   width: calc(100% - 2rem);
   cursor: n-resize;
 }
 
-.resize-handler.resize-nw { /* Top Right */
+.resize-handler.ne-resize {
+  /* Top Right */
   top: 0;
   right: 0;
   cursor: nw-resize;
 }
 
-.resize-handler.resize-e { /* Left */
+.resize-handler.w-resize {
+  /* Left */
   top: 1rem;
   left: 0;
   height: calc(100% - 2rem);
   cursor: w-resize;
 }
 
-.resize-handler.resize-w { /* Right */
+.resize-handler.e-resize {
+  /* Right */
   top: 1rem;
   right: 0;
   height: calc(100% - 2rem);
   cursor: e-resize;
 }
 
-.resize-handler.resize-se { /* Bottom Left */
+.resize-handler.sw-resize {
+  /* Bottom Left */
   bottom: 0;
   left: 0;
   cursor: se-resize;
 }
 
-.resize-handler.resize-s { /* Bottom */
+.resize-handler.s-resize {
+  /* Bottom */
   bottom: 0;
   left: 1rem;
   width: calc(100% - 2rem);
   cursor: s-resize;
 }
 
-.resize-handler.resize-sw { /* Bottom Right */
+.resize-handler.se-resize {
+  /* Bottom Right */
   bottom: 0;
   right: 0;
   cursor: sw-resize;
@@ -498,10 +593,10 @@ html[dir="rtl"] .appframe .titlebar {
     width: calc(100% - var(--software-buttons-height));
     left: unset;
   }
-  html[dir="ltr"] .appframe .chrome {
+  html[dir='ltr'] .appframe .chrome {
     right: 0;
   }
-  html[dir="rtl"] .appframe .chrome {
+  html[dir='rtl'] .appframe .chrome {
     left: 0;
   }
 

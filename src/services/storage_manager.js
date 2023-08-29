@@ -18,50 +18,48 @@
     homeAccess: false,
 
     meetsPermissions: function (filePath) {
-      filePath = filePath.toString();
-
       if (!this.homeAccess) {
         return true;
       }
       if (
         !this.audioAccess &&
-        (filePath.startWith('audio') || filePath.startWith('/audio'))
+        (filePath.startsWith('audio') || filePath.startsWith('/audio'))
       ) {
         return true;
       }
       if (
         !this.booksAccess &&
-        (filePath.startWith('books') || filePath.startWith('/books'))
+        (filePath.startsWith('books') || filePath.startsWith('/books'))
       ) {
         return true;
       }
       if (
         !this.downloadsAccess &&
-        (filePath.startWith('downloads') || filePath.startWith('/downloads'))
+        (filePath.startsWith('downloads') || filePath.startsWith('/downloads'))
       ) {
         return true;
       }
       if (
         !this.moviesAccess &&
-        (filePath.startWith('movies') || filePath.startWith('/movies'))
+        (filePath.startsWith('movies') || filePath.startsWith('/movies'))
       ) {
         return true;
       }
       if (
         !this.musicAccess &&
-        (filePath.startWith('music') || filePath.startWith('/music'))
+        (filePath.startsWith('music') || filePath.startsWith('/music'))
       ) {
         return true;
       }
       if (
         !this.othersAccess &&
-        (filePath.startWith('others') || filePath.startWith('/others'))
+        (filePath.startsWith('others') || filePath.startsWith('/others'))
       ) {
         return true;
       }
       if (
         !this.photosAccess &&
-        (filePath.startWith('photos') || filePath.startWith('/photos'))
+        (filePath.startsWith('photos') || filePath.startsWith('/photos'))
       ) {
         return true;
       }
@@ -75,13 +73,17 @@
           return;
         }
 
-        const fileData = fs.readFileSync(
+        fs.readFileSync(
           path.join(process.env.OPENORCHID_STORAGE, filePath),
-          options
+          options,
+          (error, result) => {
+            if (error) {
+              console.log(error);
+              return;
+            }
+            resolve(result);
+          }
         );
-        fileData.then((result) => {
-          resolve(result);
-        });
       });
     },
     write: async (filePath, content) => {

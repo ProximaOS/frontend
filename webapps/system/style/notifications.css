@@ -44,6 +44,10 @@
   margin: 0 0 1rem;
   width: 100%;
   list-style: none;
+  transition: all 0.3s ease, translate 0ms;
+}
+
+#notifications-container .notification.transitioning {
   transition: all 0.3s ease;
 }
 
@@ -142,7 +146,7 @@
   height: 0.5rem;
   border-radius: 0.5rem;
   position: relative;
-  margin: 0.5rem 0 0;
+  margin: 0.5rem 0;
   background: #858585;
 }
 

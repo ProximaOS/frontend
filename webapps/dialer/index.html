@@ -12,6 +12,7 @@
   <link rel="stylesheet" href="http://shared.localhost:8081/style/headers.css" />
   <link rel="stylesheet" href="http://shared.localhost:8081/style/tablists.css" />
   <link rel="stylesheet" href="http://shared.localhost:8081/style/buttons.css" />
+  <link rel="stylesheet" href="http://shared.localhost:8081/style/input_areas.css" />
   <link rel="stylesheet" href="style/dialer.css" />
   <link rel="stylesheet" href="style/keypad.css" />
   <link rel="stylesheet" href="style/calllog.css" />
@@ -39,9 +40,9 @@
 
     <div id="views">
       <div id="keypad" class="panel visible">
-        <div class="headerbar">
+        <div class="headerbar compact">
           <h1 data-l10n-id="keypad"></h1>
-          <menu type="toolbar">
+          <menu role="toolbar">
             <a href="#" data-icon="more"></a>
           </menu>
         </div>
@@ -133,11 +134,16 @@
       <div id="calllog" class="panel visible">
         <div class="headerbar">
           <h1 data-l10n-id="calllog"></h1>
-          <menu type="toolbar">
+          <menu role="toolbar">
             <a href="#" data-icon="search"></a>
           </menu>
         </div>
         <div class="content">
+          <form action="" class="search" id="calllog-searchbox">
+            <input type="text" name="" id="" data-l10n-id="type-here-to-search">
+            <button type="reset" data-icon="close"></button>
+            <button type="submit" data-icon="search"></button>
+          </form>
           <ul id="calllog-list"></ul>
         </div>
       </div>

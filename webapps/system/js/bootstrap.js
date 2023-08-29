@@ -4,26 +4,6 @@
   document.addEventListener('DOMContentLoaded', function () {
     const screen = document.getElementById('screen');
 
-    if (platform === 'mobile') {
-      LazyLoader([]);
-    } else if (platform === 'smart-tv') {
-      LazyLoader([]);
-    } else if (platform === 'vr') {
-      LazyLoader([]);
-    } else if (platform === 'homepad') {
-      LazyLoader([]);
-    } else if (platform === 'wear') {
-      LazyLoader([]);
-    } else if (platform === 'desktop') {
-      LazyLoader([
-        '/desktop/style/launcher.css',
-        '/desktop/style/software_buttons.css',
-        '/desktop/style/statusbar.css',
-        '/desktop/style/utility_tray.css',
-        '/desktop/style/windows.css'
-      ]);
-    }
-
     _session.settings
       .getValue('general.software_buttons.enabled')
       .then((value) => {
