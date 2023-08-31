@@ -1,9 +1,0 @@
-#panorama {
-  width: calc(100% - 3rem);
-  max-width: calc(var(--safezone-width) - 3rem);
-  max-height: 60vh;
-  margin: 0 auto 1rem;
-  background-color: #858585;
-  border-radius: 1.5rem;
-  aspect-ratio: 4 / 3;
-}

@@ -79,14 +79,14 @@
         this.mediaStream
           .getVideoTracks()[0]
           .addEventListener('dataavailable', this.handleRecordData);
-        this.recordButton.textContent = 'Stop';
+        this.recordButton.classList.add('enabled');
         this.isRecording = true;
       } else {
         // Stop recording
         this.mediaStream
           .getVideoTracks()[0]
           .removeEventListener('dataavailable', this.handleRecordData);
-        this.recordButton.textContent = 'Record';
+        this.recordButton.classList.remove('enabled');
         this.isRecording = false;
         this.saveRecordedVideo();
       }

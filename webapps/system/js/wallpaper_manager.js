@@ -5,10 +5,10 @@
     screen: document.getElementById('screen'),
 
     init: function () {
-      _session.settings.getValue('video.wallpaper.url').then((value) => {
+      window.Settings.getValue('video.wallpaper.url').then((value) => {
         this.screen.style.backgroundImage = `url(${value})`;
       });
-      _session.settings.addObserver('video.wallpaper.url', (value) => {
+      window.Settings.addObserver('video.wallpaper.url', (value) => {
         this.screen.style.backgroundImage = `url(${value})`;
       });
     }

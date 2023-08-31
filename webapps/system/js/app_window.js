@@ -457,8 +457,10 @@
       if (dockIcon) {
         dockIcon.classList.remove('minimized');
       }
+      this.focus(id);
+      windowDiv.classList.add(this.OPEN_ANIMATION);
       windowDiv.addEventListener('animationend', () => {
-        windowDiv.style.transform = '';
+        windowDiv.classList.remove(this.OPEN_ANIMATION);
         this.focus(id);
       });
     },

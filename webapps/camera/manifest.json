@@ -14,6 +14,11 @@
   "orientation": "portrait-primary",
   "background_color": "#000000",
   "theme_color": "#0061e0",
-  "permissions": {},
+  "permissions": {
+    "settings": {},
+    "storage": {},
+    "device-storage:home": {},
+    "device-storage:photos": {}
+  },
   "display": "fullscreen"
 }

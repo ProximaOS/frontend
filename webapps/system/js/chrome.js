@@ -139,12 +139,12 @@
               this.openFtuDialog();
             }
 
-            _session.settings
+            window.Settings
               .getValue('general.chrome.position')
               .then((data) => {
                 this.chrome().classList.add(data);
               });
-            _session.settings.addObserver('general.chrome.position', (data) => {
+            window.Settings.addObserver('general.chrome.position', (data) => {
               this.chrome().classList.remove('top');
               this.chrome().classList.remove('bottom');
               this.chrome().classList.add(data);
@@ -1064,7 +1064,7 @@
         document.scrollingElement.style.setProperty('--accent-color-r', 192);
         document.scrollingElement.style.setProperty('--accent-color-g', 0);
         document.scrollingElement.style.setProperty('--accent-color-b', 64);
-        _session.settings.setValue('homescreen.accent_color.rgb', {
+        window.Settings.setValue('homescreen.accent_color.rgb', {
           r: 192,
           g: 0,
           b: 64
@@ -1074,7 +1074,7 @@
         document.scrollingElement.style.setProperty('--accent-color-r', 255);
         document.scrollingElement.style.setProperty('--accent-color-g', 192);
         document.scrollingElement.style.setProperty('--accent-color-b', 0);
-        _session.settings.setValue('homescreen.accent_color.rgb', {
+        window.Settings.setValue('homescreen.accent_color.rgb', {
           r: 255,
           g: 192,
           b: 0
@@ -1084,7 +1084,7 @@
         document.scrollingElement.style.setProperty('--accent-color-r', 64);
         document.scrollingElement.style.setProperty('--accent-color-g', 160);
         document.scrollingElement.style.setProperty('--accent-color-b', 96);
-        _session.settings.setValue('homescreen.accent_color.rgb', {
+        window.Settings.setValue('homescreen.accent_color.rgb', {
           r: 64,
           g: 160,
           b: 96
@@ -1094,7 +1094,7 @@
         document.scrollingElement.style.setProperty('--accent-color-r', null);
         document.scrollingElement.style.setProperty('--accent-color-g', null);
         document.scrollingElement.style.setProperty('--accent-color-b', null);
-        _session.settings.setValue('homescreen.accent_color.rgb', {
+        window.Settings.setValue('homescreen.accent_color.rgb', {
           r: null,
           g: null,
           b: null
@@ -1104,7 +1104,7 @@
         document.scrollingElement.style.setProperty('--accent-color-r', 128);
         document.scrollingElement.style.setProperty('--accent-color-g', 48);
         document.scrollingElement.style.setProperty('--accent-color-b', 160);
-        _session.settings.setValue('homescreen.accent_color.rgb', {
+        window.Settings.setValue('homescreen.accent_color.rgb', {
           r: 128,
           g: 48,
           b: 160

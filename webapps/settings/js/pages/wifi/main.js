@@ -28,7 +28,7 @@
 
     searchNetworks: async function () {
       try {
-        const networks = await _session.wifiManager.scan();
+        const networks = await window.WifiManager.scan();
         this.availableNetworksList.innerHTML = '';
         networks.forEach((network) => {
           // Convert signal strength to percentage

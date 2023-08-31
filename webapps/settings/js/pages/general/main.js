@@ -13,7 +13,7 @@
         this.handleSoftwareButtonsCheckbox.bind(this)
       );
 
-      _session.settings
+      window.Settings
         .getValue('general.software_buttons.enabled')
         .then((value) => {
           this.softwareButtonsCheckbox.checked = value;
@@ -21,7 +21,7 @@
     },
 
     handleSoftwareButtonsCheckbox: function () {
-      _session.settings.setValue(
+      window.Settings.setValue(
         'general.software_buttons.enabled',
         this.softwareButtonsCheckbox.checked
       );

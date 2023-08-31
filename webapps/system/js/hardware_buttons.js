@@ -46,7 +46,8 @@
     },
 
     handlePowerEnd: function () {
-      this.isPowerHeld = true;
+      this.isPowerHeld = false;
+      this.isPowerLongHeld = false;
       if (!this.isPowerScreenVisible) {
         LockscreenMotion.showMotionElement();
         LockscreenMotion.resetMotionElement();

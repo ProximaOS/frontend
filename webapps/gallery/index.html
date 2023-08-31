@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -12,11 +13,13 @@
   <link rel="stylesheet" href="http://shared.localhost:8081/style/headers.css" />
   <link rel="stylesheet" href="http://shared.localhost:8081/style/tablists.css" />
   <link rel="stylesheet" href="http://shared.localhost:8081/style/buttons.css" />
+  <link rel="stylesheet" href="http://shared.localhost:8081/style/toolbars.css" />
   <link rel="stylesheet" href="style/gallery.css" />
   <link rel="stylesheet" href="style/library.css" />
   <link rel="stylesheet" href="style/folders.css" />
   <link rel="stylesheet" href="style/memories.css" />
   <script defer src="http://shared.localhost:8081/js/panels.js"></script>
+  <script defer src="http://shared.localhost:8081/js/file_indexer.js"></script>
   <script src="js/bootstrap.js"></script>
   <script defer src="js/views.js"></script>
   <script defer src="js/views/library.js"></script>
@@ -28,6 +31,7 @@
   <meta name="availableLanguages" content="en-US, ar">
   <link rel="localization" href="/locales/main.{locale}.properties">
 </head>
+
 <body>
   <div id="app" class="app">
     <div class="tablist">
@@ -41,10 +45,12 @@
     <div id="views">
       <div id="library" class="panel visible">
         <div class="headerbar">
-          <h1 data-l10n-id="title"></h1>
-          <menu type="toolbar">
-            <a href="#" data-icon="more"></a>
-          </menu>
+          <div class="safezone">
+            <h1 data-l10n-id="title"></h1>
+            <menu role="toolbar">
+              <a href="#" data-icon="more"></a>
+            </menu>
+          </div>
         </div>
         <div class="content">
           <div id="images-container"></div>
@@ -53,24 +59,52 @@
 
       <div id="folders" class="panel">
         <div class="headerbar">
-          <h1 data-l10n-id="folders"></h1>
-          <menu type="toolbar">
-            <a href="#" data-icon="more"></a>
-          </menu>
+          <div class="safezone">
+            <h1 data-l10n-id="folders"></h1>
+            <menu role="toolbar">
+              <a href="#" data-icon="more"></a>
+            </menu>
+          </div>
         </div>
         <div class="content"></div>
       </div>
 
       <div id="memories" class="panel">
         <div class="headerbar">
-          <h1 data-l10n-id="memories"></h1>
-          <menu type="toolbar">
-            <a href="#" data-icon="more"></a>
-          </menu>
+          <div class="safezone">
+            <h1 data-l10n-id="memories"></h1>
+            <menu role="toolbar">
+              <a href="#" data-icon="more"></a>
+            </menu>
+          </div>
         </div>
         <div class="content"></div>
       </div>
     </div>
+
+    <div id="image-viewer" class="panel visible">
+      <div class="headerbar compact">
+        <div class="safezone">
+          <h1 id="image-viewer-title"></h1>
+          <menu role="toolbar">
+            <a href="#" data-icon="help"></a>
+          </menu>
+        </div>
+      </div>
+      <div class="content">
+        <div id="images-container"></div>
+      </div>
+      <div class="toolbar">
+        <div class="safezone">
+          <button id="image-viewer-camera" data-icon="camera"></button>
+          <button id="image-viewer-edit-image" data-icon="edit-image"></button>
+          <button id="image-viewer-share" data-icon="share"></button>
+          <button id="image-viewer-info" data-icon="info"></button>
+          <button id="image-viewer-delete" data-icon="delete"></button>
+        </div>
+      </div>
+    </div>
   </div>
 </body>
+
 </html>

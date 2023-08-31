@@ -25,10 +25,10 @@
         audio: ['mp3', 'wav', 'ogg']
       };
 
-      const files = await _session.storageManager.list(directoryPath);
+      const files = await window.StorageManager.list(directoryPath);
       const statsPromises = files.map(async (file) => {
         const filePath = directoryPath + '/' + file;
-        const stat = await _session.storageManager.getFileStats(filePath);
+        const stat = await window.StorageManager.getFileStats(filePath);
         return { name: file, size: stat.size };
       });
 

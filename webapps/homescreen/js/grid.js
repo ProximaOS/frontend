@@ -48,7 +48,7 @@
     init: function () {
       this.gridElement.style.setProperty('--grid-columns', this.gridColumns);
 
-      const apps = _session.appsManager.getAll();
+      const apps = window.AppsManager.getAll();
       apps.then((data) => {
         this.apps = data;
         this.createIcons();
@@ -161,7 +161,7 @@
 
       if (!Grid.isDragging) {
         // Dispatch the custom event with the manifest URL
-        _session.sendMessage({
+        window.IPC.send('message', {
           type: 'launch',
           manifestUrl,
           icon_x: x,

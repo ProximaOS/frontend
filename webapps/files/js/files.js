@@ -58,9 +58,9 @@
         this.handleReloadButton.bind(this)
       );
 
-      _session.settings.getValue('files.quick-access').then((data) => {
+      window.Settings.getValue('files.quick-access').then((data) => {
         if (!Array.isArray(data)) {
-          _session.settings.setValue(
+          window.Settings.setValue(
             'files.quick-access',
             this.DEFAULT_SHORTCUTS
           );
@@ -92,12 +92,12 @@
 
       this.fileContainer.innerHTML = '';
       this.pathName.innerHTML = path.replaceAll('//', '/');
-      _session.storageManager.list(path).then((files) => {
+      window.StorageManager.list(path).then((files) => {
         files.sort();
         files.forEach((file) => {
           const item = document.createElement('div');
           item.classList.add('file');
-          _session.storageManager
+          window.StorageManager
             .getFileStats(`${path}/${file}`)
             .then((stat) => {
               if (stat.isDirectory()) {
@@ -119,7 +119,7 @@
                       `Do you want to install a 3rd-party app from ${file}? It could be a malicious app.`,
                       (result) => {
                         if (result) {
-                          _session.appsManager.installPackage(
+                          window.AppsManager.installPackage(
                             `${path}/${file}`
                           );
                         }
@@ -128,28 +128,25 @@
                   };
                 }
 
-                _session.storageManager
-                  .getMime(`${path}/${file}`)
-                  .then((mime) => {
-                    if (mime.startsWith('text/')) {
-                      item.classList.add('text');
-                    } else if (mime.startsWith('image/')) {
-                      item.classList.add('image');
-                      _session.storageManager
-                        .read(`${path}/${file}`, { encoding: 'base64' })
-                        .then((data) => {
-                          // Call a function to generate the HTML content with the Base64-encoded image data
-                          item.style.setProperty(
-                            '--thumbnail',
-                            `url("data:${mime};base64,${data}")`
-                          );
-                        });
-                    } else if (mime.startsWith('audio/')) {
-                      item.classList.add('audio');
-                    } else if (mime.startsWith('video/')) {
-                      item.classList.add('video');
-                    }
-                  });
+                const mime = window.StorageManager.getMime(file);
+                if (mime.startsWith('text/')) {
+                  item.classList.add('text');
+                } else if (mime.startsWith('image/')) {
+                  item.classList.add('image');
+                  window.StorageManager
+                    .read(`${path}/${file}`, { encoding: 'base64' })
+                    .then((data) => {
+                      // Call a function to generate the HTML content with the Base64-encoded image data
+                      item.style.setProperty(
+                        '--thumbnail',
+                        `url("data:${mime};base64,${data}")`
+                      );
+                    });
+                } else if (mime.startsWith('audio/')) {
+                  item.classList.add('audio');
+                } else if (mime.startsWith('video/')) {
+                  item.classList.add('video');
+                }
                 setTimeout(() => {
                   this.fileContainer.appendChild(item);
                 }, 10);
@@ -181,11 +178,11 @@
       let totalSize = 0;
 
       async function calculateSize (filePath) {
-        const stats = await _session.storageManager.getFileStats(filePath);
+        const stats = await window.StorageManager.getFileStats(filePath);
         if (stats.isFile()) {
           totalSize += stats.size;
         } else if (stats.isDirectory()) {
-          const nestedFiles = await _session.storageManager.list(filePath);
+          const nestedFiles = await window.StorageManager.list(filePath);
 
           nestedFiles.forEach((file) => {
             const nestedFilePath = path.join(filePath, file);

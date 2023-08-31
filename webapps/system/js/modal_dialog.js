@@ -68,7 +68,7 @@
       const PermissionRequestButton = this.dialogPermissionRequest.querySelector('.recommend');
       PermissionRequestButton.addEventListener(
         'click',
-        this.handleConfirmButtonClick.bind(this, callback, true)
+        this.handlePermissionRequestConfirmButtonClick.bind(this, callback, true)
       );
 
       this.dialogPermissionRequest.classList.add('visible');
@@ -92,6 +92,11 @@
       const input = ModalDialog.dialogPrompt.querySelector('.inputbox').value;
       ModalDialog.dialogPrompt.classList.remove('visible');
       callback(input);
+    },
+
+    handlePermissionRequestConfirmButtonClick: function (callback, value) {
+      ModalDialog.dialogPermissionRequest.classList.remove('visible');
+      callback(value);
     }
   };
 

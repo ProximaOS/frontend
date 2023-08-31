@@ -30,14 +30,10 @@
     ),
 
     showNotification: function (title, options) {
-      const { body, progress, badge, source, icon, media, actions } = options;
+      const { body, progress, badge, source, icon, media, actions, tag } =
+        options;
 
-      this._index++;
-
-      const notification = document.createElement('li');
-      notification.classList.add('notification');
-      notification.style.transitionDelay = this._index * 50 + 'ms';
-      notification.innerHTML = `
+      const dom = `
         <div class="titlebar">
           <img src="" class="badge">
           <div class="source-name"></div>
@@ -53,117 +49,148 @@
         <div class="media"></div>
         <div class="actions"></div>
       `;
-      this.notificationsContainer.appendChild(notification);
 
-      notification.addEventListener('pointerdown', (event) =>
-        this.onPointerDown(event, notification)
-      );
-      notification.addEventListener('pointermove', (event) =>
-        this.onPointerMove(event, notification)
-      );
-      notification.addEventListener('pointerup', (event) =>
-        this.onPointerUp(event, notification)
-      );
-
-      const titleElement = notification.querySelector('.title');
-      titleElement.innerText = title;
-      this.titleElement.innerText = title;
-
-      const detailElement = notification.querySelector('.detail');
-      detailElement.innerText = body;
-      this.detailElement.innerText = body;
-
-      const progressElement = notification.querySelector('.progress');
-      if (progress) {
-        progressElement.style.setProperty('--progress', progress / 100);
-        this.progressElement.style.setProperty('--progress', progress / 100);
+      let notification;
+      const taggedNotification = document.querySelector(`[data-tag="${tag}"]`);
+      if (taggedNotification) {
+        taggedNotification.innerHTML = dom;
+        notification = taggedNotification;
+        console.log(notification);
       } else {
-        progressElement.style.display = 'none';
-        this.progressElement.style.display = 'none';
+        this._index++;
+
+        notification = document.createElement('li');
+        notification.classList.add('notification');
+        notification.style.transitionDelay = this._index * 50 + 'ms';
+        if (tag) {
+          notification.dataset.tag = tag;
+        }
+        notification.innerHTML = dom;
+        this.notificationsContainer.appendChild(notification);
+
+        notification.addEventListener('pointerdown', (event) =>
+          this.onPointerDown(event, notification)
+        );
+        notification.addEventListener('pointermove', (event) =>
+          this.onPointerMove(event, notification)
+        );
+        notification.addEventListener('pointerup', (event) =>
+          this.onPointerUp(event, notification)
+        );
       }
 
-      const badgeElement = notification.querySelector('.badge');
-      if (badge) {
-        badgeElement.src = badge;
-        badgeElement.style.display = 'block';
-        this.badgeElement.src = badge;
-        this.badgeElement.style.display = 'block';
-      } else {
-        badgeElement.style.display = 'none';
-        this.badgeElement.style.display = 'none';
+      setTimeout(() => {
+        const titleElement = notification.querySelector('.title');
+        titleElement.innerText = title;
+        this.titleElement.innerText = title;
+
+        const detailElement = notification.querySelector('.detail');
+        detailElement.innerText = body;
+        this.detailElement.innerText = body;
+
+        const progressElement = notification.querySelector('.progress');
+        if (progress || progress === 0) {
+          progressElement.style.setProperty(
+            '--progress',
+            Math.min(100, progress) / 100
+          );
+          this.progressElement.style.setProperty(
+            '--progress',
+            Math.min(100, progress) / 100
+          );
+          progressElement.style.display = 'block';
+          this.progressElement.style.display = 'block';
+        } else {
+          progressElement.style.display = 'none';
+          this.progressElement.style.display = 'none';
+        }
+
+        const badgeElement = notification.querySelector('.badge');
+        if (badge) {
+          badgeElement.src = badge;
+          badgeElement.style.display = 'block';
+          this.badgeElement.src = badge;
+          this.badgeElement.style.display = 'block';
+        } else {
+          badgeElement.style.display = 'none';
+          this.badgeElement.style.display = 'none';
+        }
+
+        const sourceNameElement = notification.querySelector('.source-name');
+        sourceNameElement.innerText = source;
+        this.sourceNameElement.innerText = source;
+
+        const iconElement = notification.querySelector('.icon');
+        if (icon) {
+          iconElement.src = icon;
+          iconElement.style.display = 'block';
+          this.iconElement.src = icon;
+          this.iconElement.style.display = 'block';
+        } else {
+          iconElement.style.display = 'none';
+          this.iconElement.style.display = 'none';
+        }
+        iconElement.onerror = () => {
+          iconElement.style.display = 'none';
+        };
+        this.iconElement.onerror = () => {
+          this.iconElement.style.display = 'none';
+        };
+
+        const mediaElement = notification.querySelector('.media');
+        if (media && media.length > 0) {
+          mediaElement.innerHTML = '';
+          this.mediaElement.innerHTML = '';
+          media.forEach(function (src) {
+            const persistentImgElement = document.createElement('img');
+            persistentImgElement.src = src;
+            mediaElement.appendChild(persistentImgElement);
+
+            const imgElement = document.createElement('img');
+            imgElement.src = src;
+            this.mediaElement.appendChild(imgElement);
+          }, this);
+          mediaElement.style.display = 'block';
+          this.mediaElement.style.display = 'block';
+        } else {
+          mediaElement.style.display = 'none';
+          this.mediaElement.style.display = 'none';
+        }
+
+        const actionsElement = notification.querySelector('.actions');
+        if (actions && actions.length > 0) {
+          actionsElement.innerHTML = '';
+          this.actionsElement.innerHTML = '';
+          actions.forEach(function (button) {
+            const persistentButtonElement = document.createElement('button');
+            persistentButtonElement.textContent = button.label;
+            persistentButtonElement.addEventListener('click', button.onclick);
+            if (button.recommend) {
+              persistentButtonElement.classList.add('recommend');
+            }
+            actionsElement.appendChild(persistentButtonElement);
+
+            const buttonElement = document.createElement('button');
+            buttonElement.textContent = button.label;
+            buttonElement.addEventListener('click', button.onclick);
+            if (button.recommend) {
+              buttonElement.classList.add('recommend');
+            }
+            this.actionsElement.appendChild(buttonElement);
+          }, this);
+          actionsElement.style.display = 'block';
+          this.actionsElement.style.display = 'block';
+        } else {
+          actionsElement.style.display = 'none';
+          this.actionsElement.style.display = 'none';
+        }
+      });
+
+      if (!taggedNotification) {
+        this.notifierSound.currentTime = 0;
+        this.notifierSound.play();
       }
 
-      const sourceNameElement = notification.querySelector('.source-name');
-      sourceNameElement.innerText = source;
-      this.sourceNameElement.innerText = source;
-
-      const iconElement = notification.querySelector('.icon');
-      if (icon) {
-        iconElement.src = icon;
-        iconElement.style.display = 'block';
-        this.iconElement.src = icon;
-        this.iconElement.style.display = 'block';
-      } else {
-        iconElement.style.display = 'none';
-        this.iconElement.style.display = 'none';
-      }
-      iconElement.onerror = () => {
-        iconElement.style.display = 'none';
-      };
-      this.iconElement.onerror = () => {
-        this.iconElement.style.display = 'none';
-      };
-
-      const mediaElement = notification.querySelector('.media');
-      if (media && media.length > 0) {
-        mediaElement.innerHTML = '';
-        this.mediaElement.innerHTML = '';
-        media.forEach(function (src) {
-          const persistentImgElement = document.createElement('img');
-          persistentImgElement.src = src;
-          mediaElement.appendChild(persistentImgElement);
-
-          const imgElement = document.createElement('img');
-          imgElement.src = src;
-          this.mediaElement.appendChild(imgElement);
-        }, this);
-        mediaElement.style.display = 'block';
-        this.mediaElement.style.display = 'block';
-      } else {
-        mediaElement.style.display = 'none';
-        this.mediaElement.style.display = 'none';
-      }
-
-      const actionsElement = notification.querySelector('.actions');
-      if (actions && actions.length > 0) {
-        actionsElement.innerHTML = '';
-        this.actionsElement.innerHTML = '';
-        actions.forEach(function (button) {
-          const persistentButtonElement = document.createElement('button');
-          persistentButtonElement.textContent = button.label;
-          persistentButtonElement.addEventListener('click', button.onclick);
-          if (button.recommend) {
-            persistentButtonElement.classList.add('recommend');
-          }
-          actionsElement.appendChild(persistentButtonElement);
-
-          const buttonElement = document.createElement('button');
-          buttonElement.textContent = button.label;
-          buttonElement.addEventListener('click', button.onclick);
-          if (button.recommend) {
-            buttonElement.classList.add('recommend');
-          }
-          this.actionsElement.appendChild(buttonElement);
-        }, this);
-        actionsElement.style.display = 'block';
-        this.actionsElement.style.display = 'block';
-      } else {
-        actionsElement.style.display = 'none';
-        this.actionsElement.style.display = 'none';
-      }
-
-      this.notifierSound.currentTime = 0;
-      this.notifierSound.play();
       this.notificationElement.classList.add('visible');
       clearTimeout(this.timeout);
       this.timeout = setTimeout(() => {

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
   <title>Web API Test</title>
   <script>
@@ -35,8 +36,39 @@
       }
     }
 
+    let timer = null;
+    let progress = 0;
+    function showTagNotification() {
+      if (Notification.permission === 'granted') {
+        progress = 0;
+        clearInterval(timer);
+        timer = setInterval(() => {
+          if (progress >= 100) {
+            clearInterval(timer);
+            new Notification('Twitter', {
+              body: 'Finished Installing',
+              actions: [
+                { label: "Open", recommend: true },
+                { label: "Uninstall" }
+              ],
+              tag: 'random_tag'
+            });
+            return;
+          }
+          new Notification('Twitter', {
+            body: 'Downloading...',
+            progress,
+            tag: 'random_tag'
+          });
+          progress = Math.min(100, progress + (Math.random() * 10));
+        }, 300);
+      } else {
+        alert("Notification permission not granted.");
+      }
+    }
+
     function requestNotificationPermission() {
-      Notification.requestPermission().then(function(permission) {
+      Notification.requestPermission().then(function (permission) {
         if (permission === 'granted') {
           alert("Notification permission granted!");
         } else {
@@ -46,6 +78,7 @@
     }
   </script>
 </head>
+
 <body>
   <button onclick="showAlert()">Show Alert</button>
   <br>
@@ -54,6 +87,7 @@
   <button onclick="showPrompt()">Show Prompt</button>
   <br>
   <button onclick="showNotification()">Show Notification</button>
+  <button onclick="showTagNotification()">Show Tagged Notification</button>
   <br>
   <button onclick="requestNotificationPermission()">Request Notification Permission</button>
   <br>
@@ -64,4 +98,5 @@
   <br>
   <video src="resources/videos/splashscreen.mp4" controls></video>
 </body>
+
 </html>

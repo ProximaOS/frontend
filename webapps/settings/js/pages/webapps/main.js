@@ -11,7 +11,7 @@
 
     init: function () {
       // Fetch available networks and populate the list
-      const apps = _session.appsManager.getAll();
+      const apps = window.AppsManager.getAll();
       apps.then((data) => {
         data.forEach((app) => {
           const element = document.createElement('li');

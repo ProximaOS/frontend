@@ -35,6 +35,7 @@
   box-sizing: border-box;
   border-radius: 1rem;
   color: var(--text-color);
+  outline: none;
 }
 
 .lists > ul li:not(.noclick):hover {
@@ -43,10 +44,6 @@
 
 .lists > ul li:not(.noclick):active {
   background-color: var(--item-active);
-}
-
-.lists > ul li:not(.noclick):focus {
-  outline: solid 0.2rem var(--text-color);
 }
 
 .lists > ul li:not(.noclick).selected {
@@ -137,4 +134,8 @@ html[dir="rtl"] .lists > ul li.page::after {
 
 .lists > ul li button {
   margin: 0;
+}
+
+.lists > ul li input[type="range"] {
+  margin: 0.2rem 0 0;
 }

@@ -1,0 +1,68 @@
+html, body {
+  margin: 0;
+  padding: 0;
+  font-size: 10px;
+}
+
+#root {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #f0f6ff;
+  -webkit-app-region: drag;
+}
+
+#message {
+  position: absolute;
+  left: 50%;
+  translate: -50% 0;
+  bottom: calc(20% + 1.5rem);
+  width: calc(100% - 3rem);
+  max-width: 60rem;
+  color: #333;
+  font-size: 1.6rem;
+  font-weight: normal;
+  font-family: 'Jali Arabic', system-ui, sans-serif;
+}
+
+#progress-bar {
+  position: absolute;
+  left: 50%;
+  translate: -50% 0;
+  bottom: 20%;
+  width: calc(100% - 3rem);
+  max-width: 60rem;
+  height: 0.6rem;
+  background-color: rgba(0, 97, 224, 0.2);
+  border-radius: 0.6rem;
+  overflow: hidden;
+}
+
+#progress-bar:not([value]):before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 0.6rem;
+  background-color: #0061e0;
+  border-radius: 0.6rem;
+  animation: progress-bar 1s cubic-bezier(1, 0, 0, 1) infinite;
+}
+
+@keyframes progress-bar {
+  0% {
+    left: 0;
+    width: 0;
+  }
+  50% {
+    left: 0;
+    width: 100%;
+  }
+  100% {
+    left: 100%;
+    width: 0;
+  }
+}

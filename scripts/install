@@ -1,6 +1,7 @@
 #!/bin/bash
+rm -r dist
 npm run build
 mkdir -p $1/usr/lib/openorchid
-cp -r out/* $1/usr/lib/openorchid/
+cp -r dist/* $1/usr/lib/openorchid/
 cp build/S*openorchid $1/etc/init.d/
 exit 0

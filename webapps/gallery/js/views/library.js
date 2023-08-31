@@ -4,44 +4,66 @@
   const Library = {
     imagesContainer: document.getElementById('images-container'),
 
-    PHOTOS_DIR: '/photos',
+    PHOTOS_DIR: '/',
+    PHOTOS_MIME: 'image',
 
     init: function () {
-      this.indexFolder(this.PHOTOS_DIR);
-    },
-
-    indexFolder: function (path) {
-      _session.storageManager.list(path).then((data) => {
-        data.forEach(item => {
-          _session.storageManager.getFileStats(`${path}/${item}`).then((stats) => {
-            if (stats.isDirectory()) {
-              this.indexFolder(`${path}/${item}`);
-            } else {
-              _session.storageManager.getMime(`${path}/${item}`).then((mime) => {
-                if (mime.startsWith('image/')) {
-                  this.addImage(`${path}/${item}`);
-                }
-              });
-            }
-          });
+      FileIndexer(this.PHOTOS_DIR, this.PHOTOS_MIME).then((array) => {
+        array.forEach((item) => {
+          this.addImage(item);
         });
       });
     },
 
-    addImage: function (path) {
-      const item = document.createElement('div');
-      item.classList.add('image');
-      this.imagesContainer.appendChild(item);
+    setCategory: function (dateTime) {
+      const date = new Date(dateTime);
+      const dateId = `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDay()}`;
+      const langCode = navigator.mozL10n.language.code === 'ar' ? 'ar-SA' : navigator.mozL10n.language.code;
 
-      _session.storageManager.read(path).then(function (data) {
-        const image = document.createElement('img');
-        image.src = data;
-        item.appendChild(image);
-      }, { encoding: 'base64' });
+      const existingCategory = document.querySelector(`[data-date="${dateId}"]`);
+      if (existingCategory) {
+        return existingCategory.querySelector('.container');
+      }
+
+      const category = document.createElement('div');
+      category.classList.add('category');
+      category.dataset.date = dateId;
+      this.imagesContainer.appendChild(category);
+
+      const dateLabel = document.createElement('header');
+      dateLabel.classList.add('date');
+      dateLabel.textContent = date.toLocaleDateString(langCode, {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
+      });
+      category.appendChild(dateLabel);
+
+      const container = document.createElement('div');
+      container.classList.add('container');
+      category.appendChild(container);
+
+      return container;
+    },
+
+    addImage: function (path) {
+      window.StorageManager
+        .read(path, { encoding: 'base64' })
+        .then((data) => {
+          const item = document.createElement('div');
+          item.classList.add('image');
+
+          const image = document.createElement('img');
+          const mime = window.StorageManager.getMime(path);
+          image.src = `data:${mime};base64,${data}`;
+          item.appendChild(image);
+
+          window.StorageManager.getFileStats(path).then((stats) => {
+            this.setCategory(stats.birthtime).appendChild(item);
+          });
+        });
     }
   };
 
-  document.addEventListener('DOMContentLoaded', () =>
-    Library.init()
-  );
+  document.addEventListener('DOMContentLoaded', () => Library.init());
 })(window);

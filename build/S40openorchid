@@ -10,24 +10,24 @@
 ### END INIT INFO
 
 APP_DIR="/usr/lib/openorchid"
-ELECTRON_BIN="openorchid"
+INTERFACE_BIN="openorchid"
 
 case "$1" in
   start)
-    echo "Starting My Electron App..."
+    echo "Starting User Interface..."
     cd "$APP_DIR"
-    "$ELECTRON_BIN"
+    "$INTERFACE_BIN"
     ;;
   stop)
-    echo "Stopping My Electron App..."
-    pkill -f "$ELECTRON_BIN"
+    echo "Stopping User Interface..."
+    pkill -f "$INTERFACE_BIN"
     ;;
   restart)
-    echo "Restarting My Electron App..."
-    pkill -f "$ELECTRON_BIN"
+    echo "Restarting User Interface..."
+    pkill -f "$INTERFACE_BIN"
     sleep 1
     cd "$APP_DIR"
-    "$ELECTRON_BIN"
+    "$INTERFACE_BIN"
     ;;
   *)
     echo "Usage: $0 {start|stop|restart}"

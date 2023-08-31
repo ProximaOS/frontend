@@ -1,12 +1,11 @@
-!(function () {
+!(function (exports) {
   'use strict';
 
   const { ipcRenderer } = require('electron');
-  const api = require('./service_api');
-  const NotificationAPI = require('./notification');
-  const ModalDialogs = require('./modal_dialogs');
 
-  window.open = function (url, options) {
+  require('./node_plugins');
+
+  window.open = function (url, options = '') {
     const optionsList = options.split(',');
     let formattedUrl;
     if (!url.startsWith('http:') || !url.startsWith('https:')) {
@@ -27,11 +26,11 @@
     });
   };
 
-  window.alert = ModalDialogs.alert;
-  window.confirm = ModalDialogs.confirm;
-  window.prompt = ModalDialogs.prompt;
+  window.alert = require('./web/modal_dialogs').alert;
+  window.confirm = require('./web/modal_dialogs').confirm;
+  window.prompt = require('./web/modal_dialogs').prompt;
 
-  window.Notification = NotificationAPI;
+  window.Notification = require('./web/notification');
 
   window.addEventListener('load', function () {
     const inputAreas = document.querySelectorAll(
@@ -102,8 +101,8 @@
       document.body.appendChild(button);
     });
 
-    if ('_session' in window) {
-      _session.settings
+    if ('Settings' in window) {
+      Settings
         .getValue('homescreen.accent_color.rgb')
         .then((value) => {
           if (document.querySelector('.app')) {
@@ -122,7 +121,7 @@
           }
         });
 
-      _session.settings
+      Settings
         .getValue('general.software_buttons.enabled')
         .then((value) => {
           if (document.querySelector('.app')) {
@@ -139,7 +138,7 @@
         });
 
       if ('mozL10n' in navigator) {
-        _session.settings.getValue('general.lang.code').then((value) => {
+        Settings.getValue('general.lang.code').then((value) => {
           navigator.mozL10n.language.code = value;
         });
       }
@@ -186,18 +185,4 @@
       }
     });
   });
-
-  if (!process && navigator.userAgent.includes('OpenOrchid')) {
-    const pattern = /^http:\/\/.*\.localhost:8081\//;
-    if (!pattern.test(location.href)) {
-      return;
-    }
-  }
-
-  window._session = api;
-  if (location.host.includes('system.localhost')) {
-    window._session.isWebview = false;
-  } else {
-    window._session.isWebview = true;
-  }
 })();

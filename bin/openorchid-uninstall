@@ -1,0 +1,6 @@
+#!usr/bin/env node
+const { ipcMain } = require('electron');
+
+ipcMain.send('uninstall', {
+  appId: process.argv[1]
+});

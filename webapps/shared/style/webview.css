@@ -3,6 +3,10 @@
   cursor: default;
 }
 
+*:focus {
+  box-shadow: 0 0 0 3px var(--accent-color, #0061e0), 0 0 0 5px rgba(var(--accent-color-r, 0), var(--accent-color-g, 97), var(--accent-color-b, 224), 0.5);
+}
+
 a,
 button,
 input[type='button'],

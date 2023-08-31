@@ -6,6 +6,8 @@
   padding: var(--statusbar-height) 1rem 0;
   box-sizing: border-box;
   z-index: 10;
+  display: flex;
+  gap: 0.5rem;
   flex-shrink: 0;
   backdrop-filter: blur(20px) saturate(calc(100% + (80% * var(--progress, 0))));
   outline: solid 0.1rem rgba(255, 255, 255, calc(0.1 * var(--progress, 0)));
@@ -54,7 +56,7 @@ html[dir="rtl"] .headerbar h1 {
 }
 
 html[dir="ltr"] .headerbar a + h1 {
-  transform: translate(calc(-4rem * (1 - var(--progress, 0))), calc(4.5rem * (1 - var(--progress, 0)))) scale(calc(1 + (0.25 * (1 - var(--progress, 0)))));
+  transform: translate(calc(-4.5rem * (1 - var(--progress, 0))), calc(4.5rem * (1 - var(--progress, 0)))) scale(calc(1 + (0.25 * (1 - var(--progress, 0)))));
 }
 html[dir="rtl"] .headerbar a + h1 {
   transform: translate(calc(4rem * (1 - var(--progress, 0))), calc(4.5rem * (1 - var(--progress, 0)))) scale(calc(1 + (0.25 * (1 - var(--progress, 0)))));
@@ -73,6 +75,7 @@ html[dir="rtl"] .headerbar a + h1 {
   text-align: center;
   padding: 0 1rem;
   box-sizing: border-box;
+  outline: none;
 }
 
 .headerbar a:hover {

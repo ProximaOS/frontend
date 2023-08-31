@@ -8,6 +8,11 @@
         button.addEventListener('click', () =>
           this.handlePageButtonClick(button)
         );
+        button.addEventListener('keypress', (event) => {
+          if (event.key === 'Enter') {
+            this.handlePageButtonClick(button);
+          }
+        });
       });
 
       const panels = document.querySelectorAll('.panel');
@@ -18,6 +23,8 @@
     },
 
     handlePageButtonClick: function (button) {
+      SpatialNavigation.makeFocusable();
+
       const id = button.dataset.pageId;
       const selectedButton = document.querySelector('.page.selected');
       const selectedPanel = document.querySelector('.panel.visible');

@@ -1,11 +1,9 @@
 !(function (exports) {
   'use strict';
 
-  const { ipcRenderer } = require('electron');
-
   const MessageHandler = {
     init: function () {
-      ipcRenderer.on('message', (event, data) => {
+      window.IPC.on('message', (event, data) => {
         switch (data.type) {
           case 'alert':
             this.handleAlert(data);
