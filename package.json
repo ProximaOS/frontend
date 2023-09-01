@@ -1,6 +1,6 @@
 {
   "name": "openorchid",
-  "version": "116.0.0-b54",
+  "version": "116.0.0-earlyaccess-b54",
   "description": "Open source web OS Orchid project",
   "main": "src/main.js",
   "scripts": {
@@ -11,14 +11,15 @@
     "build-linux-arm64": "electron-builder --linux --arm64",
     "build-linux-ia32": "electron-builder --linux --ia32",
     "build-linux-x64": "electron-builder --linux --x64",
+    "build-win-arm64": "electron-builder --win --arm64",
     "build-win-ia32": "electron-builder --win --ia32",
     "build-win-x64": "electron-builder --win --x64",
     "build-mac-arm64": "electron-builder --mac --arm64",
     "build-mac-x64": "electron-builder --mac --x64",
+    "dist": "electron-builder --publish always",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
-    "webos",
     "orchid",
     "openorchid",
     "orchidos",
@@ -28,7 +29,14 @@
     "aluminumos",
     "aluminium",
     "aluminiumos",
-    "wos"
+    "games",
+    "orchidgames",
+    "orchidinteractive",
+    "vividus",
+    "vividusgames",
+    "vividusengine",
+    "wos",
+    "webos"
   ],
   "author": "MortCodesWeb",
   "license": "GPL-2.0",
@@ -50,25 +58,10 @@
     "moment": "^2.29.4",
     "mv": "^2.1.1",
     "natural": "^6.5.0",
-    "node-gsm2": "^1.0.0",
     "node-wifi": "^2.0.16",
-    "openorchid-bluetooth": "file:./src/openorchid-bluetooth",
-    "openorchid-child-process": "file:./src/openorchid-child-process",
-    "openorchid-power": "file:./src/openorchid-power",
-    "openorchid-rtlsdr": "file:./src/openorchid-rtlsdr",
-    "openorchid-settings": "file:./src/openorchid-settings",
-    "openorchid-sms": "file:./src/openorchid-sms",
-    "openorchid-storage": "file:./src/openorchid-storage",
-    "openorchid-telephony": "file:./src/openorchid-telephony",
-    "openorchid-time": "file:./src/openorchid-time",
-    "openorchid-users": "file:./src/openorchid-users",
-    "openorchid-virtual": "file:./src/openorchid-virtual",
-    "openorchid-webapps": "file:./src/openorchid-webapps",
-    "openorchid-wifi": "file:./src/openorchid-wifi",
     "path": "^0.12.7",
     "rimraf": "^5.0.1",
     "running-apps": "^1.0.2",
-    "sqlite3": "^5.1.6",
     "uuid": "^9.0.0"
   },
   "devDependencies": {
@@ -103,21 +96,30 @@
         "zip",
         "nsis"
       ],
-      "icon": "internal/branding/browser/browser_256.png"
+      "icon": "internal/branding/browser/browser_256.png",
+      "publish": [
+        "github"
+      ]
     },
     "mac": {
       "target": [
         "zip",
         "dmg"
       ],
-      "icon": "internal/branding/browser/browser_256.png"
+      "icon": "internal/branding/browser/browser_256.png",
+      "publish": [
+        "github"
+      ]
     },
     "linux": {
       "target": [
         "tar.gz",
         "deb"
       ],
-      "icon": "internal/branding/browser/browser_256.png"
+      "icon": "internal/branding/browser/browser_256.png",
+      "publish": [
+        "github"
+      ]
     },
     "files": [
       "chrome",
@@ -135,7 +137,6 @@
       "README.md"
     ],
     "extraFiles": [
-      "addons",
       "fonts",
       "webapps"
     ]

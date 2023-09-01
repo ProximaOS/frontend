@@ -8,6 +8,7 @@ firebaseConfig.json
 /profile/
 /webapps/{*}
 
+build_stage/
 logs/
 *.log
 *.orchidBin
@@ -15,6 +16,7 @@ logs/
 *.orchidAssets
 *.orchidApp
 
+manifest.*.json
 *.af.properties
 *.ga.properties
 *.sq.properties

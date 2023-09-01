@@ -1,13 +1,20 @@
 const fs = require('fs');
 const path = require('path');
 const AdmZip = require('adm-zip');
-const glob = require('glob');
 
 const sourceDir = process.argv[2] || './webapps';
 const outputDir = './build_stage';
 
+const ignoredFiles = [
+  'node_modules',
+  'package-lock.json'
+];
+
 // Create the output directory if it doesn't exist
 if (!fs.existsSync(outputDir)) {
+  fs.mkdirSync(outputDir);
+} else {
+  fs.rmdirSync(outputDir, { recursive: true, force: true });
   fs.mkdirSync(outputDir);
 }
 
@@ -24,15 +31,27 @@ webapps.forEach((webapp) => {
     fs.mkdirSync(outputwebappPath);
   }
 
-  const manifestFiles = glob.sync('manifest*.json', { cwd: path.join(sourceDir, webapp) });
-  manifestFiles.forEach(file => {
-    const sourcePath = path.join(sourceDir, webapp, file);
-    const destPath = path.join(outputDir, webapp, file);
-    fs.copyFileSync(sourcePath, destPath);
+  const webappFiles = fs.readdirSync(path.join(sourceDir, webapp));
+  webappFiles.forEach(file => {
+    if (ignoredFiles.indexOf(file) === -1) {
+      const sourcePath = path.join(sourceDir, webapp, file);
+      const destPath = path.join(outputDir, webapp, file);
+      fs.copyFileSync(sourcePath, destPath);
+    }
   });
 
-  // Add the entire contents of the webapp directory to the zip
-  zip.addLocalFolder(webappPath);
+  // Add all files and subdirectories from the webapp directory except 'node_modules' to the zip
+  const filesToZip = fs.readdirSync(webappPath);
+  filesToZip.forEach(file => {
+    if (ignoredFiles.indexOf(file) === -1) {
+      const sourcePath = path.join(webappPath, file);
+      if (fs.statSync(sourcePath).isDirectory()) {
+        zip.addLocalFolder(sourcePath, file);
+      } else {
+        zip.addLocalFile(sourcePath, path.dirname(file));
+      }
+    }
+  });
 
   // Save the zip file to the output directory
   const outputPath = path.join(outputDir, webapp, 'webapp.zip');
