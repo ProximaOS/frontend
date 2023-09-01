@@ -1,3 +1,5 @@
+const { LoadingScreen } = require('./loading_screen');
+
 !(function (exports) {
   'use strict';
 
@@ -31,11 +33,17 @@
     },
 
     handleShutdownButton: function () {
-      ipcRenderer.send('shutdown', {});
+      LoadingScreen.show();
+      setTimeout(() => {
+        ipcRenderer.send('shutdown', {});
+      }, 2000);
     },
 
     handleRestartButton: function () {
-      ipcRenderer.send('restart', {});
+      LoadingScreen.show();
+      setTimeout(() => {
+        ipcRenderer.send('restart', {});
+      }, 2000);
     }
   };
 

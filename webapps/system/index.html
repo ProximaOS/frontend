@@ -40,6 +40,7 @@
   <link rel="stylesheet" href="style/picture_in_picture.css">
   <link rel="stylesheet" href="style/gesture_panels.css">
   <link rel="stylesheet" href="style/z_indexes.css">
+  <link rel="stylesheet" href="style/loading_screen.css">
   <link rel="stylesheet" href="desktop/style/desktop_system.css">
   <link rel="stylesheet" href="desktop/style/desktop_statusbar.css">
   <link rel="stylesheet" href="desktop/style/desktop_software_buttons.css">
@@ -93,6 +94,7 @@
   <script defer src="js/picture_in_picture.js"></script>
   <script defer src="js/download_manager.js"></script>
   <script defer src="js/platform_classifier.js"></script>
+  <script defer src="js/loading_screen.js"></script>
   <script defer src="js/lockscreen/motion.js"></script>
   <script defer src="js/lockscreen/clock.js"></script>
   <script defer src="js/lockscreen/date.js"></script>
@@ -112,6 +114,8 @@
     <div id="splashscreen" data-z-index-layer="splashscreen">
       <video src="" id="splashscreen-video"></video>
     </div>
+
+    <div id="loading-screen" data-z-index-layer="loading-screen"></div>
 
     <div id="statusbar" data-z-index-layer="statusbar">
       <div class="statusbar-icons">
