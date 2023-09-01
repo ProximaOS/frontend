@@ -1,0 +1,27 @@
+{
+  "version": "1.0",
+  "name": "Articles",
+  "description": "",
+  "start_url": "https://openorchid.github.io/articles/index.html",
+  "icons": {
+    "16": "/icons/articles_16.png",
+    "32": "/icons/articles_32.png",
+    "48": "/icons/articles_48.png",
+    "64": "/icons/articles_64.png",
+    "128": "/icons/articles_128.png",
+    "256": "/icons/articles_256.png"
+  },
+  "developer": {
+    "name": "MortCodesWeb",
+    "url": "https://openorchid.github.io/"
+  },
+  "default_locale": "en",
+  "orientation": "portrait-primary",
+  "background_color": "#f0f6ff",
+  "theme_color": "#c00040",
+  "permissions": {
+    "settings": {},
+    "device-storage:apps": {}
+  },
+  "display": "immersive"
+}

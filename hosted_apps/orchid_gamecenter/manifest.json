@@ -1,0 +1,27 @@
+{
+  "version": "1.0",
+  "name": "Game Center",
+  "description": "",
+  "start_url": "https://openorchid.github.io/gamecenter/index.html",
+  "icons": {
+    "16": "/icons/gamecenter_16.png",
+    "32": "/icons/gamecenter_32.png",
+    "48": "/icons/gamecenter_48.png",
+    "64": "/icons/gamecenter_64.png",
+    "128": "/icons/gamecenter_128.png",
+    "256": "/icons/gamecenter_256.png"
+  },
+  "developer": {
+    "name": "MortCodesWeb",
+    "url": "https://openorchid.github.io/"
+  },
+  "default_locale": "en",
+  "orientation": "portrait-primary",
+  "background_color": "#f0f6ff",
+  "theme_color": "#c00040",
+  "permissions": {
+    "settings": {},
+    "device-storage:apps": {}
+  },
+  "display": "immersive"
+}

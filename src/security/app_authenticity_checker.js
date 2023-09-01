@@ -39,7 +39,6 @@ const SecurityChecker = {
       const stat = fs.statSync(filePath);
 
       if (stat.isDirectory()) {
-        // Check if the folder is a 'webapp' folder
         const webappManifestFiles = this.findManifestFiles(filePath);
         results.push(...webappManifestFiles);
       }
