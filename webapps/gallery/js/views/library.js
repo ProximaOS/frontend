@@ -65,5 +65,5 @@
     }
   };
 
-  document.addEventListener('DOMContentLoaded', () => Library.init());
+  window.addEventListener('load', () => Library.init());
 })(window);

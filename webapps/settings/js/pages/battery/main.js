@@ -6,8 +6,6 @@
     const batteryChargeState = document.getElementById('battery-charge-state');
 
     navigator.getBattery().then((battery) => {
-      this.battery = battery;
-
       let level = parseInt(battery.level * 100);
       let charging = battery.charging;
       batteryPercentage.dataset.l10nArgs = `{"n":"${level}"}`;

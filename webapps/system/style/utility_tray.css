@@ -119,8 +119,8 @@
   transition: transform 0.3s ease, opacity 0.3s ease, visibility 0.5s ease;
 }
 
-#control-center.hidden,
-#notifications.hidden {
+#screen:not(.desktop) #control-center.hidden,
+#screen:not(.desktop) #notifications.hidden {
   opacity: 0;
   visibility: hidden;
 }
@@ -133,8 +133,8 @@
   transition: all 0.5s ease;
 }
 
-#utility-tray-motion .hidden .control-center-row,
-#utility-tray-motion.fade-out .control-center-row {
+#screen:not(.desktop) #utility-tray-motion .hidden .control-center-row,
+#screen:not(.desktop) #utility-tray-motion.fade-out .control-center-row {
   opacity: 0;
   transform: scale(0.9);
   visibility: hidden;
@@ -144,8 +144,8 @@
   transition: all 0.5s ease;
 }
 
-#utility-tray-motion .hidden #notifications-container,
-#utility-tray-motion.fade-out #notifications-container {
+#screen:not(.desktop) #utility-tray-motion .hidden #notifications-container,
+#screen:not(.desktop) #utility-tray-motion.fade-out #notifications-container {
   opacity: 0;
   transform: scale(0.9);
   visibility: hidden;

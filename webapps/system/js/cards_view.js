@@ -14,6 +14,10 @@
     isVisible: false,
 
     init: function () {
+      this.element.addEventListener(
+        'click',
+        this.hide.bind(this)
+      );
       this.toggleButton.addEventListener(
         'click',
         this.handleToggleButton.bind(this)
@@ -48,6 +52,9 @@
       this.element.classList.remove('visible');
       this.screen.classList.remove('cards-view-visible');
 
+      CardsView.element.style.setProperty('--offset-y', null);
+      CardsView.element.style.setProperty('--scale', null);
+
       const focusedWindow = AppWindow.focusedWindow;
       focusedWindow.classList.add('from-cards-view');
       focusedWindow.addEventListener('animationend', () =>
@@ -71,12 +78,13 @@
       const card = document.createElement('div');
       card.classList.add('card');
       card.dataset.manifestUrl = manifestUrl;
-      card.addEventListener('click', () => {
+      card.addEventListener('click', (event) => {
+        event.stopPropagation();
         AppWindow.focus(appWindow.id);
         this.hide();
       });
-      // card.addEventListener('mousedown', (event) => this.onPointerDown(event, card));
-      // card.addEventListener('touchstart', (event) => this.onPointerDown(event, card));
+      card.addEventListener('mousedown', (event) => this.onPointerDown(event, card));
+      card.addEventListener('touchstart', (event) => this.onPointerDown(event, card));
       cardArea.appendChild(card);
 
       let manifest;

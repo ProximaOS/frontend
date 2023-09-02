@@ -1,14 +1,12 @@
 (function () {
   'use strict';
 
+  const { ipcRenderer } = require('electron');
   const fs = require('fs');
   const path = require('path');
 
-  // Array to store observer functions
-  const observers = {};
-
   module.exports = {
-    getValue: (name) => {
+    getValue: function (name) {
       return new Promise((resolve, reject) => {
         fs.readFile(
           path.join(process.env.OPENORCHID_DATA, 'settings.json'),
@@ -25,7 +23,7 @@
         );
       });
     },
-    setValue: (name, value) => {
+    setValue: function (name, value) {
       fs.readFile(
         path.join(process.env.OPENORCHID_DATA, 'settings.json'),
         'utf8',
@@ -47,12 +45,9 @@
               (error) => {
                 if (error) {
                   console.error(error);
-                } else {
-                  // Notify all observers that the setting has changed
-                  if (observers[name] && observers[name].length > 0) {
-                    observers[name].forEach((observer) => observer(value));
-                  }
                 }
+                ipcRenderer.emit('settingschange', { name, [name]: value });
+                ipcRenderer.sendToHost('settingschange', { name, [name]: value });
               }
             );
           } catch (error) {
@@ -62,17 +57,15 @@
       );
     },
     // Function to register an observer for a setting
-    addObserver: (name, observer) => {
-      if (!observers[name]) {
-        observers[name] = [];
-      }
-      observers[name].push(observer);
-    },
-    // Function to remove an observer for a setting
-    removeObserver: (name, observer) => {
-      if (observers[name]) {
-        observers[name] = observers[name].filter((obs) => obs !== observer);
-      }
+    addObserver: function (name, callback) {
+      ipcRenderer.on('settingschange', (event, data) => {
+        this.getValue(name).then(data => {
+          callback(data);
+        });
+        if (data && data[name]) {
+          callback(data[name]);
+        }
+      });
     }
   };
 })();

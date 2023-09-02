@@ -5,7 +5,7 @@
     element: document.getElementById('loading-screen'),
 
     svgDom: `
-      <svg viewBox="0 0 16 16" width="20" height="20" xmlns="http://www.w3.org/2000/svg">
+      <svg viewBox="0 0 16 16" width="40" height="40" xmlns="http://www.w3.org/2000/svg">
         <style>
           path {
             animation: spinner 2s ease-in-out infinite;

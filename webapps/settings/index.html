@@ -28,12 +28,15 @@
   <script defer src="js/pages/bluetooth/main.js"></script>
   <script defer src="js/pages/general/main.js"></script>
   <script defer src="js/pages/webapps/main.js"></script>
+  <script defer src="js/pages/languages/main.js"></script>
+  <script defer src="js/pages/display/main.js"></script>
   <script defer src="js/pages/battery/main.js"></script>
   <script defer src="js/pages/storage/main.js"></script>
 
   <script src="http://shared.localhost:8081/js/l10n.js"></script>
   <meta name="defaultLanguage" content="en-US">
-  <meta name="availableLanguages" content="en-US, ar">
+  <meta name="availableLanguages"
+    content="af, ar, az, be, bg, bn, ca, cs, cy, da, de, el, eo, et, en-US, es, eu, fa, fi, fr, ga, gu, gl, he, hi, hr, ht, hu, id, is, it, ja, kn, ko, ku, lt, lv, mk, ms, nl, no, pl, pt, ro, ru, sq, sk, sl, sr, sw, ta, te, th, tl, tr, uk, ur, vi, yi, zh, fr-psaccent, ar-psbidi">
   <link rel="localization" href="/locales/main.{locale}.properties">
 </head>
 
@@ -306,6 +309,19 @@
       </div>
     </div>
 
+    <div id="languages" class="panel">
+      <div class="headerbar">
+        <div class="safezone">
+          <a href="#" data-icon="browser-back" data-page-id="general"></a>
+          <h1 data-l10n-id="languages"></h1>
+        </div>
+      </div>
+
+      <div class="content lists">
+        <ul id="languages-list"></ul>
+      </div>
+    </div>
+
     <div id="display" class="panel">
       <div class="headerbar">
         <div class="safezone">
@@ -317,12 +333,22 @@
       <div class="content lists">
         <ul>
           <li data-icon="brightness">
-            <div class="pack-seekbar">
-              <label for="display-brightness-seekbar">
+            <div class="pack-slider">
+              <label for="display-brightness-slider">
                 <p data-l10n-id="display-brightness"></p>
               </label>
               <span>
-                <input type="range" name="display-brightness-seekbar" id="display-brightness-seekbar" checked />
+                <input type="range" name="display-brightness-slider" id="display-brightness-slider" checked />
+              </span>
+            </div>
+          </li>
+          <li data-icon="sun">
+            <div class="pack-switch">
+              <label for="display-autoBrightness-switch">
+                <p data-l10n-id="enableAutoBrightness"></p>
+              </label>
+              <span>
+                <input type="checkbox" name="display-autoBrightness-switch" id="display-autoBrightness-switch" checked />
               </span>
             </div>
           </li>
@@ -421,7 +447,19 @@
       </div>
 
       <div class="content lists">
-        <ul></ul>
+        <ul>
+          <li class="page" data-icon="sync" data-page-id="systemUpdate">
+            <p data-l10n-id="systemUpdate"></p>
+          </li>
+        </ul>
+        <ul>
+          <li class="page" data-icon="accessibility" data-page-id="accessibility">
+            <p data-l10n-id="accessibility"></p>
+          </li>
+          <li class="page" data-icon="edit" data-page-id="devOptions">
+            <p data-l10n-id="devOptions"></p>
+          </li>
+        </ul>
       </div>
     </div>
 

@@ -20,7 +20,7 @@ html[dir="rtl"] #software-buttons {
 
 #software-buttons.hidden,
 #screen:not(.software-buttons-enabled) #software-buttons {
-  opacity: 0;
+  transform: translateY(100%);
 }
 
 #software-buttons .mobile,
@@ -28,11 +28,13 @@ html[dir="rtl"] #software-buttons {
   display: flex;
 }
 
-#software-buttons .desktop {
+#screen.desktop #software-buttons .mobile,
+#screen:not(.desktop) #software-buttons .desktop {
   display: none;
 }
 
-#software-buttons button {
+/* Mobile */
+#software-buttons .mobile > button {
   position: relative;
   width: 8rem;
   height: 100%;
@@ -44,7 +46,7 @@ html[dir="rtl"] #software-buttons {
   opacity: 0.8;
 }
 
-#software-buttons button::before {
+#software-buttons .mobile > button::before {
   content: '';
   width: 2rem;
   height: 2rem;
@@ -52,7 +54,7 @@ html[dir="rtl"] #software-buttons {
   transition: all 0.5s cubic-bezier(0.2, 0.9, 0.1, 1);
 }
 
-#software-buttons button::after {
+#software-buttons .mobile > button::after {
   content: '';
   position: absolute;
   left: 50%;
@@ -67,7 +69,7 @@ html[dir="rtl"] #software-buttons {
   transition: all 0.3s cubic-bezier(0.2, 0.9, 0.1, 1), width 0.1s ease 0.3s;
 }
 
-#software-buttons button:active:after {
+#software-buttons .mobile > button:active:after {
   width: calc(100% + 1rem);
   opacity: 1;
   transition: all 0.3s cubic-bezier(0.2, 0.9, 0.1, 1);
@@ -92,17 +94,43 @@ html[dir="rtl"] #software-buttons #software-back-button::before {
   background-image: url(images/recents.png);
 }
 
+/* Desktop */
+#software-buttons .desktop {
+  height: var(--software-buttons-height);
+  display: flex;
+  gap: 0.5rem;
+}
+
+#software-buttons .desktop button {
+  position: relative;
+  width: calc(var(--software-buttons-height) - 1rem);
+  height: calc(var(--software-buttons-height) - 1rem);
+  margin: 0.5rem;
+  border-radius: 25%;
+}
+
+/* Dock */
 #dock {
   height: var(--software-buttons-height);
   display: flex;
-  padding-inline-start: 2.5rem;
-  gap: 1.5rem;
+  padding-inline-start: 0.5rem;
+  gap: 0.5rem;
+}
+
+#dock:empty {
+  display: none;
 }
 
 #dock .icon {
   position: relative;
-  width: var(--software-buttons-height);
-  height: var(--software-buttons-height);
+  width: calc(var(--software-buttons-height) - 1rem);
+  height: calc(var(--software-buttons-height) - 1rem);
+  margin: 0.5rem;
+  border-radius: 25%;
+}
+
+#dock .icon.active {
+  outline: solid 0.2rem var(--accent-color);
 }
 
 #dock .icon.expand {
@@ -136,14 +164,8 @@ html[dir="rtl"] #software-buttons #software-back-button::before {
 }
 
 #dock .icon > img {
-  width: calc(var(--software-buttons-height) - 1rem);
-  height: calc(var(--software-buttons-height) - 1rem);
-  margin: 0.5rem;
-  opacity: 0.75;
-}
-
-#dock .icon.active > img {
-  opacity: 1;
+  width: 100%;
+  height: 100%;
 }
 
 @media screen and (orientation: landscape) and (max-width: 767px) {

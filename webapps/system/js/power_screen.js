@@ -1,5 +1,3 @@
-const { LoadingScreen } = require('./loading_screen');
-
 !(function (exports) {
   'use strict';
 

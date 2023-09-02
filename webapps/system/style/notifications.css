@@ -21,11 +21,15 @@
   left: 1rem;
   top: calc(5rem + (6rem * var(--overflow-progress)));
   width: calc(100% - 2rem);
-  height: calc(100% - (5rem + (6rem * var(--overflow-progress))));
+  height: calc(100% - 2.5rem - (5rem + (6rem * var(--overflow-progress))));
   overflow-y: auto;
   border-radius: 2rem;
   margin: 0;
   padding: 0;
+}
+
+#screen.software-buttons-enabled #notifications-container {
+  height: calc(100% - var(--software-buttons-height) - (5rem + (6rem * var(--overflow-progress))));
 }
 
 #utility-tray-motion.transitioning #notifications-container {

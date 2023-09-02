@@ -7,11 +7,11 @@
   transition: background-color 0.3s ease;
 }
 
-#statusbar.hidden {
+#screen:not(.desktop) #statusbar.hidden {
   transform: translateY(-100%);
 }
 
-#statusbar.tray-open {
+#screen:not(.desktop) #statusbar.tray-open {
   left: 50%;
   /* We use the special translate property for X-axis translation to avoid janky 'transform: translateX()' transition */
   translate: -50% 0;
@@ -19,11 +19,11 @@
   transform: translateY(calc(var(--statusbar-height) * (var(--motion-progress, 0) + var(--overflow-progress))));
 }
 
-#statusbar.hidden.tray-open {
+#screen:not(.desktop) #statusbar.hidden.tray-open {
   transform: translateY(calc((var(--statusbar-height) * -1) + (var(--statusbar-height) * ((var(--motion-progress, 0) + var(--overflow-progress)) * 2))));
 }
 
-#statusbar.tray-open.transitioning {
+#screen:not(.desktop) #statusbar.tray-open.transitioning {
   transition: transform 0.5s ease;
 }
 
@@ -82,9 +82,14 @@ html[dir="rtl"] .statusbar-icons > .right {
   transition: opacity 0.3s cubic-bezier(0.2, 0.9, 0.1, 1.25) 0.3s, transform 0.3s cubic-bezier(0.2, 0.9, 0.1, 1.25) 0.3s, visibility 0.3s cubic-bezier(0.2, 0.9, 0.1, 1.25) 0.3s, margin 0.3s cubic-bezier(0.2, 0.9, 0.1, 1.25);
 }
 
-#statusbar:not(.tray-open).light .statusbar-icons > .left div,
-#statusbar:not(.tray-open).light .statusbar-icons > .right div {
+#screen:not(.desktop) #statusbar:not(.tray-open).light .statusbar-icons > .left div,
+#screen:not(.desktop) #statusbar:not(.tray-open).light .statusbar-icons > .right div {
   color: #333;
+}
+
+#screen.desktop .statusbar-icons > .left div,
+#screen.desktop .statusbar-icons > .right div {
+  color: var(--text-color);
 }
 
 .statusbar-icons > .left .hidden,
@@ -152,8 +157,12 @@ html[dir="rtl"] .statusbar-icons > .right {
   position: relative;
 }
 
-#statusbar:not(.tray-open).light #statusbar-battery.charging {
+#screen:not(.desktop) #statusbar:not(.tray-open).light #statusbar-battery.charging {
   color: rgba(51, 51, 51, 0.5);
+}
+
+#screen.desktop #statusbar-battery.charging {
+  color: var(--text-color-faded);
 }
 
 #statusbar-battery.charging::after {
@@ -169,8 +178,12 @@ html[dir="rtl"] .statusbar-icons > .right {
   color: #fff;
 }
 
-#statusbar:not(.tray-open).light #statusbar-battery.charging::after {
+#screen:not(.desktop) #statusbar:not(.tray-open).light #statusbar-battery.charging::after {
   color: #333;
+}
+
+#screen.desktop #statusbar-battery.charging::after {
+  color: var(--text-color);
 }
 
 #statusbar-cellular-signal {

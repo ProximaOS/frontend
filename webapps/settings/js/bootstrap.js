@@ -1,7 +1,11 @@
 !(function (exports) {
   'use strict';
 
-  window.addEventListener('load', function () {
+  window.addEventListener('DOMContentLoaded', function () {
+    window.Settings.addObserver('general.lang.code', (value) => {
+      navigator.mozL10n.language.code = value;
+    });
+
     // Initialize
     SpatialNavigation.init();
 

@@ -16,6 +16,7 @@ mime
 moment
 mv
 natural
+noble
 node-gsm2
 node-wifi
 path

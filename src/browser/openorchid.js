@@ -4,7 +4,8 @@
   const {
     BrowserWindow,
     nativeTheme,
-    Menu
+    Menu,
+    ipcMain
   } = require('electron');
   const settings = require('../openorchid-settings');
   const os = require('os');
@@ -25,11 +26,11 @@
     let width = 320;
     let height = 640;
     let type = 'Mobile';
-    if (process.argv.indexOf('desktop') !== -1) {
+    if (process.argv.indexOf('--desktop') !== -1) {
       width = 1024;
       height = 640;
       type = 'Desktop';
-    } else if (process.argv.indexOf('smart-tv') !== -1) {
+    } else if (process.argv.indexOf('--smart-tv') !== -1) {
       width = 1280;
       height = 720;
       type = 'Smart TV';
@@ -73,6 +74,10 @@
 
     settings.getValue('video.dark_mode.enabled').then((result) => {
       nativeTheme.themeSource = result ? 'dark' : 'light';
+    });
+
+    ipcMain.on('change-theme', (event, theme) => {
+      nativeTheme.themeSource = theme;
     });
 
     registerEvents(mainWindow);

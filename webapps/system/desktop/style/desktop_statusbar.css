@@ -6,10 +6,10 @@
   height: var(--software-buttons-height);
 }
 html[dir="ltr"] #screen.desktop #statusbar {
-  right: 1rem;
+  right: 1.5rem;
 }
 html[dir="rtl"] #screen.desktop #statusbar {
-  left: 1rem;
+  left: 1.5rem;
 }
 
 #screen.desktop #statusbar.tray-open {

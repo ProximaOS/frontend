@@ -87,11 +87,11 @@
 
 @keyframes shrink {
   from {
-    transform: scale(1);
+    transform: scale(var(--scale, 1)) translateY(var(--offset-y, 0));
     opacity: 1;
   }
   to {
-    transform: scale(0.75);
+    transform: scale(0.25);
     opacity: 0;
   }
 }
@@ -209,7 +209,7 @@
 
 @keyframes to-cards-view {
   from {
-    transform: scale(1);
+    transform: scale(var(--scale, 1)) translateY(var(--offset-y, 0));
   }
   to {
     transform: scale(0.65);
@@ -225,6 +225,7 @@
   border-radius: 2.5rem !important;
   box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.25);
   transform: translateY(0);
+  transition: transform 0.3s ease;
 }
 
 .appframe.window.active {
@@ -433,8 +434,9 @@
   padding: 0.75rem 1.5rem;
   box-sizing: border-box;
   display: flex;
-  flex-direction: row-reverse;
   gap: 1rem;
+  opacity: 0.5;
+  transition: opacity 0.3s ease;
   z-index: 5;
 }
 html[dir='ltr'] .appframe .titlebar {
@@ -444,9 +446,27 @@ html[dir='rtl'] .appframe .titlebar {
   left: 0;
 }
 
+.appframe.active .titlebar {
+  opacity: 1;
+}
+
 .appframe.chrome-visible .titlebar {
   width: max-content;
   padding: 1.25rem 1.5rem;
+}
+
+.appframe .titlebar > .titlebar-grippy {
+  height: 2.5rem;
+  width: 100%;
+  flex-grow: 1;
+}
+
+.appframe .titlebar > .titlebar-buttons {
+  height: 2.5rem;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: row-reverse;
+  gap: 1rem;
 }
 
 .appframe .titlebar button {

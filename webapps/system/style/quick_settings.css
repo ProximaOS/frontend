@@ -165,17 +165,17 @@ html[dir="rtl"] #quick-settings li > a[data-icon]::before {
 }
 
 @media screen and (orientation: landscape) {
-  #connection-settings li {
+  #screen:not(.desktop) #connection-settings li {
     height: 9.5rem;
   }
 
-  #connection-settings li > a {
+  #screen:not(.desktop) #connection-settings li > a {
     flex-direction: column;
     padding: 0 0 1rem;
     text-align: center;
   }
 
-  #connection-settings li > a[data-icon]::before {
+  #screen:not(.desktop) #connection-settings li > a[data-icon]::before {
     position: static;
     margin: 1.5rem auto 0.5rem;
   }

@@ -174,25 +174,6 @@
         splashScreenIcon.src = '/style/images/default.png';
       };
 
-      const grippyBar = document.createElement('div');
-      grippyBar.classList.add('grippy-bar');
-      grippyBar.addEventListener(
-        'touchstart',
-        this.handlePointerDown.bind(this)
-      );
-      grippyBar.addEventListener(
-        'pointerdown',
-        this.handlePointerDown.bind(this)
-      );
-      document.addEventListener('touchend', this.handlePointerUp.bind(this));
-      document.addEventListener('pointerup', this.handlePointerUp.bind(this));
-      document.addEventListener('touchmove', this.handlePointerMove.bind(this));
-      document.addEventListener(
-        'pointermove',
-        this.handlePointerMove.bind(this)
-      );
-      windowDiv.appendChild(grippyBar);
-
       if (windowOptions.windowed) {
         if (windowDiv !== this.homescreenElement) {
           windowDiv.classList.add('window');
@@ -204,15 +185,23 @@
 
           const titlebar = document.createElement('div');
           titlebar.classList.add('titlebar');
-          titlebar.addEventListener(
+          windowDiv.appendChild(titlebar);
+
+          const titlebarGrippy = document.createElement('div');
+          titlebarGrippy.classList.add('titlebar-grippy');
+          titlebarGrippy.addEventListener(
             'mousedown',
             this.startDrag.bind(this, windowDiv.id)
           );
-          titlebar.addEventListener(
+          titlebarGrippy.addEventListener(
             'touchstart',
             this.startDrag.bind(this, windowDiv.id)
           );
-          windowDiv.appendChild(titlebar);
+          titlebar.appendChild(titlebarGrippy);
+
+          const titlebarButtons = document.createElement('div');
+          titlebarButtons.classList.add('titlebar-buttons');
+          titlebar.appendChild(titlebarButtons);
 
           const closeButton = document.createElement('button');
           closeButton.classList.add('close-button');
@@ -221,7 +210,7 @@
             event.stopPropagation();
             this.close(windowId);
           });
-          titlebar.appendChild(closeButton);
+          titlebarButtons.appendChild(closeButton);
 
           const resizeButton = document.createElement('button');
           resizeButton.classList.add('resize-button');
@@ -230,7 +219,7 @@
             event.stopPropagation();
             this.maximize(windowId);
           });
-          titlebar.appendChild(resizeButton);
+          titlebarButtons.appendChild(resizeButton);
 
           const minimizeButton = document.createElement('button');
           minimizeButton.classList.add('minimize-button');
@@ -239,7 +228,7 @@
             event.stopPropagation();
             this.minimize(windowId);
           });
-          titlebar.appendChild(minimizeButton);
+          titlebarButtons.appendChild(minimizeButton);
         }
 
         const resizeHandlers = [];
@@ -617,63 +606,6 @@
         document.removeEventListener('touchmove', dragWindow);
         document.removeEventListener('mouseup', stopDrag);
         document.removeEventListener('touchend', stopDrag);
-      }
-    },
-
-    // Add the following event handler for touchstart and pointerdown events on the grippy bar
-    handlePointerDown: function (event) {
-      event.preventDefault();
-      this.startY = event.clientY;
-      this.isDragging = true;
-      this.containerElement.classList.add('dragging');
-    },
-
-    // Add the following event handler for touchmove and pointermove events on the grippy bar
-    handlePointerMove: function (event) {
-      event.preventDefault();
-      if (this.isDragging) {
-        const currentYPosition = event.clientY;
-        const distanceY = currentYPosition - this.this.startY;
-
-        // Move the window along the Y-axis based on the dragging distance
-        if (!this.focusedWindow.dataset.oldTransformOrigin) {
-          this.focusedWindow.dataset.oldTransformOrigin =
-            this.focusedWindow.style.transformOrigin;
-        }
-        this.focusedWindow.style.transformOrigin = 'center bottom';
-        this.focusedWindow.style.transform = `translateY(${
-          distanceY / 2
-        }px) scale(${window.innerHeight / (window.innerHeight - distanceY)})`;
-      }
-    },
-
-    handlePointerUp: function (event) {
-      event.preventDefault();
-      if (this.isDragging) {
-        const currentYPosition = event.clientY;
-        const distanceY = currentYPosition - this.this.startY;
-
-        // Reset the window transform
-        this.focusedWindow.style.transformOrigin =
-          this.focusedWindow.dataset.oldTransformOrigin;
-
-        this.startY = null;
-        this.isDragging = false;
-
-        this.containerElement.classList.remove('dragging');
-        console.log(distanceY);
-        if (distanceY <= -300) {
-          CardsView.show();
-          this.focusedWindow.style.transform = '';
-        } else if (distanceY <= -100) {
-          AppWindow.minimize(AppWindow.focusedWindow.id);
-        } else {
-          this.focusedWindow.classList.add('transitioning');
-          this.focusedWindow.addEventListener('transitionend', () => {
-            this.focusedWindow.classList.remove('transitioning');
-            this.focusedWindow.style.transform = '';
-          });
-        }
       }
     },
 

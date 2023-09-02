@@ -683,6 +683,10 @@
           webview.style.setProperty('--scroll-progress', progress);
           break;
 
+        case 'settingschange':
+          window.IPC.emit('settingschange', { [event.args[0].name]: event.args[0].value });
+          break;
+
         default:
           break;
       }

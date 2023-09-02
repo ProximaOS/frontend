@@ -1,5 +1,6 @@
-[data-z-index-layer="splashscreen"] {
-  z-index: 65534;
+[data-z-index-layer="splashscreen"],
+[data-z-index-layer="loading-screen"] {
+  z-index: 65536;
 }
 
 [data-z-index-layer="statusbar"] {
