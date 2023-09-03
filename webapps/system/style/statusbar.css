@@ -82,8 +82,8 @@ html[dir="rtl"] .statusbar-icons > .right {
   transition: opacity 0.3s cubic-bezier(0.2, 0.9, 0.1, 1.25) 0.3s, transform 0.3s cubic-bezier(0.2, 0.9, 0.1, 1.25) 0.3s, visibility 0.3s cubic-bezier(0.2, 0.9, 0.1, 1.25) 0.3s, margin 0.3s cubic-bezier(0.2, 0.9, 0.1, 1.25);
 }
 
-#screen:not(.desktop) #statusbar:not(.tray-open).light .statusbar-icons > .left div,
-#screen:not(.desktop) #statusbar:not(.tray-open).light .statusbar-icons > .right div {
+#screen:not(.desktop, .cards-view-visible) #statusbar:not(.tray-open).light .statusbar-icons > .left div,
+#screen:not(.desktop, .cards-view-visible) #statusbar:not(.tray-open).light .statusbar-icons > .right div {
   color: #333;
 }
 
@@ -157,7 +157,7 @@ html[dir="rtl"] .statusbar-icons > .right {
   position: relative;
 }
 
-#screen:not(.desktop) #statusbar:not(.tray-open).light #statusbar-battery.charging {
+#screen:not(.desktop, .cards-view-visible) #statusbar:not(.tray-open).light #statusbar-battery.charging {
   color: rgba(51, 51, 51, 0.5);
 }
 
@@ -178,7 +178,7 @@ html[dir="rtl"] .statusbar-icons > .right {
   color: #fff;
 }
 
-#screen:not(.desktop) #statusbar:not(.tray-open).light #statusbar-battery.charging::after {
+#screen:not(.desktop, .cards-view-visible) #statusbar:not(.tray-open).light #statusbar-battery.charging::after {
   color: #333;
 }
 
@@ -259,15 +259,15 @@ html[dir="rtl"] .statusbar-icons > .right {
 @media screen and (min-width: 768px) {
   #statusbar:not(.tray-open).light .statusbar-icons > .left div,
   #statusbar:not(.tray-open).light .statusbar-icons > .right div {
-    color: #333;
+    color: #fff;
   }
 
   #statusbar:not(.tray-open).light #statusbar-battery.charging {
-    color: rgba(51, 51, 51, 0.5);
+    color: rgba(255, 255, 255, 0.5);
   }
 
   #statusbar:not(.tray-open).light #statusbar-battery.charging::after {
-    color: #333;
+    color: #fff;
   }
 }
 

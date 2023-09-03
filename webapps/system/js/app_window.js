@@ -331,6 +331,10 @@
       }
       this.focusedWindow = windowDiv;
 
+      window.Settings.addObserver('video.dark_mode.enabled', () =>
+        this.handleThemeColorFocusUpdated(id)
+      );
+
       if (
         focusedWindow &&
         focusedWindow !== this.homescreenElement &&
@@ -352,8 +356,6 @@
           windowDiv.classList.remove('to-left');
         });
       }
-
-      this.handleThemeColorFocusUpdated(id);
     },
 
     /**
@@ -366,7 +368,7 @@
      * @param {String} id
      * @returns null
      */
-    close: function (id) {
+    close: function (id, isFast) {
       if (this.isDragging) {
         return;
       }
@@ -381,20 +383,27 @@
         `[data-manifest-url="${manifestUrl}"]`
       );
 
-      windowDiv.classList.add(this.CLOSE_ANIMATION);
-      if (dockIcon) {
-        dockIcon.classList.add(this.CLOSE_ANIMATION);
-      }
-      windowDiv.addEventListener('animationend', () => {
-        windowDiv.style.transform = '';
-        windowDiv.classList.remove(this.CLOSE_ANIMATION);
+      if (isFast) {
         windowDiv.remove();
         if (dockIcon) {
-          dockIcon.classList.remove(this.CLOSE_ANIMATION);
           dockIcon.remove();
         }
-        this.focus('homescreen');
-      });
+      } else {
+        windowDiv.classList.add(this.CLOSE_ANIMATION);
+        if (dockIcon) {
+          dockIcon.classList.add(this.CLOSE_ANIMATION);
+        }
+        windowDiv.addEventListener('animationend', () => {
+          windowDiv.style.transform = '';
+          windowDiv.classList.remove(this.CLOSE_ANIMATION);
+          windowDiv.remove();
+          if (dockIcon) {
+            dockIcon.classList.remove(this.CLOSE_ANIMATION);
+            dockIcon.remove();
+          }
+          this.focus('homescreen');
+        });
+      }
     },
 
     minimize: function (id) {
@@ -470,7 +479,9 @@
       switch (event.target) {
         case this.softwareBackButton:
           if (!this.screen.classList.contains('keyboard-visible')) {
-            const webview = this.focusedWindow.querySelector('.browser-container .browser.active');
+            const webview = this.focusedWindow.querySelector(
+              '.browser-container .browser.active'
+            );
             if (webview.canGoBack()) {
               webview.goBack();
             } else {
@@ -498,10 +509,7 @@
       );
       let color;
       if (webview) {
-        color = webview.dataset.themeColor;
-        if (!color) {
-          return;
-        }
+        color = webview.dataset.themeColor.substring(0, 7);
       } else {
         return;
       }
@@ -512,10 +520,10 @@
 
         // If the color is light (luminance > 0.5), add 'light' class to the status bar
         if (luminance > 0.5) {
-          this.statusbar.classList.add('light');
-          this.softwareButtons.classList.add('light');
           this.statusbar.classList.remove('dark');
           this.softwareButtons.classList.remove('dark');
+          this.statusbar.classList.add('light');
+          this.softwareButtons.classList.add('light');
         } else {
           // Otherwise, remove 'light' class
           this.statusbar.classList.remove('light');
@@ -619,10 +627,18 @@
       this.startWidth = this.resizingWindow.offsetWidth;
       this.startHeight = this.resizingWindow.offsetHeight;
 
-      document.addEventListener('mousemove', (event1) => this.resize(event1, event.target));
-      document.addEventListener('touchmove', (event1) => this.resize(event1, event.target));
-      document.addEventListener('mouseup', (event1) => this.stopResize(event1, event.target));
-      document.addEventListener('touchend', (event1) => this.stopResize(event1, event.target));
+      document.addEventListener('mousemove', (event1) =>
+        this.resize(event1, event.target)
+      );
+      document.addEventListener('touchmove', (event1) =>
+        this.resize(event1, event.target)
+      );
+      document.addEventListener('mouseup', (event1) =>
+        this.stopResize(event1, event.target)
+      );
+      document.addEventListener('touchend', (event1) =>
+        this.stopResize(event1, event.target)
+      );
     },
 
     resize: function (event, gripper) {

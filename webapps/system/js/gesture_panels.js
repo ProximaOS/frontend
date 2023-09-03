@@ -45,10 +45,16 @@
         AppWindow.focusedWindow.style.transform = `translateY(${
           distanceY / 2
         }px) scale(${window.innerHeight / (window.innerHeight - distanceY)})`;
-        CardsView.element.style.setProperty('--offset-y', `${distanceY / 2}px`);
-        CardsView.element.style.setProperty('--scale', window.innerHeight / (window.innerHeight - distanceY));
         AppWindow.focusedWindow.style.setProperty('--offset-y', `${distanceY / 2}px`);
         AppWindow.focusedWindow.style.setProperty('--scale', window.innerHeight / (window.innerHeight - distanceY));
+
+        if (distanceY <= -300) {
+          CardsView.element.classList.add('will-be-visible');
+          CardsView.element.style.setProperty('--offset-y', `${distanceY / 2}px`);
+          CardsView.element.style.setProperty('--scale', window.innerHeight / (window.innerHeight - distanceY));
+        } else {
+          CardsView.element.classList.remove('will-be-visible');
+        }
       }
     },
 
@@ -68,6 +74,7 @@
         AppWindow.containerElement.classList.remove('dragging');
         console.log(distanceY);
         if (distanceY <= -300) {
+          CardsView.element.classList.remove('will-be-visible');
           CardsView.show();
         } else if (distanceY <= -100) {
           AppWindow.minimize(AppWindow.focusedWindow.id);

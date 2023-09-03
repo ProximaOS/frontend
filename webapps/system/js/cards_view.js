@@ -83,8 +83,8 @@
         AppWindow.focus(appWindow.id);
         this.hide();
       });
-      card.addEventListener('mousedown', (event) => this.onPointerDown(event, card));
-      card.addEventListener('touchstart', (event) => this.onPointerDown(event, card));
+      card.addEventListener('mousedown', (event) => this.onPointerDown(event, card, appWindow.id));
+      card.addEventListener('touchstart', (event) => this.onPointerDown(event, card, appWindow.id));
       cardArea.appendChild(card);
 
       let manifest;
@@ -142,7 +142,7 @@
     },
 
     // Attach event listeners for mouse/touch events to handle dragging
-    onPointerDown: function (event, card) {
+    onPointerDown: function (event, card, windowId) {
       event.preventDefault();
       // Get initial position
       const initialY = event.pageY || event.touches[0].pageY;
@@ -170,7 +170,7 @@
         const newWindowY = y - offsetY;
 
         // Set the new position of the window
-        that.element.style.top = newWindowY + 'px';
+        card.style.top = newWindowY + 'px';
       }
 
       // Function to stop dragging
@@ -178,11 +178,21 @@
         event.preventDefault();
         AppWindow.containerElement.classList.remove('dragging');
 
-        that.element.classList.add('transitioning-bouncy');
-        that.element.addEventListener('transitionend', () =>
-          that.element.classList.remove('transitioning-bouncy')
+        card.classList.add('transitioning');
+        card.addEventListener('transitionend', () =>
+          card.classList.remove('transitioning')
         );
-        that.element.classList.remove('dragging');
+        card.classList.remove('dragging');
+
+        if (initialWindowY <= 100) {
+          if (windowId === 'homescreen') {
+            card.style.transform = '';
+          } else {
+            AppWindow.close(windowId, true);
+            card.remove();
+            card.parentElement.remove();
+          }
+        }
 
         document.removeEventListener('mousemove', dragWindow);
         document.removeEventListener('touchmove', dragWindow);

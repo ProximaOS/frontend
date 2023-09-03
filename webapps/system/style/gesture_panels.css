@@ -41,7 +41,11 @@
   bottom: 1rem;
   width: 10rem;
   height: 0.5rem;
-  background-color: #fff;
+  background-color: #e7e7e7;
   border-radius: 1rem;
   mix-blend-mode: difference;
+}
+
+#screen:not(.desktop, .cards-view-visible) #bottom-panel.light::before {
+  background-color: #333;
 }

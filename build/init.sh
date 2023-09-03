@@ -9,6 +9,6 @@ export OPENORCHID_STORAGE="$HOME"
 export CURSOR_THEME=default
 
 /bin/aplay /etc/boot_sound.ogg
-/bin/orchidcompositor -c /usr/lib/openorchid/openorchid --platform desktop
+/bin/orchidwayland -c /usr/lib/openorchid/openorchid --platform desktop
 
 exit 0

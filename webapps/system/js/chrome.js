@@ -8,6 +8,7 @@
     screen: document.getElementById('screen'),
     statusbar: document.getElementById('statusbar'),
     softwareButtons: document.getElementById('software-buttons'),
+    bottomPanel: document.getElementById('bottom-panel'),
 
     DEFAULT_URL: 'https://www.duckduckgo.com',
     SEARCH_ENGINE: 0,
@@ -157,6 +158,9 @@
               if (this.softwareButtons) {
                 this.softwareButtons.classList.add('light');
               }
+              if (this.bottomPanel) {
+                this.bottomPanel.classList.add('light');
+              }
               this.chrome().classList.add('light');
               this.chrome().parentElement.classList.add('light');
             } else if (
@@ -167,6 +171,9 @@
               }
               if (this.softwareButtons) {
                 this.softwareButtons.classList.add('dark');
+              }
+              if (this.bottomPanel) {
+                this.bottomPanel.classList.add('dark');
               }
               this.chrome().classList.add('dark');
               this.chrome().parentElement.classList.add('dark');
@@ -817,7 +824,7 @@
       const color = event.themeColor;
       if (color) {
         webview.dataset.themeColor = (color + 'C0').toLowerCase();
-        this.chrome().parentElement.dataset.themeColor = color;
+        this.chrome().parentElement.dataset.themeColor = color.substring(0, 7);
         this.chrome().parentElement.style.setProperty('--theme-color', color);
         this.toolbar().style.setProperty(
           '--theme-color',
@@ -829,6 +836,17 @@
 
         // If the color is light (luminance > 0.5), add 'light' class to the status bar
         if (luminance > 0.5) {
+          this.chrome().classList.remove('dark');
+          this.chrome().parentElement.classList.remove('dark');
+          if (this.statusbar) {
+            this.statusbar.classList.remove('dark');
+          }
+          if (this.softwareButtons) {
+            this.softwareButtons.classList.remove('dark');
+          }
+          if (this.bottomPanel) {
+            this.bottomPanel.classList.remove('dark');
+          }
           this.chrome().classList.add('light');
           this.chrome().parentElement.classList.add('light');
           if (this.statusbar) {
@@ -837,13 +855,8 @@
           if (this.softwareButtons) {
             this.softwareButtons.classList.add('light');
           }
-          this.chrome().classList.remove('dark');
-          this.chrome().parentElement.classList.remove('dark');
-          if (this.statusbar) {
-            this.statusbar.classList.remove('dark');
-          }
-          if (this.softwareButtons) {
-            this.softwareButtons.classList.remove('dark');
+          if (this.bottomPanel) {
+            this.bottomPanel.classList.add('light');
           }
         } else {
           // Otherwise, remove 'light' class
@@ -855,6 +868,9 @@
           if (this.softwareButtons) {
             this.softwareButtons.classList.remove('light');
           }
+          if (this.bottomPanel) {
+            this.bottomPanel.classList.remove('light');
+          }
           this.chrome().classList.add('dark');
           this.chrome().parentElement.classList.add('dark');
           if (this.statusbar) {
@@ -863,6 +879,9 @@
           if (this.softwareButtons) {
             this.softwareButtons.classList.add('dark');
           }
+          if (this.bottomPanel) {
+            this.bottomPanel.classList.add('dark');
+          }
         }
       } else {
         webview.dataset.themeColor = null;
@@ -870,6 +889,17 @@
         this.toolbar().style.setProperty('--theme-color', null);
 
         if (window.matchMedia('(prefers-color-scheme: light)').matches) {
+          this.chrome().classList.remove('dark');
+          this.chrome().parentElement.classList.remove('dark');
+          if (this.statusbar) {
+            this.statusbar.classList.remove('dark');
+          }
+          if (this.softwareButtons) {
+            this.softwareButtons.classList.remove('dark');
+          }
+          if (this.bottomPanel) {
+            this.bottomPanel.classList.remove('dark');
+          }
           this.chrome().classList.add('light');
           this.chrome().parentElement.classList.add('light');
           if (this.statusbar) {
@@ -878,13 +908,8 @@
           if (this.softwareButtons) {
             this.softwareButtons.classList.add('light');
           }
-          this.chrome().classList.remove('dark');
-          this.chrome().parentElement.classList.remove('dark');
-          if (this.statusbar) {
-            this.statusbar.classList.remove('dark');
-          }
-          if (this.softwareButtons) {
-            this.softwareButtons.classList.remove('dark');
+          if (this.bottomPanel) {
+            this.bottomPanel.classList.add('light');
           }
         } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
           // Otherwise, remove 'light' class
@@ -896,6 +921,9 @@
           if (this.softwareButtons) {
             this.softwareButtons.classList.remove('light');
           }
+          if (this.bottomPanel) {
+            this.bottomPanel.classList.remove('light');
+          }
           this.chrome().classList.add('dark');
           this.chrome().parentElement.classList.add('dark');
           if (this.statusbar) {
@@ -903,6 +931,9 @@
           }
           if (this.softwareButtons) {
             this.softwareButtons.classList.add('dark');
+          }
+          if (this.bottomPanel) {
+            this.bottomPanel.classList.add('dark');
           }
         }
       }

@@ -48,7 +48,6 @@
         nodeIntegrationInSubFrames: true,
         contextIsolation: false,
         webviewTag: true,
-        webSecurity: false,
         defaultFontFamily: 'Jali Arabic',
         defaultMonospaceFontSize: 14,
         disableDialogs: true,
