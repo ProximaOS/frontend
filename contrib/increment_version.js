@@ -3,7 +3,7 @@ const fs = require('fs');
 const packageJsonPath = 'package.json';
 const orchidAppJsonPath = 'orchid_app.json';
 const packageJson = JSON.parse(fs.readFileSync(packageJsonPath, 'utf-8'));
-const orchidAppJson = JSON.parse(fs.readFileSync(packageJsonPath, 'utf-8'));
+const orchidAppJson = JSON.parse(fs.readFileSync(orchidAppJsonPath, 'utf-8'));
 
 const currentVersion = packageJson.version;
 const preReleaseTag = currentVersion.split('-')[1]; // Extract pre-release tag
