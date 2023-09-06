@@ -1,5 +1,150 @@
 {
-  "name": "OpenOrchid",
-  "version": "116.0.0-b54",
-  "telemetryId": "openorchid@os-frontend-telemetry"
+  "name": "openorchid",
+  "version": "116.0.0-b47",
+  "description": "Open source web OS Orchid project",
+  "main": "src/main.js",
+  "scripts": {
+    "start": "electron .",
+    "browser": "electron . --chrome",
+    "build": "electron-builder",
+    "build-linux-arm": "electron-builder --linux --armv7l",
+    "build-linux-arm64": "electron-builder --linux --arm64",
+    "build-linux-ia32": "electron-builder --linux --ia32",
+    "build-linux-x64": "electron-builder --linux --x64",
+    "build-win-arm64": "electron-builder --win --arm64",
+    "build-win-ia32": "electron-builder --win --ia32",
+    "build-win-x64": "electron-builder --win --x64",
+    "build-mac-arm64": "electron-builder --mac --arm64",
+    "build-mac-x64": "electron-builder --mac --x64",
+    "dist": "electron-builder --publish always",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "orchid",
+    "openorchid",
+    "orchidos",
+    "vulpes",
+    "vulpos",
+    "aluminum",
+    "aluminumos",
+    "aluminium",
+    "aluminiumos",
+    "games",
+    "orchidgames",
+    "orchidinteractive",
+    "vividus",
+    "vividusgames",
+    "vividusengine",
+    "wos",
+    "webos"
+  ],
+  "author": "MortCodesWeb",
+  "license": "GPL-2.0",
+  "dependencies": {
+    "adm-zip": "^0.5.10",
+    "archiver": "^5.3.1",
+    "brightness": "^3.0.0",
+    "child_process": "^1.0.2",
+    "commander": "^11.0.0",
+    "del": "^7.0.0",
+    "discord-rpc": "^4.0.1",
+    "dotenv": "^16.3.1",
+    "download": "^8.0.0",
+    "easy-volume": "^1.1.0",
+    "env": "^0.0.2",
+    "fs": "^0.0.1-security",
+    "fs-extra": "^11.1.1",
+    "is-windows": "^1.0.2",
+    "mime": "^3.0.0",
+    "moment": "^2.29.4",
+    "mv": "^2.1.1",
+    "natural": "^6.5.0",
+    "node-wifi": "^2.0.16",
+    "path": "^0.12.7",
+    "rimraf": "^5.0.1",
+    "running-apps": "^1.0.2",
+    "uuid": "^9.0.0"
+  },
+  "devDependencies": {
+    "debug": "^4.3.4",
+    "electron": "^25.2.0",
+    "electron-builder": "^24.4.0",
+    "electron-is-dev": "^2.0.0",
+    "electron-localshortcut": "^3.2.1",
+    "electron-protocols": "^1.0.4",
+    "electron-reload": "^2.0.0-alpha.1",
+    "eslint": "^8.47.0",
+    "eslint-config-standard": "^17.1.0",
+    "eslint-plugin-import": "^2.28.0",
+    "eslint-plugin-n": "^16.0.1",
+    "eslint-plugin-promise": "^6.1.1",
+    "glob": "^10.3.4",
+    "gulp": "^4.0.2",
+    "jsdoc": "^4.0.2",
+    "mini-css-extract-plugin": "^2.7.6",
+    "sharp": "^0.32.5",
+    "webpack": "^5.88.1",
+    "webpack-cli": "^5.1.4"
+  },
+  "build": {
+    "appId": "org.openorchid.interface",
+    "productName": "openorchid",
+    "directories": {
+      "output": "dist",
+      "buildResources": "res"
+    },
+    "win": {
+      "target": [
+        "zip",
+        "nsis"
+      ],
+      "icon": "internal/branding/browser/browser_256.png",
+      "publish": [
+        "github"
+      ]
+    },
+    "mac": {
+      "target": [
+        "zip",
+        "dmg"
+      ],
+      "icon": "internal/branding/browser/browser_256.png",
+      "publish": [
+        "github"
+      ]
+    },
+    "linux": {
+      "target": [
+        "tar.gz",
+        "deb"
+      ],
+      "icon": "internal/branding/browser/browser_256.png",
+      "publish": [
+        "github"
+      ]
+    },
+    "files": [
+      "chrome",
+      "customize",
+      "internal",
+      "src",
+      ".env",
+      ".gitignore",
+      "AUTHORS",
+      "index.js",
+      "LICENSE",
+      "package.json",
+      "package-lock.json",
+      "preload.js",
+      "README.md"
+    ],
+    "extraFiles": [
+      "bin",
+      "webapps",
+      {
+        "from": "webapps/shared/fonts",
+        "to": "fonts"
+      }
+    ]
+  }
 }

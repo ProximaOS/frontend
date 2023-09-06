@@ -4,6 +4,9 @@
   const LockscreenMotion = {
     motionElement: document.getElementById('lockscreen'),
     lockscreenIcon: document.getElementById('lockscreen-icon'),
+    cameraButton: document.getElementById('lockscreen-camera-button'),
+
+    isPINLocked: true,
     startY: 0,
     currentY: 0,
     isDragging: false,
@@ -26,6 +29,8 @@
       document.addEventListener('pointermove', this.onPointerMove.bind(this));
       document.addEventListener('pointerup', this.onPointerUp.bind(this));
 
+      this.cameraButton.addEventListener('click', this.handleCameraButton.bind(this));
+
       this.showMotionElement();
     },
 
@@ -47,14 +52,33 @@
     },
 
     onPointerDown: function (event) {
-      event.preventDefault();
+      if (
+        event.target.nodeName === 'A' ||
+        event.target.nodeName === 'BUTTON' ||
+        event.target.nodeName === 'INPUT'
+      ) {
+        return;
+      }
+
       this.startY = event.clientY;
       this.currentY = this.startY;
       this.isDragging = true;
+
+      if (this.isPINLocked) {
+        this.motionElement.classList.add('pin-lock');
+      } else {
+        this.motionElement.classList.remove('pin-lock');
+      }
     },
 
     onPointerMove: function (event) {
-      event.preventDefault();
+      if (
+        event.target.nodeName === 'A' ||
+        event.target.nodeName === 'BUTTON' ||
+        event.target.nodeName === 'INPUT'
+      ) {
+        return;
+      }
 
       if (this.isDragging) {
         this.currentY = event.clientY;
@@ -87,7 +111,11 @@
         };
       } else {
         this.motionElement.style.setProperty('--motion-progress', 0);
-        this.hideMotionElement();
+        if (!this.isPINLocked) {
+          this.hideMotionElement();
+        } else {
+          this.showMotionElementPIN();
+        }
       }
 
       this.isDragging = false;
@@ -103,13 +131,23 @@
     },
 
     hideMotionElement: function () {
-      if (this.isDragging) {
-        this.unlockSound.currentTime = 0;
-        this.unlockSound.play();
-      }
+      this.unlockSound.currentTime = 0;
+      this.unlockSound.play();
 
       this.motionElement.classList.add('transitioning');
       this.motionElement.classList.remove('visible');
+      this.motionElement.classList.remove('pin-lock-visible');
+      TimeIcon.iconElement.classList.remove('hidden');
+
+      clearTimeout(this.timer);
+      this.timer = setTimeout(() => {
+        this.motionElement.classList.remove('transitioning');
+      }, 500);
+    },
+
+    showMotionElementPIN: function () {
+      this.motionElement.classList.add('transitioning');
+      this.motionElement.classList.add('pin-lock-visible');
       TimeIcon.iconElement.classList.remove('hidden');
 
       clearTimeout(this.timer);
@@ -138,6 +176,15 @@
         this.motionElement.classList.remove('transitioning');
       }, 500);
       this.motionElement.style.setProperty('--motion-progress', 1);
+    },
+
+    handleCameraButton: function () {
+      AppWindow.create(`http://camera.localhost:${location.port}/manifest.json`, {});
+      if (!this.isPINLocked) {
+        this.hideMotionElement();
+      } else {
+        this.showMotionElementPIN();
+      }
     }
   };
 

@@ -1,0 +1,90 @@
+#lockscreen-pin {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(51, 51, 51, 0.3);
+  backdrop-filter: blur(20px) saturate(180%);
+  z-index: 10;
+  transition: all 0.3s ease;
+  transform: scale(1.25);
+  opacity: 0;
+  visibility: hidden;
+}
+
+#lockscreen.pin-lock-visible #lockscreen-pin {
+  transform: scale(1);
+  opacity: 1;
+  visibility: visible;
+}
+
+#lockscreen-pin > .container {
+  position: absolute;
+  left: calc(50% - 13.5rem);
+  bottom: 1.5rem;
+  width: 27rem;
+}
+
+#lockscreen-pin-input {
+  width: 100%;
+  height: 4rem;
+  line-height: 4rem;
+  margin: 0;
+  padding: 0 1.5rem;
+  box-sizing: border-box;
+  text-align: center;
+  color: #fff;
+  font-size: 2rem;
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 2rem;
+  border: none;
+}
+
+#lockscreen-pin-keypad {
+  width: 27rem;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(4, 1fr);
+  gap: 0;
+}
+
+#lockscreen-pin-keypad button {
+  width: 100%;
+  height: unset;
+  aspect-ratio: 1 / 1;
+  background-color: transparent;
+  padding: 0;
+  border-radius: 50%;
+  margin: 0;
+  color: #fff;
+  font-size: 2.4rem;
+}
+
+#lockscreen-pin-keypad button:hover {
+  background-image: radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.1), transparent 75%);
+}
+
+#lockscreen-pin-keypad button:active {
+  background-image: radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.2), transparent 75%);
+}
+
+#lockscreen-pin-keypad button > span {
+  pointer-events: none;
+}
+
+#lockscreen-pin-keypad button > span[data-icon]::before {
+  font-size: 2.4rem;
+}
+
+#lockscreen-pin-emergency {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#lockscreen-pin-emergency > span {
+  font-size: 1.6rem;
+  line-height: 2.2rem;
+  white-space: normal;
+}

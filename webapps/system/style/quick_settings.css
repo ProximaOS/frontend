@@ -84,6 +84,7 @@
   text-align: center;
   font-size: 2.4rem;
   flex-shrink: 0;
+  pointer-events: none;
   position: absolute;
   top: 0;
 }

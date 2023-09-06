@@ -11,12 +11,15 @@
       this.screen.classList.add('text-selection-visible');
       this.element.classList.add('visible');
 
-      if (x > (window.innerWidth - (this.element.getBoundingClientRect().width + 10))) {
-        x = window.innerWidth - (this.element.getBoundingClientRect().width + 10);
+      const elementBox = this.element.getBoundingClientRect();
+      const webviewBox = document.querySelector('.appframe.active .browser-container .browser.active').getBoundingClientRect();
+
+      if (x > (window.innerWidth - (elementBox.width + 10))) {
+        x = window.innerWidth - (elementBox.width + 10);
       }
 
-      this.element.style.left = `${x}px`;
-      this.element.style.top = `${y - 50}px`;
+      this.element.style.left = `${webviewBox.left + x}px`;
+      this.element.style.top = `${(webviewBox.top + y) - 50}px`;
     },
 
     hide: function () {

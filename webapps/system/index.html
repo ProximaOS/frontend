@@ -32,6 +32,7 @@
   <link rel="stylesheet" href="style/software_buttons.css">
   <link rel="stylesheet" href="style/modal_dialog.css">
   <link rel="stylesheet" href="style/lockscreen.css">
+  <link rel="stylesheet" href="style/lockscreen_pin.css">
   <link rel="stylesheet" href="style/text_selection.css">
   <link rel="stylesheet" href="style/volume_rocker.css">
   <link rel="stylesheet" href="style/launcher.css">
@@ -98,6 +99,7 @@
   <script defer src="js/lockscreen/motion.js"></script>
   <script defer src="js/lockscreen/clock.js"></script>
   <script defer src="js/lockscreen/date.js"></script>
+  <script defer src="js/lockscreen/pin_lock.js"></script>
 
   <!-- Chrome -->
   <link rel="stylesheet" href="style/chrome.css">
@@ -149,7 +151,7 @@
       <div id="lockscreen-foreground"></div>
       <div id="lockscreen-container">
         <div class="lockscreen-row">
-          <span id="lockscreen-icon" data-icon="lock"></span>
+          <span id="lockscreen-icon"></span>
         </div>
         <div class="lockscreen-row">
           <div id="lockscreen-clock"></div>
@@ -159,8 +161,30 @@
       </div>
       <div id="lockscreen-notifications"></div>
       <div id="lockscreen-toolbar">
-        <button data-icon="camera"></button>
-        <button data-icon="flashlight"></button>
+        <button id="lockscreen-camera-button" data-icon="camera"></button>
+        <button id="lockscreen-flashlight-button" data-icon="flashlight"></button>
+      </div>
+
+      <div id="lockscreen-pin">
+        <div class="container">
+          <form action="">
+            <input type="password" name="" id="lockscreen-pin-input">
+          </form>
+          <div id="lockscreen-pin-keypad">
+            <button id="lockscreen-pin-keypad1" data-value="1"><span data-l10n-id="pinLockKey1"></span></button>
+            <button id="lockscreen-pin-keypad2" data-value="2"><span data-l10n-id="pinLockKey2"></span></button>
+            <button id="lockscreen-pin-keypad3" data-value="3"><span data-l10n-id="pinLockKey3"></span></button>
+            <button id="lockscreen-pin-keypad4" data-value="4"><span data-l10n-id="pinLockKey4"></span></button>
+            <button id="lockscreen-pin-keypad5" data-value="5"><span data-l10n-id="pinLockKey5"></span></button>
+            <button id="lockscreen-pin-keypad6" data-value="6"><span data-l10n-id="pinLockKey6"></span></button>
+            <button id="lockscreen-pin-keypad7" data-value="7"><span data-l10n-id="pinLockKey7"></span></button>
+            <button id="lockscreen-pin-keypad8" data-value="8"><span data-l10n-id="pinLockKey8"></span></button>
+            <button id="lockscreen-pin-keypad9" data-value="9"><span data-l10n-id="pinLockKey9"></span></button>
+            <button id="lockscreen-pin-backspace" data-value="backspace"><span data-icon="keypad-delete"></span></button>
+            <button id="lockscreen-pin-keypad0" data-value="0"><span data-l10n-id="pinLockKey0"></span></button>
+            <button id="lockscreen-pin-emergency" data-value="emergency"><span data-l10n-id="pinLock-emergency"></span></button>
+          </div>
+        </div>
       </div>
     </div>
 

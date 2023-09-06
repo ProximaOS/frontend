@@ -103,10 +103,15 @@
   left: 0;
   top: calc(var(--statusbar-height) * 2);
   width: 100%;
-  height: calc(100% - var(--statusbar-height));
+  height: calc(100% - (var(--statusbar-height) * 2) - 2.5rem);
   padding: 0 calc(50vw - (var(--safezone-width) / 2));
   box-sizing: border-box;
   transition: all 0.5s ease;
+}
+
+#screen.software-buttons-enabled #control-center,
+#screen.software-buttons-enabled #notifications {
+  height: calc(100% - (var(--statusbar-height) * 2) - var(--software-buttons-height));
 }
 
 .control-center-row {

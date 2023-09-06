@@ -55,10 +55,10 @@ html[dir="rtl"] .headerbar h1 {
   transform: scale(1);
 }
 
-html[dir="ltr"] .headerbar a + h1 {
+html[dir="ltr"] .headerbar:not(.compact) a + h1 {
   transform: translate(calc(-4.5rem * (1 - var(--progress, 0))), calc(4.5rem * (1 - var(--progress, 0)))) scale(calc(1 + (0.25 * (1 - var(--progress, 0)))));
 }
-html[dir="rtl"] .headerbar a + h1 {
+html[dir="rtl"] .headerbar:not(.compact) a + h1 {
   transform: translate(calc(4.5rem * (1 - var(--progress, 0))), calc(4.5rem * (1 - var(--progress, 0)))) scale(calc(1 + (0.25 * (1 - var(--progress, 0)))));
 }
 

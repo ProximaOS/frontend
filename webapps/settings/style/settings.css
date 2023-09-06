@@ -85,7 +85,7 @@
 
 #battery-charge-state {
   font-size: 1.6rem;
-  opacity: 0.5;
+  color: var(--text-color-faded);
 }
 
 #storage-used-space-progress {

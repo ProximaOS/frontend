@@ -66,7 +66,6 @@
       }
 
       const windowId = `appframe${AppWindow._id}`;
-      console.log(windowId + ': ' + manifestUrl);
       AppWindow._id++;
 
       let manifest;
@@ -87,7 +86,7 @@
           launch_path: manifest.launch_path,
           width: manifest.width,
           height: manifest.height,
-          windowed: window.matchMedia('(min-width: 768px)').matches,
+          windowed: window.platform() === 'desktop',
           cli_args: []
         },
         options

@@ -17,7 +17,9 @@
   <link rel="stylesheet" href="style/playlists.css" />
   <link rel="stylesheet" href="style/artists.css" />
   <link rel="stylesheet" href="style/albums.css" />
+  <script src="http://shared.localhost:8081/js/jsmediatags.js"></script>
   <script defer src="http://shared.localhost:8081/js/panels.js"></script>
+  <script defer src="http://shared.localhost:8081/js/file_indexer.js"></script>
   <script src="js/bootstrap.js"></script>
   <script defer src="js/views.js"></script>
   <script defer src="js/views/grid.js"></script>
@@ -49,7 +51,7 @@
             <a href="#" data-icon="more"></a>
           </menu>
         </div>
-        <div class="content"></div>
+        <div id="grid-container" class="content"></div>
       </div>
 
       <div id="playlists" class="panel">

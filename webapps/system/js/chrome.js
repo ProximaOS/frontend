@@ -360,8 +360,6 @@
       webview.src = url || this.DEFAULT_URL;
       webview.classList.add('browser');
       webview.nodeintegration = true;
-      webview.nodeintegrationinsubframes = true;
-      webview.disablewebsecurity = true;
       webview.webpreferences = 'contextIsolation=false';
       webview.useragent = navigator.userAgent;
       webview.preload = `file://${
@@ -466,13 +464,9 @@
 
           if (pattern.test(webview.getURL())) {
             webview.nodeintegration = true;
-            webview.nodeintegrationinsubframes = true;
-            webview.disablewebsecurity = true;
             webview.webpreferences = 'contextIsolation=false';
           } else {
             webview.nodeintegration = false;
-            webview.nodeintegrationinsubframes = false;
-            webview.disablewebsecurity = false;
             webview.webpreferences = 'contextIsolation=true';
           }
 

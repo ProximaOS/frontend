@@ -1,5 +1,5 @@
 $ECHO_PREFIX = "[OpenOrchid Translator]"
-$TRANSLATOR_PATH = "./scripts/translator"
+$TRANSLATOR_PATH = "./toolkit/translator"
 $TRANSLATOR_PATH_BACKING = ".."
 $LANGUAGES = "af", "ga", "sq", "it", "ar", "ja", "az", "kn", "eu", "ko", "bn", "la", "be", "lv", "bg", "lt", "ca", "mk", "zh", "ms", "mt", "hr", "no", "cs", "fa", "da", "pl", "nl", "pt", "ro", "eo", "ru", "et", "sr", "tl", "sk", "fi", "sl", "fr", "es", "gl", "sw", "ka", "sv", "de", "ta", "el", "te", "gu", "th", "ht", "tr", "uk", "hi", "ur", "hu", "vi", "is", "cy", "id", "yi"
 
@@ -15,6 +15,6 @@ Write-Host "$ECHO_PREFIX This process might take from a few minutes up to a few 
 mkdir -Force logs
 foreach ($lang in $LANGUAGES) {
   Write-Host "$ECHO_PREFIX Translating 'en-US' to '$lang'..."
-  $logFile = "logs/translate-ftl-$((Get-Date).ToString('yyyy-MM-ddTHH-mm-ss')).log"
-  node "$TRANSLATOR_PATH/translate_ftls.js" $lang >> $logFile
+  $logFile = "logs/translate-manifest-$((Get-Date).ToString('yyyy-MM-ddTHH-mm-ss')).log"
+  node "$TRANSLATOR_PATH/translate_manifests.js" $lang >> $logFile
 }

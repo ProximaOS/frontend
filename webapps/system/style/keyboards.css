@@ -3,7 +3,7 @@
   left: 0;
   bottom: 0;
   width: 100%;
-  height: 40%;
+  height: calc(40% + 1.5rem);
   background-color: var(--background);
   transform: translateY(3rem);
   opacity: 0;
@@ -20,4 +20,24 @@
   transform: translateY(0);
   opacity: 1;
   visibility: visible;
+}
+
+.inputframe {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.inputframe .browser {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: calc(100% - 1.5rem);
+}
+
+#screen.software-buttons-enabled .inputframe .browser {
+  height: calc(100% - var(--software-buttons-height));
 }

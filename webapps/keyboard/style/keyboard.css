@@ -1,0 +1,174 @@
+html, body {
+  margin: 0;
+  padding: 0;
+  font-size: 10px;
+  font-family: 'Jali Arabic', system-ui, sans-serif;
+  background-color: var(--background);
+}
+
+#keyboard {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+}
+
+#keyboard-container {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+#suggestions {
+  display: flex;
+  gap: 0.5rem;
+  padding: 0.6rem 0.5rem;
+  box-sizing: border-box;
+  width: 100%;
+  height: 4.8rem;
+  flex-shrink: 0;
+}
+
+#suggestions .suggestion {
+  width: 100%;
+  height: 3.6rem;
+  line-height: 3.6rem;
+  border-radius: 2rem;
+  text-align: center;
+  color: var(--text-color);
+  font-size: 1.6rem;
+  font-weight: normal;
+}
+
+#suggestions .suggestion.recommend {
+  font-weight: bold;
+  background-color: var(--background-plus);
+  box-shadow: 0 0 0.6rem rgba(0,0,0,0.1);
+}
+
+#keys {
+  width: 100%;
+  height: 100%;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 0.25rem 0.5rem;
+  box-sizing: border-box;
+}
+
+#keys .keyboard-row {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  gap: 0.5rem;
+  flex-grow: 1;
+}
+
+#keys .keyboard-row .key {
+  width: 100%;
+  height: 100%;
+  flex-grow: 1;
+  background-color: var(--background-plus);
+  border-radius: 0.5rem;
+  text-align: center;
+  color: var(--text-color);
+  font-size: 1.6rem;
+  font-weight: normal;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#keys .keyboard-row .key.special {
+  background-color: var(--item-plus);
+}
+
+#keys .keyboard-row .key.return {
+  background-color: var(--accent-color);
+  color: var(--accent-color-plus);
+}
+
+#toolbar {
+  display: flex;
+  gap: 0.5rem;
+  padding: 0.5rem;
+  box-sizing: border-box;
+  width: 100%;
+  height: 5rem;
+  flex-shrink: 0;
+}
+
+#toolbar > button {
+  width: 4rem;
+  height: 4rem;
+  background-color: transparent;
+  border-radius: 50%;
+  border: none;
+}
+
+#toolbar > button:hover {
+  background-color: var(--item-hover);
+}
+
+#toolbar > button:active {
+  background-color: var(--item-active);
+}
+
+#layout-button {
+  margin-inline-end: auto;
+}
+
+#keyboard-voice-typing {
+  position: absolute;
+  left: 0;
+  top: 4.8rem;
+  width: 100%;
+  height: calc(100% - 4.8rem - 5rem);
+  background-color: var(--background);
+  visibility: hidden;
+}
+
+#keyboard-voice-typing > .toolbar {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#soundwaves {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-image: linear-gradient(to bottom, transparent, var(--item-plus), transparent);
+}
+
+#listen-button {
+  width: 8rem;
+  height: 8rem;
+  line-height: 8rem;
+  background-color: var(--background-plus);
+  border-radius: 50%;
+  border: none;
+  box-shadow: 0 0 3rem rgba(0,0,0,0.2), 0 0 1rem rgba(0,0,0,0.2);
+}
+
+/* Icons */
+#voice-typing-button {
+  background: url(images/light/voice_typing.png) no-repeat center / 2.4rem;
+}
+
+#layout-button {
+  background: url(images/light/layouts.png) no-repeat center / 2.4rem;
+}

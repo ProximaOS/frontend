@@ -12,6 +12,10 @@
   overflow: hidden;
 }
 
+#lockscreen.pin-lock {
+  transform: none;
+}
+
 #lockscreen.low-power {
   backdrop-filter: none;
   background-color: #000;
@@ -62,6 +66,12 @@
   z-index: 1;
 }
 
+#lockscreen.pin-lock #lockscreen-background,
+#lockscreen.pin-lock #lockscreen-foreground {
+  transform: none;
+  opacity: 1;
+}
+
 #lockscreen.transitioning #lockscreen-background,
 #lockscreen.transitioning #lockscreen-foreground {
   transition: all 0.3s ease;
@@ -82,6 +92,24 @@
   height: 100%;
 }
 
+#lockscreen.pin-lock #lockscreen-container,
+#lockscreen.pin-lock #lockscreen-toolbar {
+  transform: translateY(calc(-100vh * (1 - var(--motion-progress, 1))));
+  opacity: var(--motion-progress, 1);
+  z-index: 2;
+}
+
+#lockscreen.pin-lock-visible #lockscreen-container,
+#lockscreen.pin-lock-visible #lockscreen-toolbar {
+  opacity: 0;
+  visibility: hidden;
+}
+
+#lockscreen.pin-lock.transitioning #lockscreen-container,
+#lockscreen.pin-lock.transitioning #lockscreen-toolbar {
+  transition: all 0.3s ease;
+}
+
 .lockscreen-row {
   width: 100%;
   display: flex;
@@ -99,12 +127,15 @@
 }
 
 #lockscreen-icon {
-  margin: 7rem 0 0;
-  color: #fff;
+  margin: 7rem auto 0;
+  width: 5rem;
+  height: 3rem;
+  background: url(lockscreen/images/lock_base.png) no-repeat center / 3rem, url(lockscreen/images/lock_head.png) no-repeat center / 3rem;
+  background-position-x: calc(1rem + (0.7rem * (10 - (var(--motion-progress, 1) * 10)))), calc(1rem - (0.3rem * (10 - (var(--motion-progress, 1) * 10))));
 }
 
 #lockscreen-icon.fail-unlock {
-  animation: fail-unlock 0.75s ease-in-out;
+  animation: fail-unlock 0.75s ease;
 }
 
 @keyframes fail-unlock {

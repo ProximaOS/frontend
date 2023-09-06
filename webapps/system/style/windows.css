@@ -7,7 +7,7 @@
 }
 
 #screen.keyboard-visible #windows {
-  height: 60%;
+  height: calc(60% + 1.5rem);
 }
 
 .appframe {

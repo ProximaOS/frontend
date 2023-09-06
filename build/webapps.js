@@ -1,9 +1,22 @@
 const fs = require('fs');
 const path = require('path');
+const { program } = require('commander');
 const AdmZip = require('adm-zip');
 
-const sourceDir = process.argv[2] || './webapps';
-const outputDir = './build_stage';
+program
+  .option('-s, --source <value>', 'Source path of webapps')
+  .option('-d, --dest <value>', 'Compiled output destination of webapps')
+  .parse(process.argv);
+
+const options = program.opts();
+
+if (!options.source || !options.dest) {
+  console.error('Both --source and --dest options are required.');
+  process.exit(1);
+}
+
+const sourceDir = options.source;
+const outputDir = options.dest;
 
 const ignoredFiles = [
   'node_modules',

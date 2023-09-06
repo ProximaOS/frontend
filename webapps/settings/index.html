@@ -5,7 +5,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="theme-color" content="var(--background)">
-  <title data-l10n-id="settings"></title>
+  <title data-l10n-id="title"></title>
   <link rel="stylesheet" href="http://default_theme.localhost:8081/style/index.css" />
   <link rel="stylesheet" href="http://shared.localhost:8081/style/layout.css" />
   <link rel="stylesheet" href="http://shared.localhost:8081/style/icons/icons.css" />
@@ -45,7 +45,7 @@
     <div id="root" class="panel visible">
       <div class="headerbar">
         <div class="safezone">
-          <h1 data-l10n-id="settings"></h1>
+          <h1 data-l10n-id="title"></h1>
           <menu role="toolbar">
             <a href="#" data-icon="search"></a>
             <a href="#" data-icon="more"></a>
@@ -249,16 +249,6 @@
           <li id="general-addons-button" class="page" data-icon="addons" data-page-id="addons">
             <p data-l10n-id="addons"></p>
           </li>
-          <li data-icon="download">
-            <div class="pack-checkbox">
-              <label for="general-enable3rdParty-checkbox">
-                <p data-l10n-id="enable3rdParty"></p>
-              </label>
-              <span>
-                <input type="checkbox" name="general-enable3rdParty-checkbox" id="general-enable3rdParty-checkbox" checked />
-              </span>
-            </div>
-          </li>
         </ul>
 
         <header data-l10n-id="locales"></header>
@@ -279,6 +269,19 @@
       </div>
 
       <div class="content lists">
+        <ul>
+          <li data-icon="download">
+            <div class="pack-checkbox">
+              <label for="general-enable3rdParty-checkbox">
+                <p data-l10n-id="enable3rdParty"></p>
+              </label>
+              <span>
+                <input type="checkbox" name="general-enable3rdParty-checkbox" id="general-enable3rdParty-checkbox" checked />
+              </span>
+            </div>
+          </li>
+        </ul>
+
         <ul id="webapps-list"></ul>
       </div>
     </div>
@@ -322,6 +325,80 @@
       </div>
     </div>
 
+    <div id="audio" class="panel">
+      <div class="headerbar">
+        <div class="safezone">
+          <a href="#" data-icon="browser-back" data-page-id="root"></a>
+          <h1 data-l10n-id="audio"></h1>
+        </div>
+      </div>
+
+      <div class="content lists">
+        <ul>
+          <li data-icon="call">
+            <div class="pack-slider">
+              <label for="audio-ringtones-slider">
+                <p data-l10n-id="audio-ringtones"></p>
+              </label>
+              <span>
+                <input type="range" name="audio-ringtones-slider" id="display-ringtones-slider" checked />
+              </span>
+            </div>
+          </li>
+          <li data-icon="notifications">
+            <div class="pack-slider">
+              <label for="audio-notifications-slider">
+                <p data-l10n-id="audio-notifications"></p>
+              </label>
+              <span>
+                <input type="range" name="audio-notifications-slider" id="display-notifications-slider" checked />
+              </span>
+            </div>
+          </li>
+          <li data-icon="audio">
+            <div class="pack-slider">
+              <label for="audio-media-slider">
+                <p data-l10n-id="audio-media"></p>
+              </label>
+              <span>
+                <input type="range" name="audio-media-slider" id="display-media-slider" checked />
+              </span>
+            </div>
+          </li>
+          <li data-icon="bike-mode">
+            <div class="pack-switch">
+              <label for="display-bikeMode-switch">
+                <p data-l10n-id="enableBikeMode"></p>
+              </label>
+              <span>
+                <input type="checkbox" name="display-bikeMode-switch" id="display-bikeMode-switch" checked />
+              </span>
+            </div>
+          </li>
+        </ul>
+
+        <header data-l10n-id="audio-customize"></header>
+        <ul>
+          <li class="page" data-icon="call">
+            <p data-l10n-id="changeRingtone"></p>
+          </li>
+          <li class="page" data-icon="notifications">
+            <p data-l10n-id="changeNotificationSound"></p>
+          </li>
+          <li data-icon="vibrate">
+            <div class="pack-switch">
+              <label for="display-vibrate-switch">
+                <p data-l10n-id="enableVibrate"></p>
+              </label>
+              <span>
+                <input type="checkbox" name="display-vibrate-switch" id="display-vibrate-switch" checked />
+              </span>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+
     <div id="display" class="panel">
       <div class="headerbar">
         <div class="safezone">
@@ -332,7 +409,7 @@
 
       <div class="content lists">
         <ul>
-          <li data-icon="brightness">
+          <li data-icon="settings-brightness">
             <div class="pack-slider">
               <label for="display-brightness-slider">
                 <p data-l10n-id="display-brightness"></p>
@@ -342,7 +419,7 @@
               </span>
             </div>
           </li>
-          <li data-icon="sun">
+          <li>
             <div class="pack-switch">
               <label for="display-autoBrightness-switch">
                 <p data-l10n-id="enableAutoBrightness"></p>
@@ -376,7 +453,7 @@
               </span>
             </div>
           </li>
-          <li data-icon="day">
+          <li data-icon="brightness">
             <div class="pack-switch">
               <label for="display-warmColors-switch">
                 <p data-l10n-id="enableWarmColors"></p>
@@ -411,6 +488,17 @@
               </label>
               <span>
                 <input type="checkbox" name="power-saver-switch" id="power-saver-switch" />
+              </span>
+            </div>
+          </li>
+          <li data-icon="battery-30">
+            <div class="pack-switch">
+              <label for="power-ultraSaver-switch">
+                <p data-l10n-id="enableUltraPowerSaver"></p>
+                <p data-l10n-id="enableUltraPowerSaver-desc"></p>
+              </label>
+              <span>
+                <input type="checkbox" name="power-ultraSaver-switch" id="power-ultraSaver-switch" />
               </span>
             </div>
           </li>

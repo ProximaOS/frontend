@@ -38,7 +38,6 @@
     },
 
     onPointerDown: function (event) {
-      event.preventDefault();
       this.startY = event.pageY || event.touches[0].pageY;
       this.currentY = this.startY;
       this.isDragging = true;
@@ -46,11 +45,23 @@
     },
 
     onPointerMove: function (event) {
-      event.preventDefault();
+      if (
+        event.target.nodeName === 'A' ||
+        event.target.nodeName === 'BUTTON' ||
+        event.target.nodeName === 'INPUT'
+      ) {
+        return;
+      }
 
       if (this.isDragging) {
-        if (event.target === this.topPanel && this.motionElement.classList.contains('visible')) {
-          if ((event.pageX || event.touches[0].pageX) >= window.innerWidth / 2) {
+        if (
+          event.target === this.topPanel &&
+          this.motionElement.classList.contains('visible')
+        ) {
+          if (
+            (event.pageX || event.touches[0].pageX) >=
+            window.innerWidth / 2
+          ) {
             this.controlCenter.classList.add('hidden');
             this.notifications.classList.remove('hidden');
           } else {
@@ -114,10 +125,7 @@
       const motionProgress = 1 - Math.max(0, Math.min(1, progress)); // Limit progress between 0 and 1;
       const overflowProgress = 1 - (Math.min(0, progress) + 1);
       this.statusbar.style.setProperty('--motion-progress', motionProgress);
-      this.statusbar.style.setProperty(
-        '--overflow-progress',
-        overflowProgress
-      );
+      this.statusbar.style.setProperty('--overflow-progress', overflowProgress);
       this.motionElement.style.setProperty('--motion-progress', motionProgress);
       this.motionElement.style.setProperty(
         '--overflow-progress',

@@ -1,12 +1,7 @@
 !(function () {
   'use strict';
 
-  const {
-    BrowserWindow,
-    nativeTheme,
-    Menu,
-    ipcMain
-  } = require('electron');
+  const { BrowserWindow, nativeTheme, Menu, ipcMain } = require('electron');
   const settings = require('../openorchid-settings');
   const os = require('os');
   const path = require('path');
@@ -15,6 +10,7 @@
   const registerEvents = require('../events/main_events');
   const registerControls = require('../developer/controls');
   const update = require('../update/auto_updater');
+  const RPC = require('discord-rpc');
 
   const appConfig = require('../../package.json');
 
@@ -37,22 +33,39 @@
     }
 
     const mainWindow = new BrowserWindow({
-      icon: path.join(__dirname, '..', '..', 'internal', 'branding', 'icon.png'),
+      icon: path.join(
+        __dirname,
+        '..',
+        '..',
+        'internal',
+        'branding',
+        'icon.png'
+      ),
       title: 'OpenOrchid Simulator',
       width: process.platform !== 'win32' ? width : width + 14,
       height: process.platform !== 'win32' ? height : height + 37,
-      fullscreenable: false,
       show: false,
+      fullscreenable: false,
+      autoHideMenuBar: true,
+      center: true,
+      disableAutoHideCursor: true,
+      backgroundColor: '#000000',
+      backgroundMaterial: 'mica',
+      tabbingIdentifier: 'openorchid',
+      kiosk: true,
       webPreferences: {
         nodeIntegration: true,
         nodeIntegrationInSubFrames: true,
         contextIsolation: false,
         webviewTag: true,
-        defaultFontFamily: 'Jali Arabic',
+        defaultFontSize: 16,
         defaultMonospaceFontSize: 14,
+        defaultFontFamily: 'Jali Arabic',
+        additionalArguments: true,
+        experimentalFeatures: true,
         disableDialogs: true,
-        devTools: isDev,
-        preload: path.join(__dirname, '..', 'preload.js')
+        preload: path.join(__dirname, '..', 'preload.js'),
+        devTools: isDev
       }
     });
     Menu.setApplicationMenu(null);
@@ -83,5 +96,28 @@
     if (isDev) {
       registerControls(mainWindow);
     }
+
+    mainWindow.on('focus', (event, data) => {
+      // Initialize the Discord RPC client
+      const client = new RPC.Client({ transport: 'ipc' });
+      client.login({
+        clientId: '1148745283744841790',
+        clientSecret: 'oksnQ1MVAQO-iloXQlUuIVxFzO-bp0wC'
+      });
+
+      client.on('ready', () => {
+        console.log('Logged in as', client.application.name);
+        console.log('Authed for user', client.user.username);
+      });
+
+      // Update presence when your app is active
+      client.setActivity({
+        details: `Running edition is ${type}`,
+        state: isDev ? 'Is in development' : 'Casual Usage',
+        largeImageKey: 'large-image-key', // Replace with your large image key
+        smallImageKey: 'small-image-key', // Replace with your small image key
+        startTimestamp: new Date()
+      });
+    });
   };
 })();

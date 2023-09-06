@@ -13,8 +13,10 @@ logs/
 *.log
 *.orchidBin
 *.orchidLib
-*.orchidAssets
+*.orchidConf
 *.orchidApp
+*.orchidAssets
+*.orchidScript
 
 manifest.*.json
 *.af.properties

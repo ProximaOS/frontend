@@ -1,0 +1,58 @@
+.panel {
+  background-color: var(--background);
+  visibility: hidden;
+  transition: all 0.5s cubic-bezier(1, 0, 0, 1);
+}
+
+.panel.previous {
+  transform: translateX(-100%);
+}
+
+.panel.next {
+  transform: translateX(100%);
+}
+
+.panel.visible {
+  transform: translateX(0);
+  opacity: 1;
+  visibility: visible;
+}
+
+@media screen and (min-width: 768px) {
+  #root {
+    position: absolute;
+    top: 0;
+    width: 32rem;
+    height: 100%;
+    opacity: 1;
+    visibility: visible;
+    transform: none;
+    border-inline-end: solid 0.1rem var(--item-active);
+    box-sizing: border-box;
+    z-index: 1;
+  }
+  html[dir="ltr"] #root {
+    left: 0;
+  }
+  html[dir="rtl"] #root {
+    right: 0;
+  }
+
+  #root.visible {
+    width: 100%;
+    border-inline-end: none;
+  }
+
+  .panel:not(#root) {
+    position: absolute;
+    top: 0;
+    width: calc(100% - 32rem);
+    height: 100%;
+  }
+  html[dir="ltr"] .panel:not(#root) {
+    left: 32rem;
+  }
+  html[dir="rtl"] .panel:not(#root) {
+    right: 32rem;
+  }
+}

@@ -1,3 +1,3 @@
 #!/bin/sh
 npm install
-npm run ${1:-phone}
+npm start -- ${1:---phone}

@@ -15,7 +15,11 @@
   "background_color": "#f0f6ff",
   "theme_color": "#ff60c0",
   "permissions": {
-    "settings": {}
+    "settings": {},
+    "storage": {},
+    "device-storage:home": {},
+    "device-storage:audio": {},
+    "device-storage:music": {}
   },
   "display": "immersive"
 }

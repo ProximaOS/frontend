@@ -4,7 +4,7 @@
   const { BrowserWindow } = require('electron');
   const path = require('path');
   const registerEvents = require('../events/main_events');
-  const registerControls = require('../developer/controls');
+  const settings = require('../openorchid-settings');
 
   module.exports = function () {
     const mainWindow = new BrowserWindow({
@@ -32,7 +32,7 @@
       }
     });
 
-    mainWindow.loadFile(path.join(__dirname, '..', 'chrome', 'index.html'));
+    mainWindow.loadFile(path.join(__dirname, '..', '..', 'internal', 'browser', 'index.html'));
 
     fs.mkdirSync(path.join(process.env.OPENORCHID_DATA), { recursive: true });
 
@@ -41,8 +41,5 @@
     });
 
     registerEvents(mainWindow);
-    if (isDev) {
-      registerControls(mainWindow);
-    }
   };
 })();
