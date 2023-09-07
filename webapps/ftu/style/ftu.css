@@ -16,9 +16,10 @@ body {
 }
 
 #splashscreen.hidden {
-  pointer-events: none;
-  background-color: transparent;
-  transition: all 0.3s ease 2s;
+  transform: scale(1.75);
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.5s ease 2s;
 }
 
 #splashscreen > .logo {
@@ -28,13 +29,6 @@ body {
   width: 24rem;
   height: 12rem;
   background: url(images/logo-light.png) no-repeat center / contain;
-}
-
-#splashscreen.hidden > .logo {
-  top: 2.5rem;
-  transform-origin: top;
-  transform: scale(0.5);
-  transition: all 0.5s cubic-bezier(0.2, -0.2, 0.2, 1.2) 2s;
 }
 
 @media screen and (prefers-color-scheme: dark) {
@@ -330,13 +324,13 @@ html[dir="rtl"] #content .container .buttons {
   }
 
   #content .container .illustration .illustration-art {
-    width: 20rem;
-    height: 20rem;
+    width: 12rem;
+    height: 12rem;
     margin: 3rem auto 0;
   }
 
   #content .container .content {
-    padding: 1.5rem 1.5rem 0;
+    padding: 1.5rem 1.5rem 7rem;
     margin-bottom: var(--software-buttons-height);
     justify-content: unset;
   }

@@ -4,6 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="var(--background)">
   <title>FTU</title>
   <link rel="stylesheet" href="http://default_theme.localhost:8081/style/index.css">
   <link rel="stylesheet" href="http://shared.localhost:8081/style/icons/icons.css">
@@ -33,16 +34,17 @@
             <div class="illustration-art"></div>
           </div>
           <div class="content">
-            <h3>Hello!</h3>
-            <p>lorem ipsum</p>
+            <h3 data-l10n-id="greetings-title"></h3>
+            <p data-l10n-id="greetings-desc"></p>
+            <p data-l10n-id="greetings-benefits"></p>
             <ul>
-              <li>lorem ipsum</li>
-              <li>lorem ipsum</li>
-              <li>lorem ipsum</li>
+              <li data-l10n-id="greetings-benefit1"></li>
+              <li data-l10n-id="greetings-benefit2"></li>
+              <li data-l10n-id="greetings-benefit3"></li>
             </ul>
           </div>
           <div class="buttons">
-            <button class="next-button next recommend" data-icon="forward" data-page-id="customize">Next</button>
+            <button class="next-button next recommend" data-icon="forward" data-l10n-id="next" data-page-id="customize"></button>
           </div>
         </div>
         <div class="customize page">
@@ -50,8 +52,8 @@
             <div class="illustration-art"></div>
           </div>
           <div class="content">
-            <h3>Customize</h3>
-            <p>Pick your preferred profile picture and accent color.</p>
+            <h3 data-l10n-id="customize-title"></h3>
+            <p data-l10n-id="customize-desc"></p>
             <div class="accent-colors">
               <div class="red"></div>
               <div class="yellow"></div>
@@ -61,8 +63,8 @@
             </div>
           </div>
           <div class="buttons">
-            <button class="previous-button previous" data-icon="back" data-page-id="greetings">Previous</button>
-            <button class="next-button next recommend" data-icon="forward" data-page-id="account">Next</button>
+            <button class="previous-button previous" data-icon="back" data-l10n-id="previous" data-page-id="greetings"></button>
+            <button class="next-button next recommend" data-icon="forward" data-l10n-id="next" data-page-id="account"></button>
           </div>
         </div>
         <div class="account page">

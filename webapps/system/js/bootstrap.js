@@ -60,13 +60,6 @@
       }
     );
 
-    window.Settings.getValue('homescreen.manifest_url').then((value) => {
-      AppWindow.create(value, {});
-    });
-    window.Settings.addObserver('homescreen.manifest_url', (value) => {
-      AppWindow.create(value, {});
-    });
-
     window.AppsManager.getAll().then(() => {
       Splashscreen.hide();
 
@@ -74,6 +67,13 @@
         if (value) {
           LockscreenMotion.hideMotionElement();
           AppWindow.create(`http://ftu.localhost:${location.port}/manifest.json`, {});
+        } else {
+          window.Settings.getValue('homescreen.manifest_url').then((value) => {
+            AppWindow.create(value, {});
+          });
+          window.Settings.addObserver('homescreen.manifest_url', (value) => {
+            AppWindow.create(value, {});
+          });
         }
       });
     });

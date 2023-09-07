@@ -1,21 +1,94 @@
 .panel {
   background-color: var(--background);
   visibility: hidden;
-  transition: all 0.5s cubic-bezier(1, 0, 0, 1);
+  transition: all 0.4s ease;
 }
 
 .panel.previous {
-  transform: translateX(-100%);
+  transform: translateX(-25%);
+  filter: brightness(25%);
 }
 
 .panel.next {
   transform: translateX(100%);
+  filter: brightness(100%);
 }
 
 .panel.visible {
   transform: translateX(0);
+  filter: brightness(100%);
   opacity: 1;
   visibility: visible;
+}
+
+#account-button {
+  margin: 1rem auto 0;
+  width: calc(100% - 3rem);
+  max-width: calc(var(--safezone-width) - 3rem);
+  display: flex;
+  align-items: center;
+  padding: 1rem 1.5rem;
+  box-sizing: border-box;
+  background-color: var(--background-plus);
+  border-radius: 1.5rem;
+  position: relative;
+}
+
+#account-button::after {
+  content: 'forward';
+  position: absolute;
+  left: 0.5rem;
+  top: 0.5rem;
+  width: calc(100% - 1rem);
+  height: calc(100% - 1rem);
+  border-radius: 1rem;
+  font-family: "openorchid-icons";
+  font-size: 2rem;
+  color: #858585;
+  line-height: 5rem;
+  text-align: right;
+  padding: 0.25rem 1.5rem;
+  box-sizing: border-box;
+}
+html[dir="rtl"] #account-button::after {
+  transform: scaleX(-1);
+}
+
+#account-button:hover::after {
+  background-color: var(--item-hover);
+}
+
+#account-button:active::after {
+  background-color: var(--item-active);
+}
+
+#account-button-avatar {
+  width: 4rem;
+  height: 4rem;
+  border-radius: 50%;
+  background-color: #858585;
+  overflow: hidden;
+  flex-shrink: 0;
+  margin-inline-end: 1rem;
+}
+
+#account-button > figcaption {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  flex-grow: 1;
+}
+
+#account-button-name {
+  color: var(--text-color);
+  font-size: 1.6rem;
+  font-weight: normal;
+}
+
+#account-button-contact {
+  color: var(--text-color-faded);
+  font-size: 1.4rem;
+  font-weight: normal;
 }
 
 #webapps-list li {

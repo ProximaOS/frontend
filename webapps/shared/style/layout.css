@@ -117,6 +117,33 @@ html, body {
   opacity: 0.5;
 }
 
+.panel > .content .scrollbar-track {
+  background-color: transparent;
+  overflow: hidden;
+  border-radius: 1rem;
+  margin: 0.25rem;
+}
+
+.panel > .content .scrollbar-track-x {
+  height: 0.75rem;
+  bottom: var(--software-buttons-height);
+}
+
+.panel > .content .scrollbar-track-y {
+  width: 0.75rem;
+  top: calc(0.5rem + (5rem * var(--progress)) + (13rem * var(--overscroll-progress)));
+  height: calc(100% - 1rem - var(--software-buttons-height) - (5rem * var(--progress)) + (13rem * var(--overscroll-progress)));
+}
+
+.panel > .content .scrollbar-thumb {
+  border-radius: 1rem;
+  box-sizing: border-box;
+  width: 0.75rem;
+  height: 0.75rem;
+  background-color: var(--text-color-faded);
+  background-clip: content-box;
+}
+
 .hbox {
   display: flex;
   flex-direction: row;

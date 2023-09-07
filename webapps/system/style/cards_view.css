@@ -40,8 +40,8 @@
   transform: scale(1);
 }
 
-#cards-view-list::-webkit-scrollbar {
-  display: none;
+#cards-view-list > .scroll-content {
+  height: 100%;
 }
 
 #cards-view-list .card-area {

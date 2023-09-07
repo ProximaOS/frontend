@@ -12,7 +12,7 @@
   margin: 1rem auto 0;
 }
 
-.lists > ul {
+.lists ul {
   margin: 0 auto 1.5rem;
   padding: 0.5rem;
   background-color: var(--background-plus);
@@ -22,7 +22,7 @@
   box-sizing: border-box;
 }
 
-.lists > ul li {
+.lists ul li {
   position: relative;
   margin: 0;
   list-style: none;
@@ -38,24 +38,24 @@
   outline: none;
 }
 
-.lists > ul li:not(.noclick):hover {
+.lists ul li:not(.noclick):hover {
   background-color: var(--item-hover);
 }
 
-.lists > ul li:not(.noclick):active {
+.lists ul li:not(.noclick):active {
   background-color: var(--item-active);
 }
 
-.lists > ul li:not(.noclick).selected {
+.lists ul li:not(.noclick).selected {
   background-color: var(--accent-color);
   color: var(--accent-color-plus);
 }
 
-.lists > ul li[data-icon] {
+.lists ul li[data-icon] {
   padding-inline-start: 4.5rem;
 }
 
-.lists > ul li[data-icon]::before {
+.lists ul li[data-icon]::before {
   position: absolute;
   top: 50%;
   margin-top: -1.2rem;
@@ -65,18 +65,18 @@
   line-height: 2.4rem;
   font-size: 2.4rem;
 }
-html[dir="ltr"] .lists > ul li[data-icon]::before {
+html[dir="ltr"] .lists ul li[data-icon]::before {
   left: 1.2rem;
 }
-html[dir="rtl"] .lists > ul li[data-icon]::before {
+html[dir="rtl"] .lists ul li[data-icon]::before {
   right: 1.2rem;
 }
 
-.lists > ul li.selected[data-icon]::before {
+.lists ul li.selected[data-icon]::before {
   color: var(--accent-color-plus);
 }
 
-.lists > ul li.page::after {
+.lists ul li.page::after {
   content: 'forward';
   font-family: "openorchid-icons";
   font-size: 2rem;
@@ -84,16 +84,16 @@ html[dir="rtl"] .lists > ul li[data-icon]::before {
   line-height: 5rem;
   text-align: right;
 }
-html[dir="rtl"] .lists > ul li.page::after {
+html[dir="rtl"] .lists ul li.page::after {
   transform: scaleX(-1);
 }
 
-.lists > ul li.page.selected::after {
+.lists ul li.page.selected::after {
   color: var(--accent-color-plus);
   opacity: 0.5;
 }
 
-.lists > ul li::after {
+.lists ul li::after {
   content: '';
   position: absolute;
   left: 1.5rem;
@@ -105,35 +105,35 @@ html[dir="rtl"] .lists > ul li.page::after {
   box-sizing: border-box;
 }
 
-.lists > ul li:not(.noclick):hover::after,
-.lists > ul li:not(.noclick):active::after,
-.lists > ul li:not(.noclick):hover + li::after,
-.lists > ul li:not(.noclick):active + li::after,
-.lists > ul li:first-child::after {
+.lists ul li:not(.noclick):hover::after,
+.lists ul li:not(.noclick):active::after,
+.lists ul li:not(.noclick):hover + li::after,
+.lists ul li:not(.noclick):active + li::after,
+.lists ul li:first-child::after {
   border-top: none;
 }
 
-.lists > ul li p {
+.lists ul li p {
   margin: 0;
   line-height: 2.2rem;
   font-size: 1.6rem;
   color: var(--text-color);
 }
 
-.lists > ul li.selected p {
+.lists ul li.selected p {
   color: var(--accent-color-plus);
 }
 
-.lists > ul li p:not(:first-child) {
+.lists ul li p:not(:first-child) {
   line-height: 1.9rem;
   font-size: 1.4rem;
   opacity: 0.5;
 }
 
-.lists > ul li button {
+.lists ul li button {
   margin: 0;
 }
 
-.lists > ul li input[type="range"] {
+.lists ul li input[type="range"] {
   margin: 0.2rem 0 0;
 }

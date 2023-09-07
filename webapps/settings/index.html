@@ -20,6 +20,8 @@
   <link rel="stylesheet" href="http://shared.localhost:8081/style/seekbars.css" />
   <link rel="stylesheet" href="http://shared.localhost:8081/style/input_areas.css" />
   <link rel="stylesheet" href="style/settings.css" />
+  <script defer src="http://shared.localhost:8081/js/smooth-scrollbar.js"></script>
+  <script defer src="http://shared.localhost:8081/js/plugins/overscroll.js"></script>
   <script defer src="http://shared.localhost:8081/js/panels.js"></script>
   <script defer src="http://shared.localhost:8081/js/spatial_navigation.js"></script>
   <script src="js/bootstrap.js"></script>
@@ -59,6 +61,14 @@
           <button type="reset" data-icon="close"></button>
           <button type="submit" data-icon="search"></button>
         </form>
+
+        <figure id="account-button" data-page-id="account">
+          <img src="" alt="" id="account-button-avatar">
+          <figcaption>
+            <div id="account-button-name">Mortada Hameed</div>
+            <div id="account-button-contact">mortcodesweb@proton.me</div>
+          </figcaption>
+        </figure>
 
         <header data-l10n-id="networking"></header>
         <ul>
@@ -132,6 +142,52 @@
           </li>
           <li class="page" data-icon="info" data-page-id="aboutInfo">
             <p data-l10n-id="aboutInfo"></p>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <div id="account" class="panel">
+      <div class="headerbar">
+        <div class="safezone">
+          <a href="#" data-icon="browser-back" data-page-id="root"></a>
+          <h1 data-l10n-id="account"></h1>
+        </div>
+      </div>
+
+      <div class="content lists">
+        <figure class="profile-banner">
+          <img src="" alt="" class="banner">
+          <div class="container">
+            <img src="" alt="" class="avatar">
+            <figcaption>
+              <div class="username"></div>
+            </figcaption>
+          </div>
+        </figure>
+
+        <header data-l10n-id="accountEdit"></header>
+        <ul>
+          <li class="page" data-icon="email" data-page-id="account-email">
+            <p data-l10n-id="account-email"></p>
+          </li>
+          <li class="page" data-icon="call" data-page-id="account-phoneNumber">
+            <p data-l10n-id="account-phoneNumber"></p>
+          </li>
+          <li class="page" data-icon="lock" data-page-id="account-password">
+            <p data-l10n-id="account-password"></p>
+          </li>
+          <li class="page" data-icon="user" data-page-id="account-avatar">
+            <p data-l10n-id="account-avatar"></p>
+          </li>
+          <li class="page" data-icon="wallpaper" data-page-id="account-banner">
+            <p data-l10n-id="account-banner"></p>
+          </li>
+        </ul>
+        <header data-l10n-id="accountInfo"></header>
+        <ul>
+          <li class="page" data-icon="achievements" data-page-id="account-achievements">
+            <p data-l10n-id="account-achievements"></p>
           </li>
         </ul>
       </div>

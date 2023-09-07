@@ -38,7 +38,9 @@
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
-  transform: translateY(calc(4.5rem * (1 - var(--progress, 0)))) scale(calc(1 + (0.25 * (1 - var(--progress, 0)))));
+  transform:
+    translateY(calc((4.5rem * (1 - var(--progress, 0))) + (13rem * var(--overscroll-progress, 0))))
+    scale(calc(1 + (0.25 * (1 - var(--progress, 0))) + (0.25 * var(--overscroll-progress, 0))));
   width: 100%;
   font-size: 2rem;
 }
@@ -56,10 +58,14 @@ html[dir="rtl"] .headerbar h1 {
 }
 
 html[dir="ltr"] .headerbar:not(.compact) a + h1 {
-  transform: translate(calc(-4.5rem * (1 - var(--progress, 0))), calc(4.5rem * (1 - var(--progress, 0)))) scale(calc(1 + (0.25 * (1 - var(--progress, 0)))));
+  transform:
+    translate(calc(-4.5rem * (1 - var(--progress, 0))), calc(4.5rem * (1 - var(--progress, 0)) + (13rem * var(--overscroll-progress, 0))))
+    scale(calc(1 + (0.25 * (1 - var(--progress, 0))) + (0.25 * var(--overscroll-progress, 0))));
 }
 html[dir="rtl"] .headerbar:not(.compact) a + h1 {
-  transform: translate(calc(4.5rem * (1 - var(--progress, 0))), calc(4.5rem * (1 - var(--progress, 0)))) scale(calc(1 + (0.25 * (1 - var(--progress, 0)))));
+  transform:
+    translate(calc(4.5rem * (1 - var(--progress, 0))), calc(4.5rem * (1 - var(--progress, 0)) + (13rem * var(--overscroll-progress, 0))))
+    scale(calc(1 + (0.25 * (1 - var(--progress, 0))) + (0.25 * var(--overscroll-progress, 0))));
 }
 
 .headerbar a {

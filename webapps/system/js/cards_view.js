@@ -14,14 +14,15 @@
     isVisible: false,
 
     init: function () {
-      this.element.addEventListener(
-        'click',
-        this.hide.bind(this)
-      );
+      this.element.addEventListener('click', this.hide.bind(this));
       this.toggleButton.addEventListener(
         'click',
         this.handleToggleButton.bind(this)
       );
+
+      if ('Scrollbar' in window) {
+        Scrollbar.use(OverscrollPlugin);
+      }
     },
 
     show: function () {
@@ -45,6 +46,18 @@
           appWindow.querySelector('.browser.active')
         );
       });
+
+      if ('Scrollbar' in window) {
+        Scrollbar.init(this.cardsContainer, {
+          plugins: {
+            overscroll: {
+              damping: 0.15,
+              maxOverscroll: 300,
+              effect: 'bounce'
+            }
+          }
+        });
+      }
     },
 
     hide: function () {
@@ -60,6 +73,10 @@
       focusedWindow.addEventListener('animationend', () =>
         focusedWindow.classList.remove('from-cards-view')
       );
+
+      if ('Scrollbar' in window) {
+        Scrollbar.destroy(this.cardsContainer);
+      }
     },
 
     createCard: async function (index, manifestUrl, appWindow, webview) {
@@ -83,8 +100,12 @@
         AppWindow.focus(appWindow.id);
         this.hide();
       });
-      card.addEventListener('mousedown', (event) => this.onPointerDown(event, card, appWindow.id));
-      card.addEventListener('touchstart', (event) => this.onPointerDown(event, card, appWindow.id));
+      card.addEventListener('mousedown', (event) =>
+        this.onPointerDown(event, card, appWindow.id)
+      );
+      card.addEventListener('touchstart', (event) =>
+        this.onPointerDown(event, card, appWindow.id)
+      );
       cardArea.appendChild(card);
 
       let manifest;
