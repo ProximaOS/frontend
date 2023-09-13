@@ -1,12 +1,10 @@
 !(function (exports) {
   'use strict';
 
-  const { ipcRenderer } = require('electron');
-
   const screen = document.getElementById('screen');
 
-  ipcRenderer.on('rotate', (event, data) => {
-    switch (data.rotation) {
+  window.addEventListener('rotate', (event) => {
+    switch (event.detail.rotation) {
       case '-90deg':
         screen.classList.add('rotated-left');
         screen.classList.remove('rotated-right');

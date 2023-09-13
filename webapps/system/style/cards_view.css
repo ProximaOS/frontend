@@ -28,7 +28,7 @@
   margin: 0;
   padding: 0;
   scroll-snap-type: x mandatory;
-  transform: scale(var(--scale)) translateY(var(--offset-y, 0));
+  transform: scale(calc(var(--scale) * 1.5)) translateY(calc(var(--offset-y, 0) * 0.65));
   transition: all 0.5s ease;
 }
 

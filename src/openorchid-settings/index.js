@@ -46,8 +46,7 @@
                 if (error) {
                   console.error(error);
                 }
-                ipcRenderer.emit('settingschange', { name, [name]: value });
-                ipcRenderer.sendToHost('settingschange', { name, [name]: value });
+                ipcRenderer.send('settingschange', { name, [name]: value });
               }
             );
           } catch (error) {

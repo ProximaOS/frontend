@@ -21,6 +21,7 @@
   "background_color": "#f0f6ff",
   "theme_color": "#ff6040",
   "permissions": {
+    "ipc": {},
     "device-storage:apps": {}
   },
   "transparent": true,

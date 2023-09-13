@@ -1,8 +1,6 @@
 !(function (exports) {
   'use strict';
 
-  const { ipcRenderer } = require('electron');
-
   const HardwareButtons = {
     screen: document.getElementById('screen'),
 
@@ -15,11 +13,11 @@
     POWER_RESET_DURATION: 5000,
 
     init: function () {
-      ipcRenderer.on('powerstart', this.handlePowerStart.bind(this));
-      ipcRenderer.on('powerend', this.handlePowerEnd.bind(this));
-      ipcRenderer.on('volumeup', this.handleVolumeUp.bind(this));
-      ipcRenderer.on('volumedown', this.handleVolumeDown.bind(this));
-      ipcRenderer.on('shortcut', this.handleShortcut.bind(this));
+      window.addEventListener('powerstart', this.handlePowerStart.bind(this));
+      window.addEventListener('powerend', this.handlePowerEnd.bind(this));
+      window.addEventListener('volumeup', this.handleVolumeUp.bind(this));
+      window.addEventListener('volumedown', this.handleVolumeDown.bind(this));
+      window.addEventListener('shortcut', this.handleShortcut.bind(this));
     },
 
     handlePowerStart: function () {
@@ -39,7 +37,7 @@
 
         this.powerTimer = setTimeout(() => {
           if (this.isPowerLongHeld) {
-            ipcRenderer.send('restart', {});
+            IPC.send('restart', {});
           }
         }, this.POWER_RESET_DURATION);
       }, this.POWER_HOLD_DURATION);

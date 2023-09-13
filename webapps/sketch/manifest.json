@@ -16,5 +16,6 @@
   "theme_color": "#c00040",
   "permissions": {
     "device-storage:apps": {}
-  }
+  },
+  "display": "immersive"
 }

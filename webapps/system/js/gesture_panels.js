@@ -72,8 +72,7 @@
         this.isDragging = false;
 
         AppWindow.containerElement.classList.remove('dragging');
-        console.log(distanceY);
-        if (distanceY <= -300) {
+                if (distanceY <= -300) {
           CardsView.element.classList.remove('will-be-visible');
           CardsView.show();
         } else if (distanceY <= -100) {

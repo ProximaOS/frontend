@@ -137,15 +137,18 @@
             if (isChromeEnabled) {
               this.chrome().classList.add('visible');
               this.chrome().parentElement.classList.add('chrome-visible');
-              this.openFtuDialog();
+
+              Settings.getValue('ftu.browser.enabled').then((value) => {
+                if (value) {
+                  this.openFtuDialog();
+                }
+              });
             }
 
-            window.Settings
-              .getValue('general.chrome.position')
-              .then((data) => {
-                this.chrome().classList.add(data);
-              });
-            window.Settings.addObserver('general.chrome.position', (data) => {
+            Settings.getValue('general.chrome.position').then((data) => {
+              this.chrome().classList.add(data);
+            });
+            Settings.addObserver('general.chrome.position', (data) => {
               this.chrome().classList.remove('top');
               this.chrome().classList.remove('bottom');
               this.chrome().classList.add(data);
@@ -360,12 +363,11 @@
       webview.src = url || this.DEFAULT_URL;
       webview.classList.add('browser');
       webview.nodeintegration = true;
-      webview.webpreferences = 'contextIsolation=false';
       webview.useragent = navigator.userAgent;
       webview.preload = `file://${
-        process.env.NODE_ENV === 'production'
-          ? __dirname.replaceAll('\\', '/')
-          : process.cwd().replaceAll('\\', '/')
+        Environment.type === 'production'
+          ? Environment.dirName().replaceAll('\\', '/')
+          : Environment.currentDir.replaceAll('\\', '/')
       }/src/preload.js`;
       if (isPrivate) {
         webview.partition = 'private';
@@ -464,10 +466,8 @@
 
           if (pattern.test(webview.getURL())) {
             webview.nodeintegration = true;
-            webview.webpreferences = 'contextIsolation=false';
           } else {
             webview.nodeintegration = false;
-            webview.webpreferences = 'contextIsolation=true';
           }
 
           if (!isPrivate) {
@@ -647,6 +647,7 @@
     },
 
     handleNavbarTabsButton: function () {
+      this.chrome().classList.toggle('tabs-view-visible');
       this.tabsView().classList.toggle('visible');
     },
 
@@ -667,6 +668,7 @@
     },
 
     handleTabsViewCloseButton: function () {
+      this.chrome().classList.remove('tabs-view-visible');
       this.tabsView().classList.remove('visible');
     },
 
@@ -682,10 +684,6 @@
             progress = 1;
           }
           webview.style.setProperty('--scroll-progress', progress);
-          break;
-
-        case 'settingschange':
-          window.IPC.emit('settingschange', { [event.args[0].name]: event.args[0].value });
           break;
 
         default:
@@ -953,10 +951,21 @@
         document.body.classList.add('context-menu-visible');
       }
       this.handleDropdownButtonClick({ dataset: { dropdownId } });
+
       this.dropdown().style.top =
         this.navbarOptionsButton().offsetTop +
         this.navbarOptionsButton().getBoundingClientRect().height +
         'px';
+      if (
+        this.dropdown().offsetTop + this.dropdown().offsetHeight >
+        window.innerHeight
+      ) {
+        this.dropdown().style.top =
+          this.navbarOptionsButton().offsetTop +
+          this.dropdown().offsetHeight +
+          'px';
+      }
+
       setTimeout(() => {
         this.dropdown().classList.add('visible');
       });
@@ -1093,7 +1102,7 @@
         document.scrollingElement.style.setProperty('--accent-color-r', 192);
         document.scrollingElement.style.setProperty('--accent-color-g', 0);
         document.scrollingElement.style.setProperty('--accent-color-b', 64);
-        window.Settings.setValue('homescreen.accent_color.rgb', {
+        Settings.setValue('homescreen.accent_color.rgb', {
           r: 192,
           g: 0,
           b: 64
@@ -1103,7 +1112,7 @@
         document.scrollingElement.style.setProperty('--accent-color-r', 255);
         document.scrollingElement.style.setProperty('--accent-color-g', 192);
         document.scrollingElement.style.setProperty('--accent-color-b', 0);
-        window.Settings.setValue('homescreen.accent_color.rgb', {
+        Settings.setValue('homescreen.accent_color.rgb', {
           r: 255,
           g: 192,
           b: 0
@@ -1113,7 +1122,7 @@
         document.scrollingElement.style.setProperty('--accent-color-r', 64);
         document.scrollingElement.style.setProperty('--accent-color-g', 160);
         document.scrollingElement.style.setProperty('--accent-color-b', 96);
-        window.Settings.setValue('homescreen.accent_color.rgb', {
+        Settings.setValue('homescreen.accent_color.rgb', {
           r: 64,
           g: 160,
           b: 96
@@ -1123,7 +1132,7 @@
         document.scrollingElement.style.setProperty('--accent-color-r', null);
         document.scrollingElement.style.setProperty('--accent-color-g', null);
         document.scrollingElement.style.setProperty('--accent-color-b', null);
-        window.Settings.setValue('homescreen.accent_color.rgb', {
+        Settings.setValue('homescreen.accent_color.rgb', {
           r: null,
           g: null,
           b: null
@@ -1133,7 +1142,7 @@
         document.scrollingElement.style.setProperty('--accent-color-r', 128);
         document.scrollingElement.style.setProperty('--accent-color-g', 48);
         document.scrollingElement.style.setProperty('--accent-color-b', 160);
-        window.Settings.setValue('homescreen.accent_color.rgb', {
+        Settings.setValue('homescreen.accent_color.rgb', {
           r: 128,
           g: 48,
           b: 160

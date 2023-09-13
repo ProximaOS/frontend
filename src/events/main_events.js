@@ -10,6 +10,10 @@
   const electronLocalshortcut = require('electron-localshortcut');
 
   module.exports = function (mainWindow) {
+    mainWindow.webContents.on('crashed', () => {
+      console.log('renderer process crashed'); // this will be called
+    });
+
     // Intercept download requests using the webContents' session
     mainWindow.webContents.session.on(
       'will-download',
@@ -71,8 +75,8 @@
     electronLocalshortcut.register(mainWindow, ['Ctrl+F', 'F11'], () => {
       mainWindow.setFullScreen(!mainWindow.isFullScreen());
     });
-    electronLocalshortcut.register(mainWindow, ['Ctrl+I', 'F12'], () => {
-      mainWindow.openDevTools();
+    electronLocalshortcut.register(mainWindow, ['Ctrl+Shift+I', 'F12'], () => {
+      mainWindow.webContents.openDevTools();
     });
 
     electronLocalshortcut.register(mainWindow, 'Ctrl+J', () => {
@@ -99,17 +103,13 @@
       mainWindow.webContents.session.loadExtension(extensionPath);
     });
 
-    // Open event
     app.on('open-url', (event, url) => {
       // Pass the open event with URL to the renderer process
       mainWindow.webContents.send('open-url', { event, url });
     });
-
-    ipcMain.on('message', (event, data) => {
-      mainWindow.webContents.send('message', data);
-      ipcMain.on('message-reply', (event, data) => {
-        mainWindow.webContents.send('message-reply', { data, isAllowed: true });
-      });
+    app.on('open-file', (event, data) => {
+      // Pass the open event with data to the renderer process
+      mainWindow.webContents.send('open-file', { event, data });
     });
 
     ipcMain.on('request-extension-list', (event, data) => {
@@ -119,34 +119,51 @@
       );
     });
 
-    ipcMain.on('powerstart', (event, data) => {
-      mainWindow.webContents.send('powerstart', data);
+    ipcMain.on('message', (event, data) => {
+      mainWindow.webContents.send('message', data);
+      ipcMain.on('message-reply', (event, data) => {
+        mainWindow.webContents.send('message-reply', { data, isAllowed: true });
+      });
     });
-    ipcMain.on('powerend', (event, data) => {
-      mainWindow.webContents.send('powerend', data);
-    });
-
-    ipcMain.on('volumeup', (event, data) => {
-      mainWindow.webContents.send('volumeup', data);
-    });
-    ipcMain.on('volumedown', (event, data) => {
-      mainWindow.webContents.send('volumedown', data);
-    });
-
-    ipcMain.on('shortcut', (event, data) => {
-      mainWindow.webContents.send('shortcut', data);
-    });
-
-    ipcMain.on('rotate', (event, data) => {
-      mainWindow.webContents.send('rotate', data);
-    });
-
     ipcMain.on('shutdown', (event, data) => {
       app.quit();
     });
     ipcMain.on('restart', (event, data) => {
       app.relaunch();
       app.quit();
+    });
+    ipcMain.on('powerstart', (event, data) => {
+      mainWindow.webContents.send('powerstart', data);
+    });
+    ipcMain.on('powerend', (event, data) => {
+      mainWindow.webContents.send('powerend', data);
+    });
+    ipcMain.on('volumeup', (event, data) => {
+      mainWindow.webContents.send('volumeup', data);
+    });
+    ipcMain.on('volumedown', (event, data) => {
+      mainWindow.webContents.send('volumedown', data);
+    });
+    ipcMain.on('shortcut', (event, data) => {
+      mainWindow.webContents.send('shortcut', data);
+    });
+    ipcMain.on('rotate', (event, data) => {
+      mainWindow.webContents.send('rotate', data);
+    });
+    ipcMain.on('mediaplay', (event, data) => {
+      mainWindow.webContents.send('mediaplay', data);
+    });
+    ipcMain.on('mediapause', (event, data) => {
+      mainWindow.webContents.send('mediapause', data);
+    });
+    ipcMain.on('settingschange', (event, data) => {
+      mainWindow.webContents.send('settingschange', data);
+    });
+    ipcMain.on('devicepickup', (event, data) => {
+      mainWindow.webContents.send('devicepickup', data);
+    });
+    ipcMain.on('deviceputdown', (event, data) => {
+      mainWindow.webContents.send('deviceputdown', data);
     });
   };
 })();

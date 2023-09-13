@@ -1,6 +1,7 @@
 {
   "version": "1.0",
   "name": "Browser",
+  "long_name": "Orchid Browser",
   "description": "Browse the web.",
   "launch_path": "/index.html",
   "icons": {

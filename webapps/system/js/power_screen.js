@@ -1,8 +1,6 @@
 !(function (exports) {
   'use strict';
 
-  const { ipcRenderer } = require('electron');
-
   const PowerScreen = {
     overlay: document.getElementById('power-screen'),
     shutdownButton: document.getElementById('power-screen-shutdown-button'),
@@ -33,14 +31,14 @@
     handleShutdownButton: function () {
       LoadingScreen.show();
       setTimeout(() => {
-        ipcRenderer.send('shutdown', {});
+        IPC.send('shutdown', {});
       }, 2000);
     },
 
     handleRestartButton: function () {
       LoadingScreen.show();
       setTimeout(() => {
-        ipcRenderer.send('restart', {});
+        IPC.send('restart', {});
       }, 2000);
     }
   };

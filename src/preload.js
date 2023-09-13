@@ -2,37 +2,30 @@
   'use strict';
 
   const { ipcRenderer } = require('electron');
+  const settings = require('./openorchid-settings');
 
   require('./node_plugins');
 
-  window.open = function (url, options = '') {
-    const optionsList = options.split(',');
-    let formattedUrl;
-    if (!url.startsWith('http:') || !url.startsWith('https:')) {
-      if (url.startsWith('/')) {
-        formattedUrl = location.origin + url;
-      } else {
-        formattedUrl = `${location.origin}/${url}`;
-      }
-    } else {
-      formattedUrl = url;
+  // contextBridge.exposeInIsolatedWorld('open', require('./web/open'));
+  // contextBridge.exposeInIsolatedWorld('Notification', require('./web/notification'));
+  // contextBridge.exposeInIsolatedWorld('alert', require('./web/modal_dialogs').alert);
+  // contextBridge.exposeInIsolatedWorld('confirm', require('./web/modal_dialogs').confirm);
+  // contextBridge.exposeInIsolatedWorld('prompt', require('./web/modal_dialogs').prompt);
+
+  const clickSound = new Audio(
+    `http://shared.localhost:${location.port}/resources/sounds/click.wav`
+  );
+
+  document.addEventListener('focus', (event) => {
+    if (['A', 'BUTTON', 'LI', 'INPUT'].indexOf(event.target.nodeName) === -1) {
+      return;
     }
 
-    ipcRenderer.send('message', {
-      type: 'window',
-      action: 'open',
-      url: formattedUrl,
-      options: optionsList
-    });
-  };
+    clickSound.currentTime = 0;
+    clickSound.play();
+  });
 
-  window.alert = require('./web/modal_dialogs').alert;
-  window.confirm = require('./web/modal_dialogs').confirm;
-  window.prompt = require('./web/modal_dialogs').prompt;
-
-  window.Notification = require('./web/notification');
-
-  window.addEventListener('load', function () {
+  document.addEventListener('DOMContentLoaded', function () {
     const inputAreas = document.querySelectorAll(
       'input[type=text], input[type=name], input[type=email], input[type=password], input[type=number], textarea'
     );
@@ -101,47 +94,41 @@
       document.body.appendChild(button);
     });
 
-    if ('Settings' in window) {
-      Settings
-        .getValue('homescreen.accent_color.rgb')
-        .then((value) => {
-          if (document.querySelector('.app')) {
-            document.scrollingElement.style.setProperty(
-              '--accent-color-r',
-              value.r
-            );
-            document.scrollingElement.style.setProperty(
-              '--accent-color-g',
-              value.g
-            );
-            document.scrollingElement.style.setProperty(
-              '--accent-color-b',
-              value.b
-            );
-          }
-        });
-
-      Settings
-        .getValue('general.software_buttons.enabled')
-        .then((value) => {
-          if (document.querySelector('.app')) {
-            if (value) {
-              document
-                .querySelector('.app')
-                .style.setProperty('--software-buttons-height', '4rem');
-            } else {
-              document
-                .querySelector('.app')
-                .style.setProperty('--software-buttons-height', '2.5rem');
-            }
-          }
-        });
-
-      if ('mozL10n' in navigator) {
-        Settings.getValue('general.lang.code').then((value) => {
-          navigator.mozL10n.language.code = value;
-        });
+    settings.getValue('homescreen.accent_color.rgb').then((value) => {
+      if (document.querySelector('.app')) {
+        document.scrollingElement.style.setProperty(
+          '--accent-color-r',
+          value.r
+        );
+        document.scrollingElement.style.setProperty(
+          '--accent-color-g',
+          value.g
+        );
+        document.scrollingElement.style.setProperty(
+          '--accent-color-b',
+          value.b
+        );
       }
+    });
+
+    settings.getValue('general.software_buttons.enabled').then((value) => {
+      if (document.querySelector('.app')) {
+        if (value) {
+          document
+            .querySelector('.app')
+            .style.setProperty('--software-buttons-height', '4rem');
+        } else {
+          document
+            .querySelector('.app')
+            .style.setProperty('--software-buttons-height', '2.5rem');
+        }
+      }
+    });
+
+    if ('mozL10n' in navigator) {
+      settings.getValue('general.lang.code').then((value) => {
+        navigator.mozL10n.language.code = value;
+      });
     }
   });
 

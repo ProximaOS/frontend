@@ -54,6 +54,7 @@
   <script defer src="http://shared.localhost:8081/js/smooth-scrollbar.js"></script>
   <script defer src="http://shared.localhost:8081/js/plugins/overscroll.js"></script>
   <script src="http://shared.localhost:8081/js/platform.js"></script>
+  <script src="http://shared.localhost:8081/js/directional_scale.js"></script>
 
   <!-- Initial scripts -->
   <script src="js/bootstrap.js"></script>
@@ -161,6 +162,7 @@
           <div id="lockscreen-charging"></div>
         </div>
       </div>
+      <div id="lockscreen-notification-badge" data-icon="notifications"></div>
       <div id="lockscreen-notifications"></div>
       <div id="lockscreen-toolbar">
         <button id="lockscreen-camera-button" data-icon="camera"></button>
@@ -182,7 +184,7 @@
             <button id="lockscreen-pin-keypad7" data-value="7"><span data-l10n-id="pinLockKey7"></span></button>
             <button id="lockscreen-pin-keypad8" data-value="8"><span data-l10n-id="pinLockKey8"></span></button>
             <button id="lockscreen-pin-keypad9" data-value="9"><span data-l10n-id="pinLockKey9"></span></button>
-            <button id="lockscreen-pin-backspace" data-value="backspace"><span data-icon="keypad-delete"></span></button>
+            <button id="lockscreen-pin-backspace" data-value="backspace"><span data-icon="back"></span></button>
             <button id="lockscreen-pin-keypad0" data-value="0"><span data-l10n-id="pinLockKey0"></span></button>
             <button id="lockscreen-pin-emergency" data-value="emergency"><span data-l10n-id="pinLock-emergency"></span></button>
           </div>
@@ -203,8 +205,8 @@
           <div class="control-center-row">
             <div id="media-playback">
               <div class="content">
-                <div id="media-playback-title">Title</div>
-                <div id="media-playback-author">Author</div>
+                <div id="media-playback-title"></div>
+                <div id="media-playback-artist"></div>
                 <div class="buttons">
                   <button id="media-playback-previous" data-icon="media-skipbackward"
                     data-l10n-id="mediaPlayback-skipBackward"></button>

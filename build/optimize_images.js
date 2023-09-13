@@ -4,7 +4,7 @@ const { program } = require('commander');
 const fs = require('fs');
 
 program
-  .option('-s, --source <value>', 'Source path of image assets')
+  .option('-s, --source <value>', 'Source path of image asset(s)')
   .parse(process.argv);
 
 const options = program.opts();

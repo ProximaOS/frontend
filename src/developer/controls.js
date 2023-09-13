@@ -5,7 +5,6 @@ const path = require('path');
 
   const { BrowserWindow } = require('electron');
   const electronLocalshortcut = require('electron-localshortcut');
-  const isDev = require('electron-is-dev');
 
   module.exports = function (mainWindow) {
     let isSimulatingMobile = false;
@@ -156,13 +155,6 @@ const path = require('path');
       if (frameWindow) {
         frameWindow.close();
       }
-    });
-
-    electronLocalshortcut.register(controlsWindow, ['Ctrl+R', 'F5'], () => {
-      controlsWindow.reload();
-    });
-    electronLocalshortcut.register(controlsWindow, ['Ctrl+I', 'F12'], () => {
-      controlsWindow.openDevTools();
     });
   };
 })();

@@ -25,10 +25,8 @@
         nodeIntegration: true,
         nodeIntegrationInSubFrames: true,
         webviewTag: true,
-        contextIsolation: false,
         scrollBounce: true,
-        webSecurity: false,
-        preload: path.join(__dirname, 'preload.js')
+        preload: path.join(__dirname, '..', 'preload.js')
       }
     });
 

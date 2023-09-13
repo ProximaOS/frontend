@@ -5,8 +5,15 @@
     motionElement: document.getElementById('lockscreen'),
     lockscreenIcon: document.getElementById('lockscreen-icon'),
     cameraButton: document.getElementById('lockscreen-camera-button'),
+    flashlightButton: document.getElementById('lockscreen-flashlight-button'),
+    notifications: document.getElementById(
+      'lockscreen-notifications'
+    ),
+    notificationBadge: document.getElementById(
+      'lockscreen-notification-badge'
+    ),
 
-    isPINLocked: true,
+    isPINLocked: false,
     startY: 0,
     currentY: 0,
     isDragging: false,
@@ -16,6 +23,22 @@
     unlockSound: new Audio('/resources/sounds/unlock.wav'),
 
     init: function () {
+      Settings.getValue('lockscreen.type').then((value) => {
+        if (value === 'pin') {
+          this.isPINLocked = true;
+        } else {
+          this.isPINLocked = false;
+        }
+      });
+      Settings.addObserver('lockscreen.type', (value) => {
+        if (value === 'pin') {
+          this.isPINLocked = true;
+        } else {
+          this.isPINLocked = false;
+        }
+      });
+
+      this.notificationBadge.addEventListener('click', this.handleNotificationBadgeClick.bind(this));
       document.addEventListener('keyup', this.onKeyPress.bind(this));
 
       this.motionElement.addEventListener(
@@ -30,8 +53,15 @@
       document.addEventListener('pointerup', this.onPointerUp.bind(this));
 
       this.cameraButton.addEventListener('click', this.handleCameraButton.bind(this));
+      DirectionalScale.init(this.cameraButton);
+      DirectionalScale.init(this.flashlightButton);
 
       this.showMotionElement();
+    },
+
+    handleNotificationBadgeClick: function (event) {
+      this.notifications.classList.add('visible');
+      this.notificationBadge.classList.add('hidden');
     },
 
     onKeyPress: function (event) {
@@ -131,8 +161,10 @@
     },
 
     hideMotionElement: function () {
-      this.unlockSound.currentTime = 0;
-      this.unlockSound.play();
+      if (this.isDragging) {
+        this.unlockSound.currentTime = 0;
+        this.unlockSound.play();
+      }
 
       this.motionElement.classList.add('transitioning');
       this.motionElement.classList.remove('visible');
@@ -163,6 +195,8 @@
           this.lockSound.play();
         }
       }
+      this.notifications.classList.remove('visible');
+      this.notificationBadge.classList.remove('hidden');
 
       this.motionElement.classList.add('visible');
       this.motionElement.classList.remove('transitioning');

@@ -5,6 +5,7 @@ child_process
 commander
 del
 displays
+discord-rpc
 dotenv
 download
 easy-volume
@@ -18,6 +19,7 @@ mv
 natural
 noble
 node-gsm2
+node-nfc
 node-wifi
 path
 rimraf

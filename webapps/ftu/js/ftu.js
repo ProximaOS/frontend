@@ -41,6 +41,10 @@
 
       const doneButton = this.content.querySelector('.done-button');
       doneButton.onclick = () => {
+        window.IPC.send('message', {
+          type: 'launch',
+          manifestUrl: `http://homescreen.localhost:${location.port}/manifest.json`
+        });
         window.close();
       };
 

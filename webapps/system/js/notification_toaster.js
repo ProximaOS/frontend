@@ -19,6 +19,9 @@
     lockscreenNotifications: document.getElementById(
       'lockscreen-notifications'
     ),
+    lockscreenNotificationBadge: document.getElementById(
+      'lockscreen-notification-badge'
+    ),
 
     isDragging: false,
     startX: 0,
@@ -55,9 +58,9 @@
       if (taggedNotification) {
         taggedNotification.innerHTML = dom;
         notification = taggedNotification;
-        console.log(notification);
       } else {
         this._index++;
+        this.lockscreenNotificationBadge.textContent = this._index;
 
         notification = document.createElement('li');
         notification.classList.add('notification');
@@ -239,6 +242,9 @@
         notification.addEventListener('transitionend', () => {
           notification.classList.remove('transitioning');
           notification.remove();
+
+          this._index--;
+          this.lockscreenNotificationBadge.textContent = this._index;
         });
       } else if (distanceX <= -thresholdX) {
         // Swipe left
@@ -247,6 +253,9 @@
         notification.addEventListener('transitionend', () => {
           notification.classList.remove('transitioning');
           notification.remove();
+
+          this._index--;
+          this.lockscreenNotificationBadge.textContent = this._index;
         });
       } else {
         // Reset position

@@ -1,12 +1,10 @@
 !(function (exports) {
   'use strict';
 
-  const { ipcRenderer } = require('electron');
-
   const DownloadManager = {
     init: function () {
-      ipcRenderer.on('downloadrequest', this.handleDownloadRequest.bind(this));
-      ipcRenderer.on(
+      window.addEventListener('downloadrequest', this.handleDownloadRequest.bind(this));
+      window.addEventListener(
         'downloadprogress',
         this.handleDownloadProgress.bind(this)
       );

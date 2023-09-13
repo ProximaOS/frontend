@@ -129,11 +129,3 @@ html[dir="rtl"] .lists ul li.page::after {
   font-size: 1.4rem;
   opacity: 0.5;
 }
-
-.lists ul li button {
-  margin: 0;
-}
-
-.lists ul li input[type="range"] {
-  margin: 0.2rem 0 0;
-}

@@ -9,10 +9,18 @@
     backspaceButton: document.getElementById('lockscreen-pin-backspace'),
     emergencyButton: document.getElementById('lockscreen-pin-emergency'),
 
-    password: '1234',
+    password: null,
 
     init: function () {
+      Settings.getValue('lockscreen.pin_number').then((value) => {
+        this.password = value;
+      });
+      Settings.addObserver('lockscreen.pin_number', (value) => {
+        this.password = value;
+      });
+
       this.keypadButtons.forEach(button => {
+        DirectionalScale.init(button);
         button.addEventListener('click', this.handleButtonClick.bind(this));
       });
     },

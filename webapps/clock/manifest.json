@@ -15,7 +15,7 @@
   "background_color": "#f0f6ff",
   "theme_color": "#c00040",
   "permissions": {
-    "nodeintegration": {}
+    "settings": {}
   },
   "display": "immersive"
 }

@@ -1,8 +1,7 @@
-const { ipcRenderer } = require('electron');
-
 !(function (exports) {
   'use strict';
 
+  const { ipcRenderer, contextBridge } = require('electron');
   const manifests = require('./browser/manifest_permissions');
   const WifiManager = require('./openorchid-wifi');
   const BluetoothManager = require('./openorchid-bluetooth');
@@ -20,11 +19,55 @@ const { ipcRenderer } = require('electron');
 
   require('dotenv').config();
 
+  function registerEvent (ipcName, windowName) {
+    ipcRenderer.on(ipcName, (event, data) => {
+      const customEvent = new CustomEvent(windowName, {
+        detail: data,
+        bubbles: true,
+        cancelable: true
+      });
+      console.log(data);
+      window.dispatchEvent(customEvent);
+      console.log(customEvent);
+    });
+  }
+
+  registerEvent('message', 'ipc-message');
+  registerEvent('shutdown', 'shutdown');
+  registerEvent('restart', 'restart');
+  registerEvent('powerstart', 'powerstart');
+  registerEvent('powerend', 'powerend');
+  registerEvent('volumeup', 'volumeup');
+  registerEvent('volumedown', 'volumedown');
+  registerEvent('shortcut', 'shortcut');
+  registerEvent('rotate', 'rotate');
+  registerEvent('mediaplay', 'mediaplay');
+  registerEvent('mediapause', 'mediapause');
+  registerEvent('downloadrequest', 'downloadrequest');
+  registerEvent('downloadprogress', 'downloadprogress');
+  registerEvent('permissionrequest', 'permissionrequest');
+  registerEvent('overheat', 'overheat');
+  registerEvent('devicepickup', 'devicepickup');
+  registerEvent('deviceputdown', 'deviceputdown');
+
+  const Environment = {
+    type: process.env.NODE_ENV,
+    currentDir: process.cwd(),
+    dirName: () => __dirname
+  };
+
+  const IPCRenderManager = {
+    send: ipcRenderer.send,
+    sendToHost: ipcRenderer.sendToHost,
+    sendSync: ipcRenderer.sendSync
+  };
+
   // Create an object with functions to communicate with the parent renderer
   const api = {
     MESSAGE_PREFIX: 'openorchid',
 
-    IPC: ipcRenderer,
+    Environment,
+    IPC: IPCRenderManager,
 
     AudioManager: null,
     DisplayManager: null,
@@ -49,88 +92,54 @@ const { ipcRenderer } = require('electron');
     TasksManager: null
   };
 
-  manifests.checkPermission('wifi-manage').then((result) => {
-    if (result) api.WifiManager = WifiManager;
-    Object.assign(exports, api);
+  // TODO: B2G Backward Compatibility
+  contextBridge.exposeInMainWorld('apiDaemon', {
+    requestPermission: async (permission) => {
+      const result = await manifests.checkPermission(permission);
+      return result;
+    },
+    ...api
   });
-  manifests.checkPermission('bluetooth').then((result) => {
-    if (result) api.BluetoothManager = BluetoothManager;
-    Object.assign(exports, api);
-  });
-  manifests.checkPermission('settings').then((result) => {
-    if (result) api.Settings = Settings;
-    Object.assign(exports, api);
-  });
-  manifests.checkPermission('storage').then((result) => {
-    if (result) api.StorageManager = StorageManager;
-    Object.assign(exports, api);
-  });
-  manifests.checkPermission('device-storage:audio').then((result) => {
-    if (result) api.StorageManager.audioAccess = true;
-    Object.assign(exports, api);
-  });
-  manifests.checkPermission('device-storage:books').then((result) => {
-    if (result) api.StorageManager.booksAccess = true;
-    Object.assign(exports, api);
-  });
-  manifests.checkPermission('device-storage:downloads').then((result) => {
-    if (result) api.StorageManager.downloadsAccess = true;
-    Object.assign(exports, api);
-  });
-  manifests.checkPermission('device-storage:movies').then((result) => {
-    if (result) api.StorageManager.moviesAccess = true;
-    Object.assign(exports, api);
-  });
-  manifests.checkPermission('device-storage:music').then((result) => {
-    if (result) api.StorageManager.musicAccess = true;
-    Object.assign(exports, api);
-  });
-  manifests.checkPermission('device-storage:others').then((result) => {
-    if (result) api.StorageManager.othersAccess = true;
-    Object.assign(exports, api);
-  });
-  manifests.checkPermission('device-storage:photos').then((result) => {
-    if (result) api.StorageManager.photosAccess = true;
-    Object.assign(exports, api);
-  });
-  manifests.checkPermission('device-storage:home').then((result) => {
-    if (result) api.StorageManager.homeAccess = true;
-    Object.assign(exports, api);
-  });
-  manifests.checkPermission('device-storage:apps').then((result) => {
-    if (result) api.AppsManager = AppsManager;
-    Object.assign(exports, api);
-  });
-  manifests.checkPermission('time').then((result) => {
-    if (result) api.TimeManager = TimeManager;
-    Object.assign(exports, api);
-  });
-  manifests.checkPermission('virtualization').then((result) => {
-    if (result) api.VirtualManager = VirtualManager;
-    Object.assign(exports, api);
-  });
-  manifests.checkPermission('child-process').then((result) => {
-    if (result) api.ChildProcess = ChildProcess;
-    Object.assign(exports, api);
-  });
-  manifests.checkPermission('power').then((result) => {
-    if (result) api.PowerManager = PowerManager;
-    Object.assign(exports, api);
-  });
-  manifests.checkPermission('fm-radio').then((result) => {
-    if (result) api.RtlsdrReciever = RtlsdrReciever;
-    Object.assign(exports, api);
-  });
-  manifests.checkPermission('users').then((result) => {
-    if (result) api.UsersManager = UsersManager;
-    Object.assign(exports, api);
-  });
-  manifests.checkPermission('telephony').then((result) => {
-    if (result) api.TelephonyManager = TelephonyManager;
-    Object.assign(exports, api);
-  });
-  manifests.checkPermission('sms').then((result) => {
-    if (result) api.SmsManager = SmsManager;
-    Object.assign(exports, api);
-  });
+
+  function verifyAccess (permission, mapName, value) {
+    manifests.checkPermission(permission).then((result) => {
+      if (result) {
+        api[mapName] = value;
+        contextBridge.exposeInMainWorld(mapName, value);
+      }
+    });
+  }
+
+  function setAccess (permission, mapName, property, value) {
+    manifests.checkPermission(permission).then((result) => {
+      if (result) {
+        api[mapName][property] = value;
+      }
+    });
+  }
+
+  verifyAccess('environment', 'Environment', Environment);
+  verifyAccess('ipc', 'IPC', IPCRenderManager);
+  verifyAccess('wifi-manage', 'WifiManager', WifiManager);
+  verifyAccess('bluetooth', 'BluetoothManager', BluetoothManager);
+  verifyAccess('settings', 'Settings', Settings);
+  verifyAccess('storage', 'StorageManager', StorageManager);
+  verifyAccess('device-storage:apps', 'AppsManager', AppsManager);
+  verifyAccess('time', 'TimeManager', TimeManager);
+  verifyAccess('virtualization', 'VirtualManager', VirtualManager);
+  verifyAccess('child-process', 'ChildProcess', ChildProcess);
+  verifyAccess('power', 'PowerManager', PowerManager);
+  verifyAccess('fm-radio', 'RtlsdrReciever', RtlsdrReciever);
+  verifyAccess('users', 'UsersManager', UsersManager);
+  verifyAccess('telephony', 'TelephonyManager', TelephonyManager);
+  verifyAccess('sms', 'SmsManager', SmsManager);
+
+  setAccess('device-storage:audio', 'StorageManager', 'audioAccess', true);
+  setAccess('device-storage:books', 'StorageManager', 'booksAccess', true);
+  setAccess('device-storage:downloads', 'StorageManager', 'downloadsAccess', true);
+  setAccess('device-storage:movies', 'StorageManager', 'moviesAccess', true);
+  setAccess('device-storage:music', 'StorageManager', 'musicAccess', true);
+  setAccess('device-storage:others', 'StorageManager', 'othersAccess', true);
+  setAccess('device-storage:photos', 'StorageManager', 'photosAccess', true);
+  setAccess('device-storage:home', 'StorageManager', 'homeAccess', true);
 })(window);

@@ -1,19 +1,33 @@
 .panel {
   background-color: var(--background);
   visibility: hidden;
-  transition: all 0.5s cubic-bezier(1, 0, 0, 1);
+  transition: all 0.4s ease;
 }
 
 .panel.previous {
-  transform: translateX(-100%);
+  filter: brightness(50%);
+}
+html[dir="ltr"] .panel.previous {
+  transform: translateX(-25%);
+}
+html[dir="rtl"] .panel.previous {
+  transform: translateX(25%);
 }
 
 .panel.next {
+  filter: brightness(100%);
+}
+html[dir="ltr"] .panel.next {
   transform: translateX(100%);
 }
+html[dir="rtl"] .panel.next {
+  transform: translateX(-100%);
+}
 
-.panel.visible {
+html[dir="ltr"] .panel.visible,
+html[dir="rtl"] .panel.visible {
   transform: translateX(0);
+  filter: brightness(100%);
   opacity: 1;
   visibility: visible;
 }
@@ -30,6 +44,7 @@
     border-inline-end: solid 0.1rem var(--item-active);
     box-sizing: border-box;
     z-index: 1;
+    filter: none;
   }
   html[dir="ltr"] #root {
     left: 0;

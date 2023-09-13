@@ -233,7 +233,21 @@
   border-radius: 2rem;
   margin: 0;
   padding: 0;
+  transition: all 0.3s ease;
+  transform: scale(0.25);
+  filter: blur(20px);
+  transform-origin: top;
+  opacity: 0;
+  visibility: hidden;
   z-index: 2;
+}
+
+#lockscreen #lockscreen-notifications.visible,
+#lockscreen.low-power #lockscreen-notifications {
+  transform: scale(1);
+  filter: blur(0px);
+  opacity: 1;
+  visibility: visible;
 }
 
 #lockscreen-notifications .notification {
@@ -255,4 +269,41 @@
   margin: 0 0 1rem;
   width: 100%;
   list-style: none;
+}
+
+#lockscreen-notification-badge {
+  position: absolute;
+  left: 50%;
+  translate: -50% 0;
+  top: 40%;
+  padding: 1rem 1.5rem;
+  box-sizing: border-box;
+  border-radius: 3rem;
+  background-color: #fff;
+  color: var(--text-color);
+  font-size: 1.6rem;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  transition: all 0.3s ease;
+  transform-origin: top;
+  z-index: 2;
+}
+
+#lockscreen:not(.low-power) #lockscreen-notification-badge.hidden {
+  transform: scale(1.5);
+  filter: blur(20px);
+  opacity: 0;
+  visibility: hidden;
+}
+
+#lockscreen.low-power #lockscreen-notification-badge {
+  background-color: var(--item-plus);
+  color: #fff;
+  transform: translateY(3rem);
+}
+
+#lockscreen-notification-badge[data-icon]::before {
+  font-size: 2rem;
 }

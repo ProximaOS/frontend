@@ -242,6 +242,14 @@
   box-shadow: none;
 }
 
+#screen.desktop .appframe.window.maximized {
+  top: 0 !important;
+  height: calc(
+    100% - var(--software-buttons-height)
+  ) !important;
+  border-radius: 0 !important;
+}
+
 .appframe .chrome .browser-container > .browser {
   position: absolute;
   left: 0;

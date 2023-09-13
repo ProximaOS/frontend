@@ -1,24 +1,22 @@
 !(function (exports) {
   'use strict';
 
-  const { ipcRenderer } = require('electron');
-
   const Permissions = {
     init: function () {
-      ipcRenderer.on(
+      window.addEventListener(
         'permissionrequest',
         this.handlePermissionRequest.bind(this)
       );
     },
 
-    handlePermissionRequest: async function (event, data) {
+    handlePermissionRequest: async function (event) {
       ModalDialog.showPermissionRequest(
-        navigator.mozL10n.get(`permission-${data.type}`),
-        navigator.mozL10n.get(`permissionDetail-${data.type}`),
+        navigator.mozL10n.get(`permission-${event.detail.type}`),
+        navigator.mozL10n.get(`permissionDetail-${event.detail.type}`),
         (decision) => {
           ipcRenderer.send('permissionrequest', {
-            permission: data.type,
-            origin: data.origin,
+            permission: event.detail.type,
+            origin: event.detail.origin,
             decision
           });
         }

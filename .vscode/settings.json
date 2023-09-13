@@ -1,4 +1,5 @@
 {
+  "css.validate": false,
   "files.exclude": {
     "**/.git": true,
     "**/.svn": true,

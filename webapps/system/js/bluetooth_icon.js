@@ -1,8 +1,6 @@
 !(function (exports) {
   'use strict';
 
-  const si = require('systeminformation');
-
   const BluetoothIcon = {
     iconElement: document.getElementById('statusbar-bluetooth'),
 
@@ -11,23 +9,23 @@
     },
 
     update: function () {
-      si.bluetoothDevices((data, error) => {
+      BluetoothManager.scan((data, error) => {
         if (error) {
           console.error(error);
           this.iconElement.classList.remove('hidden');
+          return;
+        }
+
+        const connectedBluetooth = networks.find(
+          (network) => network.state === 'connected'
+        );
+
+        const bluetoothEnabled = connectedBluetooth || false;
+
+        if (bluetoothEnabled) {
+          this.iconElement.classList.remove('hidden');
         } else {
-          const connectedBluetooth = networks.find(
-            (network) => network.state === 'connected'
-          );
-
-          const bluetoothEnabled = connectedBluetooth || false;
-          console.log('Bluetooth Enabled:', bluetoothEnabled);
-
-          if (bluetoothEnabled) {
-            this.iconElement.classList.remove('hidden');
-          } else {
-            this.iconElement.classList.add('hidden');
-          }
+          this.iconElement.classList.add('hidden');
         }
       });
 

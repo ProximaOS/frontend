@@ -9,7 +9,7 @@
     },
 
     update: function () {
-      window.WifiManager.getCurrentConnections().then((networks) => {
+      WifiManager.getCurrentConnections().then((networks) => {
         this.networks = networks;
 
         // Retrieve the signal strength

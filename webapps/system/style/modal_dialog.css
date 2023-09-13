@@ -39,7 +39,7 @@
 #modal-dialog-prompt .container,
 #modal-dialog-permission-request .container {
   transform: scale(0.9);
-  margin: 0 0 1.5rem;
+  margin: 0 0 2.5rem;
   width: calc(100% - 2rem);
   max-width: 40rem;
   background-color: var(--background-plus);

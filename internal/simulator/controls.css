@@ -33,6 +33,7 @@ body {
   border-radius: 2rem;
   background: transparent no-repeat center / 2rem;
   border: none;
+  transition: transform 0.3s ease;
 }
 
 .controls menu[role='toolbar'] > button:hover {
@@ -41,6 +42,8 @@ body {
 
 .controls menu[role='toolbar'] > button:active {
   background-color: rgba(0, 97, 224, 0.2);
+  transition: none;
+  transform: scale(0.8);
 }
 
 #simulator-power-button {

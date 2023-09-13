@@ -482,6 +482,7 @@
   top: 0;
   width: 100%;
   height: 100%;
+  transition: all 0.5s ease;
   flex-grow: 1;
 }
 
@@ -491,6 +492,7 @@
   width: 100%;
   height: calc(100% - var(--chrome-tablist-height) + var(--chrome-navbar-height) + (var(--chrome-toolbar-gap) * 3));
   visibility: hidden;
+  transition: all 0.5s ease;
 }
 
 .chrome .browser-container > .browser.active {
@@ -511,16 +513,14 @@
   overflow: hidden;
   z-index: 10;
   transform: translateY(100%);
-  opacity: 0;
   visibility: hidden;
-  transition: all 0.5s cubic-bezier(0.8, 0.1, 0.9, 0);
+  transition: all 0.5s ease;
 }
 
 .chrome .tabs-view.visible {
   transform: translateY(0);
-  opacity: 1;
   visibility: visible;
-  transition: all 0.5s cubic-bezier(0.2, 0.9, 0.1, 1);
+  transition: all 0.5s ease;
 }
 
 .chrome .tabs-view .container {
@@ -580,28 +580,29 @@
 }
 
 .chrome .tabs-view .container .headerbar > menu[role="toolbar"] > a {
-  width: 4rem;
-  height: 4rem;
-  line-height: 4rem;
-  padding: 0 1rem;
+  width: 3rem;
+  height: 3rem;
+  line-height: 3rem;
+  padding: 0 0.7rem;
   box-sizing: border-box;
-  margin: 0;
+  margin: 0.5rem;
   color: var(--text-color);
   text-decoration: none;
   display: inline-block;
   border-radius: 2rem;
+  background-color: var(--item-plus);
 }
 
 .chrome .tabs-view .container .headerbar > menu[role="toolbar"] > a:hover {
-  background-color: var(--item-hover);
+  background-color: var(--item-hover-plus);
 }
 
 .chrome .tabs-view .container .headerbar > menu[role="toolbar"] > a:active {
-  background-color: var(--item-active);
+  background-color: var(--item-active-plus);
 }
 
 .chrome .tabs-view .container .headerbar > menu[role="toolbar"] > a[data-icon]::before {
-  font-size: 2rem;
+  font-size: 1.6rem;
 }
 
 .chrome .tabs-view .container .grid {
@@ -612,14 +613,14 @@
   box-sizing: border-box;
   display: grid;
   align-items: start;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(auto-fit, minmax(12rem, 14rem));
   gap: 1rem;
   overflow-y: auto;
 }
 
 .chrome .tabs-view .container .grid .tab {
   width: 100%;
-  height: max-content;
+  aspect-ratio: 3 / 4;
   padding: 0.5rem;
   box-sizing: border-box;
   background-color: var(--background-plus);
@@ -702,17 +703,18 @@
 
 .chrome .tabs-view .container .grid .tab .header > .mute-button[data-icon]::before,
 .chrome .tabs-view .container .grid .tab .header > .close-button[data-icon]::before {
+  position: static;
   font-size: 1.6rem;
 }
 
 .chrome .tabs-view .container .grid .tab .preview {
   width: 100%;
-  aspect-ratio: 1 / 1;
   overflow: hidden;
   background-color: var(--theme-color, var(--background));
   border-radius: 1rem;
   object-fit: cover;
   object-position: top;
+  height: 100%;
 }
 
 /* Browser FTU */
@@ -1060,7 +1062,7 @@ html[dir="rtl"] .chrome.sidetabs .browser-container .browser {
   max-height: 80%;
   background-color: var(--background-plus);
   box-shadow: 0 1.5rem 3rem rgba(0, 0, 0, 0.25);
-  border-radius: 2rem;
+  border-radius: 1.5rem;
   margin: 0;
   padding: 0;
   overflow: hidden;
@@ -1078,6 +1080,10 @@ html[dir="rtl"] .chrome .dropdown {
   left: 0.5rem;
 }
 
+html[dir="rtl"] .chrome.bottom .dropdown {
+  bottom: 0;
+}
+
 .chrome .dropdown.visible {
   transform: translateY(0);
   opacity: 1;
@@ -1089,7 +1095,7 @@ html[dir="rtl"] .chrome .dropdown {
   left: 0;
   top: 0;
   width: 100%;
-  padding: 1rem;
+  padding: 0.5rem;
   box-sizing: border-box;
   visibility: hidden;
   transition: all 0.5s cubic-bezier(1, 0, 0, 1);
@@ -1109,6 +1115,8 @@ html[dir="rtl"] .chrome .dropdown {
 }
 
 .chrome .dropdown .dropdown-panel button {
+  height: 4rem;
+  line-height: 4rem;
   border-radius: 1rem;
   background-color: transparent;
   margin: 0;
@@ -1205,24 +1213,34 @@ html[dir="rtl"] .chrome .dropdown .dropdown-panel button {
     position: absolute;
     visibility: hidden;
   }
-}
 
-@media screen and (min-width: 600px) {
-  .chrome .toolbar {
-    padding: var(--chrome-toolbar-gap) 0;
+  .chrome.tabs-view-visible .browser-container {
+    background-color: var(--item-active);
   }
 
-  /* .chrome .navbar-tabs-button {
-    display: none;
-  } */
-}
+  .chrome .browser-container > .browser {
+    transform-origin: top;
+  }
 
-@media screen and (max-width: 599px) {
+  .chrome.tabs-view-visible .browser-container > .browser {
+    transform: scale(0.9);
+    overflow: hidden;
+    border-radius: 1.5rem;
+  }
+
+  .chrome .tabs-view {
+    background-color: var(--item-plus);
+  }
+
+  .chrome .tabs-view .container {
+    height: calc(100% - var(--statusbar-height) - 1rem);
+  }
+
   .chrome .ftu-dialog .container {
     position: absolute;
     width: 100%;
     height: calc(100% - 4.5rem - var(--statusbar-height));
-    border-radius: 2rem 2rem 0 0;
+    border-radius: 2.5rem 2.5rem 0 0;
   }
 
   .chrome .ftu-dialog .container .page {
@@ -1259,4 +1277,14 @@ html[dir="rtl"] .chrome .dropdown .dropdown-panel button {
     bottom: var(--software-buttons-height);
     height: 5.5rem;
   }
+}
+
+@media screen and (min-width: 600px) {
+  .chrome .toolbar {
+    padding: var(--chrome-toolbar-gap) 0;
+  }
+
+  /* .chrome .navbar-tabs-button {
+    display: none;
+  } */
 }

@@ -1,0 +1,20 @@
+{
+  "version": "1.0",
+  "name": "To Do",
+  "description": "",
+  "launch_path": "/index.html",
+  "icons": {
+    "48": "/style/icons/todo.png"
+  },
+  "developer": {
+    "name": "Orchid Org.",
+    "url": "https://openorchid.github.io/"
+  },
+  "default_locale": "en",
+  "orientation": "portrait-primary",
+  "background_color": "#f0f6ff",
+  "theme_color": "#00ddff",
+  "permissions": {
+    "nodeintegration": {}
+  }
+}

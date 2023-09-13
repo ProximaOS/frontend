@@ -8,7 +8,7 @@
 
   require('dotenv').config();
 
-  module.exports = {
+  const AppsManager = {
     getAll: function () {
       return new Promise((resolve, reject) => {
         try {
@@ -49,7 +49,7 @@
             }
             app.manifest = manifest;
 
-            const size = this.getFolderSize(
+            const size = AppsManager.getFolderSize(
               path.join(process.env.OPENORCHID_WEBAPPS, app.appId)
             );
             app.size = size;
@@ -89,7 +89,7 @@
             return { appId, installedAt, manifestUrl };
           });
 
-          this.writeAppList(appList);
+          AppsManager.writeAppList(appList);
           console.log(appList);
           setTimeout(() => {
             resolve(appList);
@@ -120,7 +120,7 @@
           `{${appId}}`
         );
 
-        this.getAll().then((appList) => {
+        AppsManager.getAll().then((appList) => {
           fs.mkdirSync(appDir, { recursive: true });
 
           try {
@@ -136,7 +136,7 @@
             };
 
             appList.push(appEntry);
-            this.writeAppList(appList);
+            AppsManager.writeAppList(appList);
 
             resolve(appId);
           } catch (error) {
@@ -149,11 +149,11 @@
 
     uninstall: function (appId) {
       const appDir = path.join(process.env.OPENORCHID_WEBAPPS, appId);
-      const appList = this.getAll();
+      const appList = AppsManager.getAll();
 
       if (appList.indexOf(appId) !== -1) {
         delete appList.find((item) => item.appId === appId);
-        this.writeAppList(appList);
+        AppsManager.writeAppList(appList);
 
         fs.rmdirSync(appDir, { recursive: true });
         console.log(`App with ID '${appId}' uninstalled.`);
@@ -198,4 +198,6 @@
       return `${size} ${units[unitIndex]}`;
     }
   };
+
+  module.exports = AppsManager;
 })(window);

@@ -20,12 +20,15 @@
   <link rel="stylesheet" href="http://shared.localhost:8081/style/seekbars.css" />
   <link rel="stylesheet" href="http://shared.localhost:8081/style/input_areas.css" />
   <link rel="stylesheet" href="style/settings.css" />
+  <script type="module" src="http://shared.localhost:8081/services/orchid_services.js"></script>
   <script defer src="http://shared.localhost:8081/js/smooth-scrollbar.js"></script>
   <script defer src="http://shared.localhost:8081/js/plugins/overscroll.js"></script>
   <script defer src="http://shared.localhost:8081/js/panels.js"></script>
   <script defer src="http://shared.localhost:8081/js/spatial_navigation.js"></script>
   <script src="js/bootstrap.js"></script>
   <script defer src="js/pages.js"></script>
+  <script defer src="js/pages/root/main.js"></script>
+  <script defer src="js/pages/account/main.js"></script>
   <script defer src="js/pages/wifi/main.js"></script>
   <script defer src="js/pages/bluetooth/main.js"></script>
   <script defer src="js/pages/general/main.js"></script>
@@ -65,8 +68,8 @@
         <figure id="account-button" data-page-id="account">
           <img src="" alt="" id="account-button-avatar">
           <figcaption>
-            <div id="account-button-name">Mortada Hameed</div>
-            <div id="account-button-contact">mortcodesweb@proton.me</div>
+            <div id="account-button-username">Username</div>
+            <div id="account-button-contact">example@email.com</div>
           </figcaption>
         </figure>
 
@@ -98,6 +101,9 @@
           <li class="page" data-icon="bluetooth" data-page-id="bluetooth">
             <p data-l10n-id="bluetooth"></p>
           </li>
+          <li class="page" data-icon="nfc" data-page-id="nfc">
+            <p data-l10n-id="nfc"></p>
+          </li>
         </ul>
 
         <header data-l10n-id="personalize"></header>
@@ -120,6 +126,9 @@
           <li class="page" data-icon="timedate" data-page-id="dateAndTime">
             <p data-l10n-id="dateAndTime"></p>
           </li>
+          <li class="page" data-icon="do-not-track" data-page-id="privacy">
+            <p data-l10n-id="privacy"></p>
+          </li>
         </ul>
 
         <header data-l10n-id="device"></header>
@@ -136,6 +145,9 @@
         <ul>
           <li class="page" data-icon="user" data-page-id="profiles">
             <p data-l10n-id="profiles"></p>
+          </li>
+          <li class="page" data-icon="accessibility" data-page-id="accessibility">
+            <p data-l10n-id="accessibility"></p>
           </li>
           <li class="page" data-icon="power" data-page-id="system">
             <p data-l10n-id="system"></p>
@@ -157,22 +169,24 @@
 
       <div class="content lists">
         <figure class="profile-banner">
-          <img src="" alt="" class="banner">
+          <img src="" alt="" id="account-banner" class="banner">
           <div class="container">
-            <img src="" alt="" class="avatar">
+            <img src="" alt="" id="account-avatar" class="avatar">
             <figcaption>
-              <div class="username"></div>
+              <div id="account-username" class="username">Username</div>
             </figcaption>
           </div>
         </figure>
 
-        <header data-l10n-id="accountEdit"></header>
+        <header data-l10n-id="account-edit"></header>
         <ul>
           <li class="page" data-icon="email" data-page-id="account-email">
             <p data-l10n-id="account-email"></p>
+            <p id="account-email"></p>
           </li>
           <li class="page" data-icon="call" data-page-id="account-phoneNumber">
             <p data-l10n-id="account-phoneNumber"></p>
+            <p id="account-phone-number"></p>
           </li>
           <li class="page" data-icon="lock" data-page-id="account-password">
             <p data-l10n-id="account-password"></p>
@@ -184,7 +198,7 @@
             <p data-l10n-id="account-banner"></p>
           </li>
         </ul>
-        <header data-l10n-id="accountInfo"></header>
+        <header data-l10n-id="account-info"></header>
         <ul>
           <li class="page" data-icon="achievements" data-page-id="account-achievements">
             <p data-l10n-id="account-achievements"></p>
@@ -291,7 +305,8 @@
                 <p data-l10n-id="enableSoftwareButtons"></p>
               </label>
               <span>
-                <input type="checkbox" name="general-softwareButtons-checkbox" id="general-softwareButtons-checkbox" checked />
+                <input type="checkbox" name="general-softwareButtons-checkbox" id="general-softwareButtons-checkbox"
+                  checked />
               </span>
             </div>
           </li>
@@ -332,7 +347,8 @@
                 <p data-l10n-id="enable3rdParty"></p>
               </label>
               <span>
-                <input type="checkbox" name="general-enable3rdParty-checkbox" id="general-enable3rdParty-checkbox" checked />
+                <input type="checkbox" name="general-enable3rdParty-checkbox" id="general-enable3rdParty-checkbox"
+                  checked />
               </span>
             </div>
           </li>
@@ -343,7 +359,7 @@
     </div>
 
     <div id="webappInfo" class="panel">
-      <div class="headerbar">
+      <div class="headerbar compact">
         <div class="safezone">
           <a href="#" data-icon="browser-back" data-page-id="webapps"></a>
           <h1 id="webappInfo-header"></h1>
@@ -357,6 +373,7 @@
             <figcaption>
               <div id="webappInfo-name"></div>
               <div id="webappInfo-version"></div>
+              <a href="#" id="webappInfo-author"></a>
             </figcaption>
           </figure>
           <div class="buttons">
@@ -421,13 +438,13 @@
               </span>
             </div>
           </li>
-          <li data-icon="bike-mode">
-            <div class="pack-switch">
-              <label for="display-bikeMode-switch">
+          <li>
+            <div class="pack-checkbox">
+              <label for="display-bikeMode-checkbox">
                 <p data-l10n-id="enableBikeMode"></p>
               </label>
               <span>
-                <input type="checkbox" name="display-bikeMode-switch" id="display-bikeMode-switch" checked />
+                <input type="checkbox" name="display-bikeMode-checkbox" id="display-bikeMode-checkbox" checked />
               </span>
             </div>
           </li>
@@ -476,12 +493,13 @@
             </div>
           </li>
           <li>
-            <div class="pack-switch">
-              <label for="display-autoBrightness-switch">
+            <div class="pack-checkbox">
+              <label for="display-autoBrightness-checkbox">
                 <p data-l10n-id="enableAutoBrightness"></p>
               </label>
               <span>
-                <input type="checkbox" name="display-autoBrightness-switch" id="display-autoBrightness-switch" checked />
+                <input type="checkbox" name="display-autoBrightness-checkbox" id="display-autoBrightness-checkbox"
+                  checked />
               </span>
             </div>
           </li>
@@ -489,6 +507,13 @@
 
         <header data-l10n-id="display-interface"></header>
         <ul>
+          <li data-icon="web">
+            <p data-l10n-id="chromePosition"></p>
+            <select name="" id="display-chromePosition">
+              <option value="top">Top</option>
+              <option value="bottom">Bottom</option>
+            </select>
+          </li>
           <li data-icon="moon">
             <div class="pack-switch">
               <label for="display-darkMode-switch">
@@ -516,6 +541,90 @@
               </label>
               <span>
                 <input type="checkbox" name="display-warmColors-switch" id="display-warmColors-switch" checked />
+              </span>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <div id="homescreen" class="panel">
+      <div class="headerbar">
+        <div class="safezone">
+          <a href="#" data-icon="browser-back" data-page-id="root"></a>
+          <h1 data-l10n-id="homescreen"></h1>
+        </div>
+      </div>
+
+      <div class="content lists">
+        <div id="wallpaper">
+          <div class="wallpaper-image-container">
+            <img src="" alt="" id="wallpaper-image">
+          </div>
+        </div>
+
+        <header data-l10n-id="homescreenCustomize"></header>
+        <ul>
+          <li class="page" data-icon="home" data-page-id="homescreen-change">
+            <p data-l10n-id="changeHomescreen"></p>
+          </li>
+          <li data-icon="paintbrush">
+            <div class="pack-checkbox">
+              <label for="homescreen-accented-checkbox">
+                <p data-l10n-id="enableAccentedIcons"></p>
+              </label>
+              <span>
+                <input type="checkbox" name="homescreen-accented-checkbox" id="homescreen-accented-checkbox" checked />
+              </span>
+            </div>
+          </li>
+          <li data-icon="grid">
+            <p data-l10n-id="homescreenGrid"></p>
+            <select name="" id="homescreen-grid">
+              <option value="4x6">4x6</option>
+            </select>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <div id="privacy" class="panel">
+      <div class="headerbar">
+        <div class="safezone">
+          <a href="#" data-icon="browser-back" data-page-id="root"></a>
+          <h1 data-l10n-id="privacy"></h1>
+        </div>
+      </div>
+
+      <div class="content lists">
+        <ul>
+          <li data-icon="web">
+            <div class="pack-switch">
+              <label for="privacy-privateBrowsing-switch">
+                <p data-l10n-id="privateBrowsing"></p>
+                <p data-l10n-id="privateBrowsing-detail"></p>
+              </label>
+              <span>
+                <input type="checkbox" name="privacy-privateBrowsing-switch" id="privacy-privateBrowsing-switch" />
+              </span>
+            </div>
+          </li>
+          <li class="page" data-icon="permissions" data-page-id="permissions">
+            <p data-l10n-id="privacy-permissions"></p>
+          </li>
+        </ul>
+
+        <header data-l10n-id="privacy-advanced"></header>
+        <ul>
+          <li data-icon="forbidden">
+            <div class="pack-switch">
+              <label for="privacy-overkillPrivateBrowsing-switch">
+                <p data-l10n-id="overkillPrivateBrowsing"></p>
+                <p data-l10n-id="overkillPrivateBrowsing-detail"></p>
+              </label>
+              <span>
+                <input type="checkbox" name="privacy-overkillPrivateBrowsing-switch"
+                  id="privacy-overkillPrivateBrowsing-switch" />
               </span>
             </div>
           </li>
@@ -582,6 +691,18 @@
       </div>
     </div>
 
+    <div id="accessibility" class="panel">
+      <div class="headerbar">
+        <div class="safezone">
+          <a href="#" data-icon="browser-back" data-page-id="root"></a>
+          <h1 data-l10n-id="accessibility"></h1>
+        </div>
+      </div>
+
+      <div class="content lists">
+      </div>
+    </div>
+
     <div id="system" class="panel">
       <div class="headerbar">
         <div class="safezone">
@@ -597,11 +718,76 @@
           </li>
         </ul>
         <ul>
-          <li class="page" data-icon="accessibility" data-page-id="accessibility">
-            <p data-l10n-id="accessibility"></p>
-          </li>
           <li class="page" data-icon="edit" data-page-id="devOptions">
             <p data-l10n-id="devOptions"></p>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <div id="devOptions" class="panel">
+      <div class="headerbar">
+        <div class="safezone">
+          <a href="#" data-icon="browser-back" data-page-id="system"></a>
+          <h1 data-l10n-id="devOptions"></h1>
+        </div>
+      </div>
+
+      <div class="content lists">
+        <header data-l10n-id="devOptions-debugging"></header>
+        <ul>
+          <li data-icon="desktop">
+            <div class="pack-switch">
+              <label for="devOptions-debugging-switch">
+                <p data-l10n-id="enableDebugging"></p>
+                <p data-l10n-id="enableDebugging-detail"></p>
+              </label>
+              <span>
+                <input type="checkbox" name="devOptions-debugging-switch" id="devOptions-debugging-switch" />
+              </span>
+            </div>
+          </li>
+          <li>
+            <div class="vbox">
+              <p data-l10n-id="debuggingPort"></p>
+              <input type="text" name="" id="">
+            </div>
+          </li>
+        </ul>
+
+        <header data-l10n-id="devOptions-features"></header>
+        <ul>
+          <li>
+            <div class="pack-checkbox">
+              <label for="devOptions-profilerStats-checkbox">
+                <p data-l10n-id="enableProfilerStats"></p>
+              </label>
+              <span>
+                <input type="checkbox" name="devOptions-profilerStats-checkbox"
+                  id="devOptions-profilerStats-checkbox" />
+              </span>
+            </div>
+          </li>
+          <li>
+            <div class="pack-checkbox">
+              <label for="devOptions-visibleTouches-checkbox">
+                <p data-l10n-id="enableVisibleTouches"></p>
+              </label>
+              <span>
+                <input type="checkbox" name="devOptions-visibleTouches-checkbox"
+                  id="devOptions-visibleTouches-checkbox" />
+              </span>
+            </div>
+          </li>
+          <li>
+            <div class="pack-checkbox">
+              <label for="devOptions-music-checkbox">
+                <p data-l10n-id="enableMusic"></p>
+              </label>
+              <span>
+                <input type="checkbox" name="devOptions-music-checkbox" id="devOptions-music-checkbox" />
+              </span>
+            </div>
           </li>
         </ul>
       </div>

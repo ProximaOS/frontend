@@ -3,7 +3,8 @@
 
   const MessageHandler = {
     init: function () {
-      window.IPC.on('message', (event, data) => {
+      window.addEventListener('ipc-message', (event) => {
+        const data = event.detail;
         switch (data.type) {
           case 'alert':
             this.handleAlert(data);
@@ -86,10 +87,10 @@
     handleAppLaunch: function (data) {
       AppWindow.create(data.manifestUrl, {
         originPos: {
-          x: data.icon_x,
-          y: data.icon_y,
-          width: data.icon_width,
-          height: data.icon_height
+          xPos: data.xPos,
+          yPos: data.yPos,
+          xScale: data.xScale,
+          yScale: data.yScale
         }
       });
     },

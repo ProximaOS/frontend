@@ -13,7 +13,7 @@
     softwareHomeButton: document.getElementById('software-home-button'),
     dock: document.getElementById('dock'),
 
-    HIDDEN_ROLES: ['system', 'homescreen'],
+    HIDDEN_ROLES: ['homescreen', 'keyboard', 'system', 'theme'],
     SPLASH_ICON_SIZE: 60,
     DOCK_ICON_SIZE: 40,
 
@@ -28,6 +28,9 @@
     startWidth: null,
     startHeight: null,
 
+    /**
+     * The function that initiates windows and adds the event listeners.
+     */
     init: function () {
       this.softwareBackButton.addEventListener(
         'click',
@@ -330,7 +333,7 @@
       }
       this.focusedWindow = windowDiv;
 
-      window.Settings.addObserver('video.dark_mode.enabled', () =>
+      Settings.addObserver('video.dark_mode.enabled', () =>
         this.handleThemeColorFocusUpdated(id)
       );
 

@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Web API Test</title>
+  <script>
+    function showAlert() {
+      alert("This is an alert!");
+    }
+
+    function showConfirm() {
+      var result = confirm("Are you sure?");
+      if (result) {
+        alert("You clicked OK!");
+      } else {
+        alert("You clicked Cancel!");
+      }
+    }
+
+    function showPrompt() {
+      var name = prompt("Please enter your name:");
+      if (name) {
+        alert("Hello, " + name + "!");
+      } else {
+        alert("No name entered.");
+      }
+    }
+
+    function showNotification() {
+      if (Notification.permission === 'granted') {
+        var notification = new Notification('Hello, World!', {
+          body: 'This is a notification.'
+        });
+      } else {
+        alert("Notification permission not granted.");
+      }
+    }
+
+    let timer = null;
+    let progress = 0;
+    function showTagNotification() {
+      if (Notification.permission === 'granted') {
+        progress = 0;
+        clearInterval(timer);
+        timer = setInterval(() => {
+          if (progress >= 100) {
+            clearInterval(timer);
+            new Notification('Twitter', {
+              body: 'Finished Installing',
+              actions: [
+                { label: "Open", recommend: true },
+                { label: "Uninstall" }
+              ],
+              tag: 'random_tag'
+            });
+            return;
+          }
+          new Notification('Twitter', {
+            body: 'Downloading...',
+            progress,
+            tag: 'random_tag'
+          });
+          progress = Math.min(100, progress + (Math.random() * 10));
+        }, 300);
+      } else {
+        alert("Notification permission not granted.");
+      }
+    }
+
+    function requestNotificationPermission() {
+      Notification.requestPermission().then(function (permission) {
+        if (permission === 'granted') {
+          alert("Notification permission granted!");
+        } else {
+          alert("Notification permission denied.");
+        }
+      });
+    }
+  </script>
+</head>
+
+<body>
+  <button onclick="showAlert()">Show Alert</button>
+  <br>
+  <button onclick="showConfirm()">Show Confirm</button>
+  <br>
+  <button onclick="showPrompt()">Show Prompt</button>
+  <br>
+  <button onclick="showNotification()">Show Notification</button>
+  <button onclick="showTagNotification()">Show Tagged Notification</button>
+  <br>
+  <button onclick="requestNotificationPermission()">Request Notification Permission</button>
+  <br>
+  <button onclick="window.close()">Close Window</button>
+  <br>
+  <input type="text" name="" id="" placeholder="Test keyboard input">
+  <textarea name="" id="" cols="30" rows="10" placeholder="Test keyboard text area"></textarea>
+  <br>
+  <video src="resources/videos/splashscreen.mp4" controls></video>
+</body>
+
+</html>

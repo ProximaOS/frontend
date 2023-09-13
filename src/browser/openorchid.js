@@ -11,11 +11,9 @@
   const registerControls = require('../developer/controls');
   const update = require('../update/auto_updater');
   const RPC = require('discord-rpc');
-
   const appConfig = require('../../package.json');
 
   require('dotenv').config();
-
   require('../default_presets');
 
   module.exports = function () {
@@ -32,6 +30,7 @@
       type = 'Smart TV';
     }
 
+    // Create the browser window.
     const mainWindow = new BrowserWindow({
       icon: path.join(
         __dirname,
@@ -44,43 +43,53 @@
       title: 'OpenOrchid Simulator',
       width: process.platform !== 'win32' ? width : width + 14,
       height: process.platform !== 'win32' ? height : height + 37,
-      show: false,
+      // show: false,
       fullscreenable: false,
-      autoHideMenuBar: true,
-      center: true,
       disableAutoHideCursor: true,
+      center: true,
       backgroundColor: '#000000',
-      backgroundMaterial: 'mica',
       tabbingIdentifier: 'openorchid',
       kiosk: true,
       webPreferences: {
         nodeIntegration: true,
         nodeIntegrationInSubFrames: true,
-        contextIsolation: false,
+        // contextIsolation: false,
         webviewTag: true,
         defaultFontSize: 16,
         defaultMonospaceFontSize: 14,
         defaultFontFamily: 'Jali Arabic',
-        additionalArguments: true,
-        experimentalFeatures: true,
         disableDialogs: true,
         preload: path.join(__dirname, '..', 'preload.js'),
         devTools: isDev
       }
     });
-    Menu.setApplicationMenu(null);
 
-    update.init(mainWindow);
+    const menu = Menu.buildFromTemplate(require('./menu')(mainWindow));
+    Menu.setApplicationMenu(menu);
 
     const userAgent = `Mozilla/5.0 (OpenOrchid ${
       appConfig.version
-    }; ${type}; Linux ${os.arch()}) Chrome/${process.versions.chrome}${
-      type === 'Mobile' ? ' ' + type : false
+    } ${type}; Linux ${os.arch()}; ${appConfig.manufacturer} ${
+      appConfig.deviceModelName
+    }; ${
+      appConfig.servicePackName
+    }) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/${
+      process.versions.chrome
+    } OrchidBrowser/${appConfig.version}${
+      type === 'Mobile' ? ' ' + type : ''
     } Safari/537.36`;
 
+    // and load the index.html of the app.
     mainWindow.loadURL('http://system.localhost:8081/index.html', {
       userAgent
     });
+
+    // Open the DevTools.
+    if (isDev) {
+      mainWindow.webContents.openDevTools();
+    }
+
+    // update.init(mainWindow);
 
     fs.mkdirSync(path.join(process.env.OPENORCHID_DATA), { recursive: true });
 
@@ -97,26 +106,34 @@
       registerControls(mainWindow);
     }
 
-    mainWindow.on('focus', (event, data) => {
-      // Initialize the Discord RPC client
-      const client = new RPC.Client({ transport: 'ipc' });
-      client.login({
-        clientId: '1148745283744841790',
-        clientSecret: 'oksnQ1MVAQO-iloXQlUuIVxFzO-bp0wC'
-      });
+    // Initialize the Discord RPC client
+    const client = new RPC.Client({ transport: 'ipc' });
+    client.login({
+      clientId: '1148745283744841790',
+      clientSecret: 'oksnQ1MVAQO-iloXQlUuIVxFzO-bp0wC'
+    });
 
-      client.on('ready', () => {
-        console.log('Logged in as', client.application.name);
-        console.log('Authed for user', client.user.username);
-      });
-
-      // Update presence when your app is active
-      client.setActivity({
-        details: `Running edition is ${type}`,
-        state: isDev ? 'Is in development' : 'Casual Usage',
-        largeImageKey: 'large-image-key', // Replace with your large image key
-        smallImageKey: 'small-image-key', // Replace with your small image key
-        startTimestamp: new Date()
+    client.on('ready', () => {
+      console.log('Authed for user', client.user.username);
+      client.request('SET_ACTIVITY', {
+        pid: process.pid,
+        activity: {
+          details: `Testing ${type} On Simulator`,
+          assets: {
+            large_image: 'appicon',
+            large_text: 'Default'
+          },
+          buttons: [
+            {
+              label: 'Try OrchidOS',
+              url: 'https://openorchid.github.io/orchidos/'
+            },
+            {
+              label: 'Join Orchid Community',
+              url: 'https://discord.gg/TQUKcWEcCz'
+            }
+          ]
+        }
       });
     });
   };

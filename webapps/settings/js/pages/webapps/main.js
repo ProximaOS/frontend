@@ -6,6 +6,7 @@
     webappInfoIcon: document.getElementById('webappInfo-icon'),
     webappInfoName: document.getElementById('webappInfo-name'),
     webappInfoVersion: document.getElementById('webappInfo-version'),
+    webappInfoAuthor: document.getElementById('webappInfo-author'),
 
     APP_ICON_SIZE: 40,
 
@@ -72,8 +73,12 @@
         this.webappInfoIcon.src = '/images/default.png';
       };
 
-      this.webappInfoName.textContent = app.manifest.name;
+      this.webappInfoName.textContent = app.manifest.long_name || app.manifest.name;
       this.webappInfoVersion.textContent = app.manifest.version;
+      if (app.manifest.developer) {
+        this.webappInfoAuthor.textContent = app.manifest.developer.name;
+        this.webappInfoAuthor.src = app.manifest.developer.url;
+      }
     }
   };
 
