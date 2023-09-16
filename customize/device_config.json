@@ -1,0 +1,8 @@
+{
+  "OROS-DEV2": {
+    "overrideJavascript": [],
+    "overrideStyles": ["customize/definitions.css"],
+    "compatibilityConfig": "customize/devicecompatibility.json",
+    "attachedUserAgent": ""
+  }
+}

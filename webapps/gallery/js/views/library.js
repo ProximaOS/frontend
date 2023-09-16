@@ -47,18 +47,18 @@
     },
 
     addImage: function (path) {
-      window.StorageManager
+      window.SDCardManager
         .read(path, { encoding: 'base64' })
         .then((data) => {
           const item = document.createElement('div');
           item.classList.add('image');
 
           const image = document.createElement('img');
-          const mime = window.StorageManager.getMime(path);
+          const mime = window.SDCardManager.getMime(path);
           image.src = `data:${mime};base64,${data}`;
           item.appendChild(image);
 
-          window.StorageManager.getFileStats(path).then((stats) => {
+          window.SDCardManager.getFileStats(path).then((stats) => {
             this.setCategory(stats.birthtime).appendChild(item);
           });
         });

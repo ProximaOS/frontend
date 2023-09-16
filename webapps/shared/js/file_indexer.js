@@ -6,15 +6,15 @@
       const matchingFiles = [];
 
       async function findMatchingFiles (currentDir) {
-        const files = await window.StorageManager.list(currentDir);
+        const files = await window.SDCardManager.list(currentDir);
         for (const file of files) {
           const filePath = `${currentDir}/${file}`;
 
-          const stats = await window.StorageManager.getFileStats(filePath);
+          const stats = await window.SDCardManager.getFileStats(filePath);
           if (stats.isDirectory()) {
             await findMatchingFiles(filePath);
           } else {
-            const fileMimeType = window.StorageManager.getMime(filePath);
+            const fileMimeType = window.SDCardManager.getMime(filePath);
             if (fileMimeType && fileMimeType.startsWith(mimeType)) {
               matchingFiles.push(filePath);
             }

@@ -85,3 +85,46 @@
     --radio-active: rgb(calc(64 + ((var(--accent-color-r) / 255) * 30)), calc(64 + ((var(--accent-color-g) / 255) * 30)), calc(64 + ((var(--accent-color-b) / 255) * 30)));
   }
 }
+
+[data-red-point="true"] {
+  --accent-color: #ff0000;
+  --accent-color-plus: rgba(0, 0, 0, 0.75);
+  --accent-color-hover: rgba(0, 0, 0, 0.05);
+  --accent-color-active: rgba(0, 0, 0, 0.1);
+
+  --background: #000;
+  --background-plus: #101010;
+  --background-minus: #080808;
+
+  --acrylic-background: rgba(8, 8, 8, 0.5);
+  --acrylic-background-plus: rgba(16, 16, 16, 0.75);
+
+  --text-color: #ff0000;
+  --text-color-faded: rgba(255, 0, 0, 0.5);
+
+  --item-plus: rgba(255, 0, 0, 0.1);
+  --item-hover: rgba(255, 0, 0, 0.1);
+  --item-hover-plus: rgba(255, 0, 0, 0.2);
+  --item-active: rgba(255, 0, 0, 0.2);
+  --item-active-plus: rgba(255, 0, 0, 0.3);
+
+  --headerbar-r: 128;
+  --headerbar-g: 0;
+  --headerbar-b: 0;
+
+  --button-normal: #101010;
+  --button-hover: #201010;
+  --button-active: #301010;
+
+  --switch-normal: #080808;
+  --switch-hover: #180808;
+  --switch-active: #280808;
+
+  --checkbox-normal: #080808;
+  --checkbox-hover: #180808;
+  --checkbox-active: #280808;
+
+  --radio-normal: #080808;
+  --radio-hover: #180808;
+  --radio-active: #280808;
+}

@@ -4,7 +4,10 @@
   const { BrowserWindow } = require('electron');
   const path = require('path');
   const registerEvents = require('../events/main_events');
-  const settings = require('../openorchid-settings');
+  const settings = require('../settings');
+
+  require('dotenv').config();
+  require('../config/default_presets');
 
   module.exports = function () {
     const mainWindow = new BrowserWindow({

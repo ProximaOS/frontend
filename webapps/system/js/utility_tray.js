@@ -2,6 +2,10 @@
   'use strict';
 
   const UtilityTray = {
+    titlebar: document.querySelector('#utility-tray .titlebar'),
+    controlCenter: document.getElementById('control-center'),
+    notifications: document.getElementById('notifications'),
+
     wifiButton: document.getElementById('quick-settings-wifi'),
     bluetoothButton: document.getElementById('quick-settings-bluetooth'),
     cellularDataButton: document.getElementById('quick-settings-cellular-data'),
@@ -19,6 +23,9 @@
     audioIndex: 0,
 
     init: function () {
+      this.controlCenter.addEventListener('scroll', this.handleScroll.bind(this));
+      this.notifications.addEventListener('scroll', this.handleScroll.bind(this));
+
       this.wifiButton.addEventListener('click', this.handleWifiButton.bind(this));
       this.bluetoothButton.addEventListener('click', this.handleBluetoothButton.bind(this));
       this.cellularDataButton.addEventListener('click', this.handleCellularDataButton.bind(this));
@@ -26,6 +33,16 @@
       this.audioButton.addEventListener('click', this.handleAudioButton.bind(this));
       this.screenCaptureButton.addEventListener('click', this.handleScreenCaptureButton.bind(this));
       this.flashlightButton.addEventListener('click', this.handleFlashlightButton.bind(this));
+    },
+
+    handleScroll: function (event) {
+      const scrollPosition = event.target.scrollTop;
+      let progress = scrollPosition / 80;
+      if (progress >= 1) {
+        progress = 1;
+      }
+
+      this.titlebar.style.setProperty('--scroll-progress', progress);
     },
 
     handleWifiButton: function () {

@@ -5,7 +5,7 @@
   const fs = require('fs');
   const path = require('path');
 
-  module.exports = {
+  const Settings = {
     getValue: function (name) {
       return new Promise((resolve, reject) => {
         fs.readFile(
@@ -58,7 +58,7 @@
     // Function to register an observer for a setting
     addObserver: function (name, callback) {
       ipcRenderer.on('settingschange', (event, data) => {
-        this.getValue(name).then(data => {
+        Settings.getValue(name).then(data => {
           callback(data);
         });
         if (data && data[name]) {
@@ -67,4 +67,6 @@
       });
     }
   };
+
+  module.exports = Settings;
 })();

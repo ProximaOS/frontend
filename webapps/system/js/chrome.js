@@ -154,32 +154,25 @@
               this.chrome().classList.add(data);
             });
 
-            if (window.matchMedia('(prefers-color-scheme: light)').matches) {
-              if (this.statusbar) {
-                this.statusbar.classList.add('light');
-              }
-              if (this.softwareButtons) {
-                this.softwareButtons.classList.add('light');
-              }
-              if (this.bottomPanel) {
-                this.bottomPanel.classList.add('light');
-              }
-              this.chrome().classList.add('light');
-              this.chrome().parentElement.classList.add('light');
-            } else if (
-              window.matchMedia('(prefers-color-scheme: dark)').matches
-            ) {
-              if (this.statusbar) {
-                this.statusbar.classList.add('dark');
-              }
-              if (this.softwareButtons) {
-                this.softwareButtons.classList.add('dark');
-              }
-              if (this.bottomPanel) {
-                this.bottomPanel.classList.add('dark');
-              }
+            if (this.statusbar) {
+              this.statusbar.classList.remove('light');
+              this.statusbar.classList.remove('dark');
+            }
+            if (this.softwareButtons) {
+              this.softwareButtons.classList.remove('light');
+              this.softwareButtons.classList.remove('dark');
+            }
+            if (this.bottomPanel) {
+              this.bottomPanel.classList.remove('light');
+              this.bottomPanel.classList.remove('dark');
+            }
+
+            if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
               this.chrome().classList.add('dark');
               this.chrome().parentElement.classList.add('dark');
+            } else {
+              this.chrome().classList.add('light');
+              this.chrome().parentElement.classList.add('light');
             }
 
             this.chrome().dataset.id = 0;

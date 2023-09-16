@@ -42,7 +42,7 @@
     },
 
     addAudio: function (path) {
-      window.StorageManager.read(path, { encoding: 'base64' }).then((data) => {
+      window.SDCardManager.read(path, { encoding: 'base64' }).then((data) => {
         const parts = path.split('/');
         const fileName = parts[parts.length - 1];
 

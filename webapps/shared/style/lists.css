@@ -5,7 +5,7 @@
   box-sizing: border-box;
   height: 3rem;
   line-height: 3rem;
-  color: #858585;
+  color: var(--accent-color);
   font-size: 1.6rem;
   font-weight: bold;
   text-transform: uppercase;
@@ -36,14 +36,17 @@
   border-radius: 1rem;
   color: var(--text-color);
   outline: none;
+  transition: all 0.3s ease;
 }
 
 .lists ul li:not(.noclick):hover {
   background-color: var(--item-hover);
+  transition: none;
 }
 
 .lists ul li:not(.noclick):active {
   background-color: var(--item-active);
+  transition: none;
 }
 
 .lists ul li:not(.noclick).selected {
@@ -118,6 +121,9 @@ html[dir="rtl"] .lists ul li.page::after {
   line-height: 2.2rem;
   font-size: 1.6rem;
   color: var(--text-color);
+  width: 100%;
+  text-overflow: ellipsis;
+  overflow: hidden;
 }
 
 .lists ul li.selected p {

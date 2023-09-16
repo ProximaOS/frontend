@@ -15,6 +15,7 @@
   "background_color": "#f0f6ff",
   "theme_color": "#0061e0",
   "permissions": {
+    "device-info": {},
     "bluetooth": {},
     "settings": {},
     "storage": {},

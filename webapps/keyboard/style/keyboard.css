@@ -16,9 +16,11 @@ html, body {
 
 #keyboard-container {
   position: absolute;
-  left: 0;
+  left: 50%;
+  translate: -50% 0;
   top: 0;
   width: 100%;
+  max-width: var(--safezone-width);
   height: 100%;
   display: flex;
   flex-direction: column;

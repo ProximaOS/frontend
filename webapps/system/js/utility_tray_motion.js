@@ -2,11 +2,14 @@
   'use strict';
 
   const UtilityTrayMotion = {
+    titlebar: document.querySelector('#utility-tray .titlebar'),
+
     topPanel: document.getElementById('top-panel'),
     statusbar: document.getElementById('statusbar'),
     motionElement: document.getElementById('utility-tray-motion'),
     controlCenter: document.getElementById('control-center'),
     notifications: document.getElementById('notifications'),
+
     startY: 0,
     currentY: 0,
     isDragging: false,
@@ -88,26 +91,32 @@
 
       if (progress >= this.threshold) {
         this.statusbar.style.setProperty('--motion-progress', 1);
-        this.statusbar.style.setProperty('--overflow-progress', 0);
+        this.statusbar.style.setProperty('--overscroll-progress', 0);
+        this.titlebar.style.setProperty('--overscroll-progress', 0);
         this.motionElement.style.setProperty('--motion-progress', 1);
-        this.motionElement.style.setProperty('--overflow-progress', 0);
+        this.motionElement.style.setProperty('--overscroll-progress', 0);
         this.statusbar.classList.add('transitioning');
+        this.titlebar.classList.add('transitioning');
         this.motionElement.classList.add('transitioning');
         clearTimeout(this.timer);
         this.timer = setTimeout(() => {
           this.statusbar.classList.remove('transitioning');
+          this.titlebar.classList.remove('transitioning');
           this.motionElement.classList.remove('transitioning');
         }, 500);
       } else {
         this.statusbar.style.setProperty('--motion-progress', 0);
-        this.statusbar.style.setProperty('--overflow-progress', 0);
+        this.statusbar.style.setProperty('--overscroll-progress', 0);
+        this.titlebar.style.setProperty('--overscroll-progress', 0);
         this.motionElement.style.setProperty('--motion-progress', 0);
-        this.motionElement.style.setProperty('--overflow-progress', 0);
+        this.motionElement.style.setProperty('--overscroll-progress', 0);
         this.statusbar.classList.add('transitioning');
+        this.titlebar.classList.add('transitioning');
         this.motionElement.classList.add('transitioning');
         clearTimeout(this.timer);
         this.timer = setTimeout(() => {
           this.statusbar.classList.remove('transitioning');
+          this.titlebar.classList.remove('transitioning');
           this.motionElement.classList.remove('transitioning');
         }, 500);
         this.hideMotionElement();
@@ -125,10 +134,11 @@
       const motionProgress = 1 - Math.max(0, Math.min(1, progress)); // Limit progress between 0 and 1;
       const overflowProgress = 1 - (Math.min(0, progress) + 1);
       this.statusbar.style.setProperty('--motion-progress', motionProgress);
-      this.statusbar.style.setProperty('--overflow-progress', overflowProgress);
+      this.statusbar.style.setProperty('--overscroll-progress', overflowProgress);
+      this.titlebar.style.setProperty('--overscroll-progress', overflowProgress);
       this.motionElement.style.setProperty('--motion-progress', motionProgress);
       this.motionElement.style.setProperty(
-        '--overflow-progress',
+        '--overscroll-progress',
         overflowProgress
       );
 
@@ -159,14 +169,17 @@
 
       if (progress >= this.threshold) {
         this.statusbar.style.setProperty('--motion-progress', 0);
-        this.statusbar.style.setProperty('--overflow-progress', 0);
+        this.statusbar.style.setProperty('--overscroll-progress', 0);
+        this.titlebar.style.setProperty('--overscroll-progress', 0);
         this.motionElement.style.setProperty('--motion-progress', 0);
-        this.motionElement.style.setProperty('--overflow-progress', 0);
+        this.motionElement.style.setProperty('--overscroll-progress', 0);
         this.statusbar.classList.add('transitioning');
+        this.titlebar.classList.add('transitioning');
         this.motionElement.classList.add('transitioning');
         clearTimeout(this.timer);
         this.timer = setTimeout(() => {
           this.statusbar.classList.remove('transitioning');
+          this.titlebar.classList.remove('transitioning');
           this.motionElement.classList.remove('transitioning');
         }, 500);
       }

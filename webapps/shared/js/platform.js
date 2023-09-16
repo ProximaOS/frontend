@@ -12,7 +12,7 @@
       return 'smart-tv';
     } else if (navigator.userAgent.includes('VR')) {
       return 'vr';
-    } else if (navigator.userAgent.includes('Home')) {
+    } else if (navigator.userAgent.includes('Homepad')) {
       return 'homepad';
     } else if (navigator.userAgent.includes('Wear')) {
       return 'wear';

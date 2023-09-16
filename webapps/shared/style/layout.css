@@ -46,18 +46,6 @@ html, body {
   scrollbar-width: none;
 }
 
-.panel > .content::after {
-  content: '';
-  position: absolute;
-  left: 0;
-  bottom: 0;
-  width: 100%;
-  height: var(--software-buttons-height);
-  background-color: var(--acrylic-background);
-  backdrop-filter: blur(20px);
-  z-index: 5;
-}
-
 .panel > .content form.search {
   width: calc(100% - 3rem);
   max-width: calc(var(--safezone-width) - 3rem);
@@ -130,9 +118,14 @@ html, body {
 }
 
 .panel > .content .scrollbar-track-y {
+  right: 0;
   width: 0.75rem;
   top: calc(0.5rem + (5rem * var(--progress)) + (13rem * var(--overscroll-progress)));
   height: calc(100% - 1rem - var(--software-buttons-height) - (5rem * var(--progress)) + (13rem * var(--overscroll-progress)));
+}
+html[dir="rtl"] .panel > .content .scrollbar-track-y {
+  right: unset;
+  left: 0;
 }
 
 .panel > .content .scrollbar-thumb {

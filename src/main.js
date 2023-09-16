@@ -1,13 +1,23 @@
-const { app, dialog } = require('electron');
+const { app, dialog, ipcMain } = require('electron');
 const path = require('path');
 const loadChrome = require('./browser/chrome');
-const initiateServer = require('./openorchid-server');
+const initiateServer = require('./server');
 const loadOpenOrchid = require('./browser/openorchid');
 const protocols = require('electron-protocols');
 const isDev = require('electron-is-dev');
 const electronReload = require('electron-reload');
+const { program } = require('commander');
 
 require('dotenv').config();
+
+program
+  .option(
+    '-t, --type <value>',
+    'Specifies which type of OpenOrchid platform to use'
+  )
+  .parse(process.argv);
+
+  const options = program.opts();
 
 const profileDir = path.resolve(process.env.OPENORCHID_DATA);
 app.setPath('appData', profileDir);
@@ -26,7 +36,40 @@ app.setPath('crashDumps', path.join(profileDir, 'crash-dumps'));
 
 // Disable error dialogs by overriding
 dialog.showErrorBox = function (title, content) {
-  console.log(`${title}\n${content}`);
+  console.error(`${title}\n${content}`);
+};
+dialog.showMessageBox = function (options, callback) {
+  // Trigger your IPC event instead of displaying the native dialog
+  ipcMain.emit('messagebox', options);
+
+  // You can also handle the callback if needed
+  if (callback) {
+    ipcMain.on('messagebox-reply', (event, data) => {
+      callback(data.code);
+    });
+  }
+};
+dialog.showOpenDialog = (options, callback) => {
+  // Trigger your IPC event instead of displaying the native dialog
+  ipcMain.emit('openfile', options);
+
+  // You can also handle the callback if needed
+  if (callback) {
+    ipcMain.on('openfile-reply', (event, data) => {
+      callback(data.files);
+    });
+  }
+};
+dialog.showSaveDialog = (options, callback) => {
+  // Trigger your IPC event instead of displaying the native dialog
+  ipcMain.emit('savefile', options);
+
+  // You can also handle the callback if needed
+  if (callback) {
+    ipcMain.on('savefile-reply', (event, data) => {
+      callback(data.filepath);
+    });
+  }
 };
 
 protocols.register('openorchid', (uri) => {

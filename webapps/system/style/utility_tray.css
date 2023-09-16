@@ -30,13 +30,30 @@
   display: none;
 }
 
+#utility-tray .titlebar {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: calc((var(--statusbar-height) * 2) * (1 + (var(--overscroll-progress, 0) / 2)));
+  background-color: rgba(51, 51, 51, calc(var(--scroll-progress) * 0.3));
+  backdrop-filter: blur(calc(20px * var(--scroll-progress))) saturate(calc(100% + (80% * var(--scroll-progress))));
+  outline: solid 0.1rem rgba(255, 255, 255, calc(0.1 * var(--scroll-progress, 0)));
+  z-index: 10;
+}
+
+#utility-tray .titlebar.transitioning {
+  transition: height 0.5s ease;
+}
+
 .utility-tray-header {
   width: 100%;
   height: 5rem;
   display: flex;
   padding: 0 1.5rem;
   box-sizing: border-box;
-  margin: calc(3rem * (var(--overflow-progress) * 2)) 0 0;
+  margin: calc(3rem * (var(--overscroll-progress) * 2)) 0 0;
   transition: transform 0.3s ease, opacity 0.3s ease, visibility 0.5s ease;
 }
 
@@ -101,24 +118,26 @@
 #notifications {
   position: absolute;
   left: 0;
-  top: calc(var(--statusbar-height) * 2);
+  top: 0;
   width: 100%;
-  height: calc(100% - (var(--statusbar-height) * 2) - 2.5rem);
-  padding: 0 calc(50vw - (var(--safezone-width) / 2));
+  height: 100%;
+  padding: calc(var(--statusbar-height) * 2) calc(50vw - (var(--safezone-width) / 2)) 2.5rem;
   box-sizing: border-box;
+  overflow-x: hidden;
+  overflow-y: scroll;
   transition: all 0.5s ease;
 }
 
 #screen.software-buttons-enabled #control-center,
 #screen.software-buttons-enabled #notifications {
-  height: calc(100% - (var(--statusbar-height) * 2) - var(--software-buttons-height));
+  padding-bottom: var(--software-buttons-height);
 }
 
 .control-center-row {
   width: 100%;
   padding: 0 1.5rem;
   box-sizing: border-box;
-  margin: calc(3rem * var(--overflow-progress)) 0 1rem;
+  margin: calc(3rem * var(--overscroll-progress)) 0 1rem;
   display: flex;
   gap: 1rem;
   transition: transform 0.3s ease, opacity 0.3s ease, visibility 0.5s ease;

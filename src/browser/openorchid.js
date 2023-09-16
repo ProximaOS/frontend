@@ -2,7 +2,7 @@
   'use strict';
 
   const { BrowserWindow, nativeTheme, Menu, ipcMain } = require('electron');
-  const settings = require('../openorchid-settings');
+  const settings = require('../settings');
   const os = require('os');
   const path = require('path');
   const fs = require('fs');
@@ -12,24 +12,89 @@
   const update = require('../update/auto_updater');
   const RPC = require('discord-rpc');
   const appConfig = require('../../package.json');
+  const { program } = require('commander');
 
   require('dotenv').config();
-  require('../default_presets');
+  require('../config/default_presets');
+
+  program
+    .option(
+      '-t, --type <value>',
+      'Specifies which type of OpenOrchid platform to use'
+    )
+    .parse(process.argv);
+
+  const options = program.opts();
+  let webConfig = {
+    width: 320,
+    height: 640,
+    type: 'Mobile'
+  };
+
+  if (options.type) {
+    switch (options.type) {
+      case 'desktop':
+        webConfig = {
+          width: 1024,
+          height: 640,
+          type: 'Desktop'
+        };
+        break;
+
+      case 'smart-tv':
+        webConfig = {
+          width: 1280,
+          height: 720,
+          type: 'Smart TV'
+        };
+        break;
+
+      case 'vr':
+        webConfig = {
+          width: 1280,
+          height: 720,
+          type: 'VR'
+        };
+        break;
+
+      case 'homepad':
+        webConfig = {
+          width: 1280,
+          height: 720,
+          type: 'Homepad'
+        };
+        break;
+
+      case 'wear':
+        webConfig = {
+          width: 240,
+          height: 240,
+          type: 'Wear'
+        };
+        break;
+
+      case 'featurephone':
+        webConfig = {
+          width: 240,
+          height: 320,
+          type: 'Mobile/Featurephone'
+        };
+        break;
+
+      case 'qwertyphone':
+        webConfig = {
+          width: 320,
+          height: 240,
+          type: 'Mobile/Qwertyphone'
+        };
+        break;
+
+      default:
+        break;
+    }
+  }
 
   module.exports = function () {
-    let width = 320;
-    let height = 640;
-    let type = 'Mobile';
-    if (process.argv.indexOf('--desktop') !== -1) {
-      width = 1024;
-      height = 640;
-      type = 'Desktop';
-    } else if (process.argv.indexOf('--smart-tv') !== -1) {
-      width = 1280;
-      height = 720;
-      type = 'Smart TV';
-    }
-
     // Create the browser window.
     const mainWindow = new BrowserWindow({
       icon: path.join(
@@ -41,8 +106,10 @@
         'icon.png'
       ),
       title: 'OpenOrchid Simulator',
-      width: process.platform !== 'win32' ? width : width + 14,
-      height: process.platform !== 'win32' ? height : height + 37,
+      width:
+        process.platform !== 'win32' ? webConfig.width : webConfig.width + 14,
+      height:
+        process.platform !== 'win32' ? webConfig.height : webConfig.height + 37,
       // show: false,
       fullscreenable: false,
       disableAutoHideCursor: true,
@@ -53,7 +120,6 @@
       webPreferences: {
         nodeIntegration: true,
         nodeIntegrationInSubFrames: true,
-        // contextIsolation: false,
         webviewTag: true,
         defaultFontSize: 16,
         defaultMonospaceFontSize: 14,
@@ -67,16 +133,16 @@
     const menu = Menu.buildFromTemplate(require('./menu')(mainWindow));
     Menu.setApplicationMenu(menu);
 
-    const userAgent = `Mozilla/5.0 (OpenOrchid ${
-      appConfig.version
-    } ${type}; Linux ${os.arch()}; ${appConfig.manufacturer} ${
+    const userAgent = `Mozilla/5.0 (OpenOrchid ${appConfig.version} ${
+      webConfig.type
+    }; Linux ${os.arch()}; ${appConfig.manufacturer} ${
       appConfig.deviceModelName
     }; ${
       appConfig.servicePackName
     }) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/${
       process.versions.chrome
     } OrchidBrowser/${appConfig.version}${
-      type === 'Mobile' ? ' ' + type : ''
+      webConfig.type === 'Mobile' ? ' ' + webConfig.type : ''
     } Safari/537.36`;
 
     // and load the index.html of the app.
@@ -89,6 +155,7 @@
       mainWindow.webContents.openDevTools();
     }
 
+    // Initialize updater
     // update.init(mainWindow);
 
     fs.mkdirSync(path.join(process.env.OPENORCHID_DATA), { recursive: true });
@@ -118,7 +185,7 @@
       client.request('SET_ACTIVITY', {
         pid: process.pid,
         activity: {
-          details: `Testing ${type} On Simulator`,
+          details: `Testing ${webConfig.type} On Simulator`,
           assets: {
             large_image: 'appicon',
             large_text: 'Default'

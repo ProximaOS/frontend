@@ -1,10 +1,7 @@
 !(function () {
   'use strict';
 
-  const {
-    ipcMain,
-    app
-  } = require('electron');
+  const { ipcMain, app, webContents } = require('electron');
   const path = require('path');
   const fs = require('fs');
   const electronLocalshortcut = require('electron-localshortcut');
@@ -107,10 +104,6 @@
       // Pass the open event with URL to the renderer process
       mainWindow.webContents.send('open-url', { event, url });
     });
-    app.on('open-file', (event, data) => {
-      // Pass the open event with data to the renderer process
-      mainWindow.webContents.send('open-file', { event, data });
-    });
 
     ipcMain.on('request-extension-list', (event, data) => {
       mainWindow.webContents.send(
@@ -121,9 +114,15 @@
 
     ipcMain.on('message', (event, data) => {
       mainWindow.webContents.send('message', data);
-      ipcMain.on('message-reply', (event, data) => {
-        mainWindow.webContents.send('message-reply', { data, isAllowed: true });
-      });
+    });
+    ipcMain.on('messagebox', (event, data) => {
+      mainWindow.webContents.send('messagebox', data);
+    });
+    ipcMain.on('openfile', (event, data) => {
+      mainWindow.webContents.send('openfile', data);
+    });
+    ipcMain.on('savefile', (event, data) => {
+      mainWindow.webContents.send('savefile', data);
     });
     ipcMain.on('shutdown', (event, data) => {
       app.quit();
@@ -164,6 +163,18 @@
     });
     ipcMain.on('deviceputdown', (event, data) => {
       mainWindow.webContents.send('deviceputdown', data);
+    });
+    ipcMain.on('screenshot', (event, data) => {
+      if (data.webContentsId) {
+        const wc = webContents.fromId(data.webContentsId);
+        wc.capturePage().then((image) => {
+          mainWindow.webContents.send('screenshoted', image.toDataURL());
+        });
+      } else {
+        mainWindow.webContents.capturePage().then((image) => {
+          mainWindow.webContents.send('screenshoted', image.toDataURL());
+        });
+      }
     });
   };
 })();

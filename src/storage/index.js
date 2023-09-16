@@ -167,6 +167,12 @@
 
       const mimeType = mime.getType(filePath);
       return mimeType;
+    },
+    exists: function (filePath) {
+      return fs.existsSync(path.join(process.env.OPENORCHID_STORAGE, filePath));
+    },
+    mkdir: function (path, options = {}) {
+      fs.mkdirSync(path.join(process.env.OPENORCHID_STORAGE, path), options)
     }
   };
 })(window);

@@ -1,14 +1,12 @@
 !(function (exports) {
   'use strict';
 
-  const fs = require('fs');
-  const path = require('path');
-
   const Viewfinder = {
     viewfinder: document.getElementById('viewfinder'),
     shutterButton: document.getElementById('shutter-button'),
     galleryButton: document.getElementById('gallery-button'),
     recordButton: document.getElementById('record-button'),
+
     mediaStream: null,
     isRecording: false,
     recordChunks: [],
@@ -103,23 +101,14 @@
       const imageData = Buffer.from(imageUrl.split(',')[1], 'base64');
 
       // Create the folder if it doesn't exist
-      const folderPath = './profile/DCIM/MEDIA100';
-      if (!fs.existsSync(folderPath)) {
-        fs.mkdirSync(folderPath, { recursive: true });
+      const folderPath = '/DCIM/MEDIA100';
+      if (!SDCardManager.exists(folderPath)) {
+        SDCardManager.mkdir(folderPath, { recursive: true });
       }
 
-      // Save the image using the fs module
-      const fileName = path.join(folderPath, `photo_${Date.now()}.jpg`);
-      fs.writeFile(fileName, imageData, (err) => {
-        if (err) {
-          console.error('Error saving the image.', err);
-        } else {
-          console.log('Image saved:', fileName);
-
-          // Store the file name in local storage
-          localStorage.setItem('lastImage', imageData);
-        }
-      });
+      // Save the image using the SDCardManager module
+      const fileName = `${folderPath}/photo_${Date.toISOString()}.jpg`;
+      SDCardManager.write(fileName, imageData);
     },
 
     saveRecordedVideo: function () {
@@ -127,20 +116,14 @@
       const videoBlob = new Blob(this.recordChunks, { type: 'video/webm' });
 
       // Create the folder if it doesn't exist
-      const folderPath = './profile/DCIM/MEDIA100';
-      if (!fs.existsSync(folderPath)) {
-        fs.mkdirSync(folderPath, { recursive: true });
+      const folderPath = '/DCIM/MEDIA100';
+      if (!SDCardManager.exists(folderPath)) {
+        SDCardManager.mkdir(folderPath, { recursive: true });
       }
 
-      // Save the video using the fs module
-      const fileName = path.join(folderPath, `video_${Date.now()}.webm`);
-      fs.writeFile(fileName, videoBlob, (err) => {
-        if (err) {
-          console.error('Error saving the video.', err);
-        } else {
-          console.log('Video saved:', fileName);
-        }
-      });
+      // Save the video using the SDCardManager module
+      const fileName = `${folderPath}/video_${Date.toISOString()}.webm`;
+      SDCardManager.write(fileName, videoBlob);
     },
 
     showLastImage: function () {

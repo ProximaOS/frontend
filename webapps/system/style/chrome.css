@@ -50,6 +50,12 @@
   padding: var(--chrome-toolbar-gap) 0 var(--software-buttons-height, var(--chrome-toolbar-gap));
 }
 
+@media screen and (orientation: landscape) {
+  #screen.software-buttons-enabled .chrome.bottom .toolbar {
+    padding: var(--chrome-toolbar-gap) 0;
+  }
+}
+
 .chrome.visible .toolbar {
   transform: translateY(0) !important;
   visibility: visible;
@@ -1197,7 +1203,7 @@ html[dir="rtl"] .chrome .dropdown .dropdown-panel button {
   }
 }
 
-@media screen and (max-width: 599px) {
+@media screen and (max-width: 767px) {
   .chrome .navbar-back-button,
   .chrome .navbar-forward-button,
   .chrome .navbar-reload-button,
@@ -1279,7 +1285,7 @@ html[dir="rtl"] .chrome .dropdown .dropdown-panel button {
   }
 }
 
-@media screen and (min-width: 600px) {
+@media screen and (min-width: 768px) {
   .chrome .toolbar {
     padding: var(--chrome-toolbar-gap) 0;
   }

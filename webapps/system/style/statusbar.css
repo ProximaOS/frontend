@@ -16,11 +16,11 @@
   /* We use the special translate property for X-axis translation to avoid janky 'transform: translateX()' transition */
   translate: -50% 0;
   max-width: var(--safezone-width);
-  transform: translateY(calc(var(--statusbar-height) * (var(--motion-progress, 0) + var(--overflow-progress))));
+  transform: translateY(calc(var(--statusbar-height) * (var(--motion-progress, 0) + var(--overscroll-progress))));
 }
 
 #screen:not(.desktop) #statusbar.hidden.tray-open {
-  transform: translateY(calc((var(--statusbar-height) * -1) + (var(--statusbar-height) * ((var(--motion-progress, 0) + var(--overflow-progress)) * 2))));
+  transform: translateY(calc((var(--statusbar-height) * -1) + (var(--statusbar-height) * ((var(--motion-progress, 0) + var(--overscroll-progress)) * 2))));
 }
 
 #screen:not(.desktop) #statusbar.tray-open.transitioning {
@@ -272,14 +272,14 @@ html[dir="rtl"] .statusbar-icons > .right {
 }
 
 @media screen and (orientation: landscape) and (max-width: 767px) {
-  #statusbar {
+  #screen.software-buttons-enabled #statusbar {
     width: calc(100% - var(--software-buttons-height));
     left: unset;
   }
-  html[dir="ltr"] #statusbar {
+  html[dir="ltr"] #screen.software-buttons-enabled #statusbar {
     right: 0;
   }
-  html[dir="rtl"] #statusbar {
+  html[dir="rtl"] #screen.software-buttons-enabled #statusbar {
     left: 0;
   }
 }

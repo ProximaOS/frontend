@@ -1,5 +1,30 @@
 {
   "device": {
+    "openorchid.bluetooth": true,
+    "openorchid.nfc": true,
+    "openorchid.power": true,
+    "openorchid.sdcard": true,
+    "openorchid.settings": true,
+    "openorchid.securityCheck": true,
+    "openorchid.sms": true,
+    "openorchid.supportedFilesystems": [
+      "vfat",
+      "erofs",
+      "tmpfs",
+      "ext4",
+      "f2fs",
+      "fuse",
+      "stratis",
+      "ntfs"
+    ],
+    "openorchid.telephony": true,
+    "openorchid.time": true,
+    "openorchid.totalMem": 0,
+    "openorchid.totalSdcard": 0,
+    "openorchid.updates": true,
+    "openorchid.users": true,
+    "openorchid.virtualMachines": true,
+    "openorchid.webapps": true,
     "openorchid.wifi": true
   }
 }

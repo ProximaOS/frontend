@@ -1,0 +1,54 @@
+.toolbar {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 5rem;
+  display: flex;
+  justify-content: space-between;
+  z-index: 1;
+  padding: 1rem 1.5rem;
+  box-sizing: border-box;
+}
+
+.toolbar > button {
+  margin: 0;
+  padding: 0;
+  width: 5rem;
+  height: 5rem;
+  line-height: 5rem;
+  background-color: transparent;
+  border: none;
+  text-align: center;
+  color: #fff;
+  outline: none;
+}
+
+.toolbar > button[data-icon]::before {
+  font-size: 2.4rem;
+}
+
+#filters-button {
+  position: relative;
+}
+
+#filters-button > span {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  translate: -50% -50%;
+  color: #fff;
+}
+
+#filters-button > span[data-icon]::before {
+  font-size: 2.4rem;
+  transform: translateY(0.4rem);
+}
+
+#filters-button > span[data-icon="gallery-filterscircleopacity35"]::before {
+  opacity: 0.33;
+}
+
+#filters-button > span[data-icon="gallery-filterscircleopacity50"]::before {
+  opacity: 0.67;
+}

@@ -92,12 +92,12 @@
 
       this.fileContainer.innerHTML = '';
       this.pathName.innerHTML = path.replaceAll('//', '/');
-      window.StorageManager.list(path).then((files) => {
+      window.SDCardManager.list(path).then((files) => {
         files.sort();
         files.forEach((file) => {
           const item = document.createElement('div');
           item.classList.add('file');
-          window.StorageManager
+          window.SDCardManager
             .getFileStats(`${path}/${file}`)
             .then((stat) => {
               if (stat.isDirectory()) {
@@ -128,12 +128,12 @@
                   };
                 }
 
-                const mime = window.StorageManager.getMime(file);
+                const mime = window.SDCardManager.getMime(file);
                 if (mime.startsWith('text/')) {
                   item.classList.add('text');
                 } else if (mime.startsWith('image/')) {
                   item.classList.add('image');
-                  window.StorageManager
+                  window.SDCardManager
                     .read(`${path}/${file}`, { encoding: 'base64' })
                     .then((data) => {
                       // Call a function to generate the HTML content with the Base64-encoded image data
@@ -178,11 +178,11 @@
       let totalSize = 0;
 
       async function calculateSize (filePath) {
-        const stats = await window.StorageManager.getFileStats(filePath);
+        const stats = await window.SDCardManager.getFileStats(filePath);
         if (stats.isFile()) {
           totalSize += stats.size;
         } else if (stats.isDirectory()) {
-          const nestedFiles = await window.StorageManager.list(filePath);
+          const nestedFiles = await window.SDCardManager.list(filePath);
 
           nestedFiles.forEach((file) => {
             const nestedFilePath = path.join(filePath, file);

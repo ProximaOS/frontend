@@ -49,3 +49,15 @@
 #screen:not(.desktop, .cards-view-visible) #bottom-panel.light::before {
   background-color: #333;
 }
+
+@media (prefers-color-scheme: light) {
+  #screen.keyboard-visible:not(.desktop, .cards-view-visible) #bottom-panel::before {
+    background-color: #333;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  #screen.keyboard-visible:not(.desktop, .cards-view-visible) #bottom-panel::before {
+    background-color: #fff;
+  }
+}
