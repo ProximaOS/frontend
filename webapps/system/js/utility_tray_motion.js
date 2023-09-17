@@ -4,6 +4,7 @@
   const UtilityTrayMotion = {
     titlebar: document.querySelector('#utility-tray .titlebar'),
 
+    screen: document.getElementById('screen'),
     topPanel: document.getElementById('top-panel'),
     statusbar: document.getElementById('statusbar'),
     motionElement: document.getElementById('utility-tray-motion'),
@@ -13,7 +14,7 @@
     startY: 0,
     currentY: 0,
     isDragging: false,
-    threshold: 0.75, // Adjust the threshold as desired (0.0 to 1.0)
+    threshold: 0.25, // Adjust the threshold as desired (0.0 to 1.0)
 
     init: function () {
       this.topPanel.addEventListener(
@@ -41,9 +42,10 @@
     },
 
     onPointerDown: function (event) {
-      this.startY = event.pageY || event.touches[0].pageY;
+      this.startY = event.clientY || event.touches[0].clientY;
       this.currentY = this.startY;
       this.isDragging = true;
+      this.screen.classList.add('utility-tray-visible');
       this.statusbar.classList.add('tray-open');
     },
 
@@ -62,7 +64,7 @@
           this.motionElement.classList.contains('visible')
         ) {
           if (
-            (event.pageX || event.touches[0].pageX) >=
+            (event.clientX || event.touches[0].clientX) >=
             window.innerWidth / 2
           ) {
             this.controlCenter.classList.add('hidden');
@@ -73,10 +75,10 @@
           }
         }
 
-        this.currentY = event.pageY || event.touches[0].pageY;
+        this.currentY = event.clientY || event.touches[0].clientY;
         const offsetY = this.startY - this.currentY;
         const maxHeight = this.motionElement.offsetHeight;
-        const progress = offsetY / maxHeight;
+        const progress = (offsetY / maxHeight) * -1;
 
         this.updateMotionProgress(progress); // Update motion element opacity
       }
@@ -131,8 +133,11 @@
     },
 
     updateMotionProgress: function (progress) {
-      const motionProgress = 1 - Math.max(0, Math.min(1, progress)); // Limit progress between 0 and 1;
-      const overflowProgress = 1 - (Math.min(0, progress) + 1);
+      if (progress < 0) {
+        progress = 1 + progress;
+      }
+      const motionProgress = Math.max(0, Math.min(1, progress)); // Limit progress between 0 and 1;
+      const overflowProgress = Math.max(1, progress) - 1;
       this.statusbar.style.setProperty('--motion-progress', motionProgress);
       this.statusbar.style.setProperty('--overscroll-progress', overflowProgress);
       this.titlebar.style.setProperty('--overscroll-progress', overflowProgress);
@@ -153,11 +158,13 @@
     },
 
     hideMotionElement: function () {
+      this.screen.classList.remove('utility-tray-visible');
       this.statusbar.classList.remove('tray-open');
       this.motionElement.classList.remove('visible');
     },
 
     showMotionElement: function () {
+      this.screen.classList.add('utility-tray-visible');
       this.statusbar.classList.add('tray-open');
       this.motionElement.classList.add('visible');
     },

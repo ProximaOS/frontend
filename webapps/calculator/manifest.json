@@ -4,7 +4,12 @@
   "description": "Do your subdivisions, multiplications, and subtractions here.",
   "launch_path": "/index.html",
   "icons": {
-    "48": "/style/icons/calculator.png"
+    "16": "/style/icons/calculator_16.png",
+    "32": "/style/icons/calculator_32.png",
+    "48": "/style/icons/calculator_48.png",
+    "64": "/style/icons/calculator_64.png",
+    "128": "/style/icons/calculator_128.png",
+    "256": "/style/icons/calculator_256.png"
   },
   "developer": {
     "name": "Orchid Org.",

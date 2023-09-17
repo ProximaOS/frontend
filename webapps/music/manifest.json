@@ -4,7 +4,12 @@
   "description": "",
   "launch_path": "/index.html",
   "icons": {
-    "48": "/style/icons/music.png"
+    "16": "/style/icons/music_16.png",
+    "32": "/style/icons/music_32.png",
+    "48": "/style/icons/music_48.png",
+    "64": "/style/icons/music_64.png",
+    "128": "/style/icons/music_128.png",
+    "256": "/style/icons/music_256.png"
   },
   "developer": {
     "name": "Orchid Org.",

@@ -5,7 +5,12 @@
   "description": "First time use",
   "launch_path": "/index.html",
   "icons": {
-    "48": "/style/icons/ftu.png"
+    "16": "/style/icons/ftu_16.png",
+    "32": "/style/icons/ftu_32.png",
+    "48": "/style/icons/ftu_48.png",
+    "64": "/style/icons/ftu_64.png",
+    "128": "/style/icons/ftu_128.png",
+    "256": "/style/icons/ftu_256.png"
   },
   "developer": {
     "name": "Orchid Org.",

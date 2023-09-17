@@ -4,7 +4,12 @@
   "description": "Take photos and videos as memories.",
   "launch_path": "/index.html",
   "icons": {
-    "48": "/style/icons/camera.png"
+    "16": "/style/icons/camera_16.png",
+    "32": "/style/icons/camera_32.png",
+    "48": "/style/icons/camera_48.png",
+    "64": "/style/icons/camera_64.png",
+    "128": "/style/icons/camera_128.png",
+    "256": "/style/icons/camera_256.png"
   },
   "developer": {
     "name": "Orchid Org.",

@@ -498,7 +498,7 @@
   width: 100%;
   height: calc(100% - var(--chrome-tablist-height) + var(--chrome-navbar-height) + (var(--chrome-toolbar-gap) * 3));
   visibility: hidden;
-  transition: all 0.5s ease;
+  transition: transform 0.5s ease;
 }
 
 .chrome .browser-container > .browser.active {

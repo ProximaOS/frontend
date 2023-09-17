@@ -3,6 +3,7 @@
 
   const TimeIcon = {
     iconElement: document.getElementById('statusbar-time'),
+    dateElement: document.getElementById('statusbar-date'),
     is12HourFormat: true, // Set this flag to true for 12-hour format, or false for 24-hour format
 
     init: function () {
@@ -25,6 +26,12 @@
           minute: '2-digit'
         })
         .split(' ')[0];
+
+      this.dateElement.innerText = currentTime
+        .toLocaleDateString(langCode, {
+          day: 'numeric',
+          month: 'short'
+        });
 
       clearTimeout(this.timer);
       this.timer = setTimeout(this.update.bind(this), 1000);

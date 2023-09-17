@@ -2,6 +2,7 @@
   'use strict';
 
   const GesturePanels = {
+    screen: document.getElementById('screen'),
     topPanel: document.getElementById('top-panel'),
     leftPanel: document.getElementById('left-panel'),
     rightPanel: document.getElementById('right-panel'),
@@ -11,15 +12,19 @@
     startY: false,
 
     init: function () {
-      this.bottomPanel.addEventListener('mousedown', this.handleBottomPanel.bind(this));
+      this.bottomPanel.addEventListener(
+        'mousedown',
+        this.handleBottomPanel.bind(this)
+      );
 
       document.addEventListener('touchend', this.handlePointerUp.bind(this));
       document.addEventListener('mouseup', this.handlePointerUp.bind(this));
       document.addEventListener('touchmove', this.handlePointerMove.bind(this));
-      document.addEventListener(
-        'mousemove',
-        this.handlePointerMove.bind(this)
-      );
+      document.addEventListener('mousemove', this.handlePointerMove.bind(this));
+
+      document.addEventListener('click', () => {
+        this.screen.classList.remove('close-reach');
+      });
     },
 
     handleBottomPanel: function (event) {
@@ -36,22 +41,29 @@
         const currentYPosition = event.clientY;
         const distanceY = currentYPosition - this.startY;
 
+        const translateY = Math.min(0, distanceY / 2);
+        const scale = Math.min(
+          1,
+          window.innerHeight / (window.innerHeight - distanceY)
+        );
+
         // Move the window along the Y-axis based on the dragging distance
         if (!AppWindow.focusedWindow.dataset.oldTransformOrigin) {
           AppWindow.focusedWindow.dataset.oldTransformOrigin =
             AppWindow.focusedWindow.style.transformOrigin;
         }
         AppWindow.focusedWindow.style.transformOrigin = 'center bottom';
-        AppWindow.focusedWindow.style.transform = `translateY(${
-          distanceY / 2
-        }px) scale(${window.innerHeight / (window.innerHeight - distanceY)})`;
-        AppWindow.focusedWindow.style.setProperty('--offset-y', `${distanceY / 2}px`);
-        AppWindow.focusedWindow.style.setProperty('--scale', window.innerHeight / (window.innerHeight - distanceY));
+        AppWindow.focusedWindow.style.transform = `translateY(${translateY}px) scale(${scale})`;
+        AppWindow.focusedWindow.style.setProperty(
+          '--offset-y',
+          `${translateY}px`
+        );
+        AppWindow.focusedWindow.style.setProperty('--scale', scale);
 
         if (distanceY <= -300) {
           CardsView.element.classList.add('will-be-visible');
-          CardsView.element.style.setProperty('--offset-y', `${distanceY / 2}px`);
-          CardsView.element.style.setProperty('--scale', window.innerHeight / (window.innerHeight - distanceY));
+          CardsView.element.style.setProperty('--offset-y', `${translateY}px`);
+          CardsView.element.style.setProperty('--scale', scale);
         } else {
           CardsView.element.classList.remove('will-be-visible');
         }
@@ -72,11 +84,15 @@
         this.isDragging = false;
 
         AppWindow.containerElement.classList.remove('dragging');
-                if (distanceY <= -300) {
+        if (distanceY <= -300) {
           CardsView.element.classList.remove('will-be-visible');
           CardsView.show();
-        } else if (distanceY <= -100) {
+        } else if (distanceY <= -50) {
           AppWindow.minimize(AppWindow.focusedWindow.id);
+        } else if (distanceY >= 0) {
+          setTimeout(() => {
+            this.screen.classList.add('close-reach');
+          }, 16);
         } else {
           AppWindow.focusedWindow.classList.add('transitioning');
           AppWindow.focusedWindow.addEventListener('transitionend', () => {

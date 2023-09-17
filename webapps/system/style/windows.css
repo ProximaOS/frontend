@@ -35,7 +35,8 @@
   transform: scale(0.25);
 }
 
-#screen.cards-view-visible #windows {
+#screen.cards-view-visible #windows,
+#screen.utility-tray-visible #windows {
   pointer-events: none;
 }
 

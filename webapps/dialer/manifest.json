@@ -4,7 +4,12 @@
   "description": "",
   "launch_path": "/index.html",
   "icons": {
-    "48": "/style/icons/dialer.png"
+    "16": "/style/icons/dialer_16.png",
+    "32": "/style/icons/dialer_32.png",
+    "48": "/style/icons/dialer_48.png",
+    "64": "/style/icons/dialer_64.png",
+    "128": "/style/icons/dialer_128.png",
+    "256": "/style/icons/dialer_256.png"
   },
   "developer": {
     "name": "Orchid Org.",

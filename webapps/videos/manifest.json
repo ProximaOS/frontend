@@ -4,7 +4,12 @@
   "description": "",
   "launch_path": "/index.html",
   "icons": {
-    "48": "/style/icons/videos.png"
+    "16": "/style/icons/videos_16.png",
+    "32": "/style/icons/videos_32.png",
+    "48": "/style/icons/videos_48.png",
+    "64": "/style/icons/videos_64.png",
+    "128": "/style/icons/videos_128.png",
+    "256": "/style/icons/videos_256.png"
   },
   "developer": {
     "name": "Orchid Org.",

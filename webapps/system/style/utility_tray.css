@@ -8,8 +8,8 @@
 }
 
 #utility-tray-motion {
-  background-color: rgba(51, 51, 51, calc(var(--motion-progress) * 0.3));
-  backdrop-filter: blur(calc(50px * var(--motion-progress))) saturate(calc(100% + (80% * var(--motion-progress))));
+  background-color: rgba(51, 51, 51, calc(var(--motion-progress, 0) * 0.3));
+  backdrop-filter: blur(calc(20px * var(--motion-progress, 0))) saturate(calc(100% + (80% * var(--motion-progress, 0))));
   position: absolute;
   left: 0;
   top: 0;
@@ -37,8 +37,8 @@
   top: 0;
   width: 100%;
   height: calc((var(--statusbar-height) * 2) * (1 + (var(--overscroll-progress, 0) / 2)));
-  background-color: rgba(51, 51, 51, calc(var(--scroll-progress) * 0.3));
-  backdrop-filter: blur(calc(20px * var(--scroll-progress))) saturate(calc(100% + (80% * var(--scroll-progress))));
+  background-color: rgba(51, 51, 51, calc(var(--scroll-progress, 0) * 0.3));
+  backdrop-filter: blur(calc(20px * var(--scroll-progress, 0))) saturate(calc(100% + (80% * var(--scroll-progress, 0))));
   outline: solid 0.1rem rgba(255, 255, 255, calc(0.1 * var(--scroll-progress, 0)));
   z-index: 10;
 }
@@ -53,12 +53,12 @@
   display: flex;
   padding: 0 1.5rem;
   box-sizing: border-box;
-  margin: calc(3rem * (var(--overscroll-progress) * 2)) 0 0;
-  transition: transform 0.3s ease, opacity 0.3s ease, visibility 0.5s ease;
+  transform: translateY(calc(2.5rem * var(--overscroll-progress)));
+  transition: opacity 0.5s ease, visibility 0.5s ease;
 }
 
 #utility-tray-motion.transitioning .utility-tray-header {
-  transition: all 0.5s ease;
+  transition: transform 0.5s cubic-bezier(0, 0, 0, 1.1), opacity 0.5s ease, visibility 0.5s ease;
 }
 
 #utility-tray-motion.fade-out .utility-tray-header {
@@ -125,22 +125,13 @@
   box-sizing: border-box;
   overflow-x: hidden;
   overflow-y: scroll;
-  transition: all 0.5s ease;
+  perspective: 100vw;
+  transition: opacity 0.5s ease, visibility 0.5s ease;
 }
 
 #screen.software-buttons-enabled #control-center,
 #screen.software-buttons-enabled #notifications {
   padding-bottom: var(--software-buttons-height);
-}
-
-.control-center-row {
-  width: 100%;
-  padding: 0 1.5rem;
-  box-sizing: border-box;
-  margin: calc(3rem * var(--overscroll-progress)) 0 1rem;
-  display: flex;
-  gap: 1rem;
-  transition: transform 0.3s ease, opacity 0.3s ease, visibility 0.5s ease;
 }
 
 #screen:not(.desktop) #control-center.hidden,
@@ -149,12 +140,30 @@
   visibility: hidden;
 }
 
-#utility-tray-motion.transitioning .control-center-row {
-  transition: all 0.5s ease;
+.control-center-row {
+  width: 100%;
+  padding: 0 1.5rem;
+  box-sizing: border-box;
+  margin: 0 0 1rem;
+  display: flex;
+  gap: 1rem;
+  transition: opacity 0.5s ease, visibility 0.5s ease;
 }
 
-#utility-tray-motion .control-center-row {
-  transition: all 0.5s ease;
+.control-center-row:nth-child(2) {
+  transform: translateY(calc(3.5rem * var(--overscroll-progress)));
+}
+
+.control-center-row:nth-child(3) {
+  transform: translateY(calc(4.5rem * var(--overscroll-progress)));
+}
+
+.control-center-row:nth-child(4) {
+  transform: translateY(calc(5.5rem * var(--overscroll-progress)));
+}
+
+#utility-tray-motion.transitioning .control-center-row {
+  transition: transform 0.5s cubic-bezier(0, 0, 0, 1.1), opacity 0.5s ease, visibility 0.5s ease;
 }
 
 #screen:not(.desktop) #utility-tray-motion .hidden .control-center-row,

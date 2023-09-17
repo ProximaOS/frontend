@@ -4,7 +4,12 @@
   "description": "View your memories as photos and videos.",
   "launch_path": "/index.html",
   "icons": {
-    "48": "/style/icons/gallery.png"
+    "16": "/style/icons/gallery_16.png",
+    "32": "/style/icons/gallery_32.png",
+    "48": "/style/icons/gallery_48.png",
+    "64": "/style/icons/gallery_64.png",
+    "128": "/style/icons/gallery_128.png",
+    "256": "/style/icons/gallery_256.png"
   },
   "developer": {
     "name": "Orchid Org.",

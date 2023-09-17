@@ -4,7 +4,14 @@
   "name": "System",
   "description": "OpenOrchid System",
   "launch_path": "/index.html",
-  "icons": {},
+  "icons": {
+    "16": "/style/icons/system_16.png",
+    "32": "/style/icons/system_32.png",
+    "48": "/style/icons/system_48.png",
+    "64": "/style/icons/system_64.png",
+    "128": "/style/icons/system_128.png",
+    "256": "/style/icons/system_256.png"
+  },
   "developer": {
     "name": "Orchid Org.",
     "url": "https://openorchid.github.io/"

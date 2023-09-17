@@ -4,7 +4,12 @@
   "description": "Manage your alarms, create stopwatch laps, and see the time from the other side of the world.",
   "launch_path": "/index.html",
   "icons": {
-    "48": "/style/icons/clock.png"
+    "16": "/style/icons/clock_16.png",
+    "32": "/style/icons/clock_32.png",
+    "48": "/style/icons/clock_48.png",
+    "64": "/style/icons/clock_64.png",
+    "128": "/style/icons/clock_128.png",
+    "256": "/style/icons/clock_256.png"
   },
   "developer": {
     "name": "Orchid Org.",

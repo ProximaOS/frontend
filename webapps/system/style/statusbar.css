@@ -16,11 +16,11 @@
   /* We use the special translate property for X-axis translation to avoid janky 'transform: translateX()' transition */
   translate: -50% 0;
   max-width: var(--safezone-width);
-  transform: translateY(calc(var(--statusbar-height) * (var(--motion-progress, 0) + var(--overscroll-progress))));
+  transform: translateY(calc((var(--statusbar-height) * var(--motion-progress, 0)) + (1.5rem * var(--overscroll-progress))));
 }
 
 #screen:not(.desktop) #statusbar.hidden.tray-open {
-  transform: translateY(calc((var(--statusbar-height) * -1) + (var(--statusbar-height) * ((var(--motion-progress, 0) + var(--overscroll-progress)) * 2))));
+  transform: translateY(calc((var(--statusbar-height) * -1) + (calc((var(--statusbar-height) * var(--motion-progress, 0)) + (1rem * var(--overscroll-progress))))));
 }
 
 #screen:not(.desktop) #statusbar.tray-open.transitioning {
@@ -79,6 +79,8 @@ html[dir="rtl"] .statusbar-icons > .right {
   line-height: 2rem;
   margin: 0 0.2rem;
   text-align: center;
+  font-size: 1.6rem;
+  font-weight: normal;
   transition: opacity 0.3s cubic-bezier(0.2, 0.9, 0.1, 1.25) 0.3s, transform 0.3s cubic-bezier(0.2, 0.9, 0.1, 1.25) 0.3s, visibility 0.3s cubic-bezier(0.2, 0.9, 0.1, 1.25) 0.3s, margin 0.3s cubic-bezier(0.2, 0.9, 0.1, 1.25);
 }
 
@@ -97,7 +99,7 @@ html[dir="rtl"] .statusbar-icons > .right {
   opacity: 0;
   transform: scale(0.2);
   visibility: hidden;
-  margin: 0 -1rem;
+  margin: 0 var(--hide-margin, -1rem);
   filter: blur(5px);
   transition: all 0.3s ease;
 }
@@ -126,7 +128,6 @@ html[dir="rtl"] .statusbar-icons > .right {
 }
 
 #statusbar-time {
-  font-size: 1.6rem;
   transition: all 0.3s cubic-bezier(0.2, 0.9, 0.1, 1), opacity 0.3s ease, transform 0.3s ease, visibility 0.3s ease, margin 0.3s cubic-bezier(0.2, 0.9, 0.1, 1) 0.3s;
 }
 
@@ -143,6 +144,26 @@ html[dir="rtl"] .statusbar-icons > .right {
 #statusbar-time.indicator.screen-capture {
   background-color: #c00040;
   color: rgba(255,255,255,0.75) !important;
+}
+
+#statusbar-date {
+  opacity: 0;
+  transform: scale(0.2);
+  visibility: hidden;
+  margin: 0 var(--hide-margin, -1rem);
+  filter: blur(5px);
+  font-size: 1.4rem;
+  padding-inline-start: 0.2rem;
+  box-sizing: border-box;
+}
+
+#statusbar.tray-open #statusbar-date {
+  opacity: calc(var(--motion-progress, 0) / 2);
+  transform: scale(calc(0.2 + (0.8 * var(--motion-progress, 0))));
+  visibility: visible;
+  margin: 0 calc(var(--hide-margin, -1rem) * (1 - var(--motion-progress, 0)));
+  filter: blur(calc(5px * (1 - var(--motion-progress, 0))));
+  transition: none;
 }
 
 #statusbar-battery::before {
@@ -184,6 +205,26 @@ html[dir="rtl"] .statusbar-icons > .right {
 
 #screen.desktop #statusbar-battery.charging::after {
   color: var(--text-color);
+}
+
+#statusbar-battery-percentage {
+  opacity: 0;
+  transform: scale(0.2);
+  visibility: hidden;
+  margin: 0 var(--hide-margin, -1rem);
+  filter: blur(5px);
+  font-size: 1.4rem;
+  padding-inline-start: 0.2rem;
+  box-sizing: border-box;
+}
+
+#statusbar.tray-open #statusbar-battery-percentage {
+  opacity: var(--motion-progress, 0);
+  transform: scale(calc(0.2 + (0.8 * var(--motion-progress, 0))));
+  visibility: visible;
+  margin: 0 calc(var(--hide-margin, -1rem) * (1 - var(--motion-progress, 0)));
+  filter: blur(calc(5px * (1 - var(--motion-progress, 0))));
+  transition: none;
 }
 
 #statusbar-cellular-signal {

@@ -14,7 +14,7 @@ html, body {
   font-family: 'Jali Arabic', system-ui;
   touch-action: none;
   -webkit-tap-highlight-color: transparent;
-  background-color: #000;
+  background-color: #333;
 }
 
 #screen {
@@ -22,7 +22,7 @@ html, body {
   --statusbar-padding-left: 3rem;
   --statusbar-padding-right: 3rem;
   --software-buttons-height: 4rem;
-  --screen-radius: 0rem;
+  --screen-radius: 3.6rem;
   --chrome-toolbar-gap: 0.5rem;
   --chrome-tablist-height: 4rem;
   --chrome-navbar-height: 4rem;
@@ -34,6 +34,7 @@ html, body {
   height: 100%;
   background: #000 url(/resources/wallpapers/default.png) no-repeat center / cover;
   overflow: hidden;
+  box-shadow: 0 0 2rem rgba(0, 0, 0, 0.3);
   transition: transform 0.5s cubic-bezier(1, 0, 0, 1), opacity 0.3s ease, filter 0.3s ease;
 }
 
@@ -112,6 +113,11 @@ html, body {
 
 #screen.ebook {
   filter: grayscale(1);
+}
+
+#screen.close-reach {
+  transform: translateY(30vh);
+  border-radius: var(--screen-radius) var(--screen-radius) 0 0;
 }
 
 #system-overlays {
