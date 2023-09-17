@@ -7,11 +7,20 @@
     HIDDEN_ROLES: ['homescreen', 'keyboard', 'system', 'theme'],
     APP_ICON_SIZE: 45,
 
+    DEFAULT_DOCK_ICONS: [
+      `http://browser.localhost:${location.port}/manifest.json`,
+      `http://sms.localhost:${location.port}/manifest.json`,
+      `http://contacts.localhost:${location.port}/manifest.json`,
+      `http://dialer.localhost:${location.port}/manifest.json`
+    ],
+
     gridElement: document.getElementById('grid'),
+    dockElement: document.getElementById('dockbar'),
     dropIndicatorElement: document.getElementById('drop-indicator'),
     apps: [],
 
     init: function () {
+      this.dockElement.style.setProperty('--grid-columns', this.gridColumns);
       this.gridElement.style.setProperty('--grid-columns', this.gridColumns);
       this.gridElement.style.setProperty('--grid-rows', this.gridRows);
 
@@ -35,7 +44,14 @@
         icon.id = `appicon${index}`;
         icon.classList.add('icon');
         icon.addEventListener('click', (event) => this.handleAppClick(event, app));
-        this.gridElement.appendChild(icon);
+        const manifestIndex = this.DEFAULT_DOCK_ICONS.indexOf(app.manifestUrl['en-US']);
+        if (manifestIndex !== -1) {
+          setTimeout(() => {
+            this.dockElement.appendChild(icon);
+          }, manifestIndex * 10);
+        } else {
+          this.gridElement.appendChild(icon);
+        }
 
         const iconHolder = document.createElement('div');
         iconHolder.classList.add('icon-holder');
@@ -52,6 +68,7 @@
         iconContainer.onerror = () => {
           iconContainer.src = '/images/default.png';
         };
+        DirectionalScale.init(iconContainer);
         iconHolder.appendChild(iconContainer);
 
         const name = document.createElement('div');

@@ -1,0 +1,21 @@
+#dockbar {
+  position: absolute;
+  left: 1rem;
+  width: calc(100% - 2rem);
+  height: 7.8rem;
+  bottom: var(--software-buttons-height);
+  background-color: var(--acrylic-background);
+  border-radius: 2.5rem;
+  backdrop-filter: blur(20px) saturate(180%);
+  z-index: 1;
+  display: grid;
+  grid-template-columns: repeat(var(--grid-columns), 1fr);
+}
+
+#dockbar .icon .icon-holder {
+  padding: 1.5rem 0;
+}
+
+#dockbar .icon .name {
+  display: none;
+}

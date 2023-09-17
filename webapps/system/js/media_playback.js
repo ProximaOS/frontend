@@ -4,7 +4,7 @@
   const MediaPlayback = {
     element: document.getElementById('media-playback'),
     title: document.getElementById('media-playback-title'),
-    author: document.getElementById('media-playback-author'),
+    artist: document.getElementById('media-playback-artist'),
     playPauseButton: document.getElementById('media-playback-playpause'),
     previousButton: document.getElementById('media-playback-previous'),
     nextButton: document.getElementById('media-playback-next'),
@@ -15,10 +15,14 @@
     },
 
     handleMediaPlay: function (event) {
+      this.title.textContent = event.detail.title;
+      this.artist.textContent = event.detail.artist;
 
+      this.playPauseButton.dataset.icon = 'media-pause';
     },
 
     handleMediaPause: function (event) {
+      this.playPauseButton.dataset.icon = 'media-play';
     }
   };
 

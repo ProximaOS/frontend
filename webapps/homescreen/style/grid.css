@@ -8,7 +8,7 @@
   overflow-y: auto;
   scroll-snap-type: x mandatory;
   scrollbar-width: none;
-  padding: calc(var(--statusbar-height) + 6rem) 1rem 1rem;
+  padding: var(--statusbar-height) 1rem calc(var(--software-buttons-height) + 8rem);
   box-sizing: border-box;
   display: grid;
   grid-template-columns: repeat(var(--grid-columns), 1fr);
@@ -32,6 +32,7 @@
 
 .icon .icon-holder {
   width: 100%;
+  padding-top: 0.4rem;
 }
 
 .icon .icon-holder > * {
@@ -40,7 +41,12 @@
   border-radius: 25%;
   margin: 0 auto;
   display: block;
-  transition: all 0.3s ease;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.icon:hover .icon-holder > img {
+  transform: scale(1.05);
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
 }
 
 .icon.dragging .icon-holder > img {
@@ -53,7 +59,7 @@
   text-align: center;
   font-size: 1.2rem;
   color: #fff;
-  text-shadow: 0 3px 6px #333, 0 1px 0 #333;
+  text-shadow: 0 0 3px rgba(0, 0, 0, 0.3), 0 0 6px rgba(0, 0, 0, 0.2);
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;

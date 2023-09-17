@@ -27,12 +27,10 @@
     },
 
     onMouseLeave: function (event, element) {
-      element.style.transition = '';
       element.style.transformOrigin = 'none';
     },
 
     handleTransitionEnd: function (element) {
-      element.style.transition = 'none';
       element.removeEventListener('transitionend', () => this.handleTransitionEnd(element));
     }
   }

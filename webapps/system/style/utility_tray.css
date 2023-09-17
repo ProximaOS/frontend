@@ -8,7 +8,7 @@
 }
 
 #utility-tray-motion {
-  background-color: rgba(51, 51, 51, 0.3);
+  background-color: rgba(51, 51, 51, calc(var(--motion-progress) * 0.3));
   backdrop-filter: blur(calc(50px * var(--motion-progress))) saturate(calc(100% + (80% * var(--motion-progress))));
   position: absolute;
   left: 0;

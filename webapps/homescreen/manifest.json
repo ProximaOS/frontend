@@ -25,5 +25,5 @@
     "device-storage:apps": {}
   },
   "transparent": true,
-  "statusbar": "overlay"
+  "statusbar": "immersive"
 }

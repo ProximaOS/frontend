@@ -25,76 +25,77 @@
     .parse(process.argv);
 
   const options = program.opts();
-  let webConfig = {
-    width: 320,
-    height: 640,
-    type: 'Mobile'
-  };
-
-  if (options.type) {
-    switch (options.type) {
-      case 'desktop':
-        webConfig = {
-          width: 1024,
-          height: 640,
-          type: 'Desktop'
-        };
-        break;
-
-      case 'smart-tv':
-        webConfig = {
-          width: 1280,
-          height: 720,
-          type: 'Smart TV'
-        };
-        break;
-
-      case 'vr':
-        webConfig = {
-          width: 1280,
-          height: 720,
-          type: 'VR'
-        };
-        break;
-
-      case 'homepad':
-        webConfig = {
-          width: 1280,
-          height: 720,
-          type: 'Homepad'
-        };
-        break;
-
-      case 'wear':
-        webConfig = {
-          width: 240,
-          height: 240,
-          type: 'Wear'
-        };
-        break;
-
-      case 'featurephone':
-        webConfig = {
-          width: 240,
-          height: 320,
-          type: 'Mobile/Featurephone'
-        };
-        break;
-
-      case 'qwertyphone':
-        webConfig = {
-          width: 320,
-          height: 240,
-          type: 'Mobile/Qwertyphone'
-        };
-        break;
-
-      default:
-        break;
-    }
-  }
 
   module.exports = function () {
+    let webConfig = {
+      width: 320,
+      height: 640,
+      type: 'Mobile'
+    };
+
+    if (options.type) {
+      switch (options.type) {
+        case 'desktop':
+          webConfig = {
+            width: 1024,
+            height: 640,
+            type: 'Desktop'
+          };
+          break;
+
+        case 'smart-tv':
+          webConfig = {
+            width: 1280,
+            height: 720,
+            type: 'Smart TV'
+          };
+          break;
+
+        case 'vr':
+          webConfig = {
+            width: 1280,
+            height: 720,
+            type: 'VR'
+          };
+          break;
+
+        case 'homepad':
+          webConfig = {
+            width: 1280,
+            height: 720,
+            type: 'Homepad'
+          };
+          break;
+
+        case 'wear':
+          webConfig = {
+            width: 240,
+            height: 240,
+            type: 'Wear'
+          };
+          break;
+
+        case 'featurephone':
+          webConfig = {
+            width: 240,
+            height: 320,
+            type: 'Mobile/Featurephone'
+          };
+          break;
+
+        case 'qwertyphone':
+          webConfig = {
+            width: 320,
+            height: 240,
+            type: 'Mobile/Qwertyphone'
+          };
+          break;
+
+        default:
+          break;
+      }
+    }
+
     // Create the browser window.
     const mainWindow = new BrowserWindow({
       icon: path.join(

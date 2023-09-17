@@ -174,6 +174,46 @@
     clickSound.play();
   });
 
+  function MediaMetadata (filePath) {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+
+      reader.onload = function (e) {
+        const dv = new DataView(this.result);
+
+        if (dv.getString(3, dv.byteLength - 128) === 'TAG') {
+          const title = dv.getString(30, dv.tell());
+          const artist = dv.getString(30, dv.tell());
+          const album = dv.getString(30, dv.tell());
+          const year = dv.getString(4, dv.tell());
+
+          resolve({ title, artist, album, year });
+        } else {
+          reject(new Error('No ID3v1 data found.'));
+        }
+      };
+
+      reader.readAsDataURL(filePath);
+    });
+  }
+
+  document.addEventListener('play', function (event) {
+    MediaMetadata(event.target.src).then(metadata => {
+      IPC.send('mediaplay', {
+        title: metadata.title,
+        artist: metadata.artist,
+        album: metadata.album,
+        year: metadata.year
+      });
+    });
+  })
+
+  document.addEventListener('drag', function (event) {
+    IPC.send('drag', {
+      data: event.dataTransfer
+    });
+  })
+
   document.addEventListener('DOMContentLoaded', function () {
     const inputAreas = document.querySelectorAll(
       'input[type=text], input[type=name], input[type=email], input[type=password], input[type=number], textarea'
