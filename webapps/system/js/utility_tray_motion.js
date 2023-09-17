@@ -14,7 +14,10 @@
     startY: 0,
     currentY: 0,
     isDragging: false,
-    threshold: 0.25, // Adjust the threshold as desired (0.0 to 1.0)
+    threshold: 0.5, // Adjust the threshold as desired (0.0 to 1.0)
+    yPosThreshold: window.innerHeight / 2,
+    lastProgress: 0,
+    currentProgress: 0,
 
     init: function () {
       this.topPanel.addEventListener(
@@ -77,7 +80,7 @@
 
         this.currentY = event.clientY || event.touches[0].clientY;
         const offsetY = this.startY - this.currentY;
-        const maxHeight = this.motionElement.offsetHeight;
+        const maxHeight = this.yPosThreshold;
         const progress = (offsetY / maxHeight) * -1;
 
         this.updateMotionProgress(progress); // Update motion element opacity
@@ -86,12 +89,14 @@
 
     onPointerUp: function () {
       const offsetY = this.startY - this.currentY;
-      const maxHeight = this.motionElement.offsetHeight;
+      const maxHeight = this.yPosThreshold;
       let progress = 1 - offsetY / maxHeight;
 
       progress = Math.min(1, progress); // Limit progress between 0 and 1
 
       if (progress >= this.threshold) {
+        this.currentProgress = 1;
+        this.lastProgress = this.currentProgress;
         this.statusbar.style.setProperty('--motion-progress', 1);
         this.statusbar.style.setProperty('--overscroll-progress', 0);
         this.titlebar.style.setProperty('--overscroll-progress', 0);
@@ -107,6 +112,8 @@
           this.motionElement.classList.remove('transitioning');
         }, 500);
       } else {
+        this.currentProgress = 1;
+        this.lastProgress = this.currentProgress;
         this.statusbar.style.setProperty('--motion-progress', 0);
         this.statusbar.style.setProperty('--overscroll-progress', 0);
         this.titlebar.style.setProperty('--overscroll-progress', 0);
@@ -133,11 +140,10 @@
     },
 
     updateMotionProgress: function (progress) {
-      if (progress < 0) {
-        progress = 1 + progress;
-      }
+      progress = this.lastProgress + progress;
       const motionProgress = Math.max(0, Math.min(1, progress)); // Limit progress between 0 and 1;
       const overflowProgress = Math.max(1, progress) - 1;
+      this.currentProgress = motionProgress;
       this.statusbar.style.setProperty('--motion-progress', motionProgress);
       this.statusbar.style.setProperty('--overscroll-progress', overflowProgress);
       this.titlebar.style.setProperty('--overscroll-progress', overflowProgress);
@@ -158,9 +164,15 @@
     },
 
     hideMotionElement: function () {
+      this.lastProgress = 0;
       this.screen.classList.remove('utility-tray-visible');
       this.statusbar.classList.remove('tray-open');
       this.motionElement.classList.remove('visible');
+      this.statusbar.style.setProperty('--motion-progress', 0);
+      this.statusbar.style.setProperty('--overscroll-progress', 0);
+      this.titlebar.style.setProperty('--overscroll-progress', 0);
+      this.motionElement.style.setProperty('--motion-progress', 0);
+      this.motionElement.style.setProperty('--overscroll-progress', 0);
     },
 
     showMotionElement: function () {
@@ -171,10 +183,11 @@
 
     resetMotionElement: function () {
       const offsetY = this.startY - this.currentY;
-      const maxHeight = this.motionElement.offsetHeight;
+      const maxHeight = this.yPosThreshold;
       const progress = 1 - offsetY / maxHeight;
 
       if (progress >= this.threshold) {
+        this.currentProgress = 0;
         this.statusbar.style.setProperty('--motion-progress', 0);
         this.statusbar.style.setProperty('--overscroll-progress', 0);
         this.titlebar.style.setProperty('--overscroll-progress', 0);

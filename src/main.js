@@ -6,18 +6,8 @@ const loadOpenOrchid = require('./browser/openorchid');
 const protocols = require('electron-protocols');
 const isDev = require('electron-is-dev');
 const electronReload = require('electron-reload');
-const { program } = require('commander');
 
 require('dotenv').config();
-
-program
-  .option(
-    '-t, --type <value>',
-    'Specifies which type of OpenOrchid platform to use'
-  )
-  .parse(process.argv);
-
-  const options = program.opts();
 
 const profileDir = path.resolve(process.env.OPENORCHID_DATA);
 app.setPath('appData', profileDir);
