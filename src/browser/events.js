@@ -37,18 +37,16 @@
 
         // Listen for download progress events
         item.on('updated', (event, state) => {
-          if (state === 'progressing') {
-            // Get download progress
-            const progress = item.getReceivedBytes() / item.getTotalBytes();
-            mainWindow.webContents.send('downloadprogress', {
-              url: item.getURL(),
-              suggestedFilename: item.getFilename(),
-              lastModified: item.getLastModifiedTime(),
-              size: item.getTotalBytes(),
-              mime: item.getMimeType(),
-              progress
-            });
-          }
+          const progress = item.getReceivedBytes() / item.getTotalBytes();
+          mainWindow.webContents.send('downloadprogress', {
+            url: item.getURL(),
+            suggestedFilename: item.getFilename(),
+            lastModified: item.getLastModifiedTime(),
+            size: item.getTotalBytes(),
+            mime: item.getMimeType(),
+            progress,
+            state
+          });
         });
       }
     );

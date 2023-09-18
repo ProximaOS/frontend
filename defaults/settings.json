@@ -29,7 +29,7 @@
   "video.ebook_mode.enabled": false,
   "video.timeout_duration": 15000,
   "homescreen.manifest_url": "http://homescreen.localhost:8081/manifest.json",
-  "homescreen.accent_color.rgb": { "r": 64, "g": 160, "b": 96 },
+  "homescreen.accent_color.rgb": { "r": null, "g": null, "b": null },
   "homescreen.grid": { "columns": 4, "rows": 5 },
   "lockscreen.type": "default",
   "lockscreen.pin_number": null,

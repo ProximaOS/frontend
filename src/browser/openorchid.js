@@ -7,15 +7,15 @@
   const path = require('path');
   const fs = require('fs');
   const isDev = require('electron-is-dev');
-  const registerEvents = require('../events/main_events');
-  const registerControls = require('../developer/controls');
+  const registerEvents = require('./events');
+  const registerControls = require('./controls');
   const update = require('../update/auto_updater');
   const RPC = require('discord-rpc');
   const appConfig = require('../../package.json');
   const { program } = require('commander');
 
   require('dotenv').config();
-  require('../config/default_presets');
+  require('./default_presets');
 
   program
     .option(
@@ -131,7 +131,7 @@
       }
     });
 
-    const menu = Menu.buildFromTemplate(require('./menu')(mainWindow));
+    const menu = Menu.buildFromTemplate(require('./dropmenu')(mainWindow));
     Menu.setApplicationMenu(menu);
 
     const userAgent = `Mozilla/5.0 (OpenOrchid ${appConfig.version} ${

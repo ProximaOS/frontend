@@ -1,0 +1,5 @@
+[Desktop Entry]
+Name=OpenOrchid
+Comment=OpenOrchid Web Desktop Environment
+Exec=/usr/lib/openorchid
+Type=Application

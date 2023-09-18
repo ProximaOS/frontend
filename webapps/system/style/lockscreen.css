@@ -10,6 +10,7 @@
   transform: translateY(calc(-100% * (1 - var(--motion-progress, 1))));
   backdrop-filter: blur(calc(20px * var(--motion-progress, 1))) saturate(calc(100% + (80% * var(--motion-progress, 1))));
   overflow: hidden;
+  box-shadow: 0 1rem 2rem rgba(0, 0, 0, calc(var(--motion-progress, 1) * 0.3));
 }
 
 #lockscreen.pin-lock {
@@ -22,7 +23,7 @@
 }
 
 #lockscreen.transitioning {
-  transition: all 0.3s ease;
+  transition: all 0.5s ease;
 }
 
 #lockscreen.visible {
@@ -74,7 +75,7 @@
 
 #lockscreen.transitioning #lockscreen-background,
 #lockscreen.transitioning #lockscreen-foreground {
-  transition: all 0.3s ease;
+  transition: all 0.5s ease;
 }
 
 #lockscreen.low-power #lockscreen-background,
@@ -279,7 +280,7 @@
   padding: 1rem 1.5rem;
   box-sizing: border-box;
   border-radius: 3rem;
-  background-color: #fff;
+  background-color: var(--background-plus);
   color: var(--text-color);
   font-size: 1.6rem;
   font-weight: bold;

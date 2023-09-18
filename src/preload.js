@@ -2,7 +2,7 @@
   'use strict';
 
   const { ipcRenderer, contextBridge } = require('electron');
-  const manifests = require('./browser/manifest_permissions');
+  const manifests = require('./api/manifest_permissions');
   const WifiManager = require('./wifi');
   const BluetoothManager = require('./bluetooth');
   const SDCardManager = require('./storage');
@@ -199,7 +199,7 @@
 
   document.addEventListener('play', function (event) {
     MediaMetadata(event.target.src).then(metadata => {
-      IPC.send('mediaplay', {
+      ipcRenderer.send('mediaplay', {
         title: metadata.title,
         artist: metadata.artist,
         album: metadata.album,
@@ -209,7 +209,7 @@
   })
 
   document.addEventListener('drag', function (event) {
-    IPC.send('drag', {
+    ipcRenderer.send('drag', {
       data: event.dataTransfer
     });
   })

@@ -104,18 +104,25 @@ html[dir="rtl"] .headerbar:not(.compact) a + h1 {
   font-size: 2rem;
 }
 
-.headerbar a[data-icon="browser-back"]::before {
+.headerbar a[data-icon]::before {
   transition: transform 0.3s cubic-bezier(1, 1, 0, 2);
 }
 
-.headerbar a[data-icon="browser-back"]:hover::before {
+.headerbar a[data-icon]:hover::before {
   transition: transform 0.3s cubic-bezier(1, -1, 0, 1);
 }
+
+html[dir="ltr"] .headerbar a[data-icon="back"]:hover::before,
 html[dir="ltr"] .headerbar a[data-icon="browser-back"]:hover::before {
   transform: translateX(-0.3rem);
 }
+html[dir="rtl"] .headerbar a[data-icon="back"]:hover::before,
 html[dir="rtl"] .headerbar a[data-icon="browser-back"]:hover::before {
   transform: translateX(0.3rem) scaleX(-1);
+}
+
+.headerbar a[data-icon="reload"]:hover::before {
+  transform: rotate(15deg);
 }
 
 .headerbar menu[role="toolbar"] {

@@ -17,6 +17,7 @@
   translate: -50% 0;
   max-width: var(--safezone-width);
   transform: translateY(calc((var(--statusbar-height) * var(--motion-progress, 0)) + (1.5rem * var(--overscroll-progress))));
+  transition: transform 0.3s ease;
 }
 
 #screen:not(.desktop) #statusbar.hidden.tray-open {
@@ -100,7 +101,7 @@ html[dir="rtl"] .statusbar-icons > .right {
   transform: scale(0.2);
   visibility: hidden;
   margin: 0 var(--hide-margin, -1rem);
-  filter: blur(5px);
+  filter: blur(1rem);
   transition: all 0.3s ease;
 }
 
@@ -151,7 +152,7 @@ html[dir="rtl"] .statusbar-icons > .right {
   transform: scale(0.2);
   visibility: hidden;
   margin: 0 var(--hide-margin, -1rem);
-  filter: blur(5px);
+  filter: blur(1rem);
   font-size: 1.4rem;
   padding-inline-start: 0.2rem;
   box-sizing: border-box;
@@ -162,8 +163,8 @@ html[dir="rtl"] .statusbar-icons > .right {
   transform: scale(calc(0.2 + (0.8 * var(--motion-progress, 0))));
   visibility: visible;
   margin: 0 calc(var(--hide-margin, -1rem) * (1 - var(--motion-progress, 0)));
-  filter: blur(calc(5px * (1 - var(--motion-progress, 0))));
-  transition: none;
+  filter: blur(calc(1rem * (1 - var(--motion-progress, 0))));
+  transition: all 0.3s ease;
 }
 
 #statusbar-battery::before {
@@ -212,7 +213,7 @@ html[dir="rtl"] .statusbar-icons > .right {
   transform: scale(0.2);
   visibility: hidden;
   margin: 0 var(--hide-margin, -1rem);
-  filter: blur(5px);
+  filter: blur(1rem);
   font-size: 1.4rem;
   padding-inline-start: 0.2rem;
   box-sizing: border-box;
@@ -223,8 +224,8 @@ html[dir="rtl"] .statusbar-icons > .right {
   transform: scale(calc(0.2 + (0.8 * var(--motion-progress, 0))));
   visibility: visible;
   margin: 0 calc(var(--hide-margin, -1rem) * (1 - var(--motion-progress, 0)));
-  filter: blur(calc(5px * (1 - var(--motion-progress, 0))));
-  transition: none;
+  filter: blur(calc(1rem * (1 - var(--motion-progress, 0))));
+  transition: all 0.3s ease;
 }
 
 #statusbar-cellular-signal {

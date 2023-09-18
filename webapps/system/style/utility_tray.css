@@ -54,7 +54,7 @@
   padding: 0 1.5rem;
   box-sizing: border-box;
   transform: translateY(calc(2.5rem * var(--overscroll-progress)));
-  transition: opacity 0.5s ease, visibility 0.5s ease;
+  transition: transform 0.3s ease, opacity 0.3s ease, visibility 0.3s ease;
 }
 
 #utility-tray-motion.transitioning .utility-tray-header {
@@ -147,7 +147,7 @@
   margin: 0 0 1rem;
   display: flex;
   gap: 1rem;
-  transition: opacity 0.5s ease, visibility 0.5s ease;
+  transition: transform 0.3s ease, opacity 0.3s ease, visibility 0.3s ease;
 }
 
 .control-center-row:nth-child(2) {

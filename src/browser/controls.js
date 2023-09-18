@@ -1,10 +1,8 @@
-const path = require('path');
-
 !(function () {
   'use strict';
 
+  const path = require('path');
   const { BrowserWindow } = require('electron');
-  const electronLocalshortcut = require('electron-localshortcut');
 
   module.exports = function (mainWindow) {
     let isSimulatingMobile = false;
