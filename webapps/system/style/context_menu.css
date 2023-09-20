@@ -1,0 +1,106 @@
+#context-menu {
+  position: absolute;
+  left: 0;
+  top: 0;
+  min-width: 290px;
+  max-width: 512px;
+  max-height: calc(100% - 2rem);
+  overflow: hidden;
+  border-radius: 1.5rem;
+  filter: drop-shadow(0 0.5rem 1rem rgba(0, 0, 0, 0.3));
+  margin: 1rem;
+  transition: transform 0.3s ease, opacity 0.3s ease, visibility 0.3s ease;
+  transform: translateY(-1rem);
+  opacity: 0;
+  visibility: hidden;
+}
+
+#context-menu.visible {
+  pointer-events: all;
+  transform: translateY(0);
+  opacity: 1;
+  visibility: visible;
+}
+
+#context-menu.bottom {
+  transform-origin: bottom center;
+}
+
+#context-menu-content {
+  margin: 0;
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background: var(--background);
+  border-radius: 1.5rem;
+}
+
+#context-menu-content li:not(.separator) {
+  width: 100%;
+  height: 4rem;
+  line-height: 4rem;
+  border-radius: 1rem;
+  margin: 0;
+  padding: 0 1rem;
+  box-sizing: border-box;
+  list-style: none;
+  color: var(--text-color);
+  font-size: 1.6rem;
+  font-weight: normal;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  position: relative;
+}
+
+#context-menu-content li:not(.separator):hover {
+  background: var(--item-hover);
+}
+
+#context-menu-content li:not(.separator):active {
+  background: var(--item-active);
+}
+
+#context-menu-content li[disabled]:not(.separator) {
+  opacity: 0.4;
+  pointer-events: none;
+}
+
+#context-menu-content li[data-icon]:not(.separator) {
+  -moz-padding-start: 4rem;
+  padding-inline-start: 4rem;
+}
+
+#context-menu-content li[data-icon]:not(.separator):before {
+  position: absolute;
+  top: 0;
+  width: 2rem;
+  height: 100%;
+  font-size: 2rem;
+}
+html[dir='ltr'] #context-menu-content li[data-icon]:not(.separator):before {
+  left: 1rem;
+}
+html[dir='rtl'] #context-menu-content li[data-icon]:not(.separator):before {
+  right: 1rem;
+}
+
+#context-menu-content .separator {
+  list-style: none;
+  width: calc(100% - 2rem);
+  height: 0.1rem;
+  margin: 0.5rem 1rem;
+  background: var(--item-plus);
+}
+
+#context-menu-content-items {
+  padding: 0.5rem;
+  box-sizing: border-box;
+}
+
+@media screen and (max-width: 599px) {
+  #context-menu {
+    min-width: unset;
+    max-width: 100%;
+  }
+}

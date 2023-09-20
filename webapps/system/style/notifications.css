@@ -78,6 +78,9 @@
   box-sizing: border-box;
   display: flex;
   align-items: center;
+  background-color: var(--acrylic-background-plus);
+  border-radius: 2rem 2rem 0.5rem 0.5rem;
+  margin: 0 0 0.2rem;
 }
 
 .notification .titlebar .badge {
@@ -106,6 +109,8 @@
   box-sizing: border-box;
   display: flex;
   align-items: center;
+  background-color: var(--acrylic-background-plus);
+  border-radius: 0.5rem 0.5rem 2rem 2rem;
 }
 
 .notification .content .icon {

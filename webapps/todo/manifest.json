@@ -1,10 +1,15 @@
 {
   "version": "1.0",
-  "name": "Notes",
+  "name": "To Do",
   "description": "",
   "launch_path": "/index.html",
   "icons": {
-    "48": "/style/icons/notes.png"
+    "16": "/style/icons/todo_16.png",
+    "32": "/style/icons/todo_32.png",
+    "48": "/style/icons/todo_48.png",
+    "64": "/style/icons/todo_64.png",
+    "128": "/style/icons/todo_128.png",
+    "256": "/style/icons/todo_256.png"
   },
   "developer": {
     "name": "Orchid Org.",

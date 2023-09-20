@@ -42,6 +42,7 @@
     "users": {},
     "wifi-manage": {},
     "telephony": {},
-    "sms": {}
+    "sms": {},
+    "display": {}
   }
 }

@@ -98,11 +98,6 @@
       mainWindow.webContents.session.loadExtension(extensionPath);
     });
 
-    app.on('open-url', (event, url) => {
-      // Pass the open event with URL to the renderer process
-      mainWindow.webContents.send('open-url', { event, url });
-    });
-
     ipcMain.on('request-extension-list', (event, data) => {
       mainWindow.webContents.send(
         'extension-list',
@@ -153,6 +148,12 @@
     ipcMain.on('mediapause', (event, data) => {
       mainWindow.webContents.send('mediapause', data);
     });
+    ipcMain.on('webdrag', (event, data) => {
+      mainWindow.webContents.send('webdrag', data);
+    });
+    ipcMain.on('webdrop', (event, data) => {
+      mainWindow.webContents.send('webdrop', data);
+    });
     ipcMain.on('settingschange', (event, data) => {
       mainWindow.webContents.send('settingschange', data);
     });
@@ -166,11 +167,11 @@
       if (data.webContentsId) {
         const wc = webContents.fromId(data.webContentsId);
         wc.capturePage().then((image) => {
-          mainWindow.webContents.send('screenshoted', image.toDataURL());
+          mainWindow.webContents.send('screenshotted', image.toDataURL());
         });
       } else {
         mainWindow.webContents.capturePage().then((image) => {
-          mainWindow.webContents.send('screenshoted', image.toDataURL());
+          mainWindow.webContents.send('screenshotted', image.toDataURL());
         });
       }
     });

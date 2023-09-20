@@ -15,7 +15,7 @@
   <link rel="stylesheet" href="http://shared.localhost:8081/style/radios.css" />
   <link rel="stylesheet" href="http://shared.localhost:8081/style/checkboxes.css" />
 
-  <!-- Local stylesheets -->
+  <!-- Stylesheets -->
   <link rel="stylesheet" href="dist/main.bundle.css">
   <link rel="stylesheet" href="style/system.css">
   <link rel="stylesheet" href="style/splashscreen.css">
@@ -43,6 +43,10 @@
   <link rel="stylesheet" href="style/gesture_panels.css">
   <link rel="stylesheet" href="style/z_indexes.css">
   <link rel="stylesheet" href="style/loading_screen.css">
+  <link rel="stylesheet" href="style/drag_and_drop.css">
+  <link rel="stylesheet" href="style/context_menu.css">
+
+  <!-- Stylesheets - Desktop -->
   <link rel="stylesheet" href="desktop/style/desktop_system.css">
   <link rel="stylesheet" href="desktop/style/desktop_statusbar.css">
   <link rel="stylesheet" href="desktop/style/desktop_software_buttons.css">
@@ -101,6 +105,7 @@
   <script defer src="js/download_manager.js"></script>
   <script defer src="js/platform_classifier.js"></script>
   <script defer src="js/screenshots.js"></script>
+  <script defer src="js/drag_and_drop.js"></script>
   <script defer src="js/lockscreen/motion.js"></script>
   <script defer src="js/lockscreen/clock.js"></script>
   <script defer src="js/lockscreen/date.js"></script>
@@ -452,6 +457,8 @@
       <div id="volume-rocker">
         <div id="volume-rocker-progress"></div>
       </div>
+
+      <div id="drag-and-drop"></div>
 
       <div id="text-selection">
         <button id="text-selection-copy-button" data-icon="textselection-copy"></button>

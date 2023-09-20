@@ -28,21 +28,21 @@
   --headerbar-g: calc(224 + ((var(--accent-color-g) / 255) * 31));
   --headerbar-b: calc(224 + ((var(--accent-color-b) / 255) * 31));
 
-  --button-normal: #ffffff;
-  --button-hover: rgb(calc(224 + ((var(--accent-color-r) / 255) * 31)), calc(224 + ((var(--accent-color-g) / 255) * 31)), calc(224 + ((var(--accent-color-b) / 255) * 31)));
-  --button-active: rgb(calc(208 + ((var(--accent-color-r) / 255) * 57)), calc(208 + ((var(--accent-color-g) / 255) * 57)), calc(208 + ((var(--accent-color-b) / 255) * 57)));
+  --button-normal: rgba(var(--accent-color-r), var(--accent-color-g), var(--accent-color-b), 0.1);
+  --button-hover: rgba(var(--accent-color-r), var(--accent-color-g), var(--accent-color-b), 0.1);
+  --button-active: rgba(var(--accent-color-r), var(--accent-color-g), var(--accent-color-b), 0.2);
 
-  --switch-normal: rgb(calc(208 + ((var(--accent-color-r) / 255) * 57)), calc(208 + ((var(--accent-color-g) / 255) * 57)), calc(208 + ((var(--accent-color-b) / 255) * 57)));
-  --switch-hover: rgb(calc(192 + ((var(--accent-color-r) / 255) * 63)), calc(192 + ((var(--accent-color-g) / 255) * 63)), calc(192 + ((var(--accent-color-b) / 255) * 63)));
-  --switch-active: rgb(calc(176 + ((var(--accent-color-r) / 255) * 79)), calc(176 + ((var(--accent-color-g) / 255) * 79)), calc(176 + ((var(--accent-color-b) / 255) * 79)));
+  --switch-normal: rgba(var(--accent-color-r), var(--accent-color-g), var(--accent-color-b), 0.1);
+  --switch-hover: rgba(var(--accent-color-r), var(--accent-color-g), var(--accent-color-b), 0.1);
+  --switch-active: rgba(var(--accent-color-r), var(--accent-color-g), var(--accent-color-b), 0.2);
 
-  --checkbox-normal: rgb(calc(208 + ((var(--accent-color-r) / 255) * 57)), calc(208 + ((var(--accent-color-g) / 255) * 57)), calc(208 + ((var(--accent-color-b) / 255) * 57)));
-  --checkbox-hover: rgb(calc(192 + ((var(--accent-color-r) / 255) * 63)), calc(192 + ((var(--accent-color-g) / 255) * 63)), calc(192 + ((var(--accent-color-b) / 255) * 63)));
-  --checkbox-active: rgb(calc(176 + ((var(--accent-color-r) / 255) * 79)), calc(176 + ((var(--accent-color-g) / 255) * 79)), calc(176 + ((var(--accent-color-b) / 255) * 79)));
+  --checkbox-normal: rgba(var(--accent-color-r), var(--accent-color-g), var(--accent-color-b), 0.1);
+  --checkbox-hover: rgba(var(--accent-color-r), var(--accent-color-g), var(--accent-color-b), 0.1);
+  --checkbox-active: rgba(var(--accent-color-r), var(--accent-color-g), var(--accent-color-b), 0.2);
 
-  --radio-normal: rgb(calc(208 + ((var(--accent-color-r) / 255) * 57)), calc(208 + ((var(--accent-color-g) / 255) * 57)), calc(208 + ((var(--accent-color-b) / 255) * 57)));
-  --radio-hover: rgb(calc(192 + ((var(--accent-color-r) / 255) * 63)), calc(192 + ((var(--accent-color-g) / 255) * 63)), calc(192 + ((var(--accent-color-b) / 255) * 63)));
-  --radio-active: rgb(calc(176 + ((var(--accent-color-r) / 255) * 79)), calc(176 + ((var(--accent-color-g) / 255) * 79)), calc(176 + ((var(--accent-color-b) / 255) * 79)));
+  --radio-normal: rgba(var(--accent-color-r), var(--accent-color-g), var(--accent-color-b), 0.1);
+  --radio-hover: rgba(var(--accent-color-r), var(--accent-color-g), var(--accent-color-b), 0.1);
+  --radio-active: rgba(var(--accent-color-r), var(--accent-color-g), var(--accent-color-b), 0.2);
 }
 
 @media screen and (prefers-color-scheme: dark) {
@@ -67,22 +67,6 @@
     --headerbar-r: calc(24 + ((var(--accent-color-r) / 255) * 30));
     --headerbar-g: calc(24 + ((var(--accent-color-g) / 255) * 30));
     --headerbar-b: calc(24 + ((var(--accent-color-b) / 255) * 30));
-
-    --button-normal: rgb(calc(33 + ((var(--accent-color-r) / 255) * 30)), calc(33 + ((var(--accent-color-g) / 255) * 30)), calc(33 + ((var(--accent-color-b) / 255) * 30)));
-    --button-hover: rgb(calc(48 + ((var(--accent-color-r) / 255) * 30)), calc(48 + ((var(--accent-color-g) / 255) * 30)), calc(48 + ((var(--accent-color-b) / 255) * 30)));
-    --button-active: rgb(calc(64 + ((var(--accent-color-r) / 255) * 30)), calc(64 + ((var(--accent-color-g) / 255) * 30)), calc(64 + ((var(--accent-color-b) / 255) * 30)));
-
-    --switch-normal: rgb(calc(16 + ((var(--accent-color-r) / 255) * 30)), calc(16 + ((var(--accent-color-g) / 255) * 30)), calc(16 + ((var(--accent-color-b) / 255) * 30)));
-    --switch-hover: rgb(calc(48 + ((var(--accent-color-r) / 255) * 30)), calc(48 + ((var(--accent-color-g) / 255) * 30)), calc(48 + ((var(--accent-color-b) / 255) * 30)));
-    --switch-active: rgb(calc(64 + ((var(--accent-color-r) / 255) * 30)), calc(64 + ((var(--accent-color-g) / 255) * 30)), calc(64 + ((var(--accent-color-b) / 255) * 30)));
-
-    --checkbox-normal: rgb(calc(16 + ((var(--accent-color-r) / 255) * 30)), calc(16 + ((var(--accent-color-g) / 255) * 30)), calc(16 + ((var(--accent-color-b) / 255) * 30)));
-    --checkbox-hover: rgb(calc(48 + ((var(--accent-color-r) / 255) * 30)), calc(48 + ((var(--accent-color-g) / 255) * 30)), calc(48 + ((var(--accent-color-b) / 255) * 30)));
-    --checkbox-active: rgb(calc(64 + ((var(--accent-color-r) / 255) * 30)), calc(64 + ((var(--accent-color-g) / 255) * 30)), calc(64 + ((var(--accent-color-b) / 255) * 30)));
-
-    --radio-normal: rgb(calc(16 + ((var(--accent-color-r) / 255) * 30)), calc(16 + ((var(--accent-color-g) / 255) * 30)), calc(16 + ((var(--accent-color-b) / 255) * 30)));
-    --radio-hover: rgb(calc(48 + ((var(--accent-color-r) / 255) * 30)), calc(48 + ((var(--accent-color-g) / 255) * 30)), calc(48 + ((var(--accent-color-b) / 255) * 30)));
-    --radio-active: rgb(calc(64 + ((var(--accent-color-r) / 255) * 30)), calc(64 + ((var(--accent-color-g) / 255) * 30)), calc(64 + ((var(--accent-color-b) / 255) * 30)));
   }
 }
 

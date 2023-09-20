@@ -15,12 +15,13 @@
   const RtlsdrReciever = require('./rtlsdr');
   const UsersManager = require('./users');
   const TelephonyManager = require('./telephony');
+  const DisplayManager = require('./display');
   const SmsManager = require('./sms');
   const DeviceInformation = require('./device/device_info');
 
   require('dotenv').config();
 
-  function registerEvent (ipcName, windowName) {
+  function registerEvent(ipcName, windowName) {
     ipcRenderer.on(ipcName, (event, data) => {
       const customEvent = new CustomEvent(windowName, {
         detail: data,
@@ -47,13 +48,15 @@
   registerEvent('rotate', 'rotate');
   registerEvent('mediaplay', 'mediaplay');
   registerEvent('mediapause', 'mediapause');
+  registerEvent('webdrag', 'webdrag');
+  registerEvent('webdrop', 'webdrop');
   registerEvent('downloadrequest', 'downloadrequest');
   registerEvent('downloadprogress', 'downloadprogress');
   registerEvent('permissionrequest', 'permissionrequest');
   registerEvent('overheat', 'overheat');
   registerEvent('devicepickup', 'devicepickup');
   registerEvent('deviceputdown', 'deviceputdown');
-  registerEvent('screenshoted', 'screenshoted');
+  registerEvent('screenshotted', 'screenshotted');
 
   const Environment = {
     type: process.env.NODE_ENV,
@@ -107,7 +110,7 @@
     ...api
   });
 
-  function verifyAccess (permission, mapName, value) {
+  function verifyAccess(permission, mapName, value) {
     manifests.checkPermission(permission).then((result) => {
       if (result) {
         api[mapName] = value;
@@ -116,7 +119,7 @@
     });
   }
 
-  function setAccess (permission, mapName, property, value) {
+  function setAccess(permission, mapName, property, value) {
     manifests.checkPermission(permission).then((result) => {
       if (result) {
         api[mapName][property] = value;
@@ -139,6 +142,7 @@
   verifyAccess('fm-radio', 'RtlsdrReciever', RtlsdrReciever);
   verifyAccess('users', 'UsersManager', UsersManager);
   verifyAccess('telephony', 'TelephonyManager', TelephonyManager);
+  verifyAccess('display', 'DisplayManager', DisplayManager);
   verifyAccess('sms', 'SmsManager', SmsManager);
 
   setAccess('device-storage:audio', 'SDCardManager', 'audioAccess', true);
@@ -174,45 +178,57 @@
     clickSound.play();
   });
 
-  function MediaMetadata (filePath) {
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-
-      reader.onload = function (e) {
-        const dv = new DataView(this.result);
-
-        if (dv.getString(3, dv.byteLength - 128) === 'TAG') {
-          const title = dv.getString(30, dv.tell());
-          const artist = dv.getString(30, dv.tell());
-          const album = dv.getString(30, dv.tell());
-          const year = dv.getString(4, dv.tell());
-
-          resolve({ title, artist, album, year });
-        } else {
-          reject(new Error('No ID3v1 data found.'));
-        }
-      };
-
-      reader.readAsDataURL(filePath);
-    });
-  }
-
   document.addEventListener('play', function (event) {
-    MediaMetadata(event.target.src).then(metadata => {
-      ipcRenderer.send('mediaplay', {
-        title: metadata.title,
-        artist: metadata.artist,
-        album: metadata.album,
-        year: metadata.year
-      });
+    console.log(detail);
+    ipcRenderer.send('mediaplay', {
+      title: event.detail.title,
+      artist: event.detail.artist,
+      album: event.detail.album,
+      year: event.detail.year
     });
-  })
+  });
 
-  document.addEventListener('drag', function (event) {
-    ipcRenderer.send('drag', {
-      data: event.dataTransfer
-    });
-  })
+  document.addEventListener('pointerdown', function (event) {
+    event.target.dataset.dragging = true;
+    if (event.target.draggable) {
+      event.target.dataset.draggable = event.target.draggable;
+      event.target.draggable = false;
+    }
+  });
+
+  document.addEventListener('pointerdown', function (event) {
+    if (event.target.draggable) {
+      event.target.dataset.draggable = event.target.draggable;
+      event.target.draggable = false;
+    }
+    if (event.target.dataset.dragging) {
+      if (!event.target.dataset.draggable) {
+        return;
+      }
+      ipcRenderer.send('webdrag', {
+        left: event.target.getBoundingClientRect().left,
+        top: event.target.getBoundingClientRect().top,
+        width: event.target.getBoundingClientRect().width,
+        height: event.target.getBoundingClientRect().height
+      });
+    }
+  });
+
+  document.addEventListener('pointerup', function (event) {
+    event.target.dataset.dragging = false;
+    if (event.target.draggable) {
+      event.target.dataset.draggable = event.target.draggable;
+      event.target.draggable = false;
+    }
+    if (event.target.dataset.draggable) {
+      ipcRenderer.send('webdrop', {
+        left: event.target.getBoundingClientRect().left,
+        top: event.target.getBoundingClientRect().top,
+        width: event.target.getBoundingClientRect().width,
+        height: event.target.getBoundingClientRect().height
+      });
+    }
+  });
 
   document.addEventListener('DOMContentLoaded', function () {
     const inputAreas = document.querySelectorAll(
@@ -283,7 +299,7 @@
       document.body.appendChild(button);
     });
 
-    Settings.getValue('homescreen.accent_color.rgb').then((value) => {
+    const handleAccentColor = (value) => {
       if (document.querySelector('.app')) {
         document.scrollingElement.style.setProperty(
           '--accent-color-r',
@@ -298,9 +314,11 @@
           value.b
         );
       }
-    });
+    };
+    Settings.getValue('homescreen.accent_color.rgb').then(handleAccentColor);
+    Settings.addObserver('homescreen.accent_color.rgb', handleAccentColor);
 
-    Settings.getValue('general.software_buttons.enabled').then((value) => {
+    const handleSoftwareButtons = (value) => {
       if (document.querySelector('.app')) {
         if (value) {
           document
@@ -312,10 +330,15 @@
             .style.setProperty('--software-buttons-height', '2.5rem');
         }
       }
-    });
+    };
+    Settings.getValue('general.software_buttons.enabled').then(handleSoftwareButtons);
+    Settings.addObserver('general.software_buttons.enabled', handleSoftwareButtons);
 
     if ('mozL10n' in navigator) {
       Settings.getValue('general.lang.code').then((value) => {
+        navigator.mozL10n.language.code = value;
+      });
+      Settings.addObserver('general.lang.code', (value) => {
         navigator.mozL10n.language.code = value;
       });
     }

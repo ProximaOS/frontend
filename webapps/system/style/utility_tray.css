@@ -53,18 +53,14 @@
   display: flex;
   padding: 0 1.5rem;
   box-sizing: border-box;
-  transform: translateY(calc(2.5rem * var(--overscroll-progress)));
   transition: transform 0.3s ease, opacity 0.3s ease, visibility 0.3s ease;
+  opacity: var(--motion-progress, 0);
+  transform: scale(calc(0.9 + (0.1 * var(--motion-progress, 0)))) translateY(calc(1rem * var(--overscroll-progress)));
+  filter: blur(calc(20px * (1 - var(--motion-progress, 0))));
 }
 
 #utility-tray-motion.transitioning .utility-tray-header {
-  transition: transform 0.5s cubic-bezier(0, 0, 0, 1.1), opacity 0.5s ease, visibility 0.5s ease;
-}
-
-#utility-tray-motion.fade-out .utility-tray-header {
-  opacity: 0;
-  transform: scale(0.9);
-  visibility: hidden;
+  transition: transform 0.5s cubic-bezier(0.47, 1.64, 0.41, 0.8), opacity 0.5s ease, visibility 0.5s ease;
 }
 
 .utility-tray-header h1 {
@@ -147,30 +143,26 @@
   margin: 0 0 1rem;
   display: flex;
   gap: 1rem;
-  transition: transform 0.3s ease, opacity 0.3s ease, visibility 0.3s ease;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+  opacity: var(--motion-progress, 0);
+  transform: scale(calc(0.9 + (0.1 * var(--motion-progress, 0))));
+  filter: blur(calc(20px * (1 - var(--motion-progress, 0))));
 }
 
 .control-center-row:nth-child(2) {
-  transform: translateY(calc(3.5rem * var(--overscroll-progress)));
+  transform: scale(calc(0.9 + (0.1 * var(--motion-progress, 0)))) translateY(calc(1.5rem * var(--overscroll-progress)));
 }
 
 .control-center-row:nth-child(3) {
-  transform: translateY(calc(4.5rem * var(--overscroll-progress)));
+  transform: scale(calc(0.9 + (0.1 * var(--motion-progress, 0)))) translateY(calc(2rem * var(--overscroll-progress)));
 }
 
 .control-center-row:nth-child(4) {
-  transform: translateY(calc(5.5rem * var(--overscroll-progress)));
+  transform: scale(calc(0.9 + (0.1 * var(--motion-progress, 0)))) translateY(calc(2.5rem * var(--overscroll-progress)));
 }
 
 #utility-tray-motion.transitioning .control-center-row {
-  transition: transform 0.5s cubic-bezier(0, 0, 0, 1.1), opacity 0.5s ease, visibility 0.5s ease;
-}
-
-#screen:not(.desktop) #utility-tray-motion .hidden .control-center-row,
-#screen:not(.desktop) #utility-tray-motion.fade-out .control-center-row {
-  opacity: 0;
-  transform: scale(0.9);
-  visibility: hidden;
+  transition: transform 0.5s cubic-bezier(0.47, 1.64, 0.41, 0.8), opacity 0.5s ease, visibility 0.5s ease;
 }
 
 #notifications-container {

@@ -35,7 +35,7 @@ button,
 button.recommend,
 .button.recommend {
   background-color: var(--accent-color);
-  color: var(--accent-color-plus);
+  color: var(--accent-color);
 }
 
 button.recommend:hover,
@@ -159,7 +159,6 @@ html[dir="rtl"] .button[data-icon].next::before {
 
 .lists ul li button,
 .lists ul li .button {
-  border: solid 0.1rem #858585;
   margin: 0;
 }
 
@@ -169,7 +168,7 @@ select {
   height: 4rem;
   line-height: 4rem;
   background: var(--button-normal) url(buttons/images/light/expand.png) no-repeat right 1rem center / 1.6rem;
-  border: solid 0.1rem #858585;
+  border: solid 0.1rem var(--button-normal);
   border-radius: 1rem;
   text-align: left;
   color: var(--text-color);

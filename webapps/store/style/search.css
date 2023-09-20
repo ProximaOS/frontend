@@ -1,0 +1,27 @@
+#search {
+  transform: translateX(0) !important;
+  opacity: 1;
+  background-color: transparent;
+}
+
+#search form,
+#search .content {
+  transition: opacity 0.3s ease;
+  opacity: 0;
+}
+
+#search.visible form,
+#search.visible .content {
+  opacity: 1;
+}
+
+#search .headerbar .back-button {
+  transition: transform 0.3s ease, opacity 0.3s ease;
+  transform: translateX(100%);
+  opacity: 0;
+}
+
+#search.visible .headerbar .back-button {
+  transform: translateX(0);
+  opacity: 1;
+}

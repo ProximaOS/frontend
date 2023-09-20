@@ -1,9 +1,9 @@
 !(function (exports) {
   'use strict';
 
-  const DialerHandler = {
+  const MusicController = {
     init: function () {}
   };
 
-  DialerHandler.init();
+  MusicController.init();
 })(window);

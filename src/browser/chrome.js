@@ -3,11 +3,11 @@
 
   const { BrowserWindow } = require('electron');
   const path = require('path');
-  const registerEvents = require('../events/main_events');
+  const registerEvents = require('./events');
   const settings = require('../settings');
 
   require('dotenv').config();
-  require('../config/default_presets');
+  require('./default_presets');
 
   module.exports = function () {
     const mainWindow = new BrowserWindow({

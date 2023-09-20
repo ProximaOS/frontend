@@ -1,0 +1,28 @@
+{
+  "version": "1.0",
+  "role": "homescreen",
+  "name": "Homescreen (Smart TV)",
+  "description": "",
+  "launch_path": "/index.html",
+  "icons": {
+    "16": "/style/icons/homescreen_16.png",
+    "32": "/style/icons/homescreen_32.png",
+    "48": "/style/icons/homescreen_48.png",
+    "64": "/style/icons/homescreen_64.png",
+    "128": "/style/icons/homescreen_128.png",
+    "256": "/style/icons/homescreen_256.png"
+  },
+  "developer": {
+    "name": "Orchid Org.",
+    "url": "https://openorchid.github.io/"
+  },
+  "default_locale": "en",
+  "orientation": "portrait-primary",
+  "background_color": "#f0f6ff",
+  "theme_color": "#ff6040",
+  "permissions": {
+    "ipc": {},
+    "device-storage:apps": {}
+  },
+  "statusbar": "immersive"
+}

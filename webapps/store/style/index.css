@@ -1,0 +1,110 @@
+.panel {
+  background-color: var(--background);
+  visibility: hidden;
+  transition: all 0.5s ease;
+}
+
+.panel.previous {
+  filter: brightness(50%);
+}
+html[dir="ltr"] .panel.previous {
+  transform: translateX(-25%);
+}
+html[dir="rtl"] .panel.previous {
+  transform: translateX(25%);
+}
+
+.panel.next {
+  filter: brightness(100%);
+}
+html[dir="ltr"] .panel.next {
+  transform: translateX(100%);
+}
+html[dir="rtl"] .panel.next {
+  transform: translateX(-100%);
+}
+
+html[dir="ltr"] .panel.visible,
+html[dir="rtl"] .panel.visible {
+  transform: translateX(0);
+  filter: brightness(100%);
+  opacity: 1;
+  visibility: visible;
+  transition: all 0.3s ease;
+}
+
+#root {
+  transform: translateX(0) !important;
+  filter: none !important;
+  opacity: 0;
+  --safezone-width: 102.4rem;
+}
+
+#root.visible {
+  opacity: 1;
+}
+
+.headerbar .logo {
+  width: 23rem;
+  flex-shrink: 0;
+  height: 4rem;
+  margin: 0.5rem 0;
+  background: url(images/logo_light.png) no-repeat left center / 100% 3.6rem;
+  display: none;
+}
+
+@media screen and (prefers-color-scheme: dark) {
+  .headerbar .logo {
+    background-image: url(images/logo_dark.png);
+  }
+}
+
+.searchbox {
+  width: 100%;
+  max-width: 40rem;
+  height: 4rem;
+  margin: 0.5rem 0;
+  margin-inline-start: auto;
+  margin-inline-end: 0.5rem;
+  background-color: var(--item-plus);
+  border-radius: 2rem;
+  display: flex;
+  padding: 0 0.5rem;
+  gap: 0.5rem;
+  box-sizing: border-box;
+}
+
+.searchbox .placeholder {
+  width: 100%;
+  height: 4rem;
+  line-height: 4rem;
+  padding-inline-start: 1rem;
+  color: var(--text-color-faded);
+  font-size: 1.6rem;
+  font-weight: normal;
+  display: flex;
+}
+
+.searchbox .placeholder[data-icon]::before {
+  font-size: 2rem;
+  margin-inline-end: 1rem;
+}
+
+.searchbox > a {
+  border-radius: 1.5rem;
+  margin: 0.5rem 0;
+  width: 4rem;
+  height: 3rem;
+  line-height: 3rem;
+}
+
+.searchbox .user-avatar {
+  width: 3rem;
+  background: url(images/defaultuser.png) no-repeat center / cover;
+}
+
+@media screen and (min-width: 600px) {
+  .headerbar .logo {
+    display: block;
+  }
+}

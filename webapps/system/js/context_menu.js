@@ -18,6 +18,9 @@
       document.addEventListener('click', this.hide.bind(this));
 
       array.forEach((item) => {
+        if (item.hidden) {
+          return;
+        }
         const element = document.createElement('li');
         this.containerElement.appendChild(element);
 
@@ -46,19 +49,25 @@
           window.innerWidth - this.overlay.getBoundingClientRect().width
         ) {
           this.overlay.style.left =
-            x - this.overlay.getBoundingClientRect().width + 'px';
+            x - this.overlay.getBoundingClientRect().width + 10 + 'px';
+          if (this.overlay.offsetLeft <= 0) {
+            this.overlay.style.left = 0;
+          }
         } else {
-          this.overlay.style.left = x + 'px';
+          this.overlay.style.left = x - 10 + 'px';
         }
         if (
           y >=
-          window.innerHeight - this.overlay.getBoundingClientRect().height
+          window.innerHeight - this.overlay.getBoundingClientRect().height - 10
         ) {
           this.overlay.style.top =
-            y - this.overlay.getBoundingClientRect().height + 'px';
+            y - this.overlay.getBoundingClientRect().height - 10 + 'px';
           this.overlay.classList.add('bottom');
+          if (this.overlay.offsetTop <= 0) {
+            this.overlay.style.top = 0;
+          }
         } else {
-          this.overlay.style.top = y + 'px';
+          this.overlay.style.top = y - 10 + 'px';
           this.overlay.classList.remove('bottom');
         }
       });

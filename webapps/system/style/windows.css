@@ -36,7 +36,8 @@
 }
 
 #screen.cards-view-visible #windows,
-#screen.utility-tray-visible #windows {
+#screen.utility-tray-visible #windows,
+#screen.drag-and-drop-active #windows {
   pointer-events: none;
 }
 

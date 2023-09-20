@@ -120,12 +120,17 @@ html, body {
 .panel > .content .scrollbar-track-y {
   right: 0;
   width: 0.75rem;
-  top: calc(0.5rem + (5rem * var(--progress)) + (13rem * var(--overscroll-progress)));
-  height: calc(100% - 1rem - var(--software-buttons-height) - (5rem * var(--progress)) + (13rem * var(--overscroll-progress)));
+  top: calc(0.5rem + (5rem * var(--progress)));
+  height: calc(100% - 1rem - var(--software-buttons-height) - (5rem * var(--progress)));
 }
 html[dir="rtl"] .panel > .content .scrollbar-track-y {
   right: unset;
   left: 0;
+}
+
+.panel > .headerbar:not(.compact) + .content .scrollbar-track-y {
+  top: calc(0.5rem + (5rem * var(--progress)) + (13rem * var(--overscroll-progress)));
+  height: calc(100% - 1rem - var(--software-buttons-height) - (5rem * var(--progress)) + (13rem * var(--overscroll-progress)));
 }
 
 .panel > .content .scrollbar-thumb {

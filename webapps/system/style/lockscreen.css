@@ -11,6 +11,7 @@
   backdrop-filter: blur(calc(20px * var(--motion-progress, 1))) saturate(calc(100% + (80% * var(--motion-progress, 1))));
   overflow: hidden;
   box-shadow: 0 1rem 2rem rgba(0, 0, 0, calc(var(--motion-progress, 1) * 0.3));
+  transition: all 0.3s ease;
 }
 
 #lockscreen.pin-lock {
@@ -47,6 +48,7 @@
   -webkit-mask-image: radial-gradient(circle at 50% 100%, transparent, transparent calc(50% - 50vh), white calc(50% + 50vh), white);
   -webkit-mask-size: 100% calc(200% + 100vh);
   -webkit-mask-position: 0 calc(200vh + 100vh);
+  transition: all 0.3s ease;
 }
 
 #lockscreen-foreground {
@@ -65,6 +67,7 @@
   -webkit-mask-size: 100% calc(200% + 100vh);
   -webkit-mask-position: 0 calc(200vh + 100vh);
   z-index: 1;
+  transition: all 0.3s ease;
 }
 
 #lockscreen.pin-lock #lockscreen-background,
@@ -133,6 +136,7 @@
   height: 3rem;
   background: url(lockscreen/images/lock_base.png) no-repeat center / 3rem, url(lockscreen/images/lock_head.png) no-repeat center / 3rem;
   background-position-x: calc(1rem + (0.7rem * (10 - (var(--motion-progress, 1) * 10)))), calc(1rem - (0.3rem * (10 - (var(--motion-progress, 1) * 10))));
+  transition: all 0.3s ease;
 }
 
 #lockscreen-icon.fail-unlock {

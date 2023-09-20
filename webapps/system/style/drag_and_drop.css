@@ -1,0 +1,17 @@
+#drag-and-drop {
+  position: absolute;
+  left: 0;
+  top: 0;
+  background: var(--background) no-repeat top left / 100vw;
+  box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.3);
+  border-radius: 1.5rem;
+  pointer-events: none;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+  opacity: 0;
+  visibility: hidden;
+}
+
+#drag-and-drop.visible {
+  opacity: 1;
+  visibility: visible;
+}

@@ -1,0 +1,52 @@
+#paginationBar {
+  position: absolute;
+  left: 50%;
+  translate: -50% 0;
+  bottom: calc(var(--software-buttons-height) + 7.8rem + 0.5rem);
+  padding: 0.5rem;
+  box-sizing: border-box;
+  border-radius: 2rem;
+  height: 2rem;
+  transition: all 0.3s ease;
+}
+
+#paginationBar:hover {
+  background-color: var(--acrylic-background);
+  backdrop-filter: blur(20px) saturate(180%);
+}
+
+#paginationBar .search-button {
+  visibility: hidden;
+  color: #fff;
+  height: 1rem;
+  line-height: 1rem;
+  opacity: 0.5;
+  display: none;
+}
+
+#paginationBar .search-button[data-icon]::before {
+  font-size: 1rem;
+  font-weight: bold;
+  margin-inline-end: 0.5rem;
+}
+
+#paginationBar .dots {
+  display: flex;
+  gap: 0.5rem;
+  padding: 0.2rem;
+  box-sizing: border-box;
+}
+
+#paginationBar .dots > .dot {
+  width: 0.8rem;
+  height: 0.8rem;
+  background-color: #fff;
+  border-radius: 1rem;
+  transition: all 0.3s ease;
+  opacity: 0.5;
+}
+
+#paginationBar .dots > .dot.active {
+  width: 1.6rem;
+  opacity: 1;
+}

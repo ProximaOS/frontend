@@ -16,7 +16,7 @@
   /* We use the special translate property for X-axis translation to avoid janky 'transform: translateX()' transition */
   translate: -50% 0;
   max-width: var(--safezone-width);
-  transform: translateY(calc((var(--statusbar-height) * var(--motion-progress, 0)) + (1.5rem * var(--overscroll-progress))));
+  transform: translateY(calc((var(--statusbar-height) * var(--motion-progress, 0)) + (0.5rem * var(--overscroll-progress))));
   transition: transform 0.3s ease;
 }
 
@@ -25,7 +25,7 @@
 }
 
 #screen:not(.desktop) #statusbar.tray-open.transitioning {
-  transition: transform 0.5s ease;
+  transition: transform 0.5s cubic-bezier(0.47, 1.64, 0.41, 0.8);
 }
 
 .statusbar-icons {
