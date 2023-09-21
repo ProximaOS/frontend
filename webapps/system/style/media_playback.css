@@ -5,6 +5,11 @@
   border-radius: 2rem;
   min-height: 6.5rem;
   position: relative;
+  transition: all 0.3s ease;
+}
+
+#utility-tray.brightness-changing #media-playback {
+  opacity: 0;
 }
 
 #media-playback .content {

@@ -38,12 +38,12 @@
 }
 
 #paginationBar .dots > .dot {
-  width: 0.8rem;
+  width: calc(0.8rem + (0.8rem * var(--pagination-progress, 0)));
   height: 0.8rem;
   background-color: #fff;
   border-radius: 1rem;
   transition: all 0.3s ease;
-  opacity: 0.5;
+  opacity: calc(0.5 + (0.5 * var(--pagination-progress, 0)));
 }
 
 #paginationBar .dots > .dot.active {

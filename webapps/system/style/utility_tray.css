@@ -19,6 +19,13 @@
   pointer-events: all;
   opacity: 0;
   visibility: hidden;
+  transition: all 0.3s ease;
+}
+
+#utility-tray.brightness-changing #utility-tray-motion {
+  background-color: transparent;
+  background-image: linear-gradient(to bottom, #333, #333 calc(var(--statusbar-height) * 2), transparent calc(var(--statusbar-height) * 3), transparent);
+  backdrop-filter: blur(0px) saturate(100%);
 }
 
 #utility-tray-motion.visible {
@@ -57,6 +64,11 @@
   opacity: var(--motion-progress, 0);
   transform: scale(calc(0.9 + (0.1 * var(--motion-progress, 0)))) translateY(calc(1rem * var(--overscroll-progress)));
   filter: blur(calc(20px * (1 - var(--motion-progress, 0))));
+  transition: all 0.3s ease;
+}
+
+#utility-tray.brightness-changing .utility-tray-header {
+  opacity: 0;
 }
 
 #utility-tray-motion.transitioning .utility-tray-header {

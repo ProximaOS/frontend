@@ -1,12 +1,16 @@
 #connection-settings {
   width: 100%;
   flex-grow: 1;
-  overflow: hidden;
   margin: 0;
   padding: 0;
   display: flex;
   flex-wrap: wrap;
   gap: 1rem;
+  transition: all 0.3s ease;
+}
+
+#utility-tray.brightness-changing #connection-settings {
+  opacity: 0;
 }
 
 #connection-settings li {
@@ -22,9 +26,13 @@
 #quick-settings {
   width: 100%;
   flex-grow: 1;
-  overflow: hidden;
   background-color: var(--acrylic-background-plus);
   border-radius: 2rem;
+  transition: all 0.3s ease;
+}
+
+#utility-tray.brightness-changing #quick-settings {
+  background-color: transparent;
 }
 
 #quick-settings-grid {
@@ -37,6 +45,11 @@
   grid-template-columns: repeat(auto-fit, minmax(4rem, 1fr));
   gap: 1rem;
   justify-content: center;
+  transition: all 0.3s ease;
+}
+
+#utility-tray.brightness-changing #quick-settings-grid {
+  opacity: 0;
 }
 
 #quick-settings-grid.collapsed {

@@ -50,10 +50,11 @@
       );
       console.log(pages);
       pages.forEach((array, offset) => {
+        const rtl = document.dir === 'rtl';
+
         const page = document.createElement('div');
         page.id = `page${offset}`;
         page.classList.add('page');
-        const rtl = document.dir === 'rtl';
         page.style.transform = rtl ? `translateX(-${offset * 100}%)` : `translateX(${offset * 100}%)`;
         this.gridElement.appendChild(page);
 
@@ -115,10 +116,16 @@
     handleSwiping: function () {
       const paginationDots = this.paginationBarDots.querySelectorAll('.dot');
       paginationDots.forEach((dot, index) => {
-        let progress = grid.scrollLeft - (window.innerWidth * index);
+        const rtl = document.dir === 'rtl';
+        const scrollLeft = rtl ? -grid.scrollLeft : grid.scrollLeft;
+
+        let progress = scrollLeft - (window.innerWidth * index);
         progress = progress / window.innerWidth;
-        progress = Math.abs(progress - 0.5);
-        dot.style.setProperty('--page-progress', progress);
+        progress = 1 * ((Math.abs(progress - 0.5) - 0.5) * 2);
+        progress = Math.min(1, progress);
+        progress = Math.max(0, progress);
+
+        dot.style.setProperty('--pagination-progress', progress);
       })
     },
 
