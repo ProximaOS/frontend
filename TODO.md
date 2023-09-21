@@ -1,3 +1,5 @@
+# To Do
+
 ## Services
 
 - Orchid Store (OpenOrchid Remake)
@@ -31,6 +33,7 @@
 - App launcher
 - Search launcher
 - Syncing and pairing between devices
+- New Smart TV OST
 
 ## Homescreen
 
@@ -41,14 +44,21 @@
 
 - Orchid Services
   - Use Public Data For Ads
+    - ON/OFF
   - Auto-moderate Chats
+    - ON/OFF
 
 - Blocking Content
   - Block Cookies
+    - ON/OFF
   - Block Advertisements
+    - ON/OFF
   - Block Images (Only Websites)
+    - ON/OFF
   - Block Javascript (Only Websites)
+    - ON/OFF
   - Block Pop-ups (Only Websites)
+    - ON/OFF
 
 - Emergency
   - Enable Emergency SOS

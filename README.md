@@ -38,7 +38,6 @@ Our future goals are simply
 Products with similar ideas as OpenOrchid
 - [Capyloon](https://www.capyloon.org/)
 - [ProximaOS](https://www.github.com/vlahoriusss/proximaOS/tree/main/README.md)
-- [EsterOS](https://getester.odoo.com/)
 
 ## Funding for Orchid
 There is no way to fund Orchid yet.
