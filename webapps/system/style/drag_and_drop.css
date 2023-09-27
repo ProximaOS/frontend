@@ -6,12 +6,15 @@
   box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.3);
   border-radius: 1.5rem;
   pointer-events: none;
-  transition: opacity 0.3s ease, visibility 0.3s ease;
+  transition: all 0.3s ease;
   opacity: 0;
   visibility: hidden;
+  scale: 1;
 }
 
 #drag-and-drop.visible {
+  transition: opacity 0.3s ease, visibility 0.3s ease, scale 0.3s ease;
   opacity: 1;
   visibility: visible;
+  scale: 0.75;
 }

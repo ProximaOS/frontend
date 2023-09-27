@@ -5,6 +5,9 @@ OpenOrchid is a LFS operating system with the Orchid official coat of paint and 
 We make open source like Mozilla but our open source products don't look and work like trash.\
 We are basically Mozilla if Mozilla wasn't a anti-user failure that's getting milked dry by a PHAT BEITCH!
 
+<img src="images/orchidos.png" height="16" /> is created and owned by\
+<img src="images/orchidorg.png" width="290" />
+
 ## Why Electron?
 Use the new B2G and compare it with OpenOrchid and you will see why.\
 The B2G ones arent just less capable, more barebones but perform WAY worse cuz they lack our Orchid optimizations ;\)\

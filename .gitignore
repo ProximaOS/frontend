@@ -1,22 +1,30 @@
 .DS_Store
+Thumbs.db
 
+/.gradle/
+/.orchidstudio/
+/.build/
 node_modules/
 
 /dist/
 package-lock.json
 # firebaseConfig.json
 /profile/
-/webapps/{*}
+/*webapps/{*}
+/kernel/src
+/packages/*/src
+/output/
+tests/results/
 
 build_stage/
 logs/
 *.log
-*.orchidBin
-*.orchidLib
-*.orchidConf
-*.orchidApp
-*.orchidAssets
-*.orchidScript
+
+*.orcbin
+*.orclib
+*.orchidapp
+*.orchidassets
+*.osh
 
 manifest.*.json
 *.af.properties

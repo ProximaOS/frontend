@@ -5,7 +5,7 @@
 
 *:focus {
   /* box-shadow: 0 0 0 3px var(--accent-color, #0061e0), 0 0 0 5px rgba(var(--accent-color-r, 0), var(--accent-color-g, 97), var(--accent-color-b, 224), 0.5); */
-  outline: dotted 1px currentColor;
+  outline: solid 1px currentColor;
 }
 
 *,
@@ -47,8 +47,7 @@ input[type='url'] {
 }
 
 ::selection {
-  background-color: var(--accent-color, #0061e0);
-  color: var(--accent-color-plus, rgba(255, 255, 255, 0.75));
+  background-color: var(--item-active-plus, rgba(0, 97, 224, 0.3));
 }
 
 .openorchid-pip-button {

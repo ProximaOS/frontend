@@ -1,0 +1,46 @@
+apply plugin: 'java'
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+sourceSets {
+  main {
+    java {
+      srcDir 'src/java'
+    }
+    resources {
+      srcDir 'src/resources'
+    }
+  }
+}
+
+repositories {
+  flatDir {
+    dirs 'libs'
+  }
+}
+
+dependencies {
+  compile fileTree(dir: 'libs', include: ['*.jar'])
+  implementation 'com.google.code.gson:gson:2.10.1'
+}
+
+jar {
+  from configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
+  manifest {
+    attributes(
+      'Main-Class': 'org.openorchid.Main'
+    )
+  }
+}
+
+task copyNatives(type: Copy) {
+  from 'libs'
+  into project.buildDir
+  include '**/*.dll', '**/*.so', '**/*.dylib', '**/*.jnilib'
+}
+
+tasks.withType(JavaExec) {
+  dependsOn copyNatives
+  classpath += files("$buildDir/libs")
+}

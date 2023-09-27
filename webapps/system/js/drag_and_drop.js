@@ -6,10 +6,10 @@
     element: document.getElementById('drag-and-drop'),
 
     init: function () {
-      // window.addEventListener('webdrag', this.handleDrag.bind(this));
-      // window.addEventListener('webdrop', this.handleDrop.bind(this));
-      // document.addEventListener('mousemove', this.handleDragMove.bind(this));
-      // document.addEventListener('touchmove', this.handleDragMove.bind(this));
+      window.addEventListener('webdrag', this.handleDrag.bind(this));
+      window.addEventListener('webdrop', this.handleDrop.bind(this));
+      document.addEventListener('mouseover', this.handleDragMove.bind(this));
+      document.addEventListener('touchover', this.handleDragMove.bind(this));
     },
 
     handleDrag: function (event) {
@@ -27,8 +27,6 @@
       this.element.style.top = webviewBox.top + detail.top + 'px';
       this.element.style.width = `${detail.width}px`;
       this.element.style.height = `${detail.height}px`;
-      this.offsetX = detail.left;
-      this.offsetY = detail.top;
 
       DisplayManager.screenshot(webview.getWebContentsId()).then((data) => {
         this.element.style.backgroundImage = `url(${data})`;
@@ -89,12 +87,15 @@
 
     handleDrop: function (event) {
       const detail = event.detail;
+      const webview = document.querySelector(
+        '.appframe.active .browser-container .browser.active'
+      );
+      const webviewBox = webview.getBoundingClientRect();
 
       this.screen.classList.remove('drag-and-drop-active');
       this.element.classList.remove('visible');
-      this.element.style.transform = `translate(${detail.left}px, ${detail.top}px)`;
-      this.element.style.width = `${detail.width}px`;
-      this.element.style.height = `${detail.height}px`;
+      this.element.style.left = webviewBox.left + detail.left + 'px';
+      this.element.style.top = webviewBox.top + detail.top + 'px';
     }
   };
 

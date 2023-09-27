@@ -33,6 +33,36 @@ html, body {
   display: flex;
   flex-direction: column;
   overflow: hidden;
+  transition: all 0.5s ease;
+  visibility: hidden;
+}
+
+.panel.previous {
+  filter: brightness(50%);
+}
+html[dir="ltr"] .panel.previous {
+  transform: translateX(-25%);
+}
+html[dir="rtl"] .panel.previous {
+  transform: translateX(25%);
+}
+
+.panel.next {
+  filter: brightness(100%);
+}
+html[dir="ltr"] .panel.next {
+  transform: translateX(100%);
+}
+html[dir="rtl"] .panel.next {
+  transform: translateX(-100%);
+}
+
+html[dir="ltr"] .panel.visible,
+html[dir="rtl"] .panel.visible {
+  transform: translateX(0);
+  filter: brightness(100%);
+  opacity: 1;
+  visibility: visible;
 }
 
 .panel > .content {
@@ -44,6 +74,16 @@ html, body {
   padding-bottom: var(--software-buttons-height);
   box-sizing: border-box;
   scrollbar-width: none;
+  transition: transform 0.5s ease 0.5s, opacity 0.5s ease 0.5s, visibility 0.5s ease 0.5s;
+  transform: translateY(3rem);
+  opacity: 0;
+  visibility: hidden;
+}
+
+.panel.visible > .content {
+  transform: translateY(0);
+  opacity: 1;
+  visibility: visible;
 }
 
 .panel > .content form.search {

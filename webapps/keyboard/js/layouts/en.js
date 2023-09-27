@@ -57,7 +57,7 @@ Keyboards.en = {
       { value: '⌫', ratio: 1.5, keyCode: KeyEvent.DOM_VK_BACK_SPACE }
     ],
     [
-      { value: '&nbsp', ratio: 8, keyCode: KeyboardEvent.DOM_VK_SPACE },
+      { value: '&nbsp', ratio: 8, keyCode: KeyEvent.DOM_VK_SPACE },
       { value: '↵', ratio: 2, keyCode: KeyEvent.DOM_VK_RETURN }
     ]
   ],
@@ -111,7 +111,7 @@ Keyboards.en = {
           {
             value: 'Alt',
             ratio: 1.5,
-            keyCode: KeyboardEvent.DOM_VK_ALT,
+            keyCode: KeyEvent.DOM_VK_ALT,
             className: 'page-switch-key',
             targetPage: 2
           },
@@ -130,7 +130,7 @@ Keyboards.en = {
           { value: '⌫', ratio: 1.5, keyCode: KeyEvent.DOM_VK_BACK_SPACE }
         ],
         [
-          { value: '&nbsp', ratio: 8, keyCode: KeyboardEvent.DOM_VK_SPACE },
+          { value: '&nbsp', ratio: 8, keyCode: KeyEvent.DOM_VK_SPACE },
           { value: '↵', ratio: 2, keyCode: KeyEvent.DOM_VK_RETURN }
         ]
       ]

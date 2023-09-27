@@ -1,0 +1,11 @@
+{
+  "releaseType": "canary",
+  "icon_badges": {
+    "16": "customzie/releases/canary_16.png",
+    "32": "customzie/releases/canary_32.png",
+    "48": "customzie/releases/canary_48.png",
+    "64": "customzie/releases/canary_64.png",
+    "128": "customzie/releases/canary_128.png",
+    "256": "customzie/releases/canary_256.png"
+  }
+}

@@ -9,8 +9,9 @@
 
     init: function () {
       FileIndexer(this.PHOTOS_DIR, this.PHOTOS_MIME).then((array) => {
-        array.forEach((item) => {
-          this.addImage(item);
+        this.images = array;
+        array.forEach((item, index) => {
+          this.addImage(item, index);
         });
       });
     },
@@ -50,18 +51,25 @@
       window.SDCardManager
         .read(path, { encoding: 'base64' })
         .then((data) => {
+          const mime = window.SDCardManager.getMime(path);
+          const imageSrc = `data:${mime};base64,${data}`;
+
           const item = document.createElement('div');
           item.classList.add('image');
+          item.addEventListener('click', () => this.handleImageClick(imageSrc));
 
           const image = document.createElement('img');
-          const mime = window.SDCardManager.getMime(path);
-          image.src = `data:${mime};base64,${data}`;
+          image.src = imageSrc;
           item.appendChild(image);
 
           window.SDCardManager.getFileStats(path).then((stats) => {
             this.setCategory(stats.birthtime).appendChild(item);
           });
         });
+    },
+
+    handleImageClick: function (image) {
+      ImageViewer.open(image, this.images);
     }
   };
 

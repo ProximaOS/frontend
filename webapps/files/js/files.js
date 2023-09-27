@@ -13,37 +13,37 @@
     DEFAULT_SHORTCUTS: [
       {
         name: 'home',
-        icon: 'home_folder',
+        className: 'home',
         path: '/'
       },
       {
         name: 'audio',
-        icon: 'audio_folder',
+        className: 'audio',
         path: '/audio'
       },
       {
         name: 'books',
-        icon: 'books_folder',
+        className: 'books',
         path: '/books'
       },
       {
         name: 'downloads',
-        icon: 'downloads_folder',
+        className: 'downloads',
         path: '/downloads'
       },
       {
         name: 'movies',
-        icon: 'movies_folder',
+        className: 'movies',
         path: '/movies'
       },
       {
         name: 'photos',
-        icon: 'photos_folder',
+        className: 'photos',
         path: '/photos'
       },
       {
         name: 'others',
-        icon: 'others_folder',
+        className: 'others',
         path: '/others'
       }
     ],
@@ -68,8 +68,7 @@
 
         data.forEach((item) => {
           const shortcut = document.createElement('li');
-          shortcut.classList.add('page');
-          shortcut.classList.add(item.icon);
+          shortcut.classList.add(item.className);
           shortcut.dataset.pageId = 'content';
 
           shortcut.onclick = () => {

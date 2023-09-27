@@ -1,0 +1,7 @@
+rootfs/dev
+rootfs/mnt
+rootfs/proc
+rootfs/root
+rootfs/sdcard
+rootfs/sys
+rootfs/system/vendor

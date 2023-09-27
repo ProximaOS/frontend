@@ -10,6 +10,6 @@
   border-radius: calc(var(--software-buttons-height) / 2);
 }
 
-#screen:not(.software-buttons-enabled)#software-buttons {
+#screen.desktop:not(.software-buttons-enabled) #software-buttons {
   transform: translateY(0);
 }
