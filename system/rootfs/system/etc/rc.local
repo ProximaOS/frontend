@@ -1,0 +1,181 @@
+#!/system/bin/sh
+
+# Play the early boot sound
+aplay /system/etc/boot.wav
+
+# Set directory permissions
+chown -R system:system /config
+chown -R system:system /config/apns
+chown -R system:system /config/bluetooth
+chown -R system:system /config/sensors
+chown -R system:system /config/timezone
+chown -R system:system /config/wifi
+chown -R system:system /odm
+chown -R system:system /oem
+chown -R system:system /system
+chown -R system:system /system/system
+chown -R system:system /system/product
+chown -R system:system /data
+chown -R system:system /data/data
+chown -R shell:shell /data/local/tmp
+chown -R shell:shell /data/system/cache
+chmod 775 /config
+chmod 777 /config/apns
+chmod 777 /config/bluetooth
+chmod 777 /config/sensors
+chmod 777 /config/timezone
+chmod 777 /config/wifi
+chmod 775 /odm
+chmod 775 /oem
+chmod 775 /system
+chmod 775 /system/system
+chmod 775 /system/product
+chmod 775 /data
+chmod 775 /data/data
+chmod 777 /data/local/tmp
+chmod 777 /data/system/cache
+
+# Change the mixer settings
+amixer -c 0 cset iface=MIXER,name='PCM Playback Switch' 1
+
+# Find and execute all *.rc files
+for script_file in /*.rc; do
+  if [ -f "$script_file" ] && [ -x "$script_file" ]; then
+    exec $COMMAND_PREFIX "$script_file" start
+  elif [ -f "$script_file" ] && [ ! -x "$script_file" ]; then
+    chmod 755 "$script_file"
+    exec $COMMAND_PREFIX "$script_file" start
+  fi
+done
+
+# Find and chmod all non-executable scripts in /system/etc/init.d/
+for script_file in /system/etc/init.d/*; do
+  if [ -f "$script_file" ] && [ ! -x "$script_file" ]; then
+    chmod 755 "$script_file"
+  fi
+done
+
+# Find and execute all *.sh files in /system/etc/init.*.sh
+for script_file in /system/etc/init.*.sh; do
+  if [ -f "$script_file" ] && [ -x "$script_file" ]; then
+    exec $COMMAND_PREFIX "$script_file"
+  elif [ -f "$script_file" ] && [ ! -x "$script_file" ]; then
+    chmod 755 "$script_file"
+    exec $COMMAND_PREFIX "$script_file"
+  fi
+done
+
+# Execute /system_*/etc/rc.local
+exec $COMMAND_PREFIX /system_*/etc/rc.local
+
+# Find and execute all scripts in /system_*/etc/init.d/
+for script_file in /system_*/etc/init.d/*; do
+  if [ -f "$script_file" ] && [ -x "$script_file" ]; then
+    exec $COMMAND_PREFIX "$script_file" start
+  elif [ -f "$script_file" ] && [ ! -x "$script_file" ]; then
+    chmod 755 "$script_file"
+    exec $COMMAND_PREFIX "$script_file" start
+  fi
+done
+
+# Find and execute all *.sh files in /system_*/etc/init.*.sh
+for script_file in /system_*/etc/init.*.sh; do
+  if [ -f "$script_file" ] && [ -x "$script_file" ]; then
+    exec $COMMAND_PREFIX "$script_file"
+  elif [ -f "$script_file" ] && [ ! -x "$script_file" ]; then
+    chmod 755 "$script_file"
+    exec $COMMAND_PREFIX "$script_file"
+  fi
+done
+
+# Execute /vendor/etc/rc.local
+exec $COMMAND_PREFIX /vendor/etc/rc.local
+
+# Find and execute all scripts in /vendor/etc/init.d/
+for script_file in /vendor/etc/init.d/*; do
+  if [ -f "$script_file" ] && [ -x "$script_file" ]; then
+    exec $COMMAND_PREFIX "$script_file" start
+  elif [ -f "$script_file" ] && [ ! -x "$script_file" ]; then
+    chmod 755 "$script_file"
+    exec $COMMAND_PREFIX "$script_file" start
+  fi
+done
+
+# Find and execute all *.sh files in /vendor/etc/init.*.sh
+for script_file in /vendor/etc/init.*.sh; do
+  if [ -f "$script_file" ] && [ -x "$script_file" ]; then
+    exec $COMMAND_PREFIX "$script_file"
+  elif [ -f "$script_file" ] && [ ! -x "$script_file" ]; then
+    chmod 755 "$script_file"
+    exec $COMMAND_PREFIX "$script_file"
+  fi
+done
+
+# Execute /product/etc/rc.local
+exec $COMMAND_PREFIX /product/etc/rc.local
+
+# Find and execute all scripts in /product/etc/init.d/
+for script_file in /product/etc/init.d/*; do
+  if [ -f "$script_file" ] && [ -x "$script_file" ]; then
+    exec $COMMAND_PREFIX "$script_file" start
+  elif [ -f "$script_file" ] && [ ! -x "$script_file" ]; then
+    chmod 755 "$script_file"
+    exec $COMMAND_PREFIX "$script_file" start
+  fi
+done
+
+# Find and execute all *.sh files in /product/etc/init.*.sh
+for script_file in /product/etc/init.*.sh; do
+  if [ -f "$script_file" ] && [ -x "$script_file" ]; then
+    exec $COMMAND_PREFIX "$script_file"
+  elif [ -f "$script_file" ] && [ ! -x "$script_file" ]; then
+    chmod 755 "$script_file"
+    exec $COMMAND_PREFIX "$script_file"
+  fi
+done
+
+# Execute /odm/etc/rc.local
+exec $COMMAND_PREFIX /odm/etc/rc.local
+
+# Find and execute all scripts in /odm/etc/init.d/
+for script_file in /odm/etc/init.d/*; do
+  if [ -f "$script_file" ] && [ -x "$script_file" ]; then
+    exec $COMMAND_PREFIX "$script_file" start
+  elif [ -f "$script_file" ] && [ ! -x "$script_file" ]; then
+    chmod 755 "$script_file"
+    exec $COMMAND_PREFIX "$script_file" start
+  fi
+done
+
+# Find and execute all *.sh files in /odm/etc/init.*.sh
+for script_file in /odm/etc/init.*.sh; do
+  if [ -f "$script_file" ] && [ -x "$script_file" ]; then
+    exec $COMMAND_PREFIX "$script_file"
+  elif [ -f "$script_file" ] && [ ! -x "$script_file" ]; then
+    chmod 755 "$script_file"
+    exec $COMMAND_PREFIX "$script_file"
+  fi
+done
+
+# Execute /oem/etc/rc.local
+exec $COMMAND_PREFIX /oem/etc/rc.local
+
+# Find and execute all scripts in /oem/etc/init.d/
+for script_file in /oem/etc/init.d/*; do
+  if [ -f "$script_file" ] && [ -x "$script_file" ]; then
+    exec $COMMAND_PREFIX "$script_file" start
+  elif [ -f "$script_file" ] && [ ! -x "$script_file" ]; then
+    chmod 755 "$script_file"
+    exec $COMMAND_PREFIX "$script_file" start
+  fi
+done
+
+# Find and execute all *.sh files in /oem/etc/init.*.sh
+for script_file in /oem/etc/init.*.sh; do
+  if [ -f "$script_file" ] && [ -x "$script_file" ]; then
+    exec $COMMAND_PREFIX "$script_file"
+  elif [ -f "$script_file" ] && [ ! -x "$script_file" ]; then
+    chmod 755 "$script_file"
+    exec $COMMAND_PREFIX "$script_file"
+  fi
+done

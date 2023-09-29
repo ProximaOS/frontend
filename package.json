@@ -152,8 +152,8 @@
     "extraFiles": [
       { "from": "customize/defaults", "to": "defaults" },
       { "from": "build_stage", "to": "webapps" },
-      { "from": "webapps/shared/fonts", "to": "fonts" }
-      { "from": "build/environment/production.env", "to": ".env" },
+      { "from": "webapps/shared/fonts", "to": "fonts" },
+      { "from": "build/environment/production.env", "to": ".env" }
     ]
   }
 }

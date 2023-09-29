@@ -1,0 +1,49 @@
+#!/bin/sh
+#
+# PPPD init.d script for BusyBox
+
+### BEGIN INIT INFO
+# Provides:          pppd
+# Required-Start:    $local_fs
+# Required-Stop:
+# Default-Start:     S
+# Default-Stop:
+# Description:       PPP daemon for establishing point-to-point connections
+### END INIT INFO
+
+DAEMON="/usr/sbin/pppd"
+CONFIG_FILE="/etc/ppp/options"
+
+start() {
+  echo "Starting PPPD..."
+  $DAEMON call $CONFIG_FILE
+}
+
+stop() {
+  echo "Stopping PPPD..."
+  killall $DAEMON
+}
+
+restart() {
+  stop
+  sleep 1
+  start
+}
+
+case "$1" in
+  start)
+    start
+    ;;
+  stop)
+    stop
+    ;;
+  restart)
+    restart
+    ;;
+  *)
+    echo "Usage: $0 {start|stop|restart}"
+    exit 1
+    ;;
+esac
+
+exit 0

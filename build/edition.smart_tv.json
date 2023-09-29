@@ -1,0 +1,5 @@
+{
+  "id": "smart_tv",
+  "name": "Smart TV",
+  "userAgent": "Mozilla/5.0 (OpenOrchid {version} {edition}; Linux {kernel_version}; {manufacturer} {model_name}; {service_pack}) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/{chrome_version} OrchidBrowser/{version} {edition} Safari/537.36"
+}

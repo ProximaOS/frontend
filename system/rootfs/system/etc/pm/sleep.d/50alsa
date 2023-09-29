@@ -1,0 +1,9 @@
+#!/system/bin/sh
+case $1 in
+  hibernate|suspend)
+    exec $COMMAND_PREFIX /sbin/alsa force-stop
+    ;;
+  thaw|resume)
+    exec $COMMAND_PREFIX /sbin/alsa force-reload
+    ;;
+esac

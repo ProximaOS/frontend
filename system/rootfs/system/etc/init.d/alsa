@@ -1,0 +1,48 @@
+#!/bin/sh
+#
+# ALSA init.d script for BusyBox
+
+### BEGIN INIT INFO
+# Provides:          alsa
+# Required-Start:    $local_fs
+# Required-Stop:
+# Default-Start:     S
+# Default-Stop:
+# Description:       ALSA sound system
+### END INIT INFO
+
+CONFIG_FILE="/system/etc/asound.conf"
+
+start() {
+  echo "Starting ALSA..."
+  /usr/sbin/alsactl -s $CONFIG_FILE restore
+}
+
+stop() {
+  echo "Stopping ALSA..."
+  /usr/sbin/alsactl -s $CONFIG_FILE store
+}
+
+restart() {
+  stop
+  sleep 1
+  start
+}
+
+case "$1" in
+  start)
+    start
+    ;;
+  stop)
+    stop
+    ;;
+  restart)
+    restart
+    ;;
+  *)
+    echo "Usage: $0 {start|stop|restart}"
+    exit 1
+    ;;
+esac
+
+exit 0

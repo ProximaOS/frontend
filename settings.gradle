@@ -1,0 +1,10 @@
+pluginManagement {
+	repositories {
+		maven {
+			name = 'OpenOrchid'
+			url = 'https://openorchid.github.io/'
+		}
+		mavenCentral()
+		gradlePluginPortal()
+	}
+}

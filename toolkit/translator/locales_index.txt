@@ -1,4 +1,0 @@
-C:\Users\Admin\Desktop\openorchid\chrome\locales\main.en-US.properties
-C:\Users\Admin\Desktop\openorchid\webapps\desktop-system\locales\main.en-US.properties
-C:\Users\Admin\Desktop\openorchid\webapps\settings\locales\main.en-US.properties
-C:\Users\Admin\Desktop\openorchid\webapps\system\locales\main.en-US.properties

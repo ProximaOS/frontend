@@ -1,0 +1,69 @@
+# /system/etc/ppp/options
+
+# Require the peer to authenticate with CHAP
+require-chap
+
+# Disable PAP authentication
+refuse-pap
+
+# Disable EAP authentication
+refuse-eap
+
+# Use 128-bit MPPE encryption
+# Note that this requires the ppp-mppe package to be installed
+mppe required,stateless
+
+# Set the MTU to 1400 bytes to account for VPN overhead
+mtu 1400
+
+# Set the MRU to 1400 bytes to account for VPN overhead
+mru 1400
+
+# Enable compression to reduce bandwidth usage
+# Note that this requires the ppp-deflate package to be installed
+deflate 15
+
+# Limit the connection speed to 1Mbps to prevent overloading the server
+linkmaxspeed 1000000
+
+# Set the idle timeout to 30 minutes to prevent the connection from staying open indefinitely
+idle 1800
+
+# Send an LCP echo request every 30 seconds to ensure the connection is still active
+lcp-echo-interval 30
+
+# Allow the peer to assign us an IP address
+noipdefault
+
+# Use DNS servers assigned by the peer
+usepeerdns
+
+# Use the Google DNS servers for DNS resolution
+# Note that you can use any DNS servers you prefer
+# Google DNS IP addresses: 8.8.8.8 and 8.8.4.4
+# You can also use DNS-over-HTTPS (DoH) if you prefer
+# See: https://developers.google.com/speed/public-dns/docs/doh
+# and https://github.com/curl/curl/wiki/DNS-over-HTTPS
+ms-dns 8.8.8.8
+ms-dns 8.8.4.4
+
+# Disable IP forwarding to prevent the VPN server from being used as a gateway
+noipdefault
+
+# Disable ICMP redirects to prevent the VPN server from being used as a router
+noicmp
+
+# Disable IP packet forwarding to prevent the VPN server from being used as a router
+nogw
+
+# Disable all routing protocols to prevent the VPN server from being used as a router
+noipx
+nolcp
+
+# Disable all authentication protocols except for CHAP
+noccp
+
+# Enable logging to help diagnose connection issues
+# You can find logs at /var/log/syslog or /var/log/messages
+# Note that logging can also reveal sensitive information, so use with caution
+debug

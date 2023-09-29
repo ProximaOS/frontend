@@ -3,12 +3,13 @@
 
   const fs = require('fs');
   const path = require('path');
+  const isDev = require('electron-is-dev');
 
   require('dotenv').config();
 
   let defaultsDir = path.join(process.cwd(), 'defaults');
-  if (process.env.NODE_ENV === 'development') {
-    defaultsDir = path.join(process.cwd(), 'customize', 'defaults');
+  if (isDev) {
+    defaultsDir = path.join(process.cwd(), 'customization', 'defaults');
   }
 
   fs.mkdirSync(process.env.OPENORCHID_DATA, { recursive: true });

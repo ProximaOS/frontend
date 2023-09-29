@@ -1,0 +1,48 @@
+#!/bin/sh
+#
+# ACPI init.d script for BusyBox
+
+### BEGIN INIT INFO
+# Provides:          acpi
+# Required-Start:    $local_fs
+# Required-Stop:
+# Default-Start:     S
+# Default-Stop:
+# Description:       ACPI event handler
+### END INIT INFO
+
+DAEMON="/usr/sbin/acpid"
+
+start() {
+  echo "Starting ACPI..."
+  $DAEMON
+}
+
+stop() {
+  echo "Stopping ACPI..."
+  killall $DAEMON
+}
+
+restart() {
+  stop
+  sleep 1
+  start
+}
+
+case "$1" in
+  start)
+    start
+    ;;
+  stop)
+    stop
+    ;;
+  restart)
+    restart
+    ;;
+  *)
+    echo "Usage: $0 {start|stop|restart}"
+    exit 1
+    ;;
+esac
+
+exit 0

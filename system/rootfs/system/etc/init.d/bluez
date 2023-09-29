@@ -1,0 +1,48 @@
+#!/bin/sh
+#
+# BlueZ init.d script for BusyBox
+
+### BEGIN INIT INFO
+# Provides:          bluetooth
+# Required-Start:    $network
+# Required-Stop:
+# Default-Start:     S
+# Default-Stop:
+# Description:       BlueZ Bluetooth daemon
+### END INIT INFO
+
+DAEMON="/usr/sbin/bluetoothd"
+
+start() {
+  echo "Starting BlueZ..."
+  $DAEMON
+}
+
+stop() {
+  echo "Stopping BlueZ..."
+  killall $DAEMON
+}
+
+restart() {
+  stop
+  sleep 1
+  start
+}
+
+case "$1" in
+  start)
+    start
+    ;;
+  stop)
+    stop
+    ;;
+  restart)
+    restart
+    ;;
+  *)
+    echo "Usage: $0 {start|stop|restart}"
+    exit 1
+    ;;
+esac
+
+exit 0

@@ -1,4 +1,5 @@
 const fs = require('fs');
+const { copySync } = require('fs-extra');
 const path = require('path');
 const AdmZip = require('adm-zip');
 const { glob } = require('glob');
@@ -10,19 +11,17 @@ module.exports = function (sourcePath, outputDir) {
   if (!fs.existsSync(outputDir)) {
     fs.mkdirSync(outputDir);
   } else {
-    fs.rmdirSync(outputDir, { recursive: true, force: true });
+    fs.rmSync(outputDir, { recursive: true, force: true });
     fs.mkdirSync(outputDir);
   }
 
   // Read the list of webapps in the source directory
-  glob(sourcePath, async (error, webapps) => {
-    if (error) {
-      console.error(error);
-      return;
-    }
-
+  glob(sourcePath).then((webapps) => {
     // Loop through each webapp and create a zip file
-    webapps.forEach((webapp) => {
+    webapps.forEach((webappPath) => {
+      const parts = webappPath.split(/[\/\\]/);
+      const webapp = parts[parts.length - 1];
+
       const zip = new AdmZip();
 
       const outputwebappPath = path.join(outputDir, path.dirname(webapp));
@@ -30,20 +29,24 @@ module.exports = function (sourcePath, outputDir) {
         fs.mkdirSync(outputwebappPath);
       }
 
-      const webappFiles = fs.readdirSync(path.join(webapp));
+      const webappFiles = fs.readdirSync(path.join(webappPath));
       webappFiles.forEach((file) => {
         if (ignoredFiles.indexOf(file) === -1) {
-          const sourcePathCopy = path.join(webapp, file);
+          const sourcePathCopy = path.join(webappPath, file);
           const destPath = path.join(outputDir, webapp, file);
-          fs.copyFileSync(sourcePathCopy, destPath);
+          try {
+            copySync(sourcePathCopy, destPath);
+          } catch (error) {
+            console.error(error);
+          }
         }
       });
 
-      // Add all files and subdirectories from the webapp directory except 'node_modules' to the zip
-      const filesToZip = fs.readdirSync(webapp);
+      // Add all files and subdirectories from the webapp directory to the zip
+      const filesToZip = fs.readdirSync(webappPath);
       filesToZip.forEach((file) => {
         if (ignoredFiles.indexOf(file) === -1) {
-          const sourcePath = path.join(webapp, file);
+          const sourcePath = path.join(webappPath, file);
           if (fs.statSync(sourcePath).isDirectory()) {
             zip.addLocalFolder(sourcePath, file);
           } else {
