@@ -12,7 +12,7 @@
     defaultsDir = path.join(process.cwd(), 'customization', 'defaults');
   }
 
-  fs.mkdirSync(process.env.OPENORCHID_DATA, { recursive: true });
+  fs.mkdirSync(process.env.ORCHID_APP_PROFILE, { recursive: true });
 
   fs.readdir(defaultsDir, (error, files) => {
     if (error) {
@@ -21,7 +21,7 @@
     files.forEach((file) => {
       fs.copyFileSync(
         path.join(defaultsDir, file),
-        path.join(process.env.OPENORCHID_DATA, file)
+        path.join(process.env.ORCHID_APP_PROFILE, file)
       );
     });
   }, { recursive: true });

@@ -74,3 +74,18 @@ form.search button[data-icon]::before {
   position: static;
   font-size: 2rem;
 }
+
+.lists ul li input[type="text"],
+.lists ul li input[type="username"],
+.lists ul li input[type="email"],
+.lists ul li input[type="password"],
+.lists ul li input[type="search"],
+.lists ul li input[type="url"] {
+  margin: 0;
+}
+
+.pack-input {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 0.3rem;
+}

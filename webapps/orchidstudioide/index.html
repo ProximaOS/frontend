@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html dir="ltr">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#f0f6ff">
+  <meta name="theme-color" content="#101214" media="(prefers-color-scheme: dark)">
+  <title data-l10n-id="title"></title>
+  <link rel="stylesheet" type="text/css" href="http://default_theme.localhost:8081/style/index.css" />
+  <link rel="stylesheet" href="http://shared.localhost:8081/style/layout.css">
+  <link rel="stylesheet" href="http://shared.localhost:8081/style/icons/icons.css">
+  <link rel="stylesheet" href="http://shared.localhost:8081/style/headers.css">
+  <link rel="stylesheet" href="http://shared.localhost:8081/style/lists.css">
+  <link rel="stylesheet" href="http://shared.localhost:8081/style/buttons.css">
+  <link rel="stylesheet" href="http://shared.localhost:8081/style/toolbars_advanced.css">
+  <link rel="stylesheet" href="style/index.css">
+  <link rel="stylesheet" href="style/editor.css">
+  <script defer type="text/javascript" src="http://shared.localhost:8081/js/smooth-scrollbar.js"></script>
+  <script defer type="text/javascript" src="http://shared.localhost:8081/js/plugins/overscroll.js"></script>
+  <script defer type="text/javascript" src="http://shared.localhost:8081/js/panels.js"></script>
+  <script defer type="text/javascript" src="http://shared.localhost:8081/js/spatial_navigation.js"></script>
+  <script defer src="js/pages.js"></script>
+  <script defer src="js/editor.js"></script>
+  <script defer src="js/webapps.js"></script>
+</head>
+
+<body>
+  <div id="app" class="app">
+    <div id="root" class="panel">
+      <div class="headerbar">
+        <div class="safezone">
+          <a href="#" data-icon="menu"></a>
+          <h1 id="root-title">My Project</h1>
+          <menu role="toolbar">
+            <a href="#" data-icon="settings"></a>
+          </menu>
+        </div>
+      </div>
+      <div class="content"></div>
+    </div>
+    <div id="editor" class="panel visible">
+      <div class="headerbar compact">
+        <h1 id="root-title">File.txt</h1>
+        <menu role="toolbar">
+          <a href="#" data-icon="play"></a>
+          <a href="#" data-icon="bug"></a>
+        </menu>
+      </div>
+      <div class="content">
+        <div id="editor-container">
+          <div id="line-numbers"></div>
+          <div id="editor-area" contenteditable="true" spellcheck="false"></div>
+        </div>
+      </div>
+      <div class="toolbar-advanced">
+        <select name="" id="editor-format">
+          <option value="">UTF-8</option>
+        </select>
+        <h1>Installing Extensions...</h1>
+        <menu role="toolbar">
+          <a href="#" data-icon="bell"></a>
+        </menu>
+      </div>
+    </div>
+    <div id="webapps" class="panel">
+      <div class="headerbar">
+        <div class="safezone">
+          <a href="#" data-icon="back"></a>
+          <h1 id="root-title">Installed Webapps</h1>
+          <menu role="toolbar">
+            <a href="#" data-icon="add"></a>
+          </menu>
+        </div>
+      </div>
+      <div class="content lists">
+        <ul id="webapps-list"></ul>
+      </div>
+    </div>
+  </div>
+</body>
+
+</html>

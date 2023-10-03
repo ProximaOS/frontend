@@ -6,12 +6,8 @@
     lockscreenIcon: document.getElementById('lockscreen-icon'),
     cameraButton: document.getElementById('lockscreen-camera-button'),
     flashlightButton: document.getElementById('lockscreen-flashlight-button'),
-    notifications: document.getElementById(
-      'lockscreen-notifications'
-    ),
-    notificationBadge: document.getElementById(
-      'lockscreen-notification-badge'
-    ),
+    notifications: document.getElementById('lockscreen-notifications'),
+    notificationBadge: document.getElementById('lockscreen-notification-badge'),
 
     isPINLocked: false,
     startY: 0,
@@ -38,7 +34,10 @@
         }
       });
 
-      this.notificationBadge.addEventListener('click', this.handleNotificationBadgeClick.bind(this));
+      this.notificationBadge.addEventListener(
+        'click',
+        this.handleNotificationBadgeClick.bind(this)
+      );
       document.addEventListener('keyup', this.onKeyPress.bind(this));
 
       this.motionElement.addEventListener(
@@ -52,7 +51,10 @@
       document.addEventListener('pointermove', this.onPointerMove.bind(this));
       document.addEventListener('pointerup', this.onPointerUp.bind(this));
 
-      this.cameraButton.addEventListener('click', this.handleCameraButton.bind(this));
+      this.cameraButton.addEventListener(
+        'click',
+        this.handleCameraButton.bind(this)
+      );
       DirectionalScale.init(this.cameraButton);
       DirectionalScale.init(this.flashlightButton);
 
@@ -175,6 +177,11 @@
       this.timer = setTimeout(() => {
         this.motionElement.classList.remove('transitioning');
       }, 500);
+
+      IPC.send('message', {
+        type: 'lockscreen',
+        action: 'unlock'
+      });
     },
 
     showMotionElementPIN: function () {
@@ -201,6 +208,11 @@
       this.motionElement.classList.add('visible');
       this.motionElement.classList.remove('transitioning');
       TimeIcon.iconElement.classList.add('hidden');
+
+      IPC.send('message', {
+        type: 'lockscreen',
+        action: 'lock'
+      });
     },
 
     resetMotionElement: function () {
@@ -213,7 +225,10 @@
     },
 
     handleCameraButton: function () {
-      AppWindow.create(`http://camera.localhost:${location.port}/manifest.json`, {});
+      AppWindow.create(
+        `http://camera.localhost:${location.port}/manifest.json`,
+        {}
+      );
       if (!this.isPINLocked) {
         this.hideMotionElement();
       } else {

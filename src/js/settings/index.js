@@ -9,7 +9,7 @@
     getValue: function (name, settingsFile = 'settings.json') {
       return new Promise((resolve, reject) => {
         fs.readFile(
-          path.join(process.env.OPENORCHID_DATA, settingsFile),
+          path.join(process.env.ORCHID_APP_PROFILE, settingsFile),
           'utf8',
           (error, data) => {
             if (error) {
@@ -25,7 +25,7 @@
     },
     setValue: function (name, value, settingsFile = 'settings.json') {
       fs.readFile(
-        path.join(process.env.OPENORCHID_DATA, settingsFile),
+        path.join(process.env.ORCHID_APP_PROFILE, settingsFile),
         'utf8',
         (error, data) => {
           if (error) {
@@ -39,7 +39,7 @@
             const updatedSettings = JSON.stringify(settings, null, 2);
 
             fs.writeFile(
-              path.join(process.env.OPENORCHID_DATA, 'settings.json'),
+              path.join(process.env.ORCHID_APP_PROFILE, settingsFile),
               updatedSettings,
               'utf8',
               (error) => {

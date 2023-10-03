@@ -56,7 +56,7 @@
   }
 }
 
-.chrome.visible .toolbar {
+.appframe:not(.fullscreen) .chrome.visible .toolbar {
   transform: translateY(0) !important;
   visibility: visible;
 }
@@ -285,7 +285,7 @@
   padding: 0 1rem;
   box-sizing: border-box;
   border: none;
-  border-radius: 50%;
+  border-radius: 0.6rem;
   flex-shrink: 0;
   background-color: transparent;
   color: var(--text-color);
@@ -320,6 +320,10 @@
   background-color: var(--item-active-plus);
 } */
 
+#screen:not(.desktop) .chrome .side-tabs-button {
+  display: none;
+}
+
 .chrome .navbar-tabs-button {
   position: relative;
 }
@@ -349,7 +353,7 @@
   transition: height 0.5s cubic-bezier(1, 0, 0, 1), background-color 0.2s ease 0.5s;
 }
 
-.chrome .navbar .urlbar:focus-within {
+.chrome .navbar .urlbar.suggestions-visible {
   height: 28.5rem;
   background-color: var(--background-plus);
   box-shadow: 0 2rem 4rem rgba(0, 0, 0, 0.25);
@@ -387,12 +391,12 @@
 }
 
 .chrome .navbar .urlbar:hover > .urlbar-input,
-.chrome .navbar .urlbar:focus-within > .urlbar-input {
+.chrome .navbar .urlbar.suggestions-visible > .urlbar-input {
   display: block;
 }
 
 .chrome .navbar .urlbar:hover > .urlbar-display-url,
-.chrome .navbar .urlbar:focus-within > .urlbar-display-url {
+.chrome .navbar .urlbar.suggestions-visible > .urlbar-display-url {
   display: none;
 }
 
@@ -488,7 +492,7 @@
   top: 0;
   width: 100%;
   height: 100%;
-  transition: all 0.5s ease;
+  transition: all 0.5s cubic-bezier(0.2, 0.9, 0.1, 1);
   flex-grow: 1;
 }
 
@@ -520,13 +524,12 @@
   z-index: 10;
   transform: translateY(100%);
   visibility: hidden;
-  transition: all 0.5s ease;
+  transition: all 0.5s cubic-bezier(0.2, 0.9, 0.1, 1);
 }
 
 .chrome .tabs-view.visible {
   transform: translateY(0);
   visibility: visible;
-  transition: all 0.5s ease;
 }
 
 .chrome .tabs-view .container {
@@ -1195,6 +1198,14 @@ html[dir="rtl"] .chrome .dropdown .dropdown-panel button {
 }
 
 @media screen and (max-width: 799px) {
+  .chrome .navbar {
+    gap: 0;
+  }
+
+  .chrome .navbar .urlbar {
+    margin: 0 var(--chrome-toolbar-gap);
+  }
+
   .chrome .navbar-downloads-button,
   .chrome .navbar-addons-button,
   .chrome .navbar-library-button,

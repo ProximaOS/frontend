@@ -1,11 +1,146 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Login</title>
-</head>
-<body>
 
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#f0f6ff" />
+  <meta name="theme-color" content="#101214" media="(prefers-color-scheme: dark)" />
+  <title data-l10n-id="title"></title>
+  <link rel="stylesheet" type="text/css" href="http://default_theme.localhost:8081/style/index.css" />
+  <link rel="stylesheet" type="text/css" href="http://shared.localhost:8081/style/layout.css" />
+  <link rel="stylesheet" type="text/css" href="http://shared.localhost:8081/style/icons/icons.css" />
+  <link rel="stylesheet" type="text/css" href="http://shared.localhost:8081/style/panels.css" />
+  <link rel="stylesheet" type="text/css" href="http://shared.localhost:8081/style/headers.css" />
+  <link rel="stylesheet" type="text/css" href="http://shared.localhost:8081/style/tablists.css" />
+  <link rel="stylesheet" type="text/css" href="http://shared.localhost:8081/style/activity_bars.css" />
+  <link rel="stylesheet" type="text/css" href="http://shared.localhost:8081/style/buttons.css" />
+  <link rel="stylesheet" type="text/css" href="http://shared.localhost:8081/style/lists.css" />
+  <link rel="stylesheet" type="text/css" href="http://shared.localhost:8081/style/switches.css" />
+  <link rel="stylesheet" type="text/css" href="http://shared.localhost:8081/style/checkboxes.css" />
+  <link rel="stylesheet" type="text/css" href="http://shared.localhost:8081/style/seekbars.css" />
+  <link rel="stylesheet" type="text/css" href="http://shared.localhost:8081/style/input_areas.css" />
+  <link rel="stylesheet" type="text/css" href="style/login.css" />
+  <script type="module" src="http://shared.localhost:8081/services/orchid_services.js"></script>
+  <script defer type="text/javascript" src="http://shared.localhost:8081/js/smooth-scrollbar.js"></script>
+  <script defer type="text/javascript" src="http://shared.localhost:8081/js/plugins/overscroll.js"></script>
+  <script defer type="text/javascript" src="http://shared.localhost:8081/js/panels.js"></script>
+  <script defer type="text/javascript" src="http://shared.localhost:8081/js/spatial_navigation.js"></script>
+  <script type="text/javascript" src="js/bootstrap.js"></script>
+  <script defer type="text/javascript" src="js/pages.js"></script>
+  <script defer type="text/javascript" src="js/pages/login/main.js"></script>
+  <script defer type="text/javascript" src="js/pages/signup/main.js"></script>
+  <script defer type="text/javascript" src="js/pages/profiles/main.js"></script>
+
+  <script type="text/javascript" src="http://shared.localhost:8081/js/l10n.js"></script>
+  <meta name="defaultLanguage" content="en-US" />
+  <meta name="availableLanguages"
+    content="af, ar, az, be, bg, bn, ca, cs, cy, da, de, el, eo, et, en-US, es, eu, fa, fi, fr, ga, gu, gl, he, hi, hr, ht, hu, id, is, it, ja, kn, ko, ku, lt, lv, mk, ms, nl, no, pl, pt, ro, ru, sq, sk, sl, sr, sw, ta, te, th, tl, tr, uk, ur, vi, yi, zh, fr-psaccent, ar-psbidi" />
+  <link rel="localization" href="/locales/frp.{locale}.properties" />
+</head>
+
+<body>
+  <div id="app" class="app">
+    <div id="login" class="panel visible">
+      <div class="headerbar compact">
+        <div class="safezone">
+          <a href="#" data-icon="close"></a>
+          <h1 data-l10n-id="login"></h1>
+        </div>
+      </div>
+      <div class="content lists">
+        <ul>
+          <li>
+            <label for="" class="pack-input">
+              <div>
+                <p data-l10n-id="email"></p>
+              </div>
+              <span><input type="email" name="" id="" /></span>
+            </label>
+          </li>
+          <li>
+            <label for="" class="pack-input">
+              <div>
+                <p data-l10n-id="password"></p>
+              </div>
+              <span><input type="password" name="" id="" /></span>
+            </label>
+          </li>
+        </ul>
+
+        <header data-l10n-id="otherOptions"></header>
+        <ul>
+          <li class="page" data-page-id="signup">
+            <p data-l10n-id="notRegistered-title"></p>
+            <p data-l10n-id="notRegistered-detail"></p>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <div id="signup" class="panel">
+      <div class="headerbar compact">
+        <div class="safezone">
+          <a href="#" data-icon="close"></a>
+          <h1 data-l10n-id="signup"></h1>
+        </div>
+      </div>
+      <div class="content lists">
+        <ul>
+          <li>
+            <label for="" class="pack-input">
+              <div>
+                <p data-l10n-id="username"></p>
+              </div>
+              <span><input type="text" name="" id="" /></span>
+            </label>
+          </li>
+          <li>
+            <label for="" class="pack-input">
+              <div>
+                <p data-l10n-id="email"></p>
+              </div>
+              <span><input type="email" name="" id="" /></span>
+            </label>
+          </li>
+          <li>
+            <label for="" class="pack-input">
+              <div>
+                <p data-l10n-id="password"></p>
+              </div>
+              <span><input type="password" name="" id="" /></span>
+            </label>
+          </li>
+          <li>
+            <label for="" class="pack-input">
+              <div>
+                <p data-l10n-id="confirmPassword"></p>
+              </div>
+              <span><input type="password" name="" id="" /></span>
+            </label>
+          </li>
+        </ul>
+
+        <header data-l10n-id="otherOptions"></header>
+        <ul>
+          <li class="page" data-page-id="login">
+            <p data-l10n-id="alreadyRegistered-title"></p>
+            <p data-l10n-id="alreadyRegistered-detail"></p>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <div id="profiles" class="panel">
+      <div class="headerbar compact">
+        <div class="safezone">
+          <a href="#" data-icon="close"></a>
+          <h1 data-l10n-id="profiles"></h1>
+        </div>
+      </div>
+      <div class="content"></div>
+    </div>
+  </div>
 </body>
+
 </html>

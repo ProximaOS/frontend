@@ -21,12 +21,19 @@
     dropIndicatorElement: document.getElementById('drop-indicator'),
     apps: [],
 
+    timer: null,
+
     init: function () {
       this.dockElement.style.setProperty('--grid-columns', this.gridColumns);
       this.gridElement.style.setProperty('--grid-columns', this.gridColumns);
       this.gridElement.style.setProperty('--grid-rows', this.gridRows);
 
-      this.gridElement.addEventListener('scroll', this.handleSwiping.bind(this));
+      window.addEventListener('ipc-message', this.handleIPCMessage.bind(this));
+
+      this.gridElement.addEventListener(
+        'scroll',
+        this.handleSwiping.bind(this)
+      );
 
       const apps = window.AppsManager.getAll();
       apps.then((data) => {
@@ -43,11 +50,31 @@
       return result;
     },
 
-    createIcons: function () {
-      const pages = this.splitArray(
-        this.apps,
-        4 * 6
+    applyParallaxEffect: function (element) {
+      // Get the dimensions of the screen
+      const screenWidth = window.innerWidth;
+      const screenHeight = window.innerHeight;
+
+      // Calculate the center of the screen
+      const centerX = screenWidth / 2;
+      const centerY = screenHeight / 2;
+
+      // Calculate the center of the rectangle
+      const rect = element.getBoundingClientRect();
+      const rectCenterX = rect.left + rect.width / 2;
+      const rectCenterY = rect.top + rect.height / 2;
+
+      // Calculate the distance between the rectangle center and the screen center
+      const distance = Math.sqrt(
+        Math.pow(rectCenterX - centerX, 2) + Math.pow(rectCenterY - centerY, 2)
       );
+
+      // Apply CSS transformations
+      element.style.setProperty('--pos-z', `${distance}px`);
+    },
+
+    createIcons: function () {
+      const pages = this.splitArray(this.apps, 4 * 6);
       console.log(pages);
       pages.forEach((array, offset) => {
         const rtl = document.dir === 'rtl';
@@ -55,7 +82,9 @@
         const page = document.createElement('div');
         page.id = `page${offset}`;
         page.classList.add('page');
-        page.style.transform = rtl ? `translateX(-${offset * 100}%)` : `translateX(${offset * 100}%)`;
+        page.style.transform = rtl
+          ? `translateX(-${offset * 100}%)`
+          : `translateX(${offset * 100}%)`;
         this.gridElement.appendChild(page);
 
         const dot = document.createElement('div');
@@ -71,19 +100,21 @@
           const icon = document.createElement('div');
           icon.id = `appicon${index}`;
           icon.classList.add('icon');
-          icon.addEventListener('click', (event) =>
-            this.handleAppClick(event, app)
-          );
           const manifestIndex = this.DEFAULT_DOCK_ICONS.indexOf(
             app.manifestUrl['en-US']
           );
           if (manifestIndex !== -1) {
             setTimeout(() => {
               this.dockElement.appendChild(icon);
+              this.applyParallaxEffect(icon);
             }, manifestIndex * 10);
           } else {
             page.appendChild(icon);
+            this.applyParallaxEffect(icon);
           }
+          icon.addEventListener('click', (event) =>
+            this.handleAppClick(event, app, iconContainer)
+          );
 
           const iconHolder = document.createElement('div');
           iconHolder.classList.add('icon-holder');
@@ -107,7 +138,6 @@
           name.classList.add('name');
           name.textContent = app.manifest.name;
           icon.appendChild(name);
-
           index++;
         });
       });
@@ -119,17 +149,17 @@
         const rtl = document.dir === 'rtl';
         const scrollLeft = rtl ? -grid.scrollLeft : grid.scrollLeft;
 
-        let progress = scrollLeft - (window.innerWidth * index);
+        let progress = scrollLeft - window.innerWidth * index;
         progress = progress / window.innerWidth;
         progress = 1 * ((Math.abs(progress - 0.5) - 0.5) * 2);
         progress = Math.min(1, progress);
         progress = Math.max(0, progress);
 
         dot.style.setProperty('--pagination-progress', progress);
-      })
+      });
     },
 
-    handleAppClick: function (event, app) {
+    handleAppClick: function (event, app, icon) {
       let langCode;
       try {
         langCode = navigator.mozL10n.language.code || 'en-US';
@@ -145,16 +175,42 @@
         manifestUrl = app.manifestUrl['en-US'];
       }
 
+      const iconBox = icon.getBoundingClientRect();
+      const xPos = iconBox.left + iconBox.width / 2;
+      const yPos = iconBox.top + iconBox.height / 2;
+      const xScale = iconBox.width / window.innerWidth;
+      const yScale = iconBox.height / window.innerHeight;
+      const iconXPos = iconBox.left;
+      const iconYPos = iconBox.top;
+      const iconXScale = iconBox.width / window.innerWidth;
+      const iconYScale = iconBox.height / window.innerHeight;
+
       if (!Grid.isDragging) {
         // Dispatch the custom event with the manifest URL
-        window.IPC.send('message', {
+        IPC.send('message', {
           type: 'launch',
-          manifestUrl
-          // icon_x: x,
-          // icon_y: y,
-          // icon_width: width,
-          // icon_height: height
+          manifestUrl,
+          xPos,
+          yPos,
+          xScale,
+          yScale,
+          iconXPos,
+          iconYPos,
+          iconXScale,
+          iconYScale
         });
+      }
+    },
+
+    handleIPCMessage: function (event) {
+      const data = event.detail;
+
+      if (data.type === 'lockscreen') {
+        if (data.action === 'unlock') {
+          this.gridElement.classList.remove('hidden');
+        } else {
+          this.gridElement.classList.add('hidden');
+        }
       }
     }
   };

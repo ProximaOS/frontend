@@ -115,7 +115,7 @@
       return new Promise((resolve, reject) => {
         const appId = v4();
         const appDir = path.join(
-          process.env.OPENORCHID_DATA,
+          process.env.ORCHID_APP_PROFILE,
           'webapps',
           `{${appId}}`
         );

@@ -87,7 +87,7 @@
       mainWindow.webContents.send('rotate', { rotation: '180deg' });
     });
 
-    fs.mkdirSync(path.join(process.env.OPENORCHID_DATA, 'extensions'), {
+    fs.mkdirSync(path.join(process.env.ORCHID_APP_PROFILE, 'extensions'), {
       recursive: true
     });
     fs.readdirSync(process.env.OPENORCHID_ADDONS).forEach((extensionName) => {

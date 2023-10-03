@@ -1,0 +1,122 @@
+html, body {
+  margin: 0;
+  padding: 0;
+  font-size: 10px;
+  background-color: var(--background);
+}
+
+#editor {
+  width: calc(100% - 64rem) !important;
+}
+
+#editor-container {
+  position: relative;
+  margin: 0 0.5rem;
+  width: calc(100% - 1rem);
+  height: calc(100% - var(--software-buttons-height) - var(--statusbar-height) - 10rem);
+  background-color: var(--background-minus);
+  border-radius: 1rem;
+  overflow: auto;
+  line-height: 2rem;
+}
+
+#editor-container::-webkit-scrollbar {
+  width: 1.5rem;
+  height: 1.5rem;
+}
+
+#editor-container::-webkit-scrollbar-thumb {
+  width: 1.5rem;
+  background-color: var(--item-active);
+  height: 1.5rem;
+  background-clip: content-box;
+  border-radius: 1.5rem;
+  border: solid 0.4rem transparent;
+}
+
+#editor-container::-webkit-scrollbar-corner {
+  display: none;
+}
+
+#webapps {
+  position: absolute;
+  left: unset !important;
+  right: 0;
+  width: 32rem !important;
+  opacity: 1;
+  transform: none !important;
+  visibility: visible;
+}
+
+#webapps > .content {
+  opacity: 1;
+  transform: none !important;
+  visibility: visible;
+}
+
+#webapps-list li {
+  flex-direction: row;
+  align-items: center;
+}
+
+#webapps-list li > img {
+  width: 3.6rem;
+  height: 3.6rem;
+  background-color: #fff;
+  border-radius: 25%;
+  outline: solid 0.1rem var(--item-plus);
+  flex-shrink: 0;
+}
+
+#webapps-list li > div {
+  width: 100%;
+  flex-grow: 1;
+  padding-inline-start: 1rem;
+  display: flex;
+  flex-direction: column;
+}
+
+@media screen and (min-width: 768px) {
+  #root {
+    position: absolute;
+    top: 0;
+    width: 32rem;
+    height: 100%;
+    opacity: 1;
+    visibility: visible;
+    transform: none;
+    box-sizing: border-box;
+    z-index: 1;
+    filter: none;
+  }
+  html[dir="ltr"] #root {
+    left: 0;
+  }
+  html[dir="rtl"] #root {
+    right: 0;
+  }
+
+  #root.visible {
+    width: 100%;
+    border-inline-end: none;
+  }
+
+  #root > .content {
+    transform: translateY(0);
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .panel:not(#root) {
+    position: absolute;
+    top: 0;
+    width: calc(100% - 32rem);
+    height: 100%;
+  }
+  html[dir="ltr"] .panel:not(#root) {
+    left: 32rem;
+  }
+  html[dir="rtl"] .panel:not(#root) {
+    right: 32rem;
+  }
+}

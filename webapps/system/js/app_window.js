@@ -19,6 +19,7 @@
 
     OPEN_ANIMATION: 'expand',
     CLOSE_ANIMATION: 'shrink',
+    CLOSE_TO_HOMESCREEN_ANIMATION: 'shrink-to-homescreen',
 
     isDragging: false,
     isResizing: false,
@@ -58,11 +59,15 @@
         `[data-manifest-url="${manifestUrl}"]`
       );
       if (existingWindow) {
-        if (options.originPos) {
+        if (options.animVariables) {
           if (this.homescreenElement) {
-            this.homescreenElement.style.transformOrigin = `${options.originPos.x}px ${options.originPos.y}px`;
+            this.homescreenElement.style.transformOrigin = `${options.animVariables.xPos}px ${options.animVariables.yPos}px`;
           }
-          existingWindow.style.transformOrigin = `${options.originPos.x}px ${options.originPos.y}px`;
+          existingWindow.style.transformOrigin = `${options.animVariables.xPos}px ${options.animVariables.yPos}px`;
+          existingWindow.style.setProperty('--icon-pos-x', options.animVariables.iconXPos + 'px');
+          existingWindow.style.setProperty('--icon-pos-y', options.animVariables.iconYPos + 'px');
+          existingWindow.style.setProperty('--icon-scale-x', options.animVariables.iconXScale);
+          existingWindow.style.setProperty('--icon-scale-y', options.animVariables.iconYScale);
         }
         this.unminimize(existingWindow.id);
         return;
@@ -143,11 +148,15 @@
       if (manifest.transparent) {
         windowDiv.classList.add('transparent');
       }
-      if (windowOptions.originPos) {
+      if (windowOptions.animVariables) {
         if (this.homescreenElement) {
-          this.homescreenElement.style.transformOrigin = `${windowOptions.originPos.x}px ${windowOptions.originPos.y}px`;
+          this.homescreenElement.style.transformOrigin = `${windowOptions.animVariables.xPos}px ${windowOptions.animVariables.yPos}px`;
         }
-        windowDiv.style.transformOrigin = `${windowOptions.originPos.x}px ${windowOptions.originPos.y}px`;
+        windowDiv.style.transformOrigin = `${windowOptions.animVariables.xPos}px ${windowOptions.animVariables.yPos}px`;
+        windowDiv.style.setProperty('--icon-pos-x', options.animVariables.iconXPos + 'px');
+        windowDiv.style.setProperty('--icon-pos-y', options.animVariables.iconYPos + 'px');
+        windowDiv.style.setProperty('--icon-scale-x', options.animVariables.iconXScale);
+        windowDiv.style.setProperty('--icon-scale-y', options.animVariables.iconYScale);
       }
       this.containerElement.appendChild(windowDiv);
 
@@ -357,6 +366,11 @@
           windowDiv.classList.remove('from-right');
           windowDiv.classList.remove('to-left');
         });
+      } else {
+        this.homescreenElement.classList.add('transitioning');
+        this.homescreenElement.addEventListener('animationend', () => {
+          this.homescreenElement.classList.remove('transitioning');
+        });
       }
     },
 
@@ -423,14 +437,15 @@
         `[data-manifest-url="${manifestUrl}"]`
       );
 
-      windowDiv.classList.add(this.CLOSE_ANIMATION);
+      this.focus('homescreen');
+      windowDiv.classList.add(this.CLOSE_TO_HOMESCREEN_ANIMATION);
       if (dockIcon) {
         dockIcon.classList.add('minimized');
       }
       windowDiv.addEventListener('animationend', () => {
         windowDiv.style.transform = '';
         windowDiv.classList.remove('active');
-        windowDiv.classList.remove(this.CLOSE_ANIMATION);
+        windowDiv.classList.remove(this.CLOSE_TO_HOMESCREEN_ANIMATION);
         this.focus('homescreen');
       });
     },

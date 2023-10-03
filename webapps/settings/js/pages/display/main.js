@@ -1,9 +1,7 @@
 !(function (exports) {
   'use strict';
 
-  const brightness = require('brightness');
-
-  const Webapps = {
+  const Display = {
     brightnessSlider: document.getElementById('display-brightness-slider'),
     AutoBrightnessSwitch: document.getElementById('display-autoBrightness-switch'),
     darkModeSwitch: document.getElementById('display-darkMode-switch'),
@@ -36,7 +34,6 @@
 
     handleBrightnessSlider: function () {
       const value = parseInt(this.brightnessSlider.value);
-      brightness.set(value / 100);
       window.Settings.setValue('video.brightness', value);
     },
 
@@ -56,5 +53,5 @@
     }
   };
 
-  Webapps.init();
+  Display.init();
 })(window);

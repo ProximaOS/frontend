@@ -1,7 +1,8 @@
 .headerbar {
+  position: relative;
   width: 100%;
   height: calc(var(--statusbar-height) + 5rem + (4rem * (1 - var(--progress, 0))));
-  background-color: rgba(var(--headerbar-r), var(--headerbar-g), var(--headerbar-b), calc(var(--progress, 0) * 0.75));
+  background-image: linear-gradient(to right, var(--background) 3rem, rgba(var(--headerbar-r), var(--headerbar-g), var(--headerbar-b), calc(var(--progress, 0) * 0.75)), var(--background) calc(100% - 3rem));
   display: flex;
   padding: var(--statusbar-height) 1rem 0;
   box-sizing: border-box;
@@ -10,7 +11,28 @@
   gap: 0.5rem;
   flex-shrink: 0;
   backdrop-filter: blur(20px) saturate(calc(100% + (80% * var(--progress, 0))));
-  outline: solid 0.1rem rgba(255, 255, 255, calc(0.1 * var(--progress, 0)));
+}
+
+.headerbar::before {
+  content: '';
+  position: absolute;
+  left: 1.5rem;
+  top: 100%;
+  width: 3rem;
+  height: 3rem;
+  border-radius: 1.5rem 0 0 0;
+  box-shadow: 0 -1.5rem 0 var(--background);
+}
+
+.headerbar::after {
+  content: '';
+  position: absolute;
+  right: 1.5rem;
+  top: 100%;
+  width: 3rem;
+  height: 3rem;
+  border-radius: 0 1.5rem 0 0;
+  box-shadow: 0 -1.5rem 0 var(--background);
 }
 
 .headerbar.compact {
@@ -23,6 +45,8 @@
   margin: 0 auto;
   display: flex;
   gap: 0.5rem;
+  position: relative;
+  z-index: 1;
 }
 
 .headerbar h1 {
@@ -74,7 +98,7 @@ html[dir="rtl"] .headerbar:not(.compact) a + h1 {
   background-color: transparent;
   text-decoration: none;
   line-height: 3.6rem;
-  border-radius: 25%;
+  border-radius: 0.6rem;
   display: inline-block;
   color: var(--text-color);
   flex-shrink: 0;
@@ -93,6 +117,7 @@ html[dir="rtl"] .headerbar:not(.compact) a + h1 {
 
 .headerbar a:active {
   background-color: var(--item-active);
+  color: var(--text-color-faded);
   transform: scale(0.9);
   transition: none;
 }

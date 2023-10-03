@@ -4,24 +4,43 @@
   top: 0;
   width: 100%;
   height: var(--statusbar-height);
-  transition: background-color 0.3s ease;
+  transition: all 0.3s ease;
 }
 
 #screen:not(.desktop) #statusbar.hidden {
   transform: translateY(-100%);
 }
 
+#statusbar.transitioning {
+  transition: all 0.5s ease;
+}
+
+#screen.close-reach #statusbar {
+  transform: translateY(40vh);
+}
+
+#screen.close-reach #statusbar.hidden {
+  opacity: 0;
+  transform: scale(0.9);
+  visibility: hidden;
+}
+
 #screen:not(.desktop) #statusbar.tray-open {
-  left: 50%;
-  /* We use the special translate property for X-axis translation to avoid janky 'transform: translateX()' transition */
-  translate: -50% 0;
-  max-width: var(--safezone-width);
   transform: translateY(calc((var(--statusbar-height) * var(--motion-progress, 0)) + (0.5rem * var(--overscroll-progress))));
   transition: transform 0.3s ease;
 }
 
+#screen:not(.desktop).close-reach #statusbar.tray-open {
+  transform: translateY(calc(40vh + ((0.5rem * var(--overscroll-progress)))));
+}
+
 #screen:not(.desktop) #statusbar.hidden.tray-open {
   transform: translateY(calc((var(--statusbar-height) * -1) + (calc((var(--statusbar-height) * var(--motion-progress, 0)) + (1rem * var(--overscroll-progress))))));
+}
+
+#screen:not(.desktop) #statusbar.hidden.tray-open {
+  transform: translateY(calc(40vh + ((0.5rem * var(--overscroll-progress)))));
+  opacity: var(--motion-progress, 0);
 }
 
 #screen:not(.desktop) #statusbar.tray-open.transitioning {
@@ -299,17 +318,44 @@ html[dir="rtl"] .statusbar-icons > .right {
 }
 
 @media screen and (min-width: 768px) {
-  #statusbar:not(.tray-open).light .statusbar-icons > .left div,
-  #statusbar:not(.tray-open).light .statusbar-icons > .right div {
-    color: #fff;
+  #screen.mobile #statusbar-date,
+  #screen.mobile #statusbar.tray-open #statusbar-date {
+    opacity: 1;
+    position: relative;
+    filter: none;
+    margin: 0 0.2rem;
+    transform: scale(1);
+    font-size: 1.6rem;
+    visibility: visible;
+    padding-inline-start: 1rem;
   }
 
-  #statusbar:not(.tray-open).light #statusbar-battery.charging {
-    color: rgba(255, 255, 255, 0.5);
+  #screen.mobile #statusbar-date::after {
+    content: '';
+    position: absolute;
+    top: 0.8rem;
+    width: 0.4rem;
+    height: 0.4rem;
+    background-color: currentColor;
+    border-radius: 50%;
+    opacity: 0.5;
+  }
+  html[dir="ltr"] #statusbar-date::after {
+    left: 0.2rem;
+  }
+  html[dir="rtl"] #statusbar-date::after {
+    right: 0.2rem;
   }
 
-  #statusbar:not(.tray-open).light #statusbar-battery.charging::after {
-    color: #fff;
+  #screen.mobile #statusbar-battery-percentage,
+  #screen.mobile #statusbar.tray-open #statusbar-battery-percentage {
+    opacity: 1;
+    filter: none;
+    margin: 0 0.2rem;
+    transform: scale(1);
+    font-size: 1.6rem;
+    visibility: visible;
+    padding-inline-start: 1rem;
   }
 }
 

@@ -4,6 +4,13 @@
   top: 0;
   width: 100%;
   height: 100%;
+  transition: transform 0.5s ease;
+}
+
+#screen.close-reach #windows {
+  transition: all 0.5s ease;
+  transform: translateY(40vh);
+  height: 60%;
 }
 
 #screen.keyboard-visible #windows {
@@ -18,7 +25,7 @@
   height: 100%;
   background-color: var(--theme-color, var(--background));
   overflow: hidden;
-  transform: translateY(-100%);
+  transform: translateY(100%);
 }
 
 .appframe.active {
@@ -48,7 +55,7 @@
 }
 
 #screen:not(.cards-view-visible) #homescreen.appframe {
-  transform: scale(1.5);
+  transform: scale(0.9);
   opacity: 0;
 }
 
@@ -58,7 +65,7 @@
 }
 
 .appframe.transitioning {
-  transition: all 0.5s ease;
+  transition: all 0.3s ease;
 }
 
 .appframe.transitioning-bouncy {
@@ -95,6 +102,51 @@
     transform: scale(0.25);
     opacity: 0;
   }
+}
+
+.appframe.shrink-to-homescreen {
+  border-radius: var(--screen-radius);
+  animation: shrink-to-homescreen 0.3s ease forwards;
+  z-index: 10;
+}
+
+@keyframes shrink-to-homescreen {
+  from {
+    transform: translateY(var(--offset-y, 0)) scale(var(--scale, 1));
+  }
+  to {
+    transform-origin: 0 0;
+    transform: translate(var(--icon-pos-x), var(--icon-pos-y)) scale(var(--icon-scale-x), var(--icon-scale-y));
+    border-radius: calc((4.8rem / 4) / var(--icon-scale-x)) / calc((4.8rem / 4) / var(--icon-scale-y));
+  }
+}
+
+.appframe.shrink-to-homescreen > .splashscreen {
+  visibility: visible !important;
+  mask-image: none !important;
+  mask-position: none !important;
+  mask-size: none !important;
+  -webkit-mask-image: none !important;
+  -webkit-mask-position: none !important;
+  -webkit-mask-size: none !important;
+  animation: shrink-to-homescreen-icon 0.3s ease forwards;
+}
+
+@keyframes shrink-to-homescreen-icon {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.appframe.shrink-to-homescreen > .splashscreen .icon {
+  object-fit: fill;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
 }
 
 .appframe:not(.window).from-left {
@@ -155,7 +207,7 @@
 
 .appframe.zoom-in {
   border-radius: var(--screen-radius);
-  animation: zoom-in 0.5s ease forwards;
+  animation: zoom-in 0.5s cubic-bezier(0.2, 0.9, 0.1, 1) forwards;
 }
 
 @keyframes zoom-in {
@@ -171,7 +223,7 @@
 
 .appframe.zoom-out {
   border-radius: var(--screen-radius);
-  animation: zoom-out 0.3s ease forwards;
+  animation: zoom-out 0.3s cubic-bezier(0.2, 0.9, 0.1, 1) forwards;
 }
 
 @keyframes zoom-out {
@@ -189,7 +241,7 @@
   border-radius: var(--screen-radius);
   transform-origin: center !important;
   opacity: 1;
-  animation: from-cards-view 0.5s ease;
+  animation: from-cards-view 0.5s cubic-bezier(0.2, 0.9, 0.1, 1);
 }
 
 @keyframes from-cards-view {
@@ -205,7 +257,7 @@
   border-radius: var(--screen-radius);
   transform-origin: center !important;
   opacity: 1 !important;
-  animation: to-cards-view 0.5s ease;
+  animation: to-cards-view 0.5s cubic-bezier(0.2, 0.9, 0.1, 1);
 }
 
 @keyframes to-cards-view {
@@ -262,7 +314,7 @@
   pointer-events: none;
 }
 
-.appframe .chrome.visible .browser {
+.appframe:not(.fullscreen) .chrome.visible .browser {
   top: calc(
     var(--statusbar-height) + var(--chrome-tablist-height) +
       var(--chrome-navbar-height) + (var(--chrome-toolbar-gap) * 2)
@@ -289,7 +341,7 @@
   height: 100%;
 }
 
-#screen.software-buttons-enabled .appframe .chrome.visible .browser {
+#screen.software-buttons-enabled .appframe:not(.fullscreen) .chrome.visible .browser {
   top: calc(
     var(--statusbar-height) + var(--chrome-tablist-height) +
       var(--chrome-navbar-height) + (var(--chrome-toolbar-gap) * 2)
@@ -302,7 +354,7 @@
 }
 
 @media screen and (max-width: 767px) and (orientation: landscape) {
-  #screen.software-buttons-enabled .appframe .chrome.visible .browser {
+  #screen.software-buttons-enabled .appframe:not(.fullscreen) .chrome.visible .browser {
     top: calc(
       var(--statusbar-height) +
         var(--chrome-navbar-height) + var(--chrome-toolbar-gap)
@@ -353,7 +405,7 @@
 }
 
 @media screen and (max-width: 767px) and (orientation: portrait) {
-  .appframe .chrome.visible .browser {
+  .appframe:not(.fullscreen) .chrome.visible .browser {
     top: calc(
       var(--statusbar-height) + var(--chrome-navbar-height) +
         var(--chrome-toolbar-gap)
@@ -364,7 +416,7 @@
     );
   }
 
-  #screen.software-buttons-enabled .appframe .chrome.visible .browser {
+  #screen.software-buttons-enabled .appframe:not(.fullscreen) .chrome.visible .browser {
     top: calc(
       var(--statusbar-height) + var(--chrome-navbar-height) +
         var(--chrome-toolbar-gap)
@@ -470,7 +522,7 @@ html[dir='rtl'] .appframe .titlebar {
   opacity: 1;
 }
 
-.appframe.chrome-visible .titlebar {
+.appframe.chrome-visible:not(.fullscreen) .titlebar {
   width: max-content;
   padding: 1.25rem 1.5rem;
 }

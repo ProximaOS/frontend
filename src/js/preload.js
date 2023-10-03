@@ -2,6 +2,8 @@
   'use strict';
 
   const { ipcRenderer, contextBridge } = require('electron');
+  const musicMetadata = require('music-metadata-browser');
+  const mime = require('mime');
   const manifests = require('./api/manifest_permissions');
   const WifiManager = require('./wifi');
   const BluetoothManager = require('./bluetooth');
@@ -28,9 +30,7 @@
         bubbles: true,
         cancelable: true
       });
-      console.log(data);
       window.dispatchEvent(customEvent);
-      console.log(customEvent);
     });
   }
 
@@ -178,16 +178,6 @@
     clickSound.play();
   });
 
-  document.addEventListener('play', function (event) {
-    console.log(detail);
-    ipcRenderer.send('mediaplay', {
-      title: event.detail.title,
-      artist: event.detail.artist,
-      album: event.detail.album,
-      year: event.detail.year
-    });
-  });
-
   document.addEventListener('dragstart', function (event) {
     event.preventDefault();
 
@@ -208,6 +198,17 @@
     });
   });
 
+  function convertToAbsoluteUrl(relativeUrl) {
+    const baseUrl = window.location.origin;
+    return new URL(relativeUrl, baseUrl).href;
+  }
+
+  async function getFileAsUint8Array(url) {
+    const response = await fetch(url);
+    const arrayBuffer = await response.arrayBuffer();
+    return new Uint8Array(arrayBuffer);
+  }
+
   window.addEventListener('load', function () {
     const inputAreas = document.querySelectorAll(
       'input[type=text], input[type=name], input[type=email], input[type=password], input[type=number], textarea'
@@ -225,6 +226,31 @@
           type: 'keyboard',
           action: 'hide'
         });
+      });
+    });
+
+    const mediaElements = document.querySelectorAll('audio, video');
+    mediaElements.forEach((mediaElement) => {
+      mediaElement.addEventListener('play', function (event) {
+        console.log(event);
+        const url = convertToAbsoluteUrl(mediaElement.src);
+        getFileAsUint8Array(url).then(data => {
+          musicMetadata.parseBuffer(data, mime.getType(url)).then(metadata => {
+            const common = metadata.common;
+            const picture = common.picture;
+            ipcRenderer.send('mediaplay', {
+              title: common.title,
+              artist: common.artist,
+              album: common.album,
+              artwork: `data:${picture.format};base64,${picture.data.toString('base64')}`,
+              date: common.date
+            });
+          });
+        });
+      });
+      mediaElement.addEventListener('pause', function (event) {
+        console.log(event);
+        ipcRenderer.send('mediapause', {});
       });
     });
 
@@ -309,8 +335,13 @@
         }
       }
     };
-    Settings.getValue('general.software_buttons.enabled').then(handleSoftwareButtons);
-    Settings.addObserver('general.software_buttons.enabled', handleSoftwareButtons);
+    Settings.getValue('general.software_buttons.enabled').then(
+      handleSoftwareButtons
+    );
+    Settings.addObserver(
+      'general.software_buttons.enabled',
+      handleSoftwareButtons
+    );
 
     if ('mozL10n' in navigator) {
       Settings.getValue('general.lang.code').then((value) => {
@@ -324,6 +355,7 @@
 
   document.addEventListener('scroll', function () {
     ipcRenderer.sendToHost('scroll', {
+      left: document.scrollingElement.scrollLeft,
       top: document.scrollingElement.scrollTop
     });
   });
@@ -360,6 +392,36 @@
           action: 'hide'
         });
       }
+    });
+  });
+
+  document.addEventListener('mouseover', (event) => {
+    if (
+      event.target.nodeName !== 'WEBVIEW' &&
+      event.target.getAttribute('title')
+    ) {
+      ipcRenderer.send('message', {
+        type: 'title',
+        action: 'show',
+        originType: location.origin.includes(
+          `system.localhost:${location.port}`
+        )
+          ? 'system'
+          : 'webapp',
+        position: {
+          left: event.clientX,
+          top: event.clientY
+        },
+        title: event.target.getAttribute('title')
+      });
+      console.log(event.target.getAttribute('title'));
+    }
+  });
+
+  document.addEventListener('mouseleave', () => {
+    ipcRenderer.send('message', {
+      type: 'title',
+      action: 'hide'
     });
   });
 })(window);

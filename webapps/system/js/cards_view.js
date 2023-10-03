@@ -20,9 +20,9 @@
         this.handleToggleButton.bind(this)
       );
 
-      if ('Scrollbar' in window) {
-        Scrollbar.use(OverscrollPlugin);
-      }
+      // if ('Scrollbar' in window) {
+      //   Scrollbar.use(OverscrollPlugin);
+      // }
     },
 
     show: function () {
@@ -37,7 +37,7 @@
         focusedWindow.classList.remove('to-cards-view')
       );
 
-      const windows = this.windowContainer.querySelectorAll('.appframe');
+      const windows = this.windowContainer.querySelectorAll('.appframe:not(.homescreen)');
       windows.forEach((appWindow, index) => {
         this.createCard(
           index,
@@ -47,17 +47,17 @@
         );
       });
 
-      if ('Scrollbar' in window) {
-        Scrollbar.init(this.cardsContainer, {
-          plugins: {
-            overscroll: {
-              damping: 0.15,
-              maxOverscroll: 300,
-              effect: 'bounce'
-            }
-          }
-        });
-      }
+      // if ('Scrollbar' in window) {
+      //   Scrollbar.init(this.cardsContainer, {
+      //     plugins: {
+      //       overscroll: {
+      //         damping: 0.15,
+      //         maxOverscroll: 300,
+      //         effect: 'bounce'
+      //       }
+      //     }
+      //   });
+      // }
     },
 
     hide: function () {
@@ -121,8 +121,8 @@
 
       const preview = document.createElement('img');
       preview.classList.add('preview');
-      webview.capturePage().then((data) => {
-        preview.src = data.toDataURL();
+      DisplayManager.screenshot(webview.getWebContentsId()).then((data) => {
+        preview.src = data;
       });
       card.appendChild(preview);
 
@@ -180,7 +180,7 @@
       document.addEventListener('mouseup', stopDrag);
       document.addEventListener('touchend', stopDrag);
 
-      const that = this;
+      this.startY = event.pageY || event.touches[0].pageY;
 
       // Function to handle dragging
       function dragWindow(event) {
@@ -197,7 +197,8 @@
       // Function to stop dragging
       function stopDrag(event) {
         event.preventDefault();
-        AppWindow.containerElement.classList.remove('dragging');
+        const currentYPosition = event.pageY || event.touches[0].pageY;
+        const distanceY = currentYPosition - this.startY;
 
         card.classList.add('transitioning');
         card.addEventListener('transitionend', () =>
@@ -205,7 +206,7 @@
         );
         card.classList.remove('dragging');
 
-        if (initialWindowY <= 100) {
+        if (distanceY <= 100) {
           if (windowId === 'homescreen') {
             card.style.transform = '';
           } else {

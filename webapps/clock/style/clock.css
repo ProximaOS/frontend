@@ -3,23 +3,3 @@
   width: 100%;
   height: calc(100% - 6.5rem);
 }
-
-.panel {
-  background-color: var(--background);
-  visibility: hidden;
-  transition: all 0.5s cubic-bezier(1, 0, 0, 1);
-}
-
-.panel.previous {
-  transform: translateX(-100%);
-}
-
-.panel.next {
-  transform: translateX(100%);
-}
-
-.panel.visible {
-  transform: translateX(0);
-  opacity: 1;
-  visibility: visible;
-}

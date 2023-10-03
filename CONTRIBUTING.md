@@ -14,7 +14,7 @@ But you have to follow these simple rules to make it easy and quick for us to ap
   - Toml
   - Shell
   - Python
-  - Java
+  - Java (Moved to a seperate [repository](https://github.com/openorchid/java_syscore))
   - Kotlin
   - HTML
   - CSS

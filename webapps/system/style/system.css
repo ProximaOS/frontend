@@ -14,7 +14,7 @@ html, body {
   font-family: 'Jali Arabic', system-ui;
   touch-action: none;
   -webkit-tap-highlight-color: transparent;
-  background-color: #333;
+  background-color: #000;
 }
 
 #screen {
@@ -26,7 +26,7 @@ html, body {
   --chrome-toolbar-gap: 0.5rem;
   --chrome-tablist-height: 4rem;
   --chrome-navbar-height: 4rem;
-  --safezone-width: 60rem;
+  --safezone-width: 32rem;
   position: fixed;
   left: 0;
   top: 0;
@@ -89,6 +89,31 @@ html, body {
   }
 }
 
+#screen::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 40vh;
+  background: rgba(51, 51, 51, 0.5) url(images/close_reach_chevron.png) no-repeat center bottom 1rem / 6rem 3.2rem;
+  z-index: 999999999999;
+  transform: translateY(-100%);
+  visibility: hidden;
+  transition: transform 0.5s ease, visibility 0.5s ease;
+}
+
+#screen.close-reach::before {
+  backdrop-filter: blur(20px) saturate(150%);
+  transform: translateY(0);
+  visibility: visible;
+}
+
+#screen.close-reach:active::before {
+  background-image: url(images/close_reach_chevron_active.png);
+  background-color: rgba(255, 255, 255, 0.5);
+}
+
 /* Screen filters */
 #screen::after {
   content: '';
@@ -113,11 +138,6 @@ html, body {
 
 #screen.ebook {
   filter: grayscale(1);
-}
-
-#screen.close-reach {
-  transform: translateY(30vh);
-  border-radius: var(--screen-radius) var(--screen-radius) 0 0;
 }
 
 #system-overlays {

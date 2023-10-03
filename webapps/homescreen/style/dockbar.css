@@ -10,6 +10,7 @@
   z-index: 1;
   display: grid;
   grid-template-columns: repeat(var(--grid-columns), 1fr);
+  outline: solid 0.1rem rgba(255, 255, 255, 0.1);
 }
 
 #dockbar .icon .icon-holder {
@@ -18,4 +19,27 @@
 
 #dockbar .icon .name {
   display: none;
+}
+
+@media screen and (orientation: landscape) and (max-width: 767px) {
+  #dockbar {
+    left: unset;
+    right: 1rem;
+    top: var(--statusbar-height);
+    bottom: unset;
+    width: 7.8rem;
+    height: calc(100% - var(--statusbar-height) - 1rem);
+    grid-template-columns: 1fr;
+    grid-template-rows: repeat(var(--grid-columns), 1fr);
+  }
+}
+
+@media screen and (min-width: 768px) {
+  #dockbar {
+    left: 50%;
+    translate: -50% 0;
+    grid-template-columns: repeat(var(--grid-columns), 8rem);
+    width: max-content;
+    max-width: calc(100% - 2rem);
+  }
 }

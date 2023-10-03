@@ -5,6 +5,12 @@
   width: 100%;
   height: 100%;
   pointer-events: none;
+  transition: all 0.5s ease;
+}
+
+#screen.close-reach #utility-tray {
+  height: 60%;
+  transform: translateY(40vh);
 }
 
 #utility-tray-motion {
@@ -24,7 +30,7 @@
 
 #utility-tray.brightness-changing #utility-tray-motion {
   background-color: transparent;
-  background-image: linear-gradient(to bottom, #333, #333 calc(var(--statusbar-height) * 2), transparent calc(var(--statusbar-height) * 3), transparent);
+  background-image: linear-gradient(to bottom, rgba(51, 51, 51, 0.8), rgba(51, 51, 51, 0.8) calc(var(--statusbar-height) * 2), transparent calc(var(--statusbar-height) * 3), transparent);
   backdrop-filter: blur(0px) saturate(100%);
 }
 
@@ -52,6 +58,10 @@
 
 #utility-tray .titlebar.transitioning {
   transition: height 0.5s ease;
+}
+
+#screen.close-reach #utility-tray .titlebar {
+  height: calc(var(--statusbar-height) * (1 + (var(--overscroll-progress, 0) / 2)));
 }
 
 .utility-tray-header {
@@ -134,7 +144,17 @@
   overflow-x: hidden;
   overflow-y: scroll;
   perspective: 100vw;
-  transition: opacity 0.5s ease, visibility 0.5s ease;
+  transition: padding-top 0.5s ease, opacity 0.5s ease, visibility 0.5s ease;
+}
+
+#notifications {
+  left: unset;
+  right: 0;
+}
+
+#screen.close-reach #control-center,
+#screen.close-reach #notifications {
+  padding-top: var(--statusbar-height);
 }
 
 #screen.software-buttons-enabled #control-center,
@@ -186,4 +206,13 @@
   opacity: 0;
   transform: scale(0.9);
   visibility: hidden;
+}
+
+@media screen and (orientation: landscape) {
+  #control-center,
+  #notifications {
+    max-width: var(--safezone-width);
+    padding-left: 0;
+    padding-right: 0;
+  }
 }

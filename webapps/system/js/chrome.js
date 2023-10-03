@@ -86,6 +86,10 @@
       return this.chrome().querySelector('.urlbar-display-url');
     },
 
+    urlbarSSLButton: function () {
+      return this.chrome().querySelector('.urlbar-ssl-button');
+    },
+
     suggestions: function () {
       return this.chrome().querySelector('.suggestions');
     },
@@ -240,6 +244,10 @@
               'click',
               this.handleNavbarOptionsButton.bind(this)
             );
+            this.urlbarSSLButton().addEventListener(
+              'click',
+              this.handleUrlbarSSLButton.bind(this)
+            );
             this.tabsViewCloseButton().addEventListener(
               'click',
               this.handleTabsViewCloseButton.bind(this)
@@ -361,7 +369,7 @@
         Environment.type === 'production'
           ? Environment.dirName().replaceAll('\\', '/')
           : Environment.currentDir.replaceAll('\\', '/')
-      }/src/preload.js`;
+      }/src/js/preload.js`;
       if (isPrivate) {
         webview.partition = 'private';
         webview.classList.add('private');
@@ -406,6 +414,16 @@
         if (splashElement) {
           splashElement.classList.add('hidden');
         }
+      });
+
+      webview.addEventListener('enter-html-full-screen', (event) => {
+        event.preventDefault();
+        this.chrome().parentElement.classList.add('fullscreen');
+      });
+
+      webview.addEventListener('leave-html-full-screen', (event) => {
+        event.preventDefault();
+        this.chrome().parentElement.classList.remove('fullscreen');
       });
 
       webview.addEventListener('close', () => {
@@ -464,9 +482,11 @@
           }
 
           if (!isPrivate) {
-            webview.capturePage().then((data) => {
-              gridPreview.src = data.toDataURL();
-            });
+            DisplayManager.screenshot(webview.getWebContentsId()).then(
+              (data) => {
+                gridPreview.src = data;
+              }
+            );
           }
         });
       });
@@ -653,11 +673,297 @@
     },
 
     handleNavbarAddonsButton: function (event) {
-      this.openDropdown('addons');
+      ContextMenu({});
     },
 
-    handleNavbarOptionsButton: function (event) {
-      this.openDropdown('options');
+    handleNavbarOptionsButton: async function (event) {
+      const webview = this.browserContainer().querySelector('.browser.active');
+
+      const box = this.navbarOptionsButton().getBoundingClientRect();
+      const rtl = document.dir === 'rtl';
+
+      const x = rtl ? box.left : box.left + box.width - 25;
+      const y =
+        box.top > window.innerHeight / 2 ? box.top : box.top + box.height;
+
+      const menu = [
+        {
+          type: 'nav',
+          buttons: [
+            {
+              l10nId: 'contextMenu-back',
+              icon: 'browser-back',
+              disabled: !webview.canGoBack(),
+              onclick: () => {
+                webview.focus();
+                webview.goBack();
+              }
+            },
+            {
+              l10nId: 'contextMenu-forward',
+              icon: 'browser-forward',
+              disabled: !webview.canGoForward(),
+              onclick: () => {
+                webview.focus();
+                webview.goForward();
+              }
+            },
+            {
+              l10nId: 'contextMenu-reload',
+              icon: 'browser-reload',
+              onclick: () => {
+                webview.focus();
+                webview.reload();
+              }
+            },
+            {
+              l10nId: 'contextMenu-bookmark',
+              icon: 'browser-bookmark',
+              onclick: () => {
+                webview.focus();
+                webview.reload();
+              }
+            }
+          ]
+        },
+        { type: 'separator' },
+        {
+          name: 'New Tab',
+          l10nId: 'dropdown-newTab',
+          icon: 'browser-add',
+          onclick: () => this.openNewTab(false)
+        },
+        {
+          name: 'New Private Tab',
+          l10nId: 'dropdown-newPrivateTab',
+          icon: 'do-not-track',
+          onclick: () => this.openNewTab(true)
+        },
+        { type: 'separator' },
+        {
+          name: 'History',
+          l10nId: 'dropdown-history',
+          icon: 'browser-history',
+          onclick: () => {}
+        },
+        {
+          name: 'Add-Ons',
+          l10nId: 'dropdown-addons',
+          icon: 'addons',
+          onclick: () => {}
+        },
+        {
+          name: 'Webapps',
+          l10nId: 'dropdown-webapps',
+          icon: 'apps',
+          onclick: () => {}
+        },
+        { type: 'separator' },
+        {
+          name: 'Move Chrome Up',
+          l10nId: 'dropdown-moveChromeUp',
+          icon: 'browser-sidetabs',
+          hidden:
+            (await Settings.getValue('general.chrome.position')) !== 'bottom',
+          onclick: () => Settings.setValue('general.chrome.position', 'top')
+        },
+        {
+          name: 'Move Chrome Down',
+          l10nId: 'dropdown-moveChromeDown',
+          icon: 'browser-sidetabs',
+          hidden:
+            (await Settings.getValue('general.chrome.position')) !== 'top',
+          onclick: () => Settings.setValue('general.chrome.position', 'bottom')
+        },
+        {
+          name: 'Reader Mode',
+          l10nId: 'dropdown-readerMode',
+          icon: 'browser-readermode',
+          onclick: () => {}
+        },
+        {
+          name: 'Translate',
+          l10nId: 'dropdown-translate',
+          icon: 'languages',
+          onclick: () => {}
+        },
+        { type: 'separator' },
+        {
+          type: 'nav',
+          buttons: [
+            {
+              l10nId: 'dropdown-zoomOut',
+              icon: 'contact-delete-minus',
+              onclick: () => {
+                const zoom = webview.getZoomFactor();
+                const targetZoom = Math.min(5, Math.max(0.3, zoom - 0.2));
+                const duration = 500; // 500ms transition time
+
+                const startTime = performance.now();
+                function animateZoom() {
+                  const currentTime = performance.now();
+                  const progress = Math.min((currentTime - startTime) / duration, 1);
+
+                  const easedProgress = 0.5 - 0.5 * Math.cos(progress * Math.PI);
+                  const newZoom = zoom + (targetZoom - zoom) * easedProgress;
+                  webview.setZoomFactor(newZoom);
+
+                  if (progress < 1) {
+                    requestAnimationFrame(animateZoom);
+                  }
+                }
+
+                animateZoom();
+              }
+            },
+            {
+              l10nId: 'dropdown-resetZoom',
+              l10nArgs: {
+                value: Math.round(webview.getZoomFactor() * 100)
+              },
+              onclick: () => {
+                const zoom = webview.getZoomFactor();
+                const targetZoom = 1;
+                const duration = 500; // 500ms transition time
+
+                const startTime = performance.now();
+                function animateZoom() {
+                  const currentTime = performance.now();
+                  const progress = Math.min((currentTime - startTime) / duration, 1);
+
+                  const easedProgress = 0.5 - 0.5 * Math.cos(progress * Math.PI);
+                  const newZoom = zoom + (targetZoom - zoom) * easedProgress;
+                  webview.setZoomFactor(newZoom);
+
+                  if (progress < 1) {
+                    requestAnimationFrame(animateZoom);
+                  }
+                }
+
+                animateZoom();
+              }
+            },
+            {
+              l10nId: 'dropdown-zoomIn',
+              icon: 'add',
+              onclick: () => {
+                const zoom = webview.getZoomFactor();
+                const targetZoom = Math.min(5, Math.max(0.3, zoom + 0.2));
+                const duration = 500; // 500ms transition time
+
+                const startTime = performance.now();
+                function animateZoom() {
+                  const currentTime = performance.now();
+                  const progress = Math.min((currentTime - startTime) / duration, 1);
+
+                  const easedProgress = 0.5 - 0.5 * Math.cos(progress * Math.PI);
+                  const newZoom = zoom + (targetZoom - zoom) * easedProgress;
+                  webview.setZoomFactor(newZoom);
+
+                  if (progress < 1) {
+                    requestAnimationFrame(animateZoom);
+                  }
+                }
+
+                animateZoom();
+              }
+            }
+          ]
+        },
+        { type: 'separator' },
+        {
+          name: 'Settings',
+          l10nId: 'dropdown-settings',
+          icon: 'settings',
+          onclick: () => {}
+        },
+        {
+          name: 'Quit',
+          l10nId: 'dropdown-quit',
+          icon: 'logout',
+          onclick: () => {
+            if ('AppWindow' in window) {
+              AppWindow.close(this.chrome().parentElement.id);
+            } else {
+              window.close();
+            }
+          }
+        }
+      ];
+
+      // Delaying the context menu opening so it won't fire the same time click
+      // does and instantly hide as soon as it opens
+      setTimeout(() => {
+        ContextMenu.show(x, y, menu);
+      }, 16);
+    },
+
+    handleUrlbarSSLButton: async function (event) {
+      const webview = this.browserContainer().querySelector('.browser.active');
+
+      const box = this.urlbarSSLButton().getBoundingClientRect();
+      const rtl = document.dir === 'rtl';
+
+      const x = rtl ? box.left : box.left + box.width - 25;
+      const y =
+        box.top > window.innerHeight / 2 ? box.top : box.top + box.height;
+
+      const menu = [
+        {
+          name: webview.getURL().startsWith('https')
+            ? 'This webpage is secure.'
+            : 'This webpage is unsecure.',
+          disabled: true
+        },
+        { type: 'separator' },
+        {
+          name: 'User Agent',
+          disabled: true
+        },
+        {
+          name: 'Default',
+          l10nId: 'ssl-userAgent-default',
+          icon:
+            (await Settings.getValue('general.chrome.user_agent')) === 'default'
+              ? 'tick'
+              : ' ',
+          onclick: () =>
+            Settings.setValue('general.chrome.user_agent', 'default')
+        },
+        {
+          name: 'Android (Phone)',
+          l10nId: 'ssl-userAgent-android',
+          icon:
+            (await Settings.getValue('general.chrome.user_agent')) === 'android'
+              ? 'tick'
+              : ' ',
+          onclick: () =>
+            Settings.setValue('general.chrome.user_agent', 'android')
+        },
+        {
+          name: 'Desktop',
+          l10nId: 'ssl-userAgent-desktop',
+          icon:
+            (await Settings.getValue('general.chrome.user_agent')) === 'desktop'
+              ? 'tick'
+              : ' ',
+          onclick: () =>
+            Settings.setValue('general.chrome.user_agent', 'desktop')
+        },
+        { type: 'separator' },
+        {
+          name: 'Delete Storage & Cookies',
+          l10nId: 'ssl-forgetWebpage',
+          icon: 'delete',
+          onclick: () => {}
+        }
+      ];
+
+      // Delaying the context menu opening so it won't fire the same time click
+      // does and instantly hide as soon as it opens
+      setTimeout(() => {
+        ContextMenu.show(x, y, menu);
+      }, 16);
     },
 
     handleTabsViewCloseButton: function () {
@@ -686,27 +992,50 @@
 
     handleContextMenu: function (event) {
       const webview = this.browserContainer().querySelector('.browser.active');
-      ContextMenu.show(event.params.x, event.params.y, [
+
+      const itemsBefore = [
         {
-          name: 'Back',
-          l10nId: 'contextMenu-back',
-          icon: 'browser-back',
-          disabled: !webview.canGoBack(),
-          onclick: () => {
-            webview.focus();
-            webview.goBack();
-          }
-        },
-        {
-          name: 'Forward',
-          l10nId: 'contextMenu-forward',
-          icon: 'browser-forward',
-          disabled: !webview.canGoForward(),
-          onclick: () => {
-            webview.focus();
-            webview.goForward();
-          }
-        },
+          type: 'nav',
+          buttons: [
+            {
+              l10nId: 'contextMenu-back',
+              icon: 'browser-back',
+              disabled: !webview.canGoBack(),
+              onclick: () => {
+                webview.focus();
+                webview.goBack();
+              }
+            },
+            {
+              l10nId: 'contextMenu-forward',
+              icon: 'browser-forward',
+              disabled: !webview.canGoForward(),
+              onclick: () => {
+                webview.focus();
+                webview.goForward();
+              }
+            },
+            {
+              l10nId: 'contextMenu-reload',
+              icon: 'browser-reload',
+              onclick: () => {
+                webview.focus();
+                webview.reload();
+              }
+            },
+            {
+              l10nId: 'contextMenu-bookmark',
+              icon: 'browser-bookmark',
+              onclick: () => {
+                webview.focus();
+                webview.reload();
+              }
+            }
+          ]
+        }
+      ];
+      const suggestions = [];
+      const itemsAfter = [
         { type: 'separator' },
         {
           name: 'Copy',
@@ -723,6 +1052,7 @@
           l10nId: 'contextMenu-cut',
           icon: 'textselection-cut',
           disabled: !event.params.editFlags.canCut,
+          hidden: !event.params.isEditable,
           onclick: () => {
             webview.focus();
             webview.cut();
@@ -733,6 +1063,7 @@
           l10nId: 'contextMenu-paste',
           icon: 'textselection-paste',
           disabled: !event.params.editFlags.canPaste,
+          hidden: !event.params.isEditable,
           onclick: () => {
             webview.focus();
             webview.paste();
@@ -748,16 +1079,62 @@
             webview.selectAll();
           }
         },
-        { type: 'separator' },
+        { type: 'separator', hidden: !event.params.isEditable },
         {
           name: 'Delete',
           l10nId: 'contextMenu-delete',
           icon: 'delete',
           disabled: !event.params.editFlags.canDelete,
+          hidden: !event.params.isEditable,
           onclick: () => {
             webview.focus();
             webview.delete();
           }
+        },
+        { type: 'separator' },
+        {
+          name: `Search ${event.params.selectionText}`,
+          l10nId: 'contextMenu-searchSelectionText',
+          l10nArgs: {
+            value: event.params.selectionText
+          },
+          icon: 'search',
+          hidden: (event.params.selectionText === ''),
+          onclick: () => {
+            webview.focus();
+            webview.copy();
+          }
+        },
+        {
+          name: 'Save As...',
+          l10nId: 'contextMenu-saveAs',
+          icon: 'save',
+          onclick: () => {}
+        },
+        {
+          name: 'Save As PDF',
+          l10nId: 'contextMenu-saveAsPdf',
+          icon: 'download',
+          onclick: () => {}
+        },
+        {
+          name: `Save ${event.params.mediaType}`,
+          l10nId: `contextMenu-saveFile-${event.params.mediaType}`,
+          icon: 'wallpaper',
+          hidden: event.params.mediaType === 'none',
+          onclick: () => {}
+        },
+        {
+          name: 'Print',
+          l10nId: 'contextMenu-print',
+          icon: 'file',
+          onclick: () => {}
+        },
+        {
+          name: 'Capture Page',
+          l10nId: 'contextMenu-capturePage',
+          icon: 'gallery-crop',
+          onclick: () => {}
         },
         { type: 'separator' },
         {
@@ -769,7 +1146,18 @@
             webview.openDevTools();
           }
         }
-      ]);
+      ];
+
+      if (event.params.spellcheckEnabled) {
+        event.params.dictionarySuggestions.foreach((suggestion) => {
+          suggestions.push({
+            name: `"${suggestion}"`
+          });
+        });
+      }
+
+      ContextMenu.show(event.params.x, event.params.y, [...itemsBefore, ...suggestions, ...itemsAfter]);
+      console.log(event.params);
     },
 
     handlePageFaviconUpdated: function (event) {
@@ -935,108 +1323,6 @@
       const luminance = (0.2126 * r + 0.7152 * g + 0.0722 * b) / 255;
 
       return luminance;
-    },
-
-    openDropdown: function (dropdownId) {
-      if (this.screen) {
-        this.screen.classList.add('context-menu-visible');
-      } else {
-        document.body.classList.add('context-menu-visible');
-      }
-      this.handleDropdownButtonClick({ dataset: { dropdownId } });
-
-      this.dropdown().style.top =
-        this.navbarOptionsButton().offsetTop +
-        this.navbarOptionsButton().getBoundingClientRect().height +
-        'px';
-      if (
-        this.dropdown().offsetTop + this.dropdown().offsetHeight >
-        window.innerHeight
-      ) {
-        this.dropdown().style.top =
-          this.navbarOptionsButton().offsetTop +
-          this.dropdown().offsetHeight +
-          'px';
-      }
-
-      setTimeout(() => {
-        this.dropdown().classList.add('visible');
-      });
-
-      this.dropdown().addEventListener('click', () => {
-        setTimeout(() => {
-          this.dropdown().classList.add('visible');
-        });
-      });
-      document.addEventListener('click', this.hideDropdown.bind(this));
-
-      const pageButtons =
-        this.dropdown().querySelectorAll('[data-dropdown-id]');
-      pageButtons.forEach((button) => {
-        button.addEventListener('click', () =>
-          this.handleDropdownButtonClick(button)
-        );
-      });
-
-      const panels = this.dropdown().querySelectorAll('.dropdown-panel');
-      panels.forEach((panel, index) => {
-        panel.dataset.index = index;
-        panel.classList.add('next');
-      });
-    },
-
-    hideDropdown: function () {
-      document.removeEventListener('click', this.hideDropdown.bind(this));
-
-      if (this.screen) {
-        this.screen.classList.remove('context-menu-visible');
-      } else {
-        document.body.classList.remove('context-menu-visible');
-      }
-      this.dropdown().classList.remove('visible');
-    },
-
-    handleDropdownButtonClick: function (button) {
-      const id = button.dataset.dropdownId;
-      const selectedPanel = this.dropdown().querySelector(
-        '.dropdown-panel.visible'
-      );
-
-      this.toggleDropdownPanelVisibility(selectedPanel, id);
-    },
-
-    toggleDropdownPanelVisibility: function (selectedPanel, targetPanelId) {
-      const targetPanel = this.dropdown().querySelector(
-        `.dropdown-panel.${targetPanelId}`
-      );
-
-      if (selectedPanel) {
-        selectedPanel.classList.toggle('visible');
-        selectedPanel.classList.toggle(
-          'previous',
-          selectedPanel.dataset.index <= targetPanel.dataset.index
-        );
-        selectedPanel.classList.toggle(
-          'next',
-          selectedPanel.dataset.index >= targetPanel.dataset.index
-        );
-      }
-
-      if (targetPanel) {
-        targetPanel.classList.toggle('visible');
-        if (selectedPanel) {
-          targetPanel.classList.toggle(
-            'previous',
-            selectedPanel.dataset.index <= targetPanel.dataset.index
-          );
-          targetPanel.classList.toggle(
-            'next',
-            selectedPanel.dataset.index >= targetPanel.dataset.index
-          );
-        }
-        this.dropdown().style.height =
-          targetPanel.getBoundingClientRect().height + 'px';
-      }
     },
 
     openFtuDialog: function () {

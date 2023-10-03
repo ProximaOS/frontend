@@ -10,13 +10,13 @@
     },
 
     handlePermissionRequest: async function (event) {
-      const settingId = `${event.detail.origin}@${event.detail.type}`;
-      Settings.getValue(settingId).then((value) => {
-        if (value) {
+      const settingId = `${event.detail.origin}`;
+      Settings.getValue(settingId, 'permissions.json').then((value) => {
+        if (value && value[event.detail.type]) {
           IPC.send('permissionrequest', {
             permission: event.detail.type,
             origin: event.detail.origin,
-            decision: value
+            decision: value[event.detail.type]
           });
         } else {
           ModalDialog.showPermissionRequest(
@@ -28,7 +28,13 @@
                 origin: event.detail.origin,
                 decision
               });
-              Settings.setValue(settingId, decision);
+
+              if (!value) {
+                value = {};
+              }
+              value[event.detail.type] = decision;
+              console.log(value);
+              Settings.setValue(settingId, value, 'permissions.json');
             }
           );
         }

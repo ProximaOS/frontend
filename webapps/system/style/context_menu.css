@@ -7,7 +7,7 @@
   max-height: calc(100% - 2rem);
   overflow: hidden;
   border-radius: 1.5rem;
-  filter: drop-shadow(0 0.5rem 1rem rgba(0, 0, 0, 0.3));
+  box-shadow: 0 1.5rem 3rem rgba(0, 0, 0, 0.3);
   margin: 1rem;
   transition: transform 0.3s ease, opacity 0.3s ease, visibility 0.3s ease;
   transform: translateY(-1rem);
@@ -31,11 +31,12 @@
   position: relative;
   width: 100%;
   height: 100%;
-  background: var(--background);
+  background: var(--acrylic-background-plus);
+  backdrop-filter: blur(20px) saturate(180%);
   border-radius: 1.5rem;
 }
 
-#context-menu-content li:not(.separator) {
+#context-menu-content li:not(.separator):not(.nav) {
   width: 100%;
   height: 4rem;
   line-height: 4rem;
@@ -53,44 +54,100 @@
   position: relative;
 }
 
-#context-menu-content li:not(.separator):hover {
+#context-menu-content li:not(.separator):not(.nav):hover {
   background: var(--item-hover);
 }
 
-#context-menu-content li:not(.separator):active {
+#context-menu-content li:not(.separator):not(.nav):active {
   background: var(--item-active);
 }
 
-#context-menu-content li[disabled]:not(.separator) {
+#context-menu-content li:not(.separator):not(.nav)::after {
+  content: '';
+  position: absolute;
+  left: 1.5rem;
+  top: 0;
+  width: calc(100% - 3rem);
+  height: 100%;
+  pointer-events: none;
+  border-top: solid 0.1rem var(--item-plus);
+  box-sizing: border-box;
+}
+
+#context-menu-content li:not(.separator):not(.nav):hover::after,
+#context-menu-content li:not(.separator):not(.nav):active::after,
+#context-menu-content li:not(.separator):not(.nav):hover + li::after,
+#context-menu-content li:not(.separator):not(.nav):active + li::after,
+#context-menu-content li:not(.separator):not(.nav):first-child::after,
+#context-menu-content .separator + li::after {
+  border-top: none !important;
+}
+
+#context-menu-content li[disabled]:not(.separator):not(.nav) {
   opacity: 0.4;
   pointer-events: none;
 }
 
-#context-menu-content li[data-icon]:not(.separator) {
+#context-menu-content li[data-icon]:not(.separator):not(.nav) {
   -moz-padding-start: 4rem;
   padding-inline-start: 4rem;
 }
 
-#context-menu-content li[data-icon]:not(.separator):before {
+#context-menu-content li[data-icon]:not(.separator):not(.nav):before {
   position: absolute;
   top: 0;
   width: 2rem;
   height: 100%;
   font-size: 2rem;
 }
-html[dir='ltr'] #context-menu-content li[data-icon]:not(.separator):before {
+html[dir='ltr'] #context-menu-content li[data-icon]:not(.separator):not(.nav):before {
   left: 1rem;
 }
-html[dir='rtl'] #context-menu-content li[data-icon]:not(.separator):before {
+html[dir='rtl'] #context-menu-content li[data-icon]:not(.separator):not(.nav):before {
   right: 1rem;
 }
 
 #context-menu-content .separator {
   list-style: none;
-  width: calc(100% - 2rem);
-  height: 0.1rem;
-  margin: 0.5rem 1rem;
+  width: calc(100% + 1rem);
+  height: 0.5rem;
+  margin: 0.5rem -0.5rem;
   background: var(--item-plus);
+}
+
+#context-menu-content .nav {
+  width: 100%;
+  height: 4rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+#context-menu-content .nav > ul {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  margin: 0;
+  padding: 0;
+}
+
+#context-menu-content .nav > ul li {
+  width: 100%;
+  height: 4rem;
+  line-height: 4rem;
+  flex-grow: 1;
+  text-align: center;
+  list-style: none;
+  margin: 0;
+  padding: 0 1rem !important;
+}
+
+#context-menu-content .nav > ul li[data-icon]::before {
+  position: static !important;
+}
+
+#context-menu-content .nav > ul li::after {
+  display: none;
 }
 
 #context-menu-content-items {

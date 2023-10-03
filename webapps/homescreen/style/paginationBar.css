@@ -50,3 +50,10 @@
   width: 1.6rem;
   opacity: 1;
 }
+
+@media screen and (orientation: landscape) and (max-width: 767px) {
+  #paginationBar {
+    bottom: calc(var(--software-buttons-height) + 0.5rem);
+  }
+}
+

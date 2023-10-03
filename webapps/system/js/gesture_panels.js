@@ -100,7 +100,6 @@
           });
         }
         AppWindow.focusedWindow.style.transform = '';
-        AppWindow.focusedWindow.style.transformOrigin = 'center';
       }
     }
   };

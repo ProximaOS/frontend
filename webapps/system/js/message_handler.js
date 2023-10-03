@@ -3,43 +3,59 @@
 
   const MessageHandler = {
     init: function () {
-      window.addEventListener('ipc-message', (event) => {
-        const data = event.detail;
-        switch (data.type) {
-          case 'alert':
-            this.handleAlert(data);
-            break;
+      window.addEventListener('ipc-message', this.handleIPCMessage.bind(this));
+    },
 
-          case 'confirm':
-            this.handleConfirm(data);
-            break;
+    handleIPCMessage: function (event) {
+      const data = event.detail;
 
-          case 'prompt':
-            this.handlePrompt(data);
-            break;
+      switch (data.type) {
+        case 'alert':
+          this.handleAlert(data);
+          break;
 
-          case 'notification':
-            this.handleNotification(data);
-            break;
+        case 'confirm':
+          this.handleConfirm(data);
+          break;
 
-          case 'textselection':
-            this.handleTextSelection(data);
-            break;
+        case 'prompt':
+          this.handlePrompt(data);
+          break;
 
-          case 'keyboard':
-            this.handleKeyboard(data);
-            break;
+        case 'notification':
+          this.handleNotification(data);
+          break;
 
-          case 'launch':
-            this.handleAppLaunch(data);
-            break;
+        case 'textselection':
+          this.handleTextSelection(data);
+          break;
 
-          case 'picture-in-picture':
-            this.handlePictureInPicture(data);
-            break;
+        case 'title':
+          this.handleTitleTooltip(data);
+          break;
 
-          default:
-            break;
+        case 'keyboard':
+          this.handleKeyboard(data);
+          break;
+
+        case 'launch':
+          this.handleAppLaunch(data);
+          break;
+
+        case 'picture-in-picture':
+          this.handlePictureInPicture(data);
+          break;
+
+        default:
+          break;
+      }
+
+      const webviews = document.querySelectorAll('webview');
+      webviews.forEach((webview) => {
+        try {
+          webview.send('message', data);
+        } catch (error) {
+          console.error(error);
         }
       });
     },
@@ -67,9 +83,26 @@
 
     handleTextSelection: function (data) {
       if (data.action === 'show') {
-        TextSelection.show(data.selectedText, data.position.left, data.position.top);
+        TextSelection.show(
+          data.selectedText,
+          data.position.left,
+          data.position.top
+        );
       } else {
         TextSelection.hide();
+      }
+    },
+
+    handleTitleTooltip: function (data) {
+      if (data.action === 'show') {
+        TitleTooltip.show(
+          data.title,
+          data.position.left,
+          data.position.top,
+          data.originType
+        );
+      } else {
+        TitleTooltip.hide();
       }
     },
 
@@ -86,11 +119,15 @@
 
     handleAppLaunch: function (data) {
       AppWindow.create(data.manifestUrl, {
-        originPos: {
+        animVariables: {
           xPos: data.xPos,
           yPos: data.yPos,
           xScale: data.xScale,
-          yScale: data.yScale
+          yScale: data.yScale,
+          iconXPos: data.iconXPos,
+          iconYPos: data.iconYPos,
+          iconXScale: data.iconXScale,
+          iconYScale: data.iconYScale
         }
       });
     },

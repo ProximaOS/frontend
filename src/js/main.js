@@ -9,7 +9,7 @@ const electronReload = require('electron-reload');
 
 require('dotenv').config();
 
-const profileDir = path.resolve(process.env.OPENORCHID_DATA);
+const profileDir = path.resolve(process.env.ORCHID_APP_PROFILE);
 app.setPath('appData', profileDir);
 app.setPath('userData', profileDir);
 app.setPath('sessionData', path.join(profileDir));

@@ -9,6 +9,7 @@
   "bluetooth.enabled": false,
   "bluetooth.name": "OpenOrchid",
   "general.lang.code": "en-US",
+  "general.chrome.user_agent": "default",
   "general.chrome.position": "bottom",
   "general.3rd_party_apps.enabled": false,
   "general.auto_update.enabled": true,
