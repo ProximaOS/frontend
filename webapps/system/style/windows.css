@@ -106,7 +106,7 @@
 
 .appframe.shrink-to-homescreen {
   border-radius: var(--screen-radius);
-  animation: shrink-to-homescreen 0.3s ease forwards;
+  animation: shrink-to-homescreen 1s ease forwards;
   z-index: 10;
 }
 

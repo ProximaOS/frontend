@@ -121,7 +121,8 @@
           if (entry[0] <= this.DOCK_ICON_SIZE) {
             return;
           }
-          iconImage.src = entry[1];
+          const url = new URL(manifestUrl);
+          iconImage.src = url.origin + '/' + entry[1];
         });
         iconImage.onerror = () => {
           iconImage.src = '/style/images/default.png';
@@ -179,7 +180,8 @@
         if (entry[0] <= this.SPLASH_ICON_SIZE) {
           return;
         }
-        splashScreenIcon.src = entry[1];
+        const url = new URL(manifestUrl);
+        splashScreenIcon.src = url.origin + '/' + entry[1];
       });
       splashScreenIcon.onerror = () => {
         splashScreenIcon.src = '/style/images/default.png';
