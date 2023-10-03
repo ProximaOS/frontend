@@ -164,7 +164,7 @@
     // Initialize updater
     // update.init(mainWindow);
 
-    fs.mkdirSync(path.join(process.env.OPENORCHID_DATA), { recursive: true });
+    fs.mkdirSync(path.join(process.env.ORCHID_APP_PROFILE), { recursive: true });
 
     settings.getValue('video.dark_mode.enabled').then((result) => {
       nativeTheme.themeSource = result ? 'dark' : 'light';
