@@ -154,24 +154,33 @@
     ipcMain.on('webdrop', (event, data) => {
       mainWindow.webContents.send('webdrop', data);
     });
-    ipcMain.on('settingschange', (event, data) => {
-      mainWindow.webContents.send('settingschange', data);
-    });
     ipcMain.on('devicepickup', (event, data) => {
       mainWindow.webContents.send('devicepickup', data);
     });
     ipcMain.on('deviceputdown', (event, data) => {
       mainWindow.webContents.send('deviceputdown', data);
     });
+    ipcMain.on('settingschange', (event, data) => {
+      mainWindow.webContents.send('settingschange', data);
+    });
+    ipcMain.on('narrate', (event, data) => {
+      mainWindow.webContents.send('narrate', data);
+    });
     ipcMain.on('screenshot', (event, data) => {
       if (data.webContentsId) {
         const wc = webContents.fromId(data.webContentsId);
         wc.capturePage().then((image) => {
-          mainWindow.webContents.send('screenshotted', image.toDataURL());
+          mainWindow.webContents.send('screenshotted', {
+            webContentsId: data.webContentsId,
+            imageDataURL: image.toDataURL()
+          });
         });
       } else {
         mainWindow.webContents.capturePage().then((image) => {
-          mainWindow.webContents.send('screenshotted', image.toDataURL());
+          mainWindow.webContents.send('screenshotted', {
+            webContentsId: data.webContentsId,
+            imageDataURL: image.toDataURL()
+          });
         });
       }
     });

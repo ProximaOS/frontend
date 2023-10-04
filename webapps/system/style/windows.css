@@ -106,7 +106,7 @@
 
 .appframe.shrink-to-homescreen {
   border-radius: var(--screen-radius);
-  animation: shrink-to-homescreen 1s ease forwards;
+  animation: shrink-to-homescreen 0.5s ease forwards;
   z-index: 10;
 }
 
@@ -122,14 +122,7 @@
 }
 
 .appframe.shrink-to-homescreen > .splashscreen {
-  visibility: visible !important;
-  mask-image: none !important;
-  mask-position: none !important;
-  mask-size: none !important;
-  -webkit-mask-image: none !important;
-  -webkit-mask-position: none !important;
-  -webkit-mask-size: none !important;
-  animation: shrink-to-homescreen-icon 0.3s ease forwards;
+  animation: shrink-to-homescreen-icon 0.5s ease forwards;
 }
 
 @keyframes shrink-to-homescreen-icon {
@@ -459,7 +452,7 @@
   transition: all 0.3s ease;
 }
 
-.appframe .splashscreen.hidden {
+.appframe:not(.shrink-to-homescreen) .splashscreen.hidden {
   visibility: hidden;
   mask-position: 0 100%;
   -webkit-mask-position: 0 100%;

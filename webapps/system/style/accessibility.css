@@ -1,0 +1,62 @@
+.accessibility-invert {
+  filter: invert(1) hue-rotate(180deg);
+}
+
+#accessibility-captions-box {
+  padding: 0.5rem;
+  font-size: 1.6rem;
+  position: fixed;
+  bottom: var(--software-buttons-height);
+  left: calc(15% - 0.5rem);
+  pointer-events: none;
+  background-color: rgba(0,0,0,0.8);
+  color: #fff;
+  width: 70%;
+  margin: 0 auto;
+  text-align: center;
+  border-radius: 0.5rem 0.5rem 0 0;
+  transition: all 1s ease;
+  transform: translateY(1rem);
+  visibility: hidden;
+  opacity: 0;
+}
+
+#accessibility-captions-box.visible {
+  transition: all 0.3s ease;
+  transform: translateY(0);
+  visibility: visible;
+  opacity: 1;
+}
+
+#accessibility-quicknav {
+  visibility: hidden;
+  position: absolute;
+  padding: 0;
+}
+
+#accessibility-quicknav.visible {
+  visibility: visible;
+}
+
+#accessibility-quicknav-container,
+#accessibility-quicknav-container > section,
+#accessibility-quicknav-container > section > ul {
+  height: 100%;
+  max-height: inherit;
+}
+
+#accessibility-quicknav-container > section > ul {
+  display: flex;
+  flex-direction: column;
+}
+
+#accessibility-quicknav-container > section > ul > li {
+  flex-grow: 1;
+}
+
+#accessibility-quicknav-container > section > ul > li > label {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}

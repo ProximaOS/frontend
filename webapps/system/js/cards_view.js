@@ -37,7 +37,9 @@
         focusedWindow.classList.remove('to-cards-view')
       );
 
-      const windows = this.windowContainer.querySelectorAll('.appframe:not(.homescreen)');
+      const windows = this.windowContainer.querySelectorAll(
+        '.appframe:not(#homescreen)'
+      );
       windows.forEach((appWindow, index) => {
         this.createCard(
           index,
@@ -80,11 +82,12 @@
     },
 
     createCard: async function (index, manifestUrl, appWindow, webview) {
+      const rtl = document.dir === 'rtl';
+      const x = (window.innerWidth * 0.65 + 15) * index;
+
       const cardArea = document.createElement('div');
       cardArea.classList.add('card-area');
-      cardArea.style.transform = `translateX(${
-        (window.innerWidth * 0.65 + 15) * index
-      }px)`;
+      cardArea.style.transform = `translateX(${rtl ? -x : x}px)`;
       this.cardsContainer.appendChild(cardArea);
 
       const focusedWindow = AppWindow.focusedWindow;

@@ -4,7 +4,12 @@
   "description": "Orchid sketching app.",
   "launch_path": "/index.html",
   "icons": {
-    "48": "/style/icons/sketch.png"
+    "16": "/style/icons/sketch_16.png",
+    "32": "/style/icons/sketch_32.png",
+    "48": "/style/icons/sketch_48.png",
+    "64": "/style/icons/sketch_64.png",
+    "128": "/style/icons/sketch_128.png",
+    "256": "/style/icons/sketch_256.png"
   },
   "developer": {
     "name": "Orchid Org.",

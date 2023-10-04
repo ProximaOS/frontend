@@ -57,6 +57,7 @@
   registerEvent('devicepickup', 'devicepickup');
   registerEvent('deviceputdown', 'deviceputdown');
   registerEvent('screenshotted', 'screenshotted');
+  registerEvent('narrate', 'narrate');
 
   const Environment = {
     type: process.env.NODE_ENV,
@@ -198,6 +199,53 @@
     });
   });
 
+  const readableElements = [
+    'A',
+    'BUTTON',
+    'H1',
+    'H2',
+    'H3',
+    'H4',
+    'H5',
+    'H6',
+    'HEADER',
+    'INPUT',
+    'LI',
+    'P',
+    'TEXTAREA'
+  ];
+  const msg = new SpeechSynthesisUtterance();
+  ['mouseover', 'touchdown'].forEach((event) => {
+    document.addEventListener(event, function (event) {
+      Settings.getValue('accessibility.narrator.enabled').then((value) => {
+        if (!value) {
+          return;
+        }
+
+        let ttsString = event.target.ariaLabel;
+        if (readableElements.indexOf(event.target.nodeName) !== -1) {
+          if (!ttsString) {
+            if (event.target.value) {
+              ttsString = event.target.value;
+            } else {
+              ttsString = event.target.textContent;
+            }
+          }
+        }
+
+        if (ttsString) {
+          speechSynthesis.cancel();
+          msg.text = ttsString;
+          speechSynthesis.speak(msg);
+
+          ipcRenderer.send('narrate', {
+            message: ttsString
+          });
+        }
+      });
+    });
+  });
+
   function convertToAbsoluteUrl(relativeUrl) {
     const baseUrl = window.location.origin;
     return new URL(relativeUrl, baseUrl).href;
@@ -234,18 +282,22 @@
       mediaElement.addEventListener('play', function (event) {
         console.log(event);
         const url = convertToAbsoluteUrl(mediaElement.src);
-        getFileAsUint8Array(url).then(data => {
-          musicMetadata.parseBuffer(data, mime.getType(url)).then(metadata => {
-            const common = metadata.common;
-            const picture = common.picture;
-            ipcRenderer.send('mediaplay', {
-              title: common.title,
-              artist: common.artist,
-              album: common.album,
-              artwork: `data:${picture.format};base64,${picture.data.toString('base64')}`,
-              date: common.date
+        getFileAsUint8Array(url).then((data) => {
+          musicMetadata
+            .parseBuffer(data, mime.getType(url))
+            .then((metadata) => {
+              const common = metadata.common;
+              const picture = common.picture;
+              ipcRenderer.send('mediaplay', {
+                title: common.title,
+                artist: common.artist,
+                album: common.album,
+                artwork: `data:${picture.format};base64,${picture.data.toString(
+                  'base64'
+                )}`,
+                date: common.date
+              });
             });
-          });
         });
       });
       mediaElement.addEventListener('pause', function (event) {

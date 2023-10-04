@@ -21,6 +21,7 @@
     CLOSE_ANIMATION: 'shrink',
     CLOSE_TO_HOMESCREEN_ANIMATION: 'shrink-to-homescreen',
 
+    timer: null,
     isDragging: false,
     isResizing: false,
     resizingWindow: null,
@@ -445,11 +446,14 @@
         dockIcon.classList.add('minimized');
       }
       windowDiv.addEventListener('animationend', () => {
+        this.focus('homescreen');
+      });
+      // Focus plays a 0.5s switch animation which could mess up the close animation timer
+      this.timer = setTimeout(() => {
         windowDiv.style.transform = '';
         windowDiv.classList.remove('active');
         windowDiv.classList.remove(this.CLOSE_TO_HOMESCREEN_ANIMATION);
-        this.focus('homescreen');
-      });
+      }, 1000);
     },
 
     unminimize: function (id) {
