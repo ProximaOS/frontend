@@ -9,7 +9,7 @@
     },
 
     update: function () {
-      this.iconElement.classList.remove('hidden');
+      this.iconElement.classList.remove('visible');
 
       clearTimeout(this.timer);
       this.timer = setTimeout(this.update, 1000);

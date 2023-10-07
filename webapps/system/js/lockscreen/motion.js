@@ -182,6 +182,7 @@
         type: 'lockscreen',
         action: 'unlock'
       });
+      WallpaperManager.playVideoInStyle();
     },
 
     showMotionElementPIN: function () {

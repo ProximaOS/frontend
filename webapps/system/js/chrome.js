@@ -135,7 +135,7 @@
 
       fetch('http://system.localhost:8081/elements/chrome_interface.html').then(
         (response) => {
-          response.text().then((htmlContent) => {
+          response.text().then(async (htmlContent) => {
             this.chrome().innerHTML = htmlContent;
 
             if (isChromeEnabled) {
@@ -181,14 +181,15 @@
 
             this.chrome().dataset.id = 0;
             this.DEFAULT_URL = url;
+            CardPanel.init();
             this.openNewTab(false, url);
 
             const avatarImage = this.profileButton().querySelector('.avatar');
             if ('OrchidServices' in window) {
-              if (OrchidServices.isUserLoggedIn()) {
+              if (await OrchidServices.isUserLoggedIn()) {
                 this.profileButton().classList.add('logged-in');
                 OrchidServices.getWithUpdate(
-                  `profile/${OrchidServices.userId()}`,
+                  `profile/${await OrchidServices.userId()}`,
                   function (data) {
                     avatarImage.src = data.profile_picture;
                   }

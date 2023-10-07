@@ -59,6 +59,8 @@
   registerEvent('screenshotted', 'screenshotted');
   registerEvent('narrate', 'narrate');
 
+  registerEvent('requestlogin', 'requestlogin');
+
   const Environment = {
     type: process.env.NODE_ENV,
     currentDir: process.cwd(),

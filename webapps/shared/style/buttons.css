@@ -35,7 +35,7 @@ button,
 button.recommend,
 .button.recommend {
   background-color: var(--accent-color);
-  color: var(--accent-color);
+  color: var(--accent-color-plus);
 }
 
 button.recommend:hover,
@@ -46,6 +46,7 @@ button.recommend:hover,
 button.recommend:active,
 .button.recommend:active {
   background: var(--accent-color) linear-gradient(0deg, var(--accent-color-active), var(--accent-color-active));
+  color: var(--accent-color-minus);
 }
 
 button.danger,

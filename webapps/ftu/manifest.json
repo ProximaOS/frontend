@@ -1,6 +1,6 @@
 {
   "version": "1.0",
-  "role": "system",
+  "role": "systemg",
   "name": "FTU",
   "description": "First time use",
   "launch_path": "/index.html",
@@ -21,7 +21,8 @@
   "background_color": "#f0f6ff",
   "theme_color": "#0061e0",
   "permissions": {
-    "nodeintegration": {}
+    "ipc": {},
+    "settings": {}
   },
   "display": "immersive"
 }

@@ -214,11 +214,24 @@ const OrchidServices = {
    * @returns {boolean}
    */
   isUserLoggedIn: function isUserLoggedIn() {
-    let data = false;
-    if (localStorage.getItem('ws.login.userId')) {
-      data = true;
-    }
-    return data;
+    return new Promise((resolve, reject) => {
+      if ('Settings' in window) {
+        Settings.getValue('orchidaccount.token').then(value => {
+          if (value) {
+            resolve(true);
+          } else {
+            resolve(false);
+          }
+        });
+      } else {
+        const token = localStorage.getItem('orchidservices.token');
+        if (token) {
+          resolve(true);
+        } else {
+          resolve(false);
+        }
+      }
+    });
   },
 
   userId: function userId() {

@@ -16,10 +16,10 @@ body {
 }
 
 #splashscreen.hidden {
-  transform: scale(1.75);
+  transform: scale(1.1);
   opacity: 0;
   visibility: hidden;
-  transition: all 0.5s ease 2s;
+  transition: all 0.5s ease;
 }
 
 #splashscreen > .logo {
@@ -127,10 +127,10 @@ body {
 }
 
 #content .container .illustration .illustration-art {
-  width: 25rem;
-  height: 25rem;
+  width: 30rem;
+  height: 30rem;
   border-radius: 3rem;
-  background: no-repeat center / cover;
+  background: no-repeat center / contain;
   transform: scale(0.9);
   opacity: 0;
   visibility: hidden;
@@ -166,7 +166,7 @@ body {
   overflow-x: hidden;
   overflow-y: auto;
   padding: 7rem 0;
-  padding-inline-end: 1.5rem;
+  padding-inline-end: 3rem;
   box-sizing: border-box;
   position: relative;
   opacity: 0;
@@ -207,7 +207,7 @@ html[dir="rtl"] #content .container .buttons {
 
 #content .container .page.greetings .buttons .next-button {
   transition: all 0.5s cubic-bezier(0.2, 0.9, 0.1, 1);
-  width: calc(50% - 1rem);
+  width: calc(50% - 0.5rem);
   flex-grow: 0;
   margin-inline-start: auto;
   z-index: 3;
@@ -324,19 +324,19 @@ html[dir="rtl"] #content .container .buttons {
   }
 
   #content .container .illustration .illustration-art {
-    width: 12rem;
-    height: 12rem;
+    width: 32rem;
+    height: 20rem;
     margin: 3rem auto 0;
   }
 
   #content .container .content {
-    padding: 1.5rem 1.5rem 7rem;
+    padding: 1.5rem 3rem 7rem;
     margin-bottom: var(--software-buttons-height);
     justify-content: unset;
   }
 
   #content .container .buttons {
-    padding: 1.5rem 1.5rem 0;
+    padding: 1.5rem 3rem 0;
     bottom: var(--software-buttons-height);
     width: 100%;
   }

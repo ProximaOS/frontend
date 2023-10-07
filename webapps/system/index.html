@@ -14,6 +14,7 @@
   <link rel="stylesheet" type="text/css" href="http://shared.localhost:8081/style/snackbars.css" />
   <link rel="stylesheet" type="text/css" href="http://shared.localhost:8081/style/radios.css" />
   <link rel="stylesheet" type="text/css" href="http://shared.localhost:8081/style/checkboxes.css" />
+  <link rel="stylesheet" type="text/css" href="http://shared.localhost:8081/style/card_panels.css" />
 
   <!-- Stylesheets -->
   <link rel="stylesheet" type="text/css" href="dist/main.bundle.css">
@@ -48,6 +49,7 @@
   <link rel="stylesheet" type="text/css" href="style/drag_and_drop.css">
   <link rel="stylesheet" type="text/css" href="style/context_menu.css">
   <link rel="stylesheet" type="text/css" href="style/title_tooltip.css">
+  <link rel="stylesheet" type="text/css" href="style/login_ui.css">
 
   <!-- Stylesheets - Desktop -->
   <link rel="stylesheet" type="text/css" href="desktop/style/desktop_system.css">
@@ -63,6 +65,7 @@
   <script defer type="text/javascript" src="http://shared.localhost:8081/js/plugins/overscroll.js"></script>
   <script type="text/javascript" src="http://shared.localhost:8081/js/platform.js"></script>
   <script type="text/javascript" src="http://shared.localhost:8081/js/directional_scale.js"></script>
+  <script defer type="text/javascript" src="http://shared.localhost:8081/js/card_panels.js"></script>
 
   <!-- Initial scripts -->
   <script type="text/javascript" src="js/bootstrap.js"></script>
@@ -110,6 +113,7 @@
   <script defer type="text/javascript" src="js/screenshots.js"></script>
   <script defer type="text/javascript" src="js/drag_and_drop.js"></script>
   <script defer type="text/javascript" src="js/title_tooltip.js"></script>
+  <script defer type="text/javascript" src="js/login_ui.js"></script>
   <script defer type="text/javascript" src="js/lockscreen/motion.js"></script>
   <script defer type="text/javascript" src="js/lockscreen/clock.js"></script>
   <script defer type="text/javascript" src="js/lockscreen/date.js"></script>
@@ -132,7 +136,12 @@
       <video src="" id="splashscreen-video"></video>
     </div>
 
-    <div id="wallpapers"></div>
+    <div id="wallpapers">
+      <img src="" alt="" id="wallpaper-image"></img>
+      <video src="" id="wallpaper-video"></video>
+
+      <div class="blur-overlay"></div>
+    </div>
 
     <div id="loading-screen" data-z-index-layer="loading-screen"></div>
 
@@ -201,7 +210,8 @@
             <button id="lockscreen-pin-keypad9" data-value="9"><span data-l10n-id="pinLockKey9"></span></button>
             <button id="lockscreen-pin-backspace" data-value="backspace"><span data-icon="back"></span></button>
             <button id="lockscreen-pin-keypad0" data-value="0"><span data-l10n-id="pinLockKey0"></span></button>
-            <button id="lockscreen-pin-emergency" data-value="emergency"><span data-l10n-id="pinLock-emergency"></span></button>
+            <button id="lockscreen-pin-emergency" data-value="emergency"><span
+                data-l10n-id="pinLock-emergency"></span></button>
           </div>
         </div>
       </div>
@@ -391,6 +401,15 @@
       </div>
     </div>
 
+    <div id="login-ui" class="card-panel" data-z-index-layer="card-panel">
+      <div class="card">
+        <div class="handle"></div>
+        <div class="content">
+          <webview src="" id="login-ui-browser" class="browser"></webview>
+        </div>
+      </div>
+    </div>
+
     <div id="software-buttons" data-z-index-layer="software-buttons">
       <div class="mobile">
         <button id="software-back-button"></button>
@@ -433,7 +452,7 @@
     </div>
 
     <div id="dashboard">
-      <webview src="" id="dashboard-browser"></webview>
+      <webview id="dashboard-browser"></webview>
     </div>
 
     <div id="system-overlays" data-z-index-layer="system-overlays">

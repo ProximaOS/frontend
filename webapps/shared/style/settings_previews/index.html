@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Settings Previews</title>
+  <link rel="stylesheet" type="text/css" href="../../../default_theme/style/index.css">
+  <link rel="stylesheet" type="text/css" href="../icons/icons.css">
+  <link rel="stylesheet" type="text/css" href="../layout.css">
+  <link rel="stylesheet" type="text/css" href="../headers.css">
+  <link rel="stylesheet" type="text/css" href="../lists.css">
+  <link rel="stylesheet" type="text/css" href="../settings_previews.css">
+  <script defer type="text/javascript" src="../../js/panels.js"></script>
+</head>
+<body>
+  <div class="app">
+    <div class="panel visible">
+      <div class="headerbar">
+        <div class="safezone">
+          <a href="#" data-icon="menu"></a>
+          <h1>App Name</h1>
+          <menu role="toolbar">
+            <a href="#" data-icon="search"></a>
+          </menu>
+        </div>
+      </div>
+
+      <div class="content lists">
+        <header>Gestures</header>
+        <form action="" class="layout-form gestures">
+          <label for="ssg-classic" class="classic">
+            <input type="radio" name="ssg" id="ssg-classic">
+            <span>Classic</span>
+          </label>
+          <label for="ssg-swipe" class="swipe">
+            <input type="radio" name="ssg" id="ssg-swipe">
+            <span>Swipe</span>
+          </label>
+        </form>
+        
+        <header>Color Scheme</header>
+        <form action="" class="layout-form color-schemes">
+          <label for="ssg-light" class="light">
+            <input type="radio" name="ssg" id="ssg-light">
+            <span>Light</span>
+          </label>
+          <label for="ssg-dark" class="dark">
+            <input type="radio" name="ssg" id="ssg-dark">
+            <span>Dark</span>
+          </label>
+          <label for="ssg-auto" class="auto">
+            <input type="radio" name="ssg" id="ssg-auto">
+            <span>Auto</span>
+          </label>
+        </form>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

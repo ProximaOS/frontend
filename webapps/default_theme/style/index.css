@@ -5,6 +5,7 @@
 
   --accent-color: rgb(var(--accent-color-r), var(--accent-color-g), var(--accent-color-b));
   --accent-color-plus: rgba(255, 255, 255, 0.75);
+  --accent-color-minus: rgba(255, 255, 255, 0.5);
   --accent-color-hover: rgba(255, 255, 255, 0.05);
   --accent-color-active: rgba(255, 255, 255, 0.1);
 
@@ -51,12 +52,13 @@
     --accent-color-g: 194;
     --accent-color-b: 255;
     --accent-color-plus: rgba(0, 0, 0, 0.75);
+    --accent-color-minus: rgba(0, 0, 0, 0.5);
     --accent-color-hover: rgba(0, 0, 0, 0.05);
     --accent-color-active: rgba(0, 0, 0, 0.1);
 
     --background: rgb(calc((var(--accent-color-r) / 255) * 32), calc((var(--accent-color-g) / 255) * 32), calc((var(--accent-color-b) / 255) * 32));
     --background-plus: rgb(calc(33 + ((var(--accent-color-r) / 255) * 32)), calc(33 + ((var(--accent-color-g) / 255) * 32)), calc(33 + ((var(--accent-color-b) / 255) * 32)));
-    --background-minus: rgb(calc(24 + ((var(--accent-color-r) / 255) * 32)), calc(24 + ((var(--accent-color-g) / 255) * 32)), calc(24 + ((var(--accent-color-b) / 255) * 32)));
+    --background-minus: rgb(calc(16 + ((var(--accent-color-r) / 255) * 32)), calc(16 + ((var(--accent-color-g) / 255) * 32)), calc(16 + ((var(--accent-color-b) / 255) * 32)));
 
     --acrylic-background: rgba(calc(16 + ((var(--accent-color-r) / 255) * 32)), calc(16 + ((var(--accent-color-g) / 255) * 32)), calc(16 + ((var(--accent-color-b) / 255) * 32)), 0.5);
     --acrylic-background-plus: rgba(calc(33 + ((var(--accent-color-r) / 255) * 32)), calc(33 + ((var(--accent-color-g) / 255) * 32)), calc(33 + ((var(--accent-color-b) / 255) * 32)), 0.75);

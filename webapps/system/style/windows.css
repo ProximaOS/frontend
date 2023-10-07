@@ -318,7 +318,7 @@
   );
 }
 
-.appframe .chrome.bottom.visible .browser {
+.appframe:not(.fullscreen) .chrome.bottom.visible .browser {
   top: var(--statusbar-height);
 }
 

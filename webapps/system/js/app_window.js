@@ -5,6 +5,7 @@
     _id: 0,
 
     screen: document.getElementById('screen'),
+    wallpapers: document.getElementById('wallpapers'),
     containerElement: document.getElementById('windows'),
     statusbar: document.getElementById('statusbar'),
     softwareButtons: document.getElementById('software-buttons'),
@@ -324,6 +325,12 @@
 
       windowDiv.style.transform = '';
 
+      if (id !== 'homescreen') {
+        this.wallpapers.classList.add('app-open');
+      } else {
+        this.wallpapers.classList.remove('app-open');
+      }
+
       if (windowDiv.classList.contains('fullscreen')) {
         this.statusbar.classList.add('hidden');
         this.softwareButtons.classList.add('hidden');
@@ -370,10 +377,12 @@
           windowDiv.classList.remove('to-left');
         });
       } else {
-        this.homescreenElement.classList.add('transitioning');
-        this.homescreenElement.addEventListener('animationend', () => {
-          this.homescreenElement.classList.remove('transitioning');
-        });
+        if (this.homescreenElement) {
+          this.homescreenElement.classList.add('transitioning');
+          this.homescreenElement.addEventListener('animationend', () => {
+            this.homescreenElement.classList.remove('transitioning');
+          });
+        }
       }
     },
 

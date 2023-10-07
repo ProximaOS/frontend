@@ -8,17 +8,17 @@
     accountEmail: document.getElementById('account-email'),
     accountPhoneNumber: document.getElementById('account-phone-number'),
 
-    init: function () {
+    init: async function () {
       if ('OrchidServices' in window) {
-        if (OrchidServices.isUserLoggedIn()) {
+        if (await OrchidServices.isUserLoggedIn()) {
           OrchidServices.getWithUpdate(
-            `profile/${OrchidServices.userId()}`,
+            `profile/${await OrchidServices.userId()}`,
             (data) => {
               this.accountBanner.src = data.banner_image || data.profile_picture;
               this.accountAvatar.src = data.profile_picture;
               this.accountUsername.textContent = data.username;
               this.accountEmail.textContent = data.email;
-              this.accountPhoneNumber.textContent = data.phoneNumber;
+              this.accountPhoneNumber.textContent = data.phone_number;
             }
           );
         }
@@ -26,5 +26,9 @@
     }
   };
 
-  document.addEventListener('DOMContentLoaded', () => Account.init());
+  window.addEventListener('load', () => {
+    setTimeout(() => {
+      Account.init();
+    }, 1000);
+  });
 })(window);

@@ -151,7 +151,7 @@
 
         let progress = scrollLeft - window.innerWidth * index;
         progress = progress / window.innerWidth;
-        progress = 1 * ((Math.abs(progress - 0.5) - 0.5) * 2);
+        progress = 1 * ((Math.abs(progress - 0.5) - 0.5) * 2) - 1;
         progress = Math.min(1, progress);
         progress = Math.max(0, progress);
 
@@ -215,9 +215,5 @@
     }
   };
 
-  window.addEventListener('load', function () {
-    setTimeout(() => {
-      Grid.init();
-    }, 1000);
-  });
+  Grid.init();
 })(window);

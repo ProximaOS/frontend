@@ -1,0 +1,69 @@
+.card-panel {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.3);
+  transition: all 0.3s ease 0.3s;
+  opacity: 0;
+  visibility: hidden;
+}
+
+.card-panel.visible {
+  transition: all 0.1s ease;
+  opacity: 1;
+  visibility: visible;
+}
+
+.card-panel > .card {
+  position: fixed;
+  top: calc(4.5rem + var(--statusbar-height));
+  left: 50%;
+  translate: -50% 0;
+  width: 100%;
+  max-width: 600px;
+  height: calc(100% - 4.5rem - var(--statusbar-height));
+  background-color: var(--background);
+  box-shadow: 0 -1rem 2rem rgba(0, 0, 0, 0.1);
+  border-radius: 2.5rem 2.5rem 0 0;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  transform: translateY(100%);
+}
+
+.card-panel.visible > .card {
+  transform: translateY(calc(100% * var(--card-progress, 0)));
+}
+
+.card-panel > .card > .handle {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 2.5rem;
+  overflow: hidden;
+  z-index: 1;
+}
+
+.card-panel > .card > .handle::before {
+  content: '';
+  display: block;
+  width: 5rem;
+  height: 0.5rem;
+  background-color: var(--item-plus);
+  border-radius: 0.5rem;
+  margin: 1rem auto;
+}
+
+.card-panel > .card > .content {
+  position: absolute;
+  left: 0;
+  top: 1.5rem;
+  width: 100%;
+  height: calc(100% - 1.5rem);
+}
+
+.card-panel > .card .panel {
+  --statusbar-height: 0rem;
+}

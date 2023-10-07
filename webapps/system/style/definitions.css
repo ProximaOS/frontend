@@ -1,9 +1,9 @@
 :root {
   --statusbar-height: 4rem;
-  --statusbar-padding-left: 3rem;
+  --statusbar-padding-left: 6.5rem;
   --statusbar-padding-right: 3rem;
   --software-buttons-height: 4rem;
-  --screen-radius: 3.6rem;
+  --screen-radius: 4rem;
   --chrome-toolbar-gap: 0.5rem;
   --chrome-tablist-height: 4rem;
   --chrome-navbar-height: 4rem;

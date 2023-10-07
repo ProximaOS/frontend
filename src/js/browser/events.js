@@ -184,5 +184,9 @@
         });
       }
     });
+
+    ipcMain.on('requestlogin', (event, data) => {
+      mainWindow.webContents.send('requestlogin', data);
+    });
   };
 })();

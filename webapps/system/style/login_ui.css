@@ -1,0 +1,11 @@
+#login-ui-browser {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.card-panel.dragging #login-ui-browser {
+  pointer-events: none;
+}

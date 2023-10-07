@@ -129,6 +129,4 @@
   };
 
   FTU.init();
-
-  exports.FTU = FTU;
 })(window);

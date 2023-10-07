@@ -1,10 +1,30 @@
 #app {
   --statusbar-height: 0rem;
-  --software-buttons-height: 0rem;
+  --safezone-width: 60rem;
 }
 
 h1 {
   margin: 0;
   padding: 0;
   font-size: 2.4rem;
+}
+
+.panel > .content {
+  padding-bottom: calc(8rem + var(--software-buttons-height));
+}
+
+.panel > .buttons {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  padding-bottom: calc(var(--software-buttons-height));
+  height: calc(5.5rem + var(--software-buttons-height));
+  background-color: var(--background-minus);
+}
+
+.panel > .buttons button {
+  padding: 0 3rem;
+  max-width: var(--safezone-width);
+  margin: 0 auto;
 }

@@ -11,6 +11,10 @@
   z-index: 1024;
 }
 
+[data-z-index-layer="card-panel"] {
+  z-index: 1192;
+}
+
 [data-z-index-layer="keyboards"] {
   z-index: 2048;
 }

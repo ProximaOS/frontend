@@ -7,12 +7,12 @@
     accountButtonUsername: document.getElementById('account-button-username'),
     accountButtonContact: document.getElementById('account-button-contact'),
 
-    init: function () {
-      if ('OrchidServices' in window) {
-        if (OrchidServices.isUserLoggedIn()) {
+    init: async function () {
+      // if ('OrchidServices' in window) {
+        if (await OrchidServices.isUserLoggedIn()) {
           this.accountButton.classList.add('visible');
           OrchidServices.getWithUpdate(
-            `profile/${OrchidServices.userId()}`,
+            `profile/${await OrchidServices.userId()}`,
             (data) => {
               this.accountButtonAvatar.src = data.profile_picture;
               this.accountButtonUsername.textContent = data.username;
@@ -20,9 +20,13 @@
             }
           );
         }
-      }
+      // }
     }
   };
 
-  document.addEventListener('DOMContentLoaded', () => Root.init());
+  window.addEventListener('load', () => {
+    setTimeout(() => {
+      Root.init();
+    }, 1000);
+  });
 })(window);
