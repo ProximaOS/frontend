@@ -64,9 +64,9 @@ dialog.showSaveDialog = (options, callback) => {
 
 protocols.register('openorchid', (uri) => {
   if (uri.pathname) {
-    return path.join(__dirname, 'internal', uri.host, uri.pathname);
+    return path.join(__dirname, '..', '..', 'internal', uri.host, uri.pathname);
   }
-  return path.join(__dirname, 'internal', uri.host);
+  return path.join(__dirname, '..', '..', 'internal', uri.host);
 });
 
 // This method will be called when Electron has finished
@@ -109,10 +109,10 @@ app.on('activate', () => {
 });
 
 if (isDev) {
-  electronReload(path.join(__dirname, 'src'), {
+  electronReload(path.join(__dirname, '..'), {
     hardResetMethod: 'exit'
   });
-  electronReload(path.join(__dirname, 'internal'), {
+  electronReload(path.join(__dirname, '..', '..', 'internal'), {
     hardResetMethod: 'exit'
   });
   electronReload(path.resolve(process.env.OPENORCHID_WEBAPPS), {

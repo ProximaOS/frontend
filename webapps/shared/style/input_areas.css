@@ -1,14 +1,16 @@
 input[type="text"],
-input[type="username"],
 input[type="email"],
 input[type="password"],
 input[type="search"],
-input[type="url"] {
+input[type="url"],
+input[type="time"],
+input[type="date"],
+input[type="timedate"] {
   width: 100%;
   height: 4rem;
   line-height: 4rem;
   background-color: var(--item-plus);
-  border-radius: 1rem;
+  border-radius: 0.6rem;
   border: none;
   box-shadow: inset 0 -0.1rem 0 #858585;
   color: var(--text-color);
@@ -24,10 +26,29 @@ input[type="username"]:focus,
 input[type="email"]:focus,
 input[type="password"]:focus,
 input[type="search"]:focus,
-input[type="url"]:focus {
+input[type="url"]:focus,
+input[type="time"]:focus,
+input[type="date"]:focus,
+input[type="timedate"]:focus {
   box-shadow: inset 0 -0.3rem 0 var(--accent-color);
 }
 
+.lists ul li input[type="text"],
+.lists ul li input[type="username"],
+.lists ul li input[type="email"],
+.lists ul li input[type="password"],
+.lists ul li input[type="search"],
+.lists ul li input[type="url"] {
+  margin: 0;
+}
+
+.pack-input {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 0.3rem;
+}
+
+/* Search box */
 form.search {
   width: 100%;
   height: 4rem;
@@ -41,12 +62,26 @@ form.search input[type="username"],
 form.search input[type="email"],
 form.search input[type="password"],
 form.search input[type="search"],
-form.search input[type="url"] {
+form.search input[type="url"],
+form.search input[type="time"],
+form.search input[type="date"],
+form.search input[type="timedate"] {
   flex-grow: 1;
   background-color: transparent;
   padding: 0;
-  padding-inline-start: 1.5rem;
   box-shadow: none;
+}
+
+form.search input[type="text"]:first-child,
+form.search input[type="username"]:first-child,
+form.search input[type="email"]:first-child,
+form.search input[type="password"]:first-child,
+form.search input[type="search"]:first-child,
+form.search input[type="url"]:first-child,
+form.search input[type="time"]:first-child,
+form.search input[type="date"]:first-child,
+form.search input[type="timedate"]:first-child {
+  padding-inline-start: 1.5rem;
 }
 
 form.search button {
@@ -75,17 +110,78 @@ form.search button[data-icon]::before {
   font-size: 2rem;
 }
 
-.lists ul li input[type="text"],
-.lists ul li input[type="username"],
-.lists ul li input[type="email"],
-.lists ul li input[type="password"],
-.lists ul li input[type="search"],
-.lists ul li input[type="url"] {
-  margin: 0;
+/* Message box */
+form.messagebox {
+  width: 100%;
+  height: 4.6rem;
+  display: flex;
+  background-color: var(--item-plus);
+  border-radius: 2.5rem;
+  padding: 0 0.5rem;
+  box-sizing: border-box;
+  gap: 0.5rem;
 }
 
-.pack-input {
-  display: flex;
-  flex-direction: column;
-  margin-bottom: 0.3rem;
+form.messagebox input[type="text"],
+form.messagebox input[type="username"],
+form.messagebox input[type="email"],
+form.messagebox input[type="password"],
+form.messagebox input[type="search"],
+form.messagebox input[type="url"],
+form.messagebox input[type="time"],
+form.messagebox input[type="date"],
+form.messagebox input[type="timedate"] {
+  flex-grow: 1;
+  height: 4.6rem;
+  line-height: 4.6rem;
+  background-color: transparent;
+  padding: 0;
+  box-shadow: none;
+}
+
+form.messagebox input[type="text"]:first-child,
+form.messagebox input[type="username"]:first-child,
+form.messagebox input[type="email"]:first-child,
+form.messagebox input[type="password"]:first-child,
+form.messagebox input[type="search"]:first-child,
+form.messagebox input[type="url"]:first-child,
+form.messagebox input[type="time"]:first-child,
+form.messagebox input[type="date"]:first-child,
+form.messagebox input[type="timedate"]:first-child {
+  padding-inline-start: 1.5rem;
+}
+
+form.messagebox button {
+  width: 3.6rem;
+  height: 3.6rem;
+  line-height: 3.6rem;
+  background-color: transparent;
+  color: var(--text-color);
+  margin: 0.5rem 0;
+  padding: 0 1rem;
+  flex-shrink: 0;
+}
+
+form.messagebox button:hover {
+  background-color: var(--item-hover);
+}
+
+form.messagebox button:active {
+  background-color: var(--item-active);
+  color: var(--text-color-faded);
+}
+
+form.messagebox button[type="submit"] {
+  width: 5rem;
+  height: 3.6rem;
+  line-height: 3.6rem;
+  background-color: var(--accent-color);
+  color: var(--accent-color-plus);
+  padding: 0 1.5rem;
+  margin-inline-start: 0;
+}
+
+form.messagebox button[data-icon]::before {
+  position: static;
+  font-size: 2rem;
 }

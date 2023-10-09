@@ -14,6 +14,7 @@
       `http://dialer.localhost:${location.port}/manifest.json`
     ],
 
+    app: document.getElementById('app'),
     gridElement: document.getElementById('grid'),
     dockElement: document.getElementById('dockbar'),
     paginationBar: document.getElementById('paginationBar'),
@@ -74,6 +75,9 @@
     },
 
     createIcons: function () {
+      this.apps = this.apps.filter(
+        (obj) => this.HIDDEN_ROLES.indexOf(obj.manifest.role) === -1
+      );
       const pages = this.splitArray(this.apps, 4 * 6);
       console.log(pages);
       pages.forEach((array, offset) => {
@@ -93,10 +97,6 @@
 
         let index = 0;
         array.forEach((app) => {
-          if (this.HIDDEN_ROLES.indexOf(app.manifest.role) !== -1) {
-            return;
-          }
-
           const icon = document.createElement('div');
           icon.id = `appicon${index}`;
           icon.classList.add('icon');
@@ -138,24 +138,32 @@
           name.classList.add('name');
           name.textContent = app.manifest.name;
           icon.appendChild(name);
+
           index++;
         });
       });
     },
 
     handleSwiping: function () {
-      const paginationDots = this.paginationBarDots.querySelectorAll('.dot');
-      paginationDots.forEach((dot, index) => {
-        const rtl = document.dir === 'rtl';
-        const scrollLeft = rtl ? -grid.scrollLeft : grid.scrollLeft;
+      const scrollCenter =
+        this.gridElement.scrollLeft + this.gridElement.clientWidth / 2;
 
-        let progress = scrollLeft - window.innerWidth * index;
-        progress = progress / window.innerWidth;
-        progress = 1 * ((Math.abs(progress - 0.5) - 0.5) * 2) - 1;
-        progress = Math.min(1, progress);
-        progress = Math.max(0, progress);
+      const dots = this.paginationBarDots.querySelectorAll('.dot');
+      const carouselItems = this.gridElement.querySelectorAll('.page');
+      dots.forEach((dot, index) => {
+        const distance = Math.abs(
+          scrollCenter -
+            (carouselItems[index].getBoundingBoxRect().left +
+              carouselItems[index].clientWidth / 2)
+        );
+        const fadeDistance = this.gridElement.clientWidth / 2;
 
-        dot.style.setProperty('--pagination-progress', progress);
+        if (distance < fadeDistance) {
+          const progress = 1 - distance / fadeDistance;
+          dot.style.setProperty('--pagination-progress', progress);
+        } else {
+          dot.style.setProperty('--pagination-progress', 0);
+        }
       });
     },
 
@@ -207,9 +215,9 @@
 
       if (data.type === 'lockscreen') {
         if (data.action === 'unlock') {
-          this.gridElement.classList.remove('hidden');
+          this.app.classList.remove('hidden');
         } else {
-          this.gridElement.classList.add('hidden');
+          this.app.classList.add('hidden');
         }
       }
     }

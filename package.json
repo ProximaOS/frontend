@@ -68,6 +68,7 @@
     "fs": "^0.0.1-security",
     "fs-extra": "^11.1.1",
     "http": "^0.0.1-security",
+    "intl-locale": "^0.1.0",
     "is-windows": "^1.0.2",
     "mime": "^3.0.0",
     "moment": "^2.29.4",
@@ -111,8 +112,7 @@
     },
     "win": {
       "target": [
-        "zip",
-        "nsis"
+        "zip"
       ],
       "icon": "internal/branding/browser/browser_256.png",
       "publish": [

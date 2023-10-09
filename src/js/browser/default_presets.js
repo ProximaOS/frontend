@@ -19,6 +19,9 @@
       return;
     }
     files.forEach((file) => {
+      if (fs.existsSync(path.join(process.env.ORCHID_APP_PROFILE, file))) {
+        return;
+      }
       fs.copyFileSync(
         path.join(defaultsDir, file),
         path.join(process.env.ORCHID_APP_PROFILE, file)

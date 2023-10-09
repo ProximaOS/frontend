@@ -28,6 +28,7 @@
   --headerbar-r: calc(240 + ((var(--accent-color-r) / 255) * 15));
   --headerbar-g: calc(240 + ((var(--accent-color-g) / 255) * 15));
   --headerbar-b: calc(240 + ((var(--accent-color-b) / 255) * 15));
+  --header-background: rgba(var(--headerbar-r), var(--headerbar-g), var(--headerbar-b), 0.75);
 
   --button-normal: rgba(var(--accent-color-r), var(--accent-color-g), var(--accent-color-b), 0.1);
   --button-hover: rgba(var(--accent-color-r), var(--accent-color-g), var(--accent-color-b), 0.2);

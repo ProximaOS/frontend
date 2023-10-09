@@ -11,6 +11,13 @@
   display: grid;
   grid-template-columns: repeat(var(--grid-columns), 1fr);
   outline: solid 0.1rem rgba(255, 255, 255, 0.1);
+  transition: all 0.5s cubic-bezier(0.2, 0.9, 0.1, 1.1) 0.5s;
+  transform: translateY(0);
+}
+
+#app.hidden #dockbar {
+  transition: all 0.3s ease;
+  transform: translateY(calc(100% + var(--software-buttons-height)));
 }
 
 #dockbar .icon .icon-holder {

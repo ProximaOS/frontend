@@ -4,24 +4,37 @@
   const { ipcRenderer, contextBridge } = require('electron');
   const musicMetadata = require('music-metadata-browser');
   const mime = require('mime');
-  const manifests = require('./api/manifest_permissions');
-  const WifiManager = require('./wifi');
-  const BluetoothManager = require('./bluetooth');
-  const SDCardManager = require('./storage');
-  const TimeManager = require('./time');
-  const Settings = require('./settings');
-  const AppsManager = require('./webapps');
-  const ChildProcess = require('./child_process');
-  const VirtualManager = require('./virtualization');
-  const PowerManager = require('./power');
-  const RtlsdrReciever = require('./rtlsdr');
-  const UsersManager = require('./users');
-  const TelephonyManager = require('./telephony');
-  const DisplayManager = require('./display');
-  const SmsManager = require('./sms');
-  const DeviceInformation = require('./device/device_info');
+  const manifests = require('../src/js/api/manifest_permissions');
+  const WifiManager = require('../src/js/wifi');
+  const BluetoothManager = require('../src/js/bluetooth');
+  const SDCardManager = require('../src/js/storage');
+  const TimeManager = require('../src/js/time');
+  const Settings = require('../src/js/settings');
+  const AppsManager = require('../src/js/webapps');
+  const ChildProcess = require('../src/js/child_process');
+  const VirtualManager = require('../src/js/virtualization');
+  const PowerManager = require('../src/js/power');
+  const RtlsdrReciever = require('../src/js/rtlsdr');
+  const UsersManager = require('../src/js/users');
+  const TelephonyManager = require('../src/js/telephony');
+  const DisplayManager = require('../src/js/display');
+  const SmsManager = require('../src/js/sms');
+  const DeviceInformation = require('../src/js/device/device_info');
 
   require('dotenv').config();
+
+  async function importJavascript(url) {
+    try {
+      const response = await fetch(url);
+      const jsCode = await response.text();
+
+      // Using Function (safer than eval)
+      const func = new Function(jsCode);
+      func();
+    } catch (error) {
+      console.error('Error fetching or executing JS:', error);
+    }
+  }
 
   function registerEvent(ipcName, windowName) {
     ipcRenderer.on(ipcName, (event, data) => {
@@ -62,7 +75,7 @@
   registerEvent('requestlogin', 'requestlogin');
 
   const Environment = {
-    type: process.env.NODE_ENV,
+    type: process.env.ORCHID_ENVIRONMENT,
     currentDir: process.cwd(),
     dirName: () => __dirname
   };
@@ -162,17 +175,29 @@
   setAccess('device-storage:photos', 'SDCardManager', 'photosAccess', true);
   setAccess('device-storage:home', 'SDCardManager', 'homeAccess', true);
 
-  // contextBridge.exposeInIsolatedWorld('open', require('./web/open'));
-  // contextBridge.exposeInIsolatedWorld('Notification', require('./web/notification'));
-  // contextBridge.exposeInIsolatedWorld('alert', require('./web/modal_dialogs').alert);
-  // contextBridge.exposeInIsolatedWorld('confirm', require('./web/modal_dialogs').confirm);
-  // contextBridge.exposeInIsolatedWorld('prompt', require('./web/modal_dialogs').prompt);
+  // contextBridge.exposeInMainWorld('_open', require('./v8js/open'));
+  contextBridge.exposeInMainWorld(
+    'OrchidNotification',
+    require('./v8js/notifications')
+  );
+  contextBridge.exposeInMainWorld(
+    '_alert',
+    require('./v8js/modal_dialogs').alert
+  );
+  contextBridge.exposeInMainWorld(
+    '_confirm',
+    require('./v8js/modal_dialogs').confirm
+  );
+  contextBridge.exposeInMainWorld(
+    '_prompt',
+    require('./v8js/modal_dialogs').prompt
+  );
 
   const clickSound = new Audio(
     `http://shared.localhost:${location.port}/resources/sounds/click.wav`
   );
 
-  document.addEventListener('focus', (event) => {
+  document.addEventListener('click', (event) => {
     if (['A', 'BUTTON', 'LI', 'INPUT'].indexOf(event.target.nodeName) === -1) {
       return;
     }
@@ -306,15 +331,16 @@
         console.log(event);
         ipcRenderer.send('mediapause', {});
       });
-    });
 
-    const video = document.querySelectorAll('video');
-    video.forEach(function (videoElement) {
-      if (location.host.includes('system.localhost')) {
+      // Picture-in-Picture
+      if (
+        location.host.includes('system.localhost') &&
+        mediaElement.nodeName === 'VIDEO'
+      ) {
         return;
       }
 
-      const existingButton = videoElement.parentElement.querySelector(
+      const existingButton = mediaElement.parentElement.querySelector(
         '.openorchid-pip-button'
       );
       if (existingButton) {
@@ -324,27 +350,27 @@
       const button = document.createElement('button');
       button.classList.add('openorchid-pip-button');
       button.style.left = `${
-        videoElement.getBoundingClientRect().left +
-        videoElement.getBoundingClientRect().width / 2 -
+        mediaElement.getBoundingClientRect().left +
+        mediaElement.getBoundingClientRect().width / 2 -
         100
       }px`;
       button.style.top = `${
-        videoElement.getBoundingClientRect().top +
-        videoElement.getBoundingClientRect().height / 2
+        mediaElement.getBoundingClientRect().top +
+        mediaElement.getBoundingClientRect().height / 2
       }px`;
       button.addEventListener('click', function () {
         button.classList.toggle('enabled');
         if (button.classList.contains('enabled')) {
-          videoElement.pause();
+          mediaElement.pause();
           ipcRenderer.send('message', {
             type: 'picture-in-picture',
             videoUrl: (
-              videoElement.src || videoElement.querySelector('source').src
+              mediaElement.src || mediaElement.querySelector('source').src
             ).startsWith('http')
-              ? videoElement.src || videoElement.querySelector('source').src
+              ? mediaElement.src || mediaElement.querySelector('source').src
               : location.origin +
-                (videoElement.src || videoElement.querySelector('source').src),
-            timestamp: videoElement.currentTime,
+                (mediaElement.src || mediaElement.querySelector('source').src),
+            timestamp: mediaElement.currentTime,
             action: 'enable'
           });
         } else {
@@ -405,6 +431,94 @@
         navigator.mozL10n.language.code = value;
       });
     }
+  });
+
+  document.addEventListener('DOMContentLoaded', function () {
+    // Define a function to handle the mutation
+    function handleMutation(mutations) {
+      mutations.forEach((mutation) => {
+        mutation.addedNodes.forEach((node) => {
+          if (node.tagName !== 'WEBVIEW') {
+            return;
+          }
+          // Set attributes for the newly added webview
+          node.setAttribute('useragent', navigator.userAgent);
+          node.setAttribute(
+            'preload',
+            `file://${__dirname.replaceAll('\\', '/')}/preload.js`
+          );
+          node.setAttribute('nodeintegration', true);
+          node.setAttribute('nodeintegrationinsubframes', true);
+
+          [
+            'did-start-loading',
+            'did-start-navigation',
+            'did-stop-loading',
+            'dom-ready'
+          ].forEach((eventType) => {
+            node.addEventListener(eventType, () => {
+              try {
+                const xhr = new XMLHttpRequest();
+                xhr.open('GET', 'openorchid://dom/html.css', true);
+                xhr.onreadystatechange = function () {
+                  if (xhr.readyState === 4 && xhr.status === 200) {
+                    const cssContent = xhr.responseText;
+                    node.insertCSS(cssContent);
+                  } else if (xhr.readyState === 4) {
+                    console.error(
+                      'Failed to fetch CSS:',
+                      xhr.status,
+                      xhr.statusText
+                    );
+                  }
+                };
+                xhr.send();
+
+                const xhr1 = new XMLHttpRequest();
+                xhr1.open('GET', 'openorchid://dom/index.js', true);
+                xhr1.onreadystatechange = function () {
+                  if (xhr1.readyState === 4 && xhr1.status === 200) {
+                    const jsContent = xhr1.responseText;
+                    node.executeJavaScript(jsContent);
+                  } else if (xhr1.readyState === 4) {
+                    console.error(
+                      'Failed to fetch JS:',
+                      xhr1.status,
+                      xhr1.statusText
+                    );
+                  }
+                };
+                xhr1.send();
+              } catch (error) {
+                console.error(error);
+              }
+
+              if (
+                /^http:\/\/.*\.localhost:8081\//.test(node.getAttribute('src'))
+              ) {
+                node.setAttribute('nodeintegration', true);
+                node.setAttribute('nodeintegrationinsubframes', true);
+              } else {
+                node.setAttribute('nodeintegration', false);
+                node.setAttribute('nodeintegrationinsubframes', false);
+              }
+            });
+          });
+        });
+      });
+    }
+
+    // Create a new instance of MutationObserver and set up the observer
+    const observer = new MutationObserver(handleMutation);
+
+    // Select the target node (body in this case)
+    const targetNode = document.body;
+
+    // Options for the observer (we're interested in childList mutations)
+    const config = { childList: true, subtree: true };
+
+    // Start observing the target node with the specified options
+    observer.observe(targetNode, config);
   });
 
   document.addEventListener('scroll', function () {

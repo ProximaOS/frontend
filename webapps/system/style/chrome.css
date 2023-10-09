@@ -1,8 +1,4 @@
 .chrome {
-  --screen-radius: 3.6rem;
-  --chrome-toolbar-gap: 0.5rem;
-  --chrome-tablist-height: 4rem;
-  --chrome-navbar-height: 4rem;
   position: absolute;
   left: 0;
   top: 0;
@@ -63,7 +59,7 @@
 
 .chrome .tablist-holder {
   width: 100%;
-  height: 4rem;
+  height: var(--chrome-tablist-height);
   flex-shrink: 0;
   display: flex;
   padding: 0 0.5rem;
@@ -82,7 +78,7 @@
 
 .chrome .tablist {
   max-width: 100%;
-  height: 4rem;
+  height: var(--chrome-tablist-height);
   display: flex;
   gap: var(--chrome-toolbar-gap);
   margin: 0;
@@ -92,7 +88,7 @@
 
 .chrome .tablist li {
   width: 24rem;
-  height: 4rem;
+  height: var(--chrome-tablist-height);
   display: flex;
   gap: var(--chrome-toolbar-gap);
   list-style: none;
@@ -267,7 +263,7 @@
 
 .chrome .navbar {
   width: 100%;
-  height: 4rem;
+  height: var(--chrome-navbar-height);
   flex-shrink: 0;
   display: flex;
   padding: 0 0.5rem;
@@ -279,8 +275,8 @@
 .chrome .navbar button {
   width: max-content;
   min-width: 4rem;
-  height: 4rem;
-  line-height: 4rem;
+  height: var(--chrome-navbar-height);
+  line-height: var(--chrome-navbar-height);
   margin: 0;
   padding: 0 1rem;
   box-sizing: border-box;
@@ -342,7 +338,7 @@
 .chrome .navbar .urlbar {
   position: relative;
   width: 100%;
-  height: 4rem;
+  height: var(--chrome-navbar-height);
   display: flex;
   border-radius: 2rem;
   margin: 0;
@@ -362,8 +358,8 @@
 
 .chrome .navbar .urlbar > .urlbar-input {
   width: 100%;
-  height: 4rem;
-  line-height: 4rem;
+  height: var(--chrome-navbar-height);
+  line-height: var(--chrome-navbar-height);
   margin: 0;
   padding: 0;
   border: none;
@@ -378,8 +374,8 @@
 
 .chrome .navbar .urlbar > .urlbar-display-url {
   width: 100%;
-  height: 4rem;
-  line-height: 4rem;
+  height: var(--chrome-navbar-height);
+  line-height: var(--chrome-navbar-height);
   color: var(--text-color);
   font-size: 1.6rem;
   flex-grow: 1;
@@ -407,7 +403,7 @@
 .chrome .navbar .urlbar > .suggestions {
   position: absolute;
   left: 0;
-  top: 4rem;
+  top: var(--chrome-navbar-height);
   padding: 0 0.5rem 0.5rem;
   box-sizing: border-box;
   width: 100%;
@@ -1012,10 +1008,11 @@ html[dir="rtl"] .chrome.sidetabs .browser-container .browser {
 
 .chrome .profile-button > img {
   position: absolute;
-  left: 12.5%;
-  top: 12.5%;
-  width: 75%;
-  height: 75%;
+  left: 50%;
+  top: 50%;
+  translate: -50% -50%;
+  width: calc(var(--chrome-tablist-height) - 0.5rem);
+  height: calc(var(--chrome-tablist-height) - 0.5rem);
   background-color: #858585;
   border-radius: 50%;
   transition: all 0.3s ease;

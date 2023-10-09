@@ -7,7 +7,12 @@
   box-sizing: border-box;
   border-radius: 2rem;
   height: 2rem;
+  transition: all 0.3s ease 0.5s;
+}
+
+#app.hidden #paginationBar {
   transition: all 0.3s ease;
+  opacity: 0;
 }
 
 #paginationBar:hover {

@@ -8,6 +8,8 @@
 
     isVisible: false,
 
+    shutdownSound: new Audio('/resources/sounds/shutdown.wav'),
+
     init: function () {
       this.shutdownButton.addEventListener('click', this.handleShutdownButton.bind(this));
       this.restartButton.addEventListener('click', this.handleRestartButton.bind(this));
@@ -30,6 +32,7 @@
 
     handleShutdownButton: function () {
       LoadingScreen.show();
+      this.shutdownSound.play();
       setTimeout(() => {
         IPC.send('shutdown', {});
       }, 2000);
@@ -37,6 +40,7 @@
 
     handleRestartButton: function () {
       LoadingScreen.show();
+      this.shutdownSound.play();
       setTimeout(() => {
         IPC.send('restart', {});
       }, 2000);

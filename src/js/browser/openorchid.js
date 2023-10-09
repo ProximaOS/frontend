@@ -1,7 +1,9 @@
+const { l18n, initializeLocale } = require('../locales/locale_reader');
+
 !(function () {
   'use strict';
 
-  const { BrowserWindow, nativeTheme, Menu, ipcMain } = require('electron');
+  const { BrowserWindow, nativeTheme, Menu, ipcMain, BrowserView } = require('electron');
   const settings = require('../settings');
   const os = require('os');
   const path = require('path');
@@ -14,6 +16,7 @@
   const appConfig = require('../../../package.json');
 
   require('dotenv').config();
+  require('dotenv').config({ path: '.env.secret' });
   require('./default_presets');
 
   const args = process.argv.slice(2);
@@ -30,8 +33,11 @@
     }
   }
 
+  initializeLocale();
+
   module.exports = function () {
     let systemConfig = {
+      id: 'mobile',
       width: 320,
       height: 640,
       type: 'Mobile'
@@ -41,14 +47,16 @@
       switch (options.type) {
         case 'desktop':
           systemConfig = {
+            id: 'desktop',
             width: 1024,
             height: 640,
             type: 'Desktop'
           };
           break;
 
-        case 'smart-tv':
+        case 'smart_tv':
           systemConfig = {
+            id: 'smart_tv',
             width: 1280,
             height: 720,
             type: 'Smart TV'
@@ -57,6 +65,7 @@
 
         case 'vr':
           systemConfig = {
+            id: 'vr',
             width: 1280,
             height: 720,
             type: 'VR'
@@ -65,6 +74,7 @@
 
         case 'homepad':
           systemConfig = {
+            id: 'home',
             width: 1280,
             height: 720,
             type: 'Homepad'
@@ -73,6 +83,7 @@
 
         case 'wear':
           systemConfig = {
+            id: 'watch',
             width: 240,
             height: 240,
             type: 'Wear'
@@ -81,17 +92,10 @@
 
         case 'featurephone':
           systemConfig = {
+            id: 'featurephone',
             width: 240,
             height: 320,
             type: 'Mobile/Featurephone'
-          };
-          break;
-
-        case 'qwertyphone':
-          systemConfig = {
-            width: 320,
-            height: 240,
-            type: 'Mobile/Qwertyphone'
           };
           break;
 
@@ -111,18 +115,30 @@
         'branding',
         'icon.png'
       ),
-      title: 'OpenOrchid Simulator',
+      title: 'OrchidOS (OpenOrchid 3.0.14) - Orchid Simulator',
       width:
-        process.platform !== 'win32' ? systemConfig.width : systemConfig.width + 14,
+        process.platform !== 'win32'
+          ? systemConfig.width + 50
+          : systemConfig.width + 50 + 14,
       height:
-        process.platform !== 'win32' ? systemConfig.height : systemConfig.height + 37,
+        process.platform !== 'win32'
+          ? systemConfig.height
+          : systemConfig.height + 37,
       // show: false,
       fullscreenable: false,
       disableAutoHideCursor: true,
+      autoHideMenuBar: true,
       center: true,
       backgroundColor: '#000000',
       tabbingIdentifier: 'openorchid',
-      kiosk: true,
+      kiosk: true
+    });
+
+    const menu = Menu.buildFromTemplate(require('./dropmenu')(mainWindow));
+    Menu.setApplicationMenu(menu);
+
+    // Browser view renderer
+    const webview = new BrowserView({
       webPreferences: {
         nodeIntegration: true,
         nodeIntegrationInSubFrames: true,
@@ -131,13 +147,13 @@
         defaultMonospaceFontSize: 14,
         defaultFontFamily: 'Jali Arabic',
         disableDialogs: true,
-        preload: path.join(__dirname, '..', 'preload.js'),
+        preload: path.join(__dirname, '..', '..', '..', 'internal', 'preload.js'),
         devTools: isDev
       }
     });
-
-    const menu = Menu.buildFromTemplate(require('./dropmenu')(mainWindow));
-    Menu.setApplicationMenu(menu);
+    const { width, height } = mainWindow.getContentBounds();
+    webview.setBounds({ x: 0, y: 0, width: width - 50, height });
+    mainWindow.addBrowserView(webview);
 
     const userAgent = `Mozilla/5.0 (OpenOrchid ${appConfig.version} ${
       systemConfig.type
@@ -152,62 +168,121 @@
     } Safari/537.36`;
 
     // and load the index.html of the app.
-    mainWindow.loadURL('http://system.localhost:8081/index.html', {
+    webview.webContents.loadURL('http://system.localhost:8081/index.html', {
       userAgent
     });
 
+    // Load JavaScript and CSS files
+    const scriptPath = path.join(__dirname, '..', '..', '..', 'internal', 'dom', 'index.js');
+    const cssPath = path.join(__dirname, '..', '..', '..', 'internal', 'dom', 'html.css');
+    webview.webContents.executeJavaScript(fs.readFileSync(scriptPath, 'utf8'));
+    webview.webContents.insertCSS(fs.readFileSync(cssPath, 'utf8'));
+
     // Open the DevTools.
     if (isDev) {
-      mainWindow.webContents.openDevTools();
+      webview.webContents.openDevTools();
     }
 
     // Initialize updater
     // update.init(mainWindow);
 
-    fs.mkdirSync(path.join(process.env.ORCHID_APP_PROFILE), { recursive: true });
+    // Prepare profile
+    fs.mkdirSync(path.join(process.env.ORCHID_APP_PROFILE), {
+      recursive: true
+    });
 
+    // Get settings
     settings.getValue('video.dark_mode.enabled').then((result) => {
       nativeTheme.themeSource = result ? 'dark' : 'light';
     });
 
+    // Implement event listeners
     ipcMain.on('change-theme', (event, theme) => {
       nativeTheme.themeSource = theme;
     });
 
-    registerEvents(mainWindow);
+    mainWindow.on('resized', () => {
+      const { width, height } = mainWindow.getContentBounds();
+      webview.setBounds({ x: 0, y: 0, width: width - 50, height });
+    });
+
+    mainWindow.on('blur', async () => {
+      setActivity(await l18n('idle-inactive'));
+    });
+    mainWindow.on('hide', async () => {
+      setActivity(await l18n('idle-hidden'));
+    });
+    mainWindow.on('minimize', async () => {
+      setActivity(await l18n('idle-minimized'));
+    });
+    mainWindow.on('show', async () => {
+      setActivity(isDev ? await l18n('activeState-dev') : await l18n('activeState-prod'));
+    });
+    mainWindow.on('focus', async () => {
+      setActivity(isDev ? await l18n('activeState-dev') : await l18n('activeState-prod'));
+    });
+    mainWindow.on('restore', async () => {
+      setActivity(isDev ? await l18n('activeState-dev') : await l18n('activeState-prod'));
+    });
+    mainWindow.on('unresponsive', async () => {
+      setActivity(await l18n('activeState-hang'));
+    });
+    mainWindow.on('responsive', async () => {
+      setActivity(isDev ? await l18n('activeState-dev') : await l18n('activeState-prod'));
+    });
+
+    registerEvents(mainWindow, webview);
     if (isDev) {
-      registerControls(mainWindow);
+      registerControls(mainWindow, webview);
     }
 
     // Initialize the Discord RPC client
     const client = new RPC.Client({ transport: 'ipc' });
     client.login({
-      clientId: '1148745283744841790',
-      clientSecret: 'oksnQ1MVAQO-iloXQlUuIVxFzO-bp0wC'
+      clientId: process.env.DISCORD_CLIENT_ID,
+      clientSecret: process.env.API_KEY_DISCORD
     });
 
-    client.on('ready', () => {
-      console.log('Authed for user', client.user.username);
+    const activityTimestamp = Date.now();
+    async function setActivity(message) {
       client.request('SET_ACTIVITY', {
         pid: process.pid,
         activity: {
-          details: `Testing ${systemConfig.type} On Simulator`,
+          details: await l18n('discordDetail', {
+            edition: await l18n(`deviceType-${systemConfig.id}-short`)
+          }),
+          state: message,
+          timestamps: {
+            start: activityTimestamp
+          },
           assets: {
             large_image: 'appicon',
-            large_text: 'Default'
+            large_text: 'OrchidOS',
+            small_image: `platform_${systemConfig.id}`,
+            small_text: await l18n(`deviceType-${systemConfig.id}`)
           },
           buttons: [
             {
-              label: 'Try OrchidOS',
-              url: 'https://openorchid.github.io/orchidos/'
+              label: await l18n('discordRpc-try'),
+              url: 'https://github.com/openorchid/openorchid'
             },
             {
-              label: 'Join Orchid Community',
+              label: await l18n('discordRpc-join'),
               url: 'https://discord.gg/TQUKcWEcCz'
             }
-          ]
+          ],
+          instance: true
         }
       });
+    }
+
+    client.on('ready', () => {
+      console.log('Authed for user', client.user.username);
+      setActivity(isDev ? l18n('activeState-dev') : l18n('activeState-prod'));
+    });
+
+    client.on('disconnected', () => {
+      console.warn('Disconnected from Discord');
     });
   };
 })();

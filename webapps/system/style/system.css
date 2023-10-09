@@ -40,22 +40,6 @@ html, body {
   pointer-events: none !important;
 }
 
-#screen.rotated-right {
-  transform: rotate(90deg) translateY(-100%);
-  width: 100vh;
-  height: 100vw;
-}
-
-#screen.rotated-down {
-  transform: rotate(180deg);
-}
-
-#screen.rotated-left {
-  transform: rotate(-90deg) translateX(-100%);
-  width: 100vh;
-  height: 100vw;
-}
-
 #screen.screenshot {
   animation: screenshot 0.5s ease;
   border-radius: var(--screen-radius);

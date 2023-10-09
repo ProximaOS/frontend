@@ -89,9 +89,9 @@ html[dir="rtl"] .lists ul li[data-icon]::before {
   font-size: 2rem;
   color: #858585;
   line-height: 5rem;
-  text-align: right;
   display: flex;
   align-items: center;
+  justify-content: right;
 }
 html[dir="rtl"] .lists ul li.page::after {
   transform: scaleX(-1);

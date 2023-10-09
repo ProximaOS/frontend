@@ -1,6 +1,5 @@
 * {
   appearance: none;
-  cursor: default;
 }
 
 *:focus {
@@ -11,25 +10,6 @@
 *,
 ::placeholder {
   font-family: 'Jali Arabic', system-ui, sans-serif;
-}
-
-a,
-button,
-input[type='button'],
-input[type='reset'],
-input[type='submit'] {
-  cursor: pointer;
-}
-
-textarea,
-p,
-input[type='text'],
-input[type='username'],
-input[type='email'],
-input[type='password'],
-input[type='search'],
-input[type='url'] {
-  cursor: text;
 }
 
 ::-webkit-scrollbar {

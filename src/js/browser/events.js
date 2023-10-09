@@ -6,17 +6,17 @@
   const fs = require('fs');
   const electronLocalshortcut = require('electron-localshortcut');
 
-  module.exports = function (mainWindow) {
-    mainWindow.webContents.on('crashed', () => {
+  module.exports = function (mainWindow, webview) {
+    webview.webContents.on('crashed', () => {
       console.log('renderer process crashed'); // this will be called
     });
 
     // Intercept download requests using the webContents' session
-    mainWindow.webContents.session.on(
+    webview.webContents.session.on(
       'will-download',
       (event, item, webContents) => {
         // Send an event to the renderer process to get download path and decision
-        mainWindow.webContents.send('downloadrequest', {
+        webview.webContents.send('downloadrequest', {
           url: item.getURL(),
           suggestedFilename: item.getFilename(),
           lastModified: item.getLastModifiedTime(),
@@ -38,7 +38,7 @@
         // Listen for download progress events
         item.on('updated', (event, state) => {
           const progress = item.getReceivedBytes() / item.getTotalBytes();
-          mainWindow.webContents.send('downloadprogress', {
+          webview.webContents.send('downloadprogress', {
             url: item.getURL(),
             suggestedFilename: item.getFilename(),
             lastModified: item.getLastModifiedTime(),
@@ -51,9 +51,9 @@
       }
     );
 
-    mainWindow.webContents.session.setPermissionRequestHandler(
+    webview.webContents.session.setPermissionRequestHandler(
       (webContents, permission, callback) => {
-        mainWindow.webContents.send('permissionrequest', {
+        webview.webContents.send('permissionrequest', {
           type: permission,
           origin: webContents.getURL(),
           title: webContents.getTitle()
@@ -64,27 +64,27 @@
       }
     );
 
-    electronLocalshortcut.register(mainWindow, ['Ctrl+R', 'F5'], () => {
-      mainWindow.reload();
+    electronLocalshortcut.register(webview, ['Ctrl+R', 'F5'], () => {
+      webview.webContents.reload();
     });
-    electronLocalshortcut.register(mainWindow, ['Ctrl+F', 'F11'], () => {
-      mainWindow.setFullScreen(!mainWindow.isFullScreen());
+    electronLocalshortcut.register(webview, ['Ctrl+F', 'F11'], () => {
+      webview.webContents.setFullScreen(!webview.isFullScreen());
     });
-    electronLocalshortcut.register(mainWindow, ['Ctrl+Shift+I', 'F12'], () => {
-      mainWindow.webContents.openDevTools();
+    electronLocalshortcut.register(webview, ['Ctrl+Shift+I', 'F12'], () => {
+      webview.webContents.openDevTools();
     });
 
-    electronLocalshortcut.register(mainWindow, 'Ctrl+J', () => {
-      mainWindow.webContents.send('rotate', { rotation: '-90deg' });
+    electronLocalshortcut.register(webview, 'Ctrl+J', () => {
+      webview.webContents.send('rotate', { rotation: '-90deg' });
     });
-    electronLocalshortcut.register(mainWindow, 'Ctrl+K', () => {
-      mainWindow.webContents.send('rotate', { rotation: '0deg' });
+    electronLocalshortcut.register(webview, 'Ctrl+K', () => {
+      webview.webContents.send('rotate', { rotation: '0deg' });
     });
-    electronLocalshortcut.register(mainWindow, 'Ctrl+L', () => {
-      mainWindow.webContents.send('rotate', { rotation: '90deg' });
+    electronLocalshortcut.register(webview, 'Ctrl+L', () => {
+      webview.webContents.send('rotate', { rotation: '90deg' });
     });
-    electronLocalshortcut.register(mainWindow, 'Ctrl+H', () => {
-      mainWindow.webContents.send('rotate', { rotation: '180deg' });
+    electronLocalshortcut.register(webview, 'Ctrl+H', () => {
+      webview.webContents.send('rotate', { rotation: '180deg' });
     });
 
     fs.mkdirSync(path.join(process.env.ORCHID_APP_PROFILE, 'extensions'), {
@@ -95,27 +95,64 @@
         process.env.OPENORCHID_ADDONS,
         extensionName
       );
-      mainWindow.webContents.session.loadExtension(extensionPath);
+      webview.webContents.session.loadExtension(extensionPath);
     });
 
     ipcMain.on('request-extension-list', (event, data) => {
-      mainWindow.webContents.send(
+      webview.webContents.send(
         'extension-list',
-        mainWindow.webContents.session.getAllExtensions()
+        webview.webContents.session.getAllExtensions()
       );
     });
 
+    function valueTransition(value, target, callback) {
+      const targetValue = target;
+      const duration = 500; // 500ms transition time
+
+      const startTime = performance.now();
+      function animateValue() {
+        const currentTime = performance.now();
+        const progress = Math.min(
+          (currentTime - startTime) / duration,
+          1
+        );
+
+        const easedProgress =
+          0.5 - 0.5 * Math.cos(progress * Math.PI);
+        const newValue = value + (targetValue - value) * easedProgress;
+        callback(newValue);
+
+        if (progress < 1) {
+          setTimeout(animateValue, 1000 / 30);
+        }
+      }
+
+      animateValue();
+    }
+
+    function resizeTransition(width, height) {
+      const size = mainWindow.getSize();
+      const previousWidth = size[0];
+      const previousHeight = size[1];
+
+      valueTransition(previousWidth, width, (newWidth) => {
+        valueTransition(previousHeight, height, (newHeight) => {
+          mainWindow.setSize(parseInt(newWidth), parseInt(newHeight));
+        });
+      });
+    }
+
     ipcMain.on('message', (event, data) => {
-      mainWindow.webContents.send('message', data);
+      webview.webContents.send('message', data);
     });
     ipcMain.on('messagebox', (event, data) => {
-      mainWindow.webContents.send('messagebox', data);
+      webview.webContents.send('messagebox', data);
     });
     ipcMain.on('openfile', (event, data) => {
-      mainWindow.webContents.send('openfile', data);
+      webview.webContents.send('openfile', data);
     });
     ipcMain.on('savefile', (event, data) => {
-      mainWindow.webContents.send('savefile', data);
+      webview.webContents.send('savefile', data);
     });
     ipcMain.on('shutdown', (event, data) => {
       app.quit();
@@ -125,59 +162,65 @@
       app.quit();
     });
     ipcMain.on('powerstart', (event, data) => {
-      mainWindow.webContents.send('powerstart', data);
+      webview.webContents.send('powerstart', data);
     });
     ipcMain.on('powerend', (event, data) => {
-      mainWindow.webContents.send('powerend', data);
+      webview.webContents.send('powerend', data);
     });
     ipcMain.on('volumeup', (event, data) => {
-      mainWindow.webContents.send('volumeup', data);
+      webview.webContents.send('volumeup', data);
     });
     ipcMain.on('volumedown', (event, data) => {
-      mainWindow.webContents.send('volumedown', data);
+      webview.webContents.send('volumedown', data);
     });
     ipcMain.on('shortcut', (event, data) => {
-      mainWindow.webContents.send('shortcut', data);
+      webview.webContents.send('shortcut', data);
     });
     ipcMain.on('rotate', (event, data) => {
-      mainWindow.webContents.send('rotate', data);
+      webview.webContents.send('rotate', data);
+      const size = mainWindow.getSize();
+      if (data.rotation === '90deg' || data.rotation === '-90deg') {
+        resizeTransition(size[1], size[0]);
+      } else {
+        resizeTransition(size[0], size[1]);
+      }
     });
     ipcMain.on('mediaplay', (event, data) => {
-      mainWindow.webContents.send('mediaplay', data);
+      webview.webContents.send('mediaplay', data);
     });
     ipcMain.on('mediapause', (event, data) => {
-      mainWindow.webContents.send('mediapause', data);
+      webview.webContents.send('mediapause', data);
     });
     ipcMain.on('webdrag', (event, data) => {
-      mainWindow.webContents.send('webdrag', data);
+      webview.webContents.send('webdrag', data);
     });
     ipcMain.on('webdrop', (event, data) => {
-      mainWindow.webContents.send('webdrop', data);
+      webview.webContents.send('webdrop', data);
     });
     ipcMain.on('devicepickup', (event, data) => {
-      mainWindow.webContents.send('devicepickup', data);
+      webview.webContents.send('devicepickup', data);
     });
     ipcMain.on('deviceputdown', (event, data) => {
-      mainWindow.webContents.send('deviceputdown', data);
+      webview.webContents.send('deviceputdown', data);
     });
     ipcMain.on('settingschange', (event, data) => {
-      mainWindow.webContents.send('settingschange', data);
+      webview.webContents.send('settingschange', data);
     });
     ipcMain.on('narrate', (event, data) => {
-      mainWindow.webContents.send('narrate', data);
+      webview.webContents.send('narrate', data);
     });
     ipcMain.on('screenshot', (event, data) => {
       if (data.webContentsId) {
         const wc = webContents.fromId(data.webContentsId);
         wc.capturePage().then((image) => {
-          mainWindow.webContents.send('screenshotted', {
+          webview.webContents.send('screenshotted', {
             webContentsId: data.webContentsId,
             imageDataURL: image.toDataURL()
           });
         });
       } else {
-        mainWindow.webContents.capturePage().then((image) => {
-          mainWindow.webContents.send('screenshotted', {
+        webview.webContents.capturePage().then((image) => {
+          webview.webContents.send('screenshotted', {
             webContentsId: data.webContentsId,
             imageDataURL: image.toDataURL()
           });
@@ -186,7 +229,7 @@
     });
 
     ipcMain.on('requestlogin', (event, data) => {
-      mainWindow.webContents.send('requestlogin', data);
+      webview.webContents.send('requestlogin', data);
     });
   };
 })();

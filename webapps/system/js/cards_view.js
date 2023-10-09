@@ -12,6 +12,7 @@
     APP_ICON_SIZE: 50,
 
     isVisible: false,
+    scrollMovement: 0,
 
     init: function () {
       this.element.addEventListener('click', this.hide.bind(this));
@@ -20,9 +21,7 @@
         this.handleToggleButton.bind(this)
       );
 
-      // if ('Scrollbar' in window) {
-      //   Scrollbar.use(OverscrollPlugin);
-      // }
+      this.cardsContainer.addEventListener('scroll', this.handleScroll.bind(this));
     },
 
     show: function () {
@@ -48,18 +47,6 @@
           appWindow.querySelector('.browser.active')
         );
       });
-
-      // if ('Scrollbar' in window) {
-      //   Scrollbar.init(this.cardsContainer, {
-      //     plugins: {
-      //       overscroll: {
-      //         damping: 0.15,
-      //         maxOverscroll: 300,
-      //         effect: 'bounce'
-      //       }
-      //     }
-      //   });
-      // }
     },
 
     hide: function () {
@@ -75,10 +62,6 @@
       focusedWindow.addEventListener('animationend', () =>
         focusedWindow.classList.remove('from-cards-view')
       );
-
-      if ('Scrollbar' in window) {
-        Scrollbar.destroy(this.cardsContainer);
-      }
     },
 
     createCard: async function (index, manifestUrl, appWindow, webview) {
@@ -165,6 +148,27 @@
       }
     },
 
+    handleScroll: function (event) {
+      const deltaMovement = this.cardsContainer.scrollLeft - this.scrollMovement;
+
+      const cards = this.cardsContainer.querySelectorAll('.card-area');
+      cards.forEach((card, index) => {
+        const viewportWidth = window.innerWidth;
+        const elementRect = card.getBoundingClientRect();
+        const distanceFromCenter = Math.abs(elementRect.left);
+
+        const translationFactor = Math.min(1, Math.abs(deltaMovement) / window.innerWidth) * 0.1; // Adjust this factor to control the translation speed
+        const translationAmount = distanceFromCenter * translationFactor;
+
+        console.log(viewportWidth, distanceFromCenter, translationFactor, translationAmount);
+
+        const rtl = (document.dir === 'rtl');
+        card.style.setProperty('--scroll-gap', (rtl ? -translationAmount : translationAmount) + 'px');
+      });
+
+      this.scrollMovement = Math.abs(this.cardsContainer.scrollLeft);
+    },
+
     // Attach event listeners for mouse/touch events to handle dragging
     onPointerDown: function (event, card, windowId) {
       event.preventDefault();
@@ -186,7 +190,7 @@
       this.startY = event.pageY || event.touches[0].pageY;
 
       // Function to handle dragging
-      function dragWindow(event) {
+      function dragWindow (event) {
         event.preventDefault();
         const y = event.pageY || event.touches[0].pageY;
 
@@ -194,11 +198,13 @@
         const newWindowY = y - offsetY;
 
         // Set the new position of the window
-        card.style.top = newWindowY + 'px';
+        const progress = newWindowY / window.innerHeight;
+        card.style.opacity = 1 - progress;
+        card.style.transform = `translateY(${25 * progress}%) scale(${0.65 - (0.25 * progress)}) rotate3d(1, 0, 0, -${90 * progress}deg)`;
       }
 
       // Function to stop dragging
-      function stopDrag(event) {
+      function stopDrag (event) {
         event.preventDefault();
         const currentYPosition = event.pageY || event.touches[0].pageY;
         const distanceY = currentYPosition - this.startY;

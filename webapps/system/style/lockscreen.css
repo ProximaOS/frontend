@@ -69,6 +69,14 @@
   transition: all 0.3s ease;
 }
 
+@media screen and (orientation: landscape) {
+  #lockscreen-foreground {
+    opacity: 0;
+    filter: blur(20px);
+    visibility: hidden;
+  }
+}
+
 #lockscreen.pin-lock #lockscreen-background,
 #lockscreen.pin-lock #lockscreen-foreground {
   transform: none;
@@ -141,6 +149,13 @@
   flex-direction: column;
   margin: 1.5rem 0;
   align-items: center;
+}
+
+@media screen and (orientation: landscape) {
+  .lockscreen-row {
+    width: 50%;
+    margin-inline-end: auto;
+  }
 }
 
 #lockscreen.transitioning .lockscreen-row {

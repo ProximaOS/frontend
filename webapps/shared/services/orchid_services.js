@@ -160,7 +160,7 @@ function MD5(inputString) {
 }
 
 const OrchidServices = {
-  _generateUUID: function generateUUID() {
+  _generateUUID: function () {
     // Public Domain/MIT
     let d = new Date().getTime(); // Timestamp
     let d2 =
@@ -190,10 +190,10 @@ const OrchidServices = {
     location.href === 'http://localhost:5500' ||
     location.href === 'http://127.0.0.1:5500/',
 
-  init: function init() {
+  init: function () {
     window.addEventListener('load', async () => {
       if (this.isUserLoggedIn) {
-        this.set('profile/' + await this.userId(), {
+        this.set('profile/' + (await this.userId()), {
           state: 'online'
         });
       }
@@ -201,7 +201,7 @@ const OrchidServices = {
 
     window.addEventListener('beforeunload', async () => {
       if (this.isUserLoggedIn) {
-        this.set('profile/' + await this.userId(), {
+        this.set('profile/' + (await this.userId()), {
           last_active: Date.now(),
           state: 'offline'
         });
@@ -213,10 +213,10 @@ const OrchidServices = {
    * Tells us if the user is logged in or not through the token.
    * @returns {boolean}
    */
-  isUserLoggedIn: function isUserLoggedIn() {
+  isUserLoggedIn: function () {
     return new Promise((resolve, reject) => {
       if ('Settings' in window) {
-        Settings.getValue('orchidaccount.token').then(value => {
+        Settings.getValue('orchidaccount.token').then((value) => {
           if (value) {
             resolve(true);
           } else {
@@ -224,7 +224,7 @@ const OrchidServices = {
           }
         });
       } else {
-        const token = localStorage.getItem('orchidservices.token');
+        const token = localStorage.getItem('orchidaccount.token');
         if (token) {
           resolve(true);
         } else {
@@ -234,14 +234,14 @@ const OrchidServices = {
     });
   },
 
-  userId: function userId() {
+  userId: function () {
     return new Promise((resolve, reject) => {
       if ('Settings' in window) {
-        Settings.getValue('orchidservices.token').then((value) => {
+        Settings.getValue('orchidaccount.token').then((value) => {
           resolve(value);
         });
       } else {
-        const token = localStorage.getItem('orchidservices.token');
+        const token = localStorage.getItem('orchidaccount.token');
         resolve(token);
       }
     });
@@ -274,7 +274,7 @@ const OrchidServices = {
    * @param {string} path
    * @param {function} callback
    */
-  getWithUpdate: function getWithUpdate(path, callback) {
+  getWithUpdate: function (path, callback) {
     onSnapshot(doc(db, path), (doc) => {
       if (this.DEBUG) {
         console.log('Document data: ', doc.data());
@@ -316,70 +316,13 @@ const OrchidServices = {
    * @param {string} path
    * @param {object} value
    */
-  set: function set(path, value) {
+  set: function (path, value) {
     const docRef = doc(db, path);
     setDoc(docRef, value, { merge: true });
   },
 
-  storage: {
-    /**
-     * Creates a storage file using a blob and a path.
-     * @param {string} path
-     * @param {string} blob
-     */
-    add: function storageAdd(path, blob) {
-      const storageRef = ref(storage, path);
-
-      // 'blob' comes from the Blob or File API
-      uploadBytes(storageRef, blob).then((snapshot) => {
-        if (this.DEBUG) {
-          console.log('Uploaded a blob or file!');
-        }
-      });
-    },
-
-    /**
-     * Removes a storage file using it's path.
-     * @param {string} path
-     */
-    remove: function storageRemove(path) {
-      // Create a reference to the file to delete
-      const storageRef = ref(storage, path);
-      // Delete the file
-      deleteObject(storageRef)
-        .then(() => {
-          // File deleted successfully
-        })
-        .catch((error) => {
-          // Uh-oh, an error occurred!
-          if (this.DEBUG) {
-            console.log(error);
-          }
-        });
-    },
-
-    /**
-     * Lists storage files using the specified path to where it's going to list files.
-     * @param {string} path
-     */
-    list: function storageList(path) {
-      const listRef = ref(storage, 'files/uid');
-
-      // Find all the prefixes and items.
-      listAll(listRef).then((res) => {
-        res.prefixes.forEach((folderRef) => {
-          // All the prefixes under listRef.
-          // You may call listAll() recursively on them.
-        });
-        res.items.forEach((itemRef) => {
-          // All the items under listRef.
-        });
-      });
-    }
-  },
-
   auth: {
-    login: function authLogin(username, password) {
+    login: function (username, password) {
       OrchidServices.getList('profile', (user) => {
         if (
           user.username === username ||
@@ -405,11 +348,11 @@ const OrchidServices = {
      * Logs in using a specified existing user token.
      * @param {string} token
      */
-    loginWithToken: function authLoginWithToken(token) {
+    loginWithToken: function (token) {
       if ('Settings' in window) {
-        Settings.setValue('orchidservices.token', token);
+        Settings.setValue('orchidaccount.token', token);
       } else {
-        localStorage.setItem('orchidservices.token', token);
+        localStorage.setItem('orchidaccount.token', token);
       }
     },
 
@@ -455,6 +398,97 @@ const OrchidServices = {
       if (this.DEBUG) {
         console.log('Added document with ID: ', token);
       }
+    }
+  },
+
+  storage: {
+    /**
+     * Creates a storage file using a blob and a path.
+     * @param {string} path
+     * @param {string} blob
+     */
+    add: function (path, blob) {
+      const storageRef = ref(storage, path);
+
+      // 'blob' comes from the Blob or File API
+      uploadBytes(storageRef, blob).then((snapshot) => {
+        if (this.DEBUG) {
+          console.log('Uploaded a blob or file!');
+        }
+      });
+    },
+
+    /**
+     * Removes a storage file using it's path.
+     * @param {string} path
+     */
+    remove: function (path) {
+      // Create a reference to the file to delete
+      const storageRef = ref(storage, path);
+      // Delete the file
+      deleteObject(storageRef)
+        .then(() => {
+          // File deleted successfully
+        })
+        .catch((error) => {
+          // Uh-oh, an error occurred!
+          if (this.DEBUG) {
+            console.log(error);
+          }
+        });
+    },
+
+    /**
+     * Lists storage files using the specified path to where it's going to list files.
+     * @param {string} path
+     */
+    list: function (path) {
+      const listRef = ref(storage, 'files/uid');
+
+      // Find all the prefixes and items.
+      listAll(listRef).then((res) => {
+        res.prefixes.forEach((folderRef) => {
+          // All the prefixes under listRef.
+          // You may call listAll() recursively on them.
+        });
+        res.items.forEach((itemRef) => {
+          // All the items under listRef.
+        });
+      });
+    }
+  },
+
+  achievements: {
+    grant: async function (webapp, id) {
+      const achievement = {
+        webapp_id: webapp,
+        achievement_id: id
+      };
+
+      this.get(`profile/${await this.userId()}`).then(async (data) => {
+        if (data.achievements.indexOf(achievement) !== -1) {
+          return;
+        }
+        this.set(`profile/${await this.userId()}`, {
+          achievements: [...data.achievements, achievement]
+        });
+      });
+    },
+
+    revoke: async function (webapp, id) {
+      const achievement = {
+        webapp_id: webapp,
+        achievement_id: id
+      };
+
+      this.get(`profile/${await this.userId()}`).then(async (data) => {
+        if (data.achievements.indexOf(achievement) === -1) {
+          return;
+        }
+        this.set(`profile/${await this.userId()}`, {
+          achievements: data.achievements.filter(a => a !== achievement)
+        });
+      });
     }
   }
 };

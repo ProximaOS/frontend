@@ -1,6 +1,8 @@
 .DS_Store
 Thumbs.db
 
+.env.secret
+
 /.gradle/
 /.orchidstudio/
 /.build/
@@ -19,6 +21,12 @@ tests/results/
 build_stage/
 logs/
 *.log
+
+# Unfinished products
+/*apps/newspaper
+/*apps/orchid_articles
+/*apps/orchid_assistant
+/*apps/weather
 
 *.orcbin
 *.orclib

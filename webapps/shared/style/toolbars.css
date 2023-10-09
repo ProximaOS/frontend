@@ -3,7 +3,7 @@
   height: calc(4.5rem + var(--software-buttons-height));
   padding: 0.5rem 0.5rem var(--software-buttons-height);
   box-sizing: border-box;
-  margin-top: var(--software-buttons-height);
+  margin-top: calc(var(--software-buttons-height) * -1);
   display: flex;
   gap: 0.5rem;
 }

@@ -2,7 +2,7 @@
   position: relative;
   width: 100%;
   height: calc(var(--statusbar-height) + 5rem + (4rem * (1 - var(--progress, 0))));
-  background-image: linear-gradient(to right, var(--background) 3rem, rgba(var(--headerbar-r), var(--headerbar-g), var(--headerbar-b), calc(var(--progress, 0) * 0.75)), var(--background) calc(100% - 3rem));
+  background-image: linear-gradient(to right, var(--background) 3rem, var(--header-background) 13rem, var(--header-background) calc(100% - 13rem), var(--background) calc(100% - 3rem));
   display: flex;
   padding: var(--statusbar-height) 1rem 0;
   box-sizing: border-box;
@@ -18,7 +18,7 @@
   position: absolute;
   left: 1.5rem;
   top: 100%;
-  width: 3rem;
+  width: 1.5rem;
   height: 3rem;
   border-radius: 1.5rem 0 0 0;
   box-shadow: 0 -1.5rem 0 var(--background);
@@ -29,7 +29,7 @@
   position: absolute;
   right: 1.5rem;
   top: 100%;
-  width: 3rem;
+  width: 1.5rem;
   height: 3rem;
   border-radius: 0 1.5rem 0 0;
   box-shadow: 0 -1.5rem 0 var(--background);
@@ -41,7 +41,7 @@
 
 .headerbar .safezone {
   width: 100%;
-  max-width: calc(var(--safezone-width) - 2rem);
+  max-width: var(--safezone-width);
   margin: 0 auto;
   display: flex;
   gap: 0.5rem;

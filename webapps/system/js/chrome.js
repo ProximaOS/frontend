@@ -129,7 +129,7 @@
         }
 
         if (AppWindow) {
-          return AppWindow.focusedWindow.querySelector('.chrome');
+          return document.querySelector('.appframe.active .chrome');
         }
       };
 
@@ -365,12 +365,34 @@
       webview.src = url || this.DEFAULT_URL;
       webview.classList.add('browser');
       webview.nodeintegration = true;
-      webview.useragent = navigator.userAgent;
-      webview.preload = `file://${
-        Environment.type === 'production'
-          ? Environment.dirName().replaceAll('\\', '/')
-          : Environment.currentDir.replaceAll('\\', '/')
-      }/src/js/preload.js`;
+      webview.nodeintegrationinsubframes = true;
+      webview.preload = `file://${Environment.dirName().replaceAll('\\', '/')}/preload.js`;
+
+      function updateUserAgent(value) {
+        switch (value) {
+          case 'android':
+            webview.useragent = navigator.userAgent.replace(
+              /\((.*)\)/i,
+              '(Linux; Android 14)'
+            );
+            break;
+
+          case 'desktop':
+            webview.useragent = navigator.userAgent.replace(
+              /\((.*)\)/i,
+              '(X11; Linux x86_64)'
+            ).replace('Mobile ', '');
+            break;
+
+          case 'default':
+          default:
+            webview.useragent = navigator.userAgent;
+            break;
+        }
+      }
+      Settings.getValue('general.chrome.user_agent').then(updateUserAgent);
+      Settings.addObserver('general.chrome.user_agent', updateUserAgent);
+
       if (isPrivate) {
         webview.partition = 'private';
         webview.classList.add('private');
@@ -398,10 +420,6 @@
         'did-change-theme-color',
         this.handleThemeColorUpdated.bind(this)
       );
-
-      const pattern = /^http:\/\/.*\.localhost:8081\//;
-      const cssURL = `http://shared.localhost:${location.port}/style/webview.css`;
-      const jsURL = `http://shared.localhost:${location.port}/js/webview.js`;
 
       webview.addEventListener('did-start-loading', () => {
         favicons.classList.add('loading');
@@ -448,40 +466,6 @@
         'dom-ready'
       ].forEach((eventType) => {
         webview.addEventListener(eventType, () => {
-          const xhr = new XMLHttpRequest();
-          xhr.open('GET', cssURL, true);
-          xhr.onreadystatechange = function () {
-            if (xhr.readyState === 4 && xhr.status === 200) {
-              const cssContent = xhr.responseText;
-              webview.insertCSS(cssContent);
-            } else if (xhr.readyState === 4) {
-              console.error('Failed to fetch CSS:', xhr.status, xhr.statusText);
-            }
-          };
-          xhr.send();
-
-          const xhr1 = new XMLHttpRequest();
-          xhr1.open('GET', jsURL, true);
-          xhr1.onreadystatechange = function () {
-            if (xhr1.readyState === 4 && xhr1.status === 200) {
-              const jsContent = xhr1.responseText;
-              webview.executeJavaScript(jsContent);
-            } else if (xhr1.readyState === 4) {
-              console.error(
-                'Failed to fetch JS:',
-                xhr1.status,
-                xhr1.statusText
-              );
-            }
-          };
-          xhr1.send();
-
-          if (pattern.test(webview.getURL())) {
-            webview.nodeintegration = true;
-          } else {
-            webview.nodeintegration = false;
-          }
-
           if (!isPrivate) {
             DisplayManager.screenshot(webview.getWebContentsId()).then(
               (data) => {
@@ -803,9 +787,13 @@
                 const startTime = performance.now();
                 function animateZoom() {
                   const currentTime = performance.now();
-                  const progress = Math.min((currentTime - startTime) / duration, 1);
+                  const progress = Math.min(
+                    (currentTime - startTime) / duration,
+                    1
+                  );
 
-                  const easedProgress = 0.5 - 0.5 * Math.cos(progress * Math.PI);
+                  const easedProgress =
+                    0.5 - 0.5 * Math.cos(progress * Math.PI);
                   const newZoom = zoom + (targetZoom - zoom) * easedProgress;
                   webview.setZoomFactor(newZoom);
 
@@ -830,9 +818,13 @@
                 const startTime = performance.now();
                 function animateZoom() {
                   const currentTime = performance.now();
-                  const progress = Math.min((currentTime - startTime) / duration, 1);
+                  const progress = Math.min(
+                    (currentTime - startTime) / duration,
+                    1
+                  );
 
-                  const easedProgress = 0.5 - 0.5 * Math.cos(progress * Math.PI);
+                  const easedProgress =
+                    0.5 - 0.5 * Math.cos(progress * Math.PI);
                   const newZoom = zoom + (targetZoom - zoom) * easedProgress;
                   webview.setZoomFactor(newZoom);
 
@@ -855,9 +847,13 @@
                 const startTime = performance.now();
                 function animateZoom() {
                   const currentTime = performance.now();
-                  const progress = Math.min((currentTime - startTime) / duration, 1);
+                  const progress = Math.min(
+                    (currentTime - startTime) / duration,
+                    1
+                  );
 
-                  const easedProgress = 0.5 - 0.5 * Math.cos(progress * Math.PI);
+                  const easedProgress =
+                    0.5 - 0.5 * Math.cos(progress * Math.PI);
                   const newZoom = zoom + (targetZoom - zoom) * easedProgress;
                   webview.setZoomFactor(newZoom);
 
@@ -1100,7 +1096,7 @@
             value: event.params.selectionText
           },
           icon: 'search',
-          hidden: (event.params.selectionText === ''),
+          hidden: event.params.selectionText === '',
           onclick: () => {
             webview.focus();
             webview.copy();
@@ -1157,7 +1153,11 @@
         });
       }
 
-      ContextMenu.show(event.params.x, event.params.y, [...itemsBefore, ...suggestions, ...itemsAfter]);
+      ContextMenu.show(event.params.x, event.params.y, [
+        ...itemsBefore,
+        ...suggestions,
+        ...itemsAfter
+      ]);
       console.log(event.params);
     },
 

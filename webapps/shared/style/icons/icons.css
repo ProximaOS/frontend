@@ -34,6 +34,7 @@ html[dir="rtl"] [data-icon="forward"]::before,
 html[dir="rtl"] [data-icon="back-light"]::before,
 html[dir="rtl"] [data-icon="forward-light"]::before,
 html[dir="rtl"] [data-icon="browser-back"]::before,
-html[dir="rtl"] [data-icon="browser-forward"]::before {
+html[dir="rtl"] [data-icon="browser-forward"]::before,
+html[dir="rtl"] [data-icon="send"]::before {
   transform: scaleX(-1);
 }

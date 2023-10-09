@@ -59,19 +59,72 @@
         </form>
 
         <header data-l10n-id="people"></header>
-        <ul id="people-list"></ul>
+        <ul id="people-list">
+          <li data-page-id="chat">
+            <p>Chat Ui</p>
+          </li>
+        </ul>
       </div>
     </div>
 
-    <div id="channel" class="panel">
+    <div id="chat" class="panel">
       <div class="headerbar">
         <div class="safezone">
           <a href="#" data-icon="browser-back" data-page-id="root"></a>
-          <h1 id="channel-name"></h1>
+          <h1 id="chat-name"></h1>
         </div>
       </div>
 
-      <div id="channel-messages" class="content"></div>
+      <div id="chat-messages" class="content messages">
+        <div class="message">
+          <div class="image-container"><img src="" alt=""></div>
+          <div class="text-holder">
+            <div class="content">
+              <div class="text">Lorem ipsum dolor sit amet consectetur adipisicing elit. Culpa, distinctio fuga consequatur voluptatem expedita corporis saepe, illo accusamus fugit exercitationem non facere unde ratione architecto optio aperiam temporibus. Explicabo, ducimus.</div>
+            </div>
+            <div class="message-info">
+              <div class="username">Markus</div>
+              <div class="date">10:36 AM</div>
+              <div class="is-typing">is typing...</div>
+            </div>
+          </div>
+        </div>
+        <div class="message yours">
+          <div class="image-container"><img src="" alt=""></div>
+          <div class="text-holder">
+            <div class="content">
+              <div class="text">Assumenda facilis, soluta blanditiis itaque earum reprehenderit maiores est beatae rem quae, nam adipisci quisquam veniam eius natus. Ab veniam corrupti quam quibusdam tempora sunt laboriosam doloremque quas esse sit.</div>
+            </div>
+            <div class="message-info">
+              <div class="username">Markus</div>
+              <div class="date">10:36 AM</div>
+              <div class="is-typing">is typing...</div>
+            </div>
+          </div>
+        </div>
+        <div class="message is-typing">
+          <div class="image-container"><img src="" alt=""></div>
+          <div class="text-holder">
+            <div class="content">
+              <div class="text">Tempora distinctio assumenda maiores quasi eius laboriosam qui, aliquam nostrum. Autem veritatis similique ipsa quis ducimus, pariatur doloremque ipsum iste eum sequi ratione sapiente consequuntur facere atque porro quas nisi.</div>
+            </div>
+            <div class="message-info">
+              <div class="username">Markus</div>
+              <div class="date">10:36 AM</div>
+              <div class="is-typing">is typing...</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="messagebox-container">
+        <form action="" id="chat-form" class="messagebox">
+          <button data-icon="attachments"></button>
+          <input type="text" name="" id="chat-form-input" data-l10n-id="type-message">
+          <button data-icon="emojis"></button>
+          <button type="submit" data-icon="send"></button>
+        </form>
+      </div>
     </div>
 
     <div id="add" class="panel">
