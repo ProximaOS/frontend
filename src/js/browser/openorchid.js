@@ -115,7 +115,7 @@ const { l18n, initializeLocale } = require('../locales/locale_reader');
         'branding',
         'icon.png'
       ),
-      title: 'OrchidOS (OpenOrchid 3.0.14) - Orchid Simulator',
+      title: `OrchidOS ${appConfig.version} ${systemConfig.type} - Orchid Simulator`,
       width:
         process.platform !== 'win32'
           ? systemConfig.width + 50
