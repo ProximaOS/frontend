@@ -76,7 +76,7 @@ body {
 
 @media screen and (prefers-color-scheme: dark) {
   .controls {
-    background-color: #212325;
+    background-color: #000;
   }
 
   .controls menu[role='toolbar'] > button:hover {
