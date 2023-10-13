@@ -1,4 +1,5 @@
 #search {
+  filter: none;
   transition: all 0.3s ease;
 }
 
@@ -14,16 +15,23 @@
 }
 
 #search .headerbar {
-  background-color: rgba(var(--headerbar-r), var(--headerbar-g), var(--headerbar-b), calc(var(--progress, 0) * 0.6));
+  background-color: transparent;
   backdrop-filter: blur(calc(20px * var(--progress, 0))) saturate(calc(100% + (80% * var(--progress, 0))));
-  transform: translateY(calc(-3rem * (1 + ((var(--motion-progress, 0) + var(--overscroll-progress, 0)) * -1))));
+  transform: translateY(calc((-3rem * (1 - var(--motion-progress, 0))) + (13.5rem * var(--overscroll-progress, 0))));
   --background: transparent;
   background-image: none;
+  height: calc(6rem + var(--statusbar-height));
+  mask-image: linear-gradient(to bottom, white, white calc(100% - 1.5rem), transparent);
+  -webkit-mask-image: linear-gradient(to bottom, white, white calc(100% - 1.5rem), transparent);
   transition: all 0.3s ease;
 }
 
 #app.transitioning #search .headerbar {
   transition: all 0.5s ease;
+}
+
+#search-results {
+  background-color: var(--item-plus);
 }
 
 #search-results li {

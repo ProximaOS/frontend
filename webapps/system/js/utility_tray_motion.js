@@ -87,10 +87,13 @@
       }
     },
 
-    onPointerUp: function () {
+    onPointerUp: function (event) {
+      this.currentY = event.clientY || event.touches[0].clientY;
       const offsetY = this.startY - this.currentY;
       const maxHeight = this.yPosThreshold;
-      let progress = offsetY / maxHeight;
+      let progress = ((offsetY / maxHeight) * -1) / 2;
+      progress = this.lastProgress + progress;
+      console.log(progress);
 
       progress = Math.min(1, progress); // Limit progress between 0 and 1
 

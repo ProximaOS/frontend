@@ -16,8 +16,14 @@
     currentProgress: 0,
 
     init: function () {
-      this.gridElement.addEventListener('mousedown', this.onPointerDown.bind(this));
-      this.gridElement.addEventListener('touchstart', this.onPointerDown.bind(this));
+      this.gridElement.addEventListener(
+        'mousedown',
+        this.onPointerDown.bind(this)
+      );
+      this.gridElement.addEventListener(
+        'touchstart',
+        this.onPointerDown.bind(this)
+      );
       this.motionElement.addEventListener(
         'mousedown',
         this.onPointerDown.bind(this)
@@ -61,9 +67,12 @@
     },
 
     onPointerUp: function () {
+      this.currentY = event.clientY || event.touches[0].clientY;
       const offsetY = this.startY - this.currentY;
       const maxHeight = this.yPosThreshold;
-      let progress = (offsetY / maxHeight) * -1;
+      let progress = ((offsetY / maxHeight) * -1) / 2;
+      progress = this.lastProgress + progress;
+      console.log(progress);
 
       progress = Math.min(1, progress); // Limit progress between 0 and 1
 
@@ -71,18 +80,30 @@
       if (progress >= this.threshold) {
         this.currentProgress = 1;
         if (Homescreen.isLight) {
-          this.themeColorMeta.setAttribute('content', 'rgb(255, 255, 255)');
+          if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            this.themeColorMeta.setAttribute(
+              'content',
+              `rgb(${255 - this.currentProgress * 255}, ${
+                255 - this.currentProgress * 255
+              }, ${255 - this.currentProgress * 255})`
+            );
+          } else {
+            this.themeColorMeta.setAttribute('content', 'rgb(255, 255, 255)');
+          }
         } else {
-          this.themeColorMeta.setAttribute(
-            'content',
-            `rgb(${this.currentProgress * 255}, ${
-              this.currentProgress * 255
-            }, ${this.currentProgress * 255})`
-          );
+          if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            this.themeColorMeta.setAttribute('content', 'rgb(0, 0, 0)');
+          } else {
+            this.themeColorMeta.setAttribute(
+              'content',
+              `rgb(${this.currentProgress * 255}, ${
+                this.currentProgress * 255
+              }, ${this.currentProgress * 255})`
+            );
+          }
         }
         this.lastProgress = this.currentProgress;
         this.app.style.setProperty('--motion-progress', 1);
-        this.app.style.setProperty('--overscroll-progress', 0);
         this.app.classList.add('transitioning');
         clearTimeout(this.timer);
         this.timer = setTimeout(() => {
@@ -91,18 +112,30 @@
       } else {
         this.currentProgress = 0;
         if (Homescreen.isLight) {
-          this.themeColorMeta.setAttribute('content', 'rgb(255, 255, 255)');
+          if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            this.themeColorMeta.setAttribute(
+              'content',
+              `rgb(${255 - this.currentProgress * 255}, ${
+                255 - this.currentProgress * 255
+              }, ${255 - this.currentProgress * 255})`
+            );
+          } else {
+            this.themeColorMeta.setAttribute('content', 'rgb(255, 255, 255)');
+          }
         } else {
-          this.themeColorMeta.setAttribute(
-            'content',
-            `rgb(${this.currentProgress * 255}, ${
-              this.currentProgress * 255
-            }, ${this.currentProgress * 255})`
-          );
+          if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            this.themeColorMeta.setAttribute('content', 'rgb(0, 0, 0)');
+          } else {
+            this.themeColorMeta.setAttribute(
+              'content',
+              `rgb(${this.currentProgress * 255}, ${
+                this.currentProgress * 255
+              }, ${this.currentProgress * 255})`
+            );
+          }
         }
         this.lastProgress = this.currentProgress;
         this.app.style.setProperty('--motion-progress', 0);
-        this.app.style.setProperty('--overscroll-progress', 0);
         this.app.classList.add('transitioning');
         clearTimeout(this.timer);
         this.timer = setTimeout(() => {
@@ -125,20 +158,29 @@
       const overflowProgress = Math.max(1, progress) - 1;
       this.currentProgress = motionProgress;
       if (Homescreen.isLight) {
-        this.themeColorMeta.setAttribute('content', 'rgb(255, 255, 255)');
+        if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+          this.themeColorMeta.setAttribute(
+            'content',
+            `rgb(${255 - this.currentProgress * 255}, ${
+              255 - this.currentProgress * 255
+            }, ${255 - this.currentProgress * 255})`
+          );
+        } else {
+          this.themeColorMeta.setAttribute('content', 'rgb(255, 255, 255)');
+        }
       } else {
-        this.themeColorMeta.setAttribute(
-          'content',
-          `rgb(${this.currentProgress * 255}, ${this.currentProgress * 255}, ${
-            this.currentProgress * 255
-          })`
-        );
+        if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+          this.themeColorMeta.setAttribute('content', 'rgb(0, 0, 0)');
+        } else {
+          this.themeColorMeta.setAttribute(
+            'content',
+            `rgb(${this.currentProgress * 255}, ${
+              this.currentProgress * 255
+            }, ${this.currentProgress * 255})`
+          );
+        }
       }
       this.app.style.setProperty('--motion-progress', motionProgress);
-      this.app.style.setProperty(
-        '--overscroll-progress',
-        overflowProgress
-      );
 
       if (motionProgress <= this.threshold) {
         this.motionElement.classList.add('fade-out');
@@ -155,7 +197,6 @@
       this.app.classList.remove('search-visible');
       this.motionElement.classList.remove('visible');
       this.app.style.setProperty('--motion-progress', 0);
-      this.app.style.setProperty('--overscroll-progress', 0);
     },
 
     showMotionElement: function () {
@@ -171,17 +212,29 @@
       if (progress >= this.threshold) {
         this.currentProgress = 0;
         if (Homescreen.isLight) {
-          this.themeColorMeta.setAttribute('content', 'rgb(255, 255, 255)');
+          if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            this.themeColorMeta.setAttribute(
+              'content',
+              `rgb(${255 - this.currentProgress * 255}, ${
+                255 - this.currentProgress * 255
+              }, ${255 - this.currentProgress * 255})`
+            );
+          } else {
+            this.themeColorMeta.setAttribute('content', 'rgb(255, 255, 255)');
+          }
         } else {
-          this.themeColorMeta.setAttribute(
-            'content',
-            `rgb(${this.currentProgress * 255}, ${
-              this.currentProgress * 255
-            }, ${this.currentProgress * 255})`
-          );
+          if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            this.themeColorMeta.setAttribute('content', 'rgb(0, 0, 0)');
+          } else {
+            this.themeColorMeta.setAttribute(
+              'content',
+              `rgb(${this.currentProgress * 255}, ${
+                this.currentProgress * 255
+              }, ${this.currentProgress * 255})`
+            );
+          }
         }
         this.app.style.setProperty('--motion-progress', 0);
-        this.app.style.setProperty('--overscroll-progress', 0);
         this.app.classList.add('transitioning');
         clearTimeout(this.timer);
         this.timer = setTimeout(() => {
