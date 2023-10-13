@@ -1,0 +1,50 @@
+#bookmarks {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(8.75rem, 1fr));
+}
+
+.bookmark {
+  width: 100%;
+  border-radius: 1rem;
+  transition: background-color 0.3s ease;
+}
+
+.bookmark:hover {
+  transition: none;
+  background-color: var(--item-hover);
+}
+
+.bookmark:active {
+  transition: none;
+  background-color: var(--item-active);
+}
+
+.bookmark .icon-holder {
+  width: 100%;
+  padding: 1rem 0 0;
+  box-sizing: border-box;
+}
+
+.bookmark .icon-holder > img {
+  width: 5rem;
+  height: 5rem;
+  background-color: var(--item-plus);
+  border-radius: 50%;
+  object-fit: cover;
+  display: block;
+  margin: 0 auto;
+}
+
+.bookmark .name {
+  width: 100%;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  padding: 0.2rem 0 0;
+  box-sizing: border-box;
+  margin: 0 0 0.5rem;
+  color: var(--text-color);
+  font-size: 1.3rem;
+  font-weight: normal;
+  text-align: center;
+}

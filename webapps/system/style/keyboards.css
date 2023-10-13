@@ -4,7 +4,7 @@
   bottom: 0;
   width: 100%;
   height: calc(40% + 1.5rem);
-  background-color: var(--background);
+  background-color: var(--background-minus);
   padding-bottom: 1.5rem;
   box-sizing: border-box;
   transform: translateY(100%);

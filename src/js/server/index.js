@@ -28,20 +28,21 @@
 
   module.exports = function (app) {
     const webAppsDir = process.env.OPENORCHID_WEBAPPS;
-    const internalDir = `${__dirname}/../../internal`;
+    const internalDir = `${__dirname}/../../../internal`;
     const files = fs.readdirSync(webAppsDir);
 
     files.forEach((dir) => {
       const subdomain = dir.split('.')[0];
 
       const localServer = http.createServer((req, res) => {
+        res.setHeader('Access-Control-Allow-Origin', '*');
+        res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
+        res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+
         const host = req.headers.host || '';
         const subdomain = host.split('.')[0];
 
         function sendRequest (data, contentType) {
-          res.setHeader('Access-Control-Allow-Origin', '*');
-          res.setHeader('Access-Control-Allow-Methods', 'GET');
-          res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
           res.setHeader('Content-Type', contentType); // Set the content type header
           res.writeHead(200);
           res.end(data);
@@ -60,6 +61,8 @@
             const contentType = getContentType(path.extname(filePath));
             sendRequest(data, contentType); // Pass the content type to sendRequest
           });
+
+          return;
         }
 
         if (process.env.NODE_ENV === 'production') {

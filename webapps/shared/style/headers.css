@@ -159,6 +159,10 @@ html[dir="rtl"] .headerbar a[data-icon="browser-back"]:hover::before {
   margin: 0.5rem 0;
 }
 
+.headerbar form.search:first-child {
+  margin-inline-start: 0.5rem;
+}
+
 .headerbar form.search:last-child {
   margin-inline-end: 0.5rem;
 }

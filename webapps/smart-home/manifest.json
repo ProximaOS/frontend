@@ -24,5 +24,5 @@
     "ipc": {},
     "device-storage:apps": {}
   },
-  "statusbar": "immersive"
+  "display": "fullscreen"
 }

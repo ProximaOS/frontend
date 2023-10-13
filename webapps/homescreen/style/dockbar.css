@@ -4,13 +4,13 @@
   width: calc(100% - 2rem);
   height: 7.8rem;
   bottom: var(--software-buttons-height);
-  background-color: var(--acrylic-background);
+  /* background-color: var(--acrylic-background); */
+  /* backdrop-filter: blur(20px) saturate(180%); */
+  /* outline: solid 0.1rem rgba(255, 255, 255, 0.1); */
   border-radius: 2.5rem;
-  backdrop-filter: blur(20px) saturate(180%);
   z-index: 1;
   display: grid;
   grid-template-columns: repeat(var(--grid-columns), 1fr);
-  outline: solid 0.1rem rgba(255, 255, 255, 0.1);
   transition: all 0.5s cubic-bezier(0.2, 0.9, 0.1, 1.1) 0.5s;
   transform: translateY(0);
 }

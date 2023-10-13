@@ -34,14 +34,17 @@
   color: var(--text-color);
   position: relative;
   overflow: visible;
+  transition: all 0.3s ease;
 }
 
 #text-selection > button:hover {
   background-color: var(--item-hover);
+  transition: none;
 }
 
 #text-selection > button:active {
   background-color: var(--item-active);
+  transition: none;
 }
 
 #text-selection > button[data-icon]::before {

@@ -119,6 +119,52 @@ html[dir="rtl"] #account-button::after {
   font-weight: normal;
 }
 
+.profile-banner > .container figcaption .stats {
+  width: 100%;
+  height: 2rem;
+  line-height: 2rem;
+  color: var(--text-color-faded);
+  font-size: 1.4rem;
+  font-weight: normal;
+  display: flex;
+  align-items: center;
+}
+
+.profile-banner > .container figcaption .stats > .separator {
+  width: 0.4rem;
+  height: 0.4rem;
+  border-radius: 50%;
+  background-color: var(--text-color);
+  margin: 0 0.5rem;
+}
+
+.profile-banner > .container figcaption .status {
+  width: 100%;
+  height: 2rem;
+  line-height: 2rem;
+  color: var(--text-color-faded);
+  font-size: 1.4rem;
+  font-weight: normal;
+}
+
+#available-networks > li.connected {
+  background-color: var(--accent-color);
+  color: var(--accent-color-plus);
+}
+
+#available-networks > li.connected[data-icon]::before {
+  color: var(--accent-color-plus);
+}
+
+#available-networks > li.connected p {
+  color: var(--accent-color-plus);
+  opacity: 0.5;
+}
+
+#available-networks > li.connected p:first-child {
+  opacity: 1;
+}
+
 #wallpaper {
   margin: 0 auto;
   width: calc(100% - 3rem);

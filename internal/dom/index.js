@@ -14,4 +14,5 @@
     }
   }
   importJavascript('openorchid://dom/override.js');
+  importJavascript('openorchid://dom/webview.js');
 })(window);

@@ -6,7 +6,7 @@
 
     async function searchDevices () {
       try {
-        const devices = await window.BluetoothManager.requestDevice({
+        const devices = await BluetoothManager.scan({
           acceptAllDevices: true
         });
 

@@ -23,7 +23,7 @@
 
   require('dotenv').config();
 
-  async function importJavascript(url) {
+  async function importJavascript (url) {
     try {
       const response = await fetch(url);
       const jsCode = await response.text();
@@ -36,7 +36,7 @@
     }
   }
 
-  function registerEvent(ipcName, windowName) {
+  function registerEvent (ipcName, windowName) {
     ipcRenderer.on(ipcName, (event, data) => {
       const customEvent = new CustomEvent(windowName, {
         detail: data,
@@ -126,7 +126,7 @@
     ...api
   });
 
-  function verifyAccess(permission, mapName, value) {
+  function verifyAccess (permission, mapName, value) {
     manifests.checkPermission(permission).then((result) => {
       if (result) {
         api[mapName] = value;
@@ -135,7 +135,7 @@
     });
   }
 
-  function setAccess(permission, mapName, property, value) {
+  function setAccess (permission, mapName, property, value) {
     manifests.checkPermission(permission).then((result) => {
       if (result) {
         api[mapName][property] = value;
@@ -193,17 +193,39 @@
     require('./v8js/modal_dialogs').prompt
   );
 
-  const clickSound = new Audio(
-    `http://shared.localhost:${location.port}/resources/sounds/click.wav`
-  );
+  function playStereoAudio (audioFilePath, xPosition) {
+    const audioContext = new (window.AudioContext ||
+      window.webkitAudioContext)();
+    const stereoPanner = audioContext.createStereoPanner();
+
+    const audioElement = new Audio();
+    audioElement.crossOrigin = 'anonymous'; // Set crossOrigin attribute
+
+    audioElement.addEventListener('canplaythrough', () => {
+      const source = audioContext.createMediaElementSource(audioElement);
+
+      // Set the pan value based on the x position
+      const panValue = (xPosition / window.innerWidth) * 2 - 1; // -1 to 1 range
+      stereoPanner.pan.value = panValue;
+
+      source.connect(stereoPanner);
+      stereoPanner.connect(audioContext.destination);
+
+      audioElement.play();
+    });
+
+    audioElement.src = audioFilePath;
+  }
 
   document.addEventListener('click', (event) => {
     if (['A', 'BUTTON', 'LI', 'INPUT'].indexOf(event.target.nodeName) === -1) {
       return;
     }
 
-    clickSound.currentTime = 0;
-    clickSound.play();
+    playStereoAudio(
+      `http://shared.localhost:${location.port}/resources/sounds/click.wav`,
+      event.clientX
+    );
   });
 
   document.addEventListener('dragstart', function (event) {
@@ -273,12 +295,12 @@
     });
   });
 
-  function convertToAbsoluteUrl(relativeUrl) {
+  function convertToAbsoluteUrl (relativeUrl) {
     const baseUrl = window.location.origin;
     return new URL(relativeUrl, baseUrl).href;
   }
 
-  async function getFileAsUint8Array(url) {
+  async function getFileAsUint8Array (url) {
     const response = await fetch(url);
     const arrayBuffer = await response.arrayBuffer();
     return new Uint8Array(arrayBuffer);
@@ -409,9 +431,17 @@
             .querySelector('.app')
             .style.setProperty('--software-buttons-height', '4rem');
         } else {
-          document
-            .querySelector('.app')
-            .style.setProperty('--software-buttons-height', '2.5rem');
+          if (
+            location.origin.includes(`homescreen.localhost:${location.port}`)
+          ) {
+            document
+              .querySelector('.app')
+              .style.setProperty('--software-buttons-height', '1rem');
+          } else {
+            document
+              .querySelector('.app')
+              .style.setProperty('--software-buttons-height', '2.5rem');
+          }
         }
       }
     };
@@ -435,7 +465,7 @@
 
   document.addEventListener('DOMContentLoaded', function () {
     // Define a function to handle the mutation
-    function handleMutation(mutations) {
+    function handleMutation (mutations) {
       mutations.forEach((mutation) => {
         mutation.addedNodes.forEach((node) => {
           if (node.tagName !== 'WEBVIEW') {

@@ -9,6 +9,12 @@
   scroll-snap-type: x mandatory;
   scrollbar-width: none;
   display: flex;
+  transform: translateY(calc(3rem * (var(--motion-progress, 0) + (var(--overscroll-progress, 0)))));
+  transition: all 0.3s ease;
+}
+
+#app.transitioning #grid {
+  transition: all 0.5s ease;
 }
 
 .page {
@@ -67,7 +73,7 @@
 
 .icon:hover .icon-holder > img {
   transform: scale(1.05);
-  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
 }
 
 .icon.dragging .icon-holder > img {
@@ -85,6 +91,12 @@
   white-space: nowrap;
   text-overflow: ellipsis;
   transition: all 0.3s ease;
+}
+
+#app.light .icon .name {
+  color: rgba(0, 0, 0, 0.75);
+  font-weight: bold;
+  text-shadow: none;
 }
 
 .icon.icon.dragging .name {

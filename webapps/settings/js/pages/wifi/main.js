@@ -28,24 +28,34 @@
 
     searchNetworks: async function () {
       try {
-        const networks = await window.WifiManager.scan();
+        const networks = await WifiManager.scan();
+        const connectedNetworks = await WifiManager.getCurrentConnections();
         this.availableNetworksList.innerHTML = '';
-        networks.forEach((network) => {
+        const networksFiltered = networks.filter((item, index, self) =>
+          index === self.findIndex(obj => obj.mac === item.mac)
+        );
+        networksFiltered.forEach((network) => {
           // Convert signal strength to percentage
           const signalStrengthPercentage = network.quality;
 
           const listItem = document.createElement('li');
+          listItem.classList.add('page');
           listItem.dataset.icon = `wifi-${Math.round(
             signalStrengthPercentage / 25
           )}`;
           this.availableNetworksList.appendChild(listItem);
 
           const listName = document.createElement('p');
-          listName.textContent = network.ssid;
+          listName.textContent = network.ssid || navigator.mozL10n.get('wifiHidden');
           listItem.appendChild(listName);
 
           const listSecurity = document.createElement('p');
-          listSecurity.textContent = network.security;
+          if (network.mac === connectedNetworks[0].mac) {
+            listItem.classList.add('connected');
+            listSecurity.textContent = navigator.mozL10n.get('wifiConnected');
+          } else {
+            listSecurity.textContent = network.security;
+          }
           listItem.appendChild(listSecurity);
         });
       } catch (error) {

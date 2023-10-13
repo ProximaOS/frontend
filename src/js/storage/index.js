@@ -157,16 +157,10 @@
           return;
         }
 
-        fs.stat(
-          path.join(process.env.OPENORCHID_STORAGE, filePath),
-          (error, stats) => {
-            if (error) {
-              reject(error);
-              console.log(error);
-            }
-            resolve(stats);
-          }
+        const stats = fs.statSync(
+          path.join(process.env.OPENORCHID_STORAGE, filePath)
         );
+        resolve(stats);
       });
     },
     getMime: function (filePath) {

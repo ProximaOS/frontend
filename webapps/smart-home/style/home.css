@@ -1,5 +1,17 @@
 html, body {
-  background-color: #454545;
+  margin: 0;
+  padding: 0;
+  font-size: 10px;
+  font-family: 'Jali Arabic', system-ui, sans-serif;
+}
+
+#app {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-image: linear-gradient(to bottom, #333, #545454);
 }
 
 #background,
@@ -13,15 +25,236 @@ html, body {
 
 #foreground {
   z-index: 1;
+  pointer-events: none;
   filter: blur(10px);
 }
 
 #content {
   position: absolute;
-  left: 20%;
-  top: 20%;
-  width: 60%;
-  height: 60%;
-  background-color: #515151;
-  box-shadow: 0 1rem 2rem rgba(0,0,0,0.2);
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+}
+
+#statusbar {
+  margin: 0;
+  padding: 0 5vw;
+  box-sizing: border-box;
+  width: 100%;
+  height: 8rem;
+  display: flex;
+  align-items: center;
+  position: absolute;
+  z-index: 10;
+}
+
+#statusbar > div {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  width: 100%;
+  flex-grow: 1;
+}
+
+#statusbar > .right {
+  justify-content: end;
+}
+
+#statusbar .toolbar {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+#statusbar button {
+  width: 4rem;
+  height: 4rem;
+  line-height: 4rem;
+  padding: 0 0.8rem;
+  box-sizing: border-box;
+  background-color: rgba(255,255,255,0.1);
+  border-radius: 4rem;
+  color: #fff;
+  font-size: 2rem;
+  font-weight: normal;
+  border: none;
+  backdrop-filter: blur(20px) saturate(180%);
+  transition: transform 0.3s cubic-bezier(0.2, 0.9, 0.1, 1);
+}
+
+#statusbar button:hover {
+  background-color: rgba(255,255,255,0.2);
+  transform: scale(1.1);
+}
+
+#statusbar button:active {
+  background-color: rgba(255,255,255,0.3);
+  transform: scale(0.9);
+}
+
+#statusbar button[data-icon]::before {
+  font-size: 2.4rem;
+}
+
+#statusbar .searchbox {
+  width: 15rem;
+  height: 4rem;
+  line-height: 4rem;
+  padding: 0 0.8rem;
+  box-sizing: border-box;
+  background-color: rgba(255,255,255,0.1);
+  border-radius: 4rem;
+  color: rgba(255,255,255,0.5);
+  font-size: 1.8rem;
+  font-weight: normal;
+  border: none;
+  backdrop-filter: blur(20px) saturate(180%);
+  display: inline-flex;
+  gap: 1rem;
+  justify-content: center;
+}
+
+.searchbox:hover {
+  background-color: rgba(255,255,255,0.2);
+}
+
+#statusbar .searchbox[data-icon]::before {
+  font-size: 2rem;
+}
+
+.tabs {
+  display: flex;
+  height: 4rem;
+  gap: 1.5rem;
+}
+
+.tabs > .tab {
+  height: 4rem;
+  line-height: 4rem;
+  padding: 0 2rem;
+  box-sizing: border-box;
+  background-color: rgba(255,255,255,0.1);
+  border-radius: 4rem;
+  color: #fff;
+  font-size: 2rem;
+  font-weight: normal;
+  backdrop-filter: blur(20px) saturate(180%);
+  transition: transform 0.3s cubic-bezier(0.2, 0.9, 0.1, 1);
+}
+
+.tabs > .tab:hover {
+  background-color: rgba(255,255,255,0.2);
+  transform: scale(1.1);
+}
+
+.tabs > .tab:active {
+  background-color: rgba(255,255,255,0.3);
+  transform: scale(0.9);
+}
+
+.tabs > .tab.active {
+  background-color: #fff;
+  color: #333;
+}
+
+#statusbar .time {
+  color: #fff;
+  font-size: 2.4rem;
+  font-weight: normal;
+}
+
+.panel {
+  padding-top: 8rem;
+  box-sizing: border-box;
+}
+
+.content-row {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1.5rem;
+  padding: 0 5vw;
+  box-sizing: border-box;
+}
+
+.content-row > header {
+  color: #fff;
+  font-size: 2.4rem;
+  font-weight: normal;
+  height: 4rem;
+  line-height: 4rem;
+  padding: 0 1rem;
+  box-sizing: border-box;
+}
+
+#webapps {
+  margin: 0;
+  padding: 0;
+  display: flex;
+  overflow-x: auto;
+  overflow-y: hidden;
+  gap: 1.5rem;
+}
+
+#webapps > .webapp {
+  height: 30vh;
+  aspect-ratio: 4 / 3;
+  background-color: rgba(255,255,255,0.1);
+  backdrop-filter: blur(20px) saturate(180%);
+  border-radius: 2rem;
+  flex-shrink: 0;
+}
+
+.selected-card-panel {
+  width: 100%;
+  height: 50vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.selected-card-panel h1 {
+  color: #fff;
+  font-size: 5rem;
+  font-weight: normal;
+  margin: 0;
+}
+
+.selected-card-panel p {
+  color: rgba(255,255,255,0.5);
+  font-size: 2rem;
+  font-weight: normal;
+  margin: 0;
+}
+
+.selected-card-panel nav {
+  display: flex;
+  margin-top: 1.5rem;
+  gap: 1.5rem;
+}
+
+.selected-card-panel nav > a {
+  display: inline-block;
+  height: 4rem;
+  line-height: 4rem;
+  padding: 0 2rem;
+  box-sizing: border-box;
+  background-color: rgba(255,255,255,0.1);
+  border-radius: 4rem;
+  color: #fff;
+  font-size: 2rem;
+  font-weight: normal;
+  backdrop-filter: blur(20px) saturate(180%);
+  text-decoration: none;
+  transition: transform 0.3s cubic-bezier(0.2, 0.9, 0.1, 1);
+}
+
+.selected-card-panel nav > a:hover {
+  background-color: rgba(255,255,255,0.2);
+  transform: scale(1.1);
+}
+
+.selected-card-panel nav > a:active {
+  background-color: rgba(255,255,255,0.3);
+  transform: scale(0.9);
 }

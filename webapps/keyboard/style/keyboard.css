@@ -1,9 +1,10 @@
-html, body {
+html,
+body {
   margin: 0;
   padding: 0;
   font-size: 10px;
   font-family: 'Jali Arabic', system-ui, sans-serif;
-  background-color: var(--background);
+  background-color: var(--background-minus);
 }
 
 #keyboard {
@@ -50,7 +51,7 @@ html, body {
 #suggestions .suggestion.recommend {
   font-weight: bold;
   background-color: var(--background-plus);
-  box-shadow: 0 0 0.6rem rgba(0,0,0,0.1);
+  box-shadow: 0 0 0.6rem rgba(0, 0, 0, 0.1);
 }
 
 #keys {
@@ -132,7 +133,7 @@ html, body {
   top: 4.8rem;
   width: 100%;
   height: calc(100% - 4.8rem - 5rem);
-  background-color: var(--background);
+  background-color: var(--background-minus);
   visibility: hidden;
 }
 
@@ -153,7 +154,12 @@ html, body {
   top: 0;
   width: 100%;
   height: 100%;
-  background-image: linear-gradient(to bottom, transparent, var(--item-plus), transparent);
+  background-image: linear-gradient(
+    to bottom,
+    transparent,
+    var(--item-plus),
+    transparent
+  );
 }
 
 #listen-button {
@@ -163,7 +169,7 @@ html, body {
   background-color: var(--background-plus);
   border-radius: 50%;
   border: none;
-  box-shadow: 0 0 3rem rgba(0,0,0,0.2), 0 0 1rem rgba(0,0,0,0.2);
+  box-shadow: 0 0 3rem rgba(0, 0, 0, 0.2), 0 0 1rem rgba(0, 0, 0, 0.2);
 }
 
 /* Icons */
@@ -173,4 +179,14 @@ html, body {
 
 #layout-button {
   background: url(images/light/layouts.png) no-repeat center / 2.4rem;
+}
+
+@media screen and (prefers-color-scheme: dark) {
+  #voice-typing-button {
+    background: url(images/dark/voice_typing.png) no-repeat center / 2.4rem;
+  }
+
+  #layout-button {
+    background: url(images/dark/layouts.png) no-repeat center / 2.4rem;
+  }
 }

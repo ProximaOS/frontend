@@ -12,7 +12,7 @@
 .homepage-header {
   width: 100%;
   padding: 1.5rem;
-  padding-top: 10rem;
+  padding-top: 3rem;
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
@@ -27,13 +27,11 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: var(--item-plus);
   border-radius: 1.5rem;
 }
 
 .homepage-header .logo-holder > .logo {
   padding: 1rem;
-  backdrop-filter: blur(10px);
   display: flex;
   align-items: center;
   border-radius: 1rem;
@@ -41,32 +39,10 @@
 
 .homepage-header .logo-holder > .logo .wordmark {
   color: var(--text-color);
-  font-size: 3.6rem;
+  font-size: 4rem;
   font-weight: 600;
   font-family: 'Readex Pro';
   margin-inline-end: 0.25em;
-  animation: logo 1s ease 3s;
-}
-
-@keyframes logo {
-  0% {
-    font-variation-settings: 'wght' 600;
-  }
-  33% {
-    font-variation-settings: 'wght' 300;
-  }
-  67% {
-    font-variation-settings: 'wght' 1000;
-  }
-  100% {
-    font-variation-settings: 'wght' 600;
-  }
-}
-
-.homepage-header .logo-holder > .logo .name {
-  color: var(--text-color);
-  font-size: 3.6rem;
-  font-weight: normal;
 }
 
 .homepage-header .searchbox {
@@ -123,7 +99,7 @@
   width: 100%;
   height: 3rem;
   line-height: 3rem;
-  color: var(--text-color);
+  color: var(--text-color-faded);
   font-size: 1.6rem;
   font-weight: bold;
   text-transform: uppercase;

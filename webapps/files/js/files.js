@@ -58,9 +58,9 @@
         this.handleReloadButton.bind(this)
       );
 
-      window.Settings.getValue('files.quick-access').then((data) => {
+      Settings.getValue('files.quick-access').then((data) => {
         if (!Array.isArray(data)) {
-          window.Settings.setValue(
+          Settings.setValue(
             'files.quick-access',
             this.DEFAULT_SHORTCUTS
           );
@@ -91,12 +91,14 @@
 
       this.fileContainer.innerHTML = '';
       this.pathName.innerHTML = path.replaceAll('//', '/');
-      window.SDCardManager.list(path).then((files) => {
+      console.log(path);
+      SDCardManager.list(path).then((files) => {
         files.sort();
         files.forEach((file) => {
           const item = document.createElement('div');
           item.classList.add('file');
-          window.SDCardManager
+          this.fileContainer.appendChild(item);
+          SDCardManager
             .getFileStats(`${path}/${file}`)
             .then((stat) => {
               if (stat.isDirectory()) {
@@ -118,7 +120,7 @@
                       `Do you want to install a 3rd-party app from ${file}? It could be a malicious app.`,
                       (result) => {
                         if (result) {
-                          window.AppsManager.installPackage(
+                          AppsManager.installPackage(
                             `${path}/${file}`
                           );
                         }
@@ -127,12 +129,12 @@
                   };
                 }
 
-                const mime = window.SDCardManager.getMime(file);
+                const mime = SDCardManager.getMime(file);
                 if (mime.startsWith('text/')) {
                   item.classList.add('text');
                 } else if (mime.startsWith('image/')) {
                   item.classList.add('image');
-                  window.SDCardManager
+                  SDCardManager
                     .read(`${path}/${file}`, { encoding: 'base64' })
                     .then((data) => {
                       // Call a function to generate the HTML content with the Base64-encoded image data
@@ -177,11 +179,11 @@
       let totalSize = 0;
 
       async function calculateSize (filePath) {
-        const stats = await window.SDCardManager.getFileStats(filePath);
+        const stats = await SDCardManager.getFileStats(filePath);
         if (stats.isFile()) {
           totalSize += stats.size;
         } else if (stats.isDirectory()) {
-          const nestedFiles = await window.SDCardManager.list(filePath);
+          const nestedFiles = await SDCardManager.list(filePath);
 
           nestedFiles.forEach((file) => {
             const nestedFilePath = path.join(filePath, file);

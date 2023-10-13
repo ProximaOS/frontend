@@ -1,0 +1,71 @@
+#history {
+  padding: 0.5rem;
+  box-sizing: border-box;
+}
+
+.history-item {
+  width: 100%;
+  display: flex;
+  padding: 0 1rem;
+  box-sizing: border-box;
+  gap: 1rem;
+  border-radius: 1rem;
+  transition: background-color 0.3s ease;
+}
+
+.history-item:hover {
+  transition: none;
+  background-color: var(--item-hover);
+}
+
+.history-item:active {
+  transition: none;
+  background-color: var(--item-active);
+}
+
+.history-item .icon-holder {
+  padding: 1rem 0;
+  box-sizing: border-box;
+  flex-shrink: 0;
+}
+
+.history-item .icon-holder > img {
+  width: 4rem;
+  height: 4rem;
+  background-color: var(--item-plus);
+  border-radius: 0;
+  object-fit: cover;
+  display: block;
+}
+
+.history-item .text-holder {
+  flex-grow: 1;
+  width: 100%;
+  padding: 1rem 0;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+.history-item .text-holder > .title {
+  width: 100%;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  height: 2.2rem;
+  line-height: 2.2rem;
+  color: var(--text-color);
+  font-size: 1.6rem;
+  font-weight: normal;
+}
+
+.history-item .text-holder > .url {
+  width: 100%;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  height: 2rem;
+  line-height: 2rem;
+  color: var(--text-color-faded);
+  font-size: 1.4rem;
+  font-weight: normal;
+}

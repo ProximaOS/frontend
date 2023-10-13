@@ -1,6 +1,8 @@
-.app {
+.app,
+.panel {
   background-color: transparent;
   overflow: hidden;
+  user-select: none;
 }
 
 #drop-indicator {
@@ -18,4 +20,3 @@
   opacity: 1;
   visibility: visible;
 }
-})(window);

@@ -173,10 +173,12 @@ const { l18n, initializeLocale } = require('../locales/locale_reader');
     });
 
     // Load JavaScript and CSS files
-    const scriptPath = path.join(__dirname, '..', '..', '..', 'internal', 'dom', 'index.js');
-    const cssPath = path.join(__dirname, '..', '..', '..', 'internal', 'dom', 'html.css');
-    webview.webContents.executeJavaScript(fs.readFileSync(scriptPath, 'utf8'));
-    webview.webContents.insertCSS(fs.readFileSync(cssPath, 'utf8'));
+    webview.webContents.on('did-finish-load', () => {
+      const scriptPath = path.join(__dirname, '..', '..', '..', 'internal', 'dom', 'index.js');
+      const cssPath = path.join(__dirname, '..', '..', '..', 'internal', 'dom', 'html.css');
+      webview.webContents.executeJavaScript(fs.readFileSync(scriptPath, 'utf8'));
+      webview.webContents.insertCSS(fs.readFileSync(cssPath, 'utf8'));
+    });
 
     // Open the DevTools.
     if (isDev) {

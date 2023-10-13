@@ -12,6 +12,7 @@
     keyboard: document.getElementById('keyboard'),
     softwareBackButton: document.getElementById('software-back-button'),
     softwareHomeButton: document.getElementById('software-home-button'),
+    bottomPanel: document.getElementById('bottom-panel'),
     dock: document.getElementById('dock'),
 
     HIDDEN_ROLES: ['homescreen', 'keyboard', 'system', 'theme'],
@@ -327,8 +328,10 @@
 
       if (id !== 'homescreen') {
         this.wallpapers.classList.add('app-open');
+        this.bottomPanel.classList.remove('homescreen');
       } else {
         this.wallpapers.classList.remove('app-open');
+        this.bottomPanel.classList.add('homescreen');
       }
 
       if (windowDiv.classList.contains('fullscreen')) {
@@ -352,6 +355,7 @@
       }
       this.focusedWindow = windowDiv;
 
+      this.handleThemeColorFocusUpdated(id);
       Settings.addObserver('video.dark_mode.enabled', () =>
         this.handleThemeColorFocusUpdated(id)
       );

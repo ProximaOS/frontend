@@ -90,7 +90,7 @@
     onPointerUp: function () {
       const offsetY = this.startY - this.currentY;
       const maxHeight = this.yPosThreshold;
-      let progress = 1 - offsetY / maxHeight;
+      let progress = offsetY / maxHeight;
 
       progress = Math.min(1, progress); // Limit progress between 0 and 1
 
@@ -112,7 +112,7 @@
           this.motionElement.classList.remove('transitioning');
         }, 500);
       } else {
-        this.currentProgress = 1;
+        this.currentProgress = 0;
         this.lastProgress = this.currentProgress;
         this.statusbar.style.setProperty('--motion-progress', 0);
         this.statusbar.style.setProperty('--overscroll-progress', 0);

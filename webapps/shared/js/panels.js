@@ -19,6 +19,9 @@
     bindScrollEvents: function () {
       this.panels.forEach((panel) => {
         const content = panel.querySelector('.content');
+        if (!content) {
+          return;
+        }
 
         if ('Scrollbar' in window) {
           const scrollbar = Scrollbar.init(content, {

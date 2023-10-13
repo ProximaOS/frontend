@@ -24,6 +24,8 @@
 
     timer: null,
 
+    DEFAULT_PAGE_INDEX: 1,
+
     init: function () {
       this.dockElement.style.setProperty('--grid-columns', this.gridColumns);
       this.gridElement.style.setProperty('--grid-columns', this.gridColumns);
@@ -78,8 +80,8 @@
       this.apps = this.apps.filter(
         (obj) => this.HIDDEN_ROLES.indexOf(obj.manifest.role) === -1
       );
-      const pages = this.splitArray(this.apps, 4 * 6);
-      console.log(pages);
+
+      const pages = this.splitArray(this.apps, this.gridColumns * this.gridRows);
       pages.forEach((array, offset) => {
         const rtl = document.dir === 'rtl';
 
@@ -87,8 +89,11 @@
         page.id = `page${offset}`;
         page.classList.add('page');
         page.style.transform = rtl
-          ? `translateX(-${offset * 100}%)`
-          : `translateX(${offset * 100}%)`;
+          ? `translateX(-${(offset + 1) * 100}%)`
+          : `translateX(${(offset + 1) * 100}%)`;
+        if (this.DEFAULT_PAGE_INDEX === offset) {
+          page.scrollIntoView();
+        }
         this.gridElement.appendChild(page);
 
         const dot = document.createElement('div');
@@ -121,6 +126,7 @@
           icon.appendChild(iconHolder);
 
           const iconContainer = document.createElement('img');
+          iconContainer.draggable = false;
           iconContainer.crossOrigin = 'anonymous';
           Object.entries(app.manifest.icons).forEach((entry) => {
             if (entry[0] <= this.APP_ICON_SIZE) {
@@ -153,9 +159,10 @@
       dots.forEach((dot, index) => {
         const distance = Math.abs(
           scrollCenter -
-            (carouselItems[index].getBoundingBoxRect().left +
-              carouselItems[index].clientWidth / 2)
+            (carouselItems[index].getBoundingClientRect().left +
+              this.gridElement.clientWidth / 2)
         );
+        console.log(index, distance);
         const fadeDistance = this.gridElement.clientWidth / 2;
 
         if (distance < fadeDistance) {

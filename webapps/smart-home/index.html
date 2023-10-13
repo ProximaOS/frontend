@@ -5,8 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="theme-color" content="#000000">
   <title>Homescreen</title>
-  <link rel="stylesheet" type="text/css" href="http://default_theme.localhost:8081/style/index.css" />
-  <link rel="stylesheet" type="text/css" href="http://shared.localhost:8081/style/layout.css" />
+  <link rel="stylesheet" type="text/css" href="style/icons/icons.css">
   <link rel="stylesheet" type="text/css" href="style/home.css">
   <link rel="stylesheet" type="text/css" href="style/visuals.css">
   <script defer type="text/javascript" src="js/lib/three.js"></script>
@@ -25,18 +24,55 @@
     <canvas id="background"></canvas>
     <canvas id="foreground"></canvas>
 
-    <div id="content">
-      <header>
-        <div class="time">
-          <h1 id="clock"></h1>
-          <p id="date"></p>
+    <header id="statusbar">
+      <div class="left">
+        <div class="tabs">
+          <div class="tab active" id="webapps-tab">Webapps</div>
+          <div class="tab" id="media-tab">Media</div>
         </div>
+      </div>
 
+      <div class="right">
+        <div class="time">10:36 AM</div>
+        <div class="searchbox" data-icon="search">Search...</div>
         <div class="toolbar">
           <button data-icon="settings"></button>
           <button data-icon="bell"></button>
+          <button class="account"></button>
         </div>
-      </header>
+      </div>
+    </header>
+
+    <div class="panel">
+      <div id="content" class="panel">
+        <div class="content">
+          <div class="content-row">
+            <ul id="webapps">
+              <div class="webapp"></div>
+              <div class="webapp"></div>
+              <div class="webapp"></div>
+              <div class="webapp"></div>
+              <div class="webapp"></div>
+              <div class="webapp"></div>
+              <div class="webapp"></div>
+              <div class="webapp"></div>
+              <div class="webapp"></div>
+              <div class="webapp"></div>
+            </ul>
+          </div>
+
+          <div class="content-row">
+            <div class="selected-card-panel">
+              <h1>Placeholder</h1>
+              <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. In veritatis quidem impedit quasi itaque consectetur odio aut nostrum sint sed laudantium ipsam consequuntur incidunt, perferendis assumenda ad delectus at error.</p>
+              <nav>
+                <a href="#" id="launch">Launch</a>
+                <a href="#" id="learn-more">Learn More</a>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </body>
