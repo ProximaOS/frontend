@@ -1,0 +1,33 @@
+#utility-tray-wifi,
+#utility-tray-bluetooth {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  translate: -50% -50%;
+  width: calc(100% - 2rem);
+  max-width: 40rem;
+  height: max-content;
+  max-height: calc(100% - var(--statusbar-height) - 2.5rem);
+  background-color: var(--acrylic-background);
+  border-radius: 2rem;
+  --background: transparent;
+}
+
+#screen.software-buttons-enabled #utility-tray-wifi,
+#screen.software-buttons-enabled #utility-tray-bluetooth {
+  max-height: calc(
+    100% - var(--statusbar-height) - var(--software-buttons-height)
+  );
+}
+
+#utility-tray-wifi .headerbar,
+#utility-tray-bluetooth .headerbar {
+  --statusbar-height: 0rem;
+  background-image: none;
+  backdrop-filter: none;
+}
+
+#utility-tray-wifi .content,
+#utility-tray-bluetooth .content {
+  --software-buttons-height: 0rem;
+}

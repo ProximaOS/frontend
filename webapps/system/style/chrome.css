@@ -516,7 +516,7 @@
 
 .chrome .tabs-view .card {
   top: calc(var(--statusbar-height) + 1.5rem);
-  height: calc((100% - 1.5rem - var(--statusbar-height)) - ((100% - 1.5rem - var(--statusbar-height)) * var(--card-progress, 0)));
+  height: calc(100% - 1.5rem - var(--statusbar-height));
 }
 
 .chrome .tabs-view .content .headerbar {

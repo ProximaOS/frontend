@@ -22,7 +22,9 @@
     dropIndicatorElement: document.getElementById('drop-indicator'),
     apps: [],
 
+    isHoldingDown: false,
     timer: null,
+    timePassed: 0,
 
     DEFAULT_PAGE_INDEX: 1,
 
@@ -31,6 +33,8 @@
       this.gridElement.style.setProperty('--grid-columns', this.gridColumns);
       this.gridElement.style.setProperty('--grid-rows', this.gridRows);
 
+      this.gridElement.addEventListener('pointerdown', this.onPointerDown.bind(this));
+      this.gridElement.addEventListener('pointerup', this.onPointerUp.bind(this));
       window.addEventListener('ipc-message', this.handleIPCMessage.bind(this));
 
       this.gridElement.addEventListener(
@@ -85,7 +89,7 @@
       pages.forEach((array, offset) => {
         const rtl = document.dir === 'rtl';
 
-        const page = document.createElement('div');
+        const page = document.createElement('ul');
         page.id = `page${offset}`;
         page.classList.add('page');
         page.style.transform = rtl
@@ -102,7 +106,7 @@
 
         let index = 0;
         array.forEach((app) => {
-          const icon = document.createElement('div');
+          const icon = document.createElement('li');
           icon.id = `appicon${index}`;
           icon.classList.add('icon');
           const manifestIndex = this.DEFAULT_DOCK_ICONS.indexOf(
@@ -215,6 +219,23 @@
           iconYScale
         });
       }
+    },
+
+    onPointerDown: function () {
+      this.isHoldingDown = true;
+      this.timer = setInterval(() => {
+        if (this.timePassed < 500 && this.isHoldingDown) {
+          this.timePassed += 10;
+          if (this.timePassed >= 500) {
+            this.app.dataset.editMode = !this.app.dataset.editMode;
+          }
+        }
+      }, 10);
+    },
+
+    onPointerUp: function () {
+      this.timePassed = 0;
+      this.isHoldingDown = false;
     },
 
     handleIPCMessage: function (event) {

@@ -11,6 +11,8 @@
   z-index: 1;
   display: grid;
   grid-template-columns: repeat(var(--grid-columns), 1fr);
+  margin: 0;
+  padding: 0;
   transition: all 0.5s cubic-bezier(0.2, 0.9, 0.1, 1.1) 0.5s;
   transform: translateY(0);
 }

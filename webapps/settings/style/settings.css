@@ -117,6 +117,14 @@ html[dir="rtl"] #account-button::after {
   color: var(--text-color);
   font-size: 1.6rem;
   font-weight: normal;
+  display: flex;
+  align-items: center;
+}
+
+.profile-banner > .container figcaption .username::after {
+  content: 'tick-circle';
+  font-family: 'openorchid-icons';
+  margin-inline-start: 0.5rem;
 }
 
 .profile-banner > .container figcaption .stats {
