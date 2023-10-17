@@ -31,6 +31,7 @@
 
       // Add click event listener to the shutter button
       this.shutterButton.addEventListener('click', () => {
+        Transitions.scale(this.viewfinder, this.galleryButton);
         this.captureImage();
       });
 
@@ -98,7 +99,7 @@
 
     saveCapturedImage: function (imageUrl) {
       // Convert the Data URL to a Buffer
-      const imageData = Buffer.from(imageUrl.split(',')[1], 'base64');
+      const imageData = SDCardManager.bufferFrom(imageUrl.split(',')[1], 'base64');
 
       // Create the folder if it doesn't exist
       const folderPath = '/DCIM/MEDIA100';

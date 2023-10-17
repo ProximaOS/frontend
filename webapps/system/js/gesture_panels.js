@@ -3,6 +3,7 @@
 
   const GesturePanels = {
     screen: document.getElementById('screen'),
+    wallpapersContainer: document.getElementById('wallpapers'),
     topPanel: document.getElementById('top-panel'),
     leftPanel: document.getElementById('left-panel'),
     rightPanel: document.getElementById('right-panel'),
@@ -52,17 +53,36 @@
           AppWindow.focusedWindow.dataset.oldTransformOrigin =
             AppWindow.focusedWindow.style.transformOrigin;
         }
-        AppWindow.focusedWindow.style.transformOrigin = 'center bottom';
-        AppWindow.focusedWindow.style.transform = `translateY(${translateY}px) scale(${scale})`;
-        AppWindow.focusedWindow.style.setProperty(
-          '--offset-y',
-          `${translateY}px`
-        );
-        AppWindow.focusedWindow.style.setProperty('--scale', scale);
+        if (AppWindow.focusedWindow.id === 'homescreen') {
+          AppWindow.focusedWindow.style.transformOrigin = 'center';
+          this.wallpapersContainer.classList.add('homescreen-to-cards-view');
+          this.wallpapersContainer.style.setProperty(
+            '--motion-progress',
+            Math.min(1, (1 - scale) * 2)
+          );
+          AppWindow.focusedWindow.style.transform = `scale(${
+            0.75 + scale * 0.25
+          })`;
+          AppWindow.focusedWindow.style.setProperty('--offset-y', 0);
+          AppWindow.focusedWindow.style.setProperty('--scale', scale);
+        } else {
+          AppWindow.focusedWindow.style.transformOrigin = 'center bottom';
+          AppWindow.focusedWindow.style.transform = `translateY(${translateY}px) scale(${scale})`;
+          AppWindow.focusedWindow.style.setProperty(
+            '--offset-y',
+            `${translateY}px`
+          );
+          AppWindow.focusedWindow.style.setProperty('--scale', scale);
+        }
 
         if (distanceY <= -300) {
           CardsView.element.classList.add('will-be-visible');
-          CardsView.element.style.setProperty('--offset-y', `${translateY}px`);
+          if (AppWindow.focusedWindow.id !== 'homescreen') {
+            CardsView.element.style.setProperty(
+              '--offset-y',
+              `${translateY}px`
+            );
+          }
           CardsView.element.style.setProperty('--scale', scale);
         } else {
           CardsView.element.classList.remove('will-be-visible');

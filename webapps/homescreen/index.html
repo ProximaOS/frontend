@@ -15,6 +15,7 @@
     <link rel="stylesheet" type="text/css" href="style/grid.css" />
     <link rel="stylesheet" type="text/css" href="style/paginationBar.css" />
     <link rel="stylesheet" type="text/css" href="style/dockbar.css" />
+    <link rel="stylesheet" type="text/css" href="style/shortcuts.css" />
     <link rel="stylesheet" type="text/css" href="style/search.css" />
     <script defer type="text/javascript" src="http://shared.localhost:8081/js/smooth-scrollbar.js"></script>
     <script defer type="text/javascript" src="http://shared.localhost:8081/js/plugins/overscroll.js"></script>
@@ -28,7 +29,8 @@
 
     <script type="text/javascript" src="http://shared.localhost:8081/js/l10n.js"></script>
     <meta name="defaultLanguage" content="en-US">
-    <meta name="availableLanguages" content="en-US, ar">
+    <meta name="availableLanguages"
+      content="af, ar, az, be, bg, bn, ca, cs, cy, da, de, el, eo, et, en-US, es, eu, fa, fi, fr, ga, gu, gl, he, hi, hr, ht, hu, id, is, it, ja, kn, ko, ku, lt, lv, mk, ms, nl, no, pl, pt, ro, ru, sq, sk, sl, sr, sw, ta, te, th, tl, tr, uk, ur, vi, yi, zh, fr-psaccent, ar-psbidi">
     <link rel="localization" href="/locales/main.{locale}.properties">
   </head>
   <body>
@@ -40,7 +42,16 @@
           <div class="search-button" data-icon="search" data-l10n-id="searchButton"></div>
         </div>
         <ul id="dockbar"></ul>
-        <div id="drop-indicator"></div>
+        <div id="shortcuts">
+          <div id="shortcuts-fake-icon"></div>
+          <div id="shortcuts-menu">
+            <ul id="shortcuts-menu-options"></ul>
+            <ul>
+              <li id="shortcuts-edit-button" data-icon="edit" data-l10n-id="shortcuts-edit"></li>
+              <li id="shortcuts-uninstall-button" data-icon="delete" data-l10n-id="shortcuts-uninstall"></li>
+            </ul>
+          </div>
+        </div>
       </div>
 
       <div id="search" class="panel">

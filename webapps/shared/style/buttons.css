@@ -141,11 +141,11 @@ button[data-icon]::before,
 }
 html[dir="ltr"] button[data-icon]::before,
 html[dir="ltr"] .button[data-icon]::before {
-  left: 1rem;
+  left: 1.5rem;
 }
 html[dir="rtl"] button[data-icon]::before,
 html[dir="rtl"] .button[data-icon]::before {
-  right: 1rem;
+  right: 1.5rem;
 }
 
 html[dir="ltr"] button[data-icon].next::before,

@@ -74,13 +74,15 @@
           <button type="submit" data-icon="search"></button>
         </form>
 
-        <figure id="account-button" data-page-id="account">
-          <img src="" alt="" id="account-button-avatar">
-          <figcaption>
-            <div id="account-button-username"></div>
-            <div id="account-button-contact"></div>
-          </figcaption>
-        </figure>
+        <ul id="account-button-holder">
+          <li id="account-button" class="page hbox" data-page-id="account">
+            <img src="" alt="" id="account-button-avatar">
+            <div class="vbox">
+              <div id="account-button-username"></div>
+              <div id="account-button-contact"></div>
+            </div>
+          </li>
+        </ul>
 
         <header data-l10n-id="networking"></header>
         <ul>
@@ -320,8 +322,7 @@
                 <p data-l10n-id="enableSoftwareButtons"></p>
               </label>
               <span>
-                <input type="checkbox" name="general-softwareButtons-checkbox" id="general-softwareButtons-checkbox"
-                 />
+                <input type="checkbox" name="general-softwareButtons-checkbox" id="general-softwareButtons-checkbox" />
               </span>
             </div>
           </li>
@@ -365,8 +366,7 @@
                 <p data-l10n-id="enable3rdParty"></p>
               </label>
               <span>
-                <input type="checkbox" name="general-enable3rdParty-checkbox" id="general-enable3rdParty-checkbox"
-                 />
+                <input type="checkbox" name="general-enable3rdParty-checkbox" id="general-enable3rdParty-checkbox" />
               </span>
             </div>
           </li>
@@ -531,8 +531,7 @@
                 <p data-l10n-id="enableAutoBrightness"></p>
               </label>
               <span>
-                <input type="checkbox" name="display-autoBrightness-checkbox" id="display-autoBrightness-checkbox"
-                 />
+                <input type="checkbox" name="display-autoBrightness-checkbox" id="display-autoBrightness-checkbox" />
               </span>
             </div>
           </li>
@@ -926,12 +925,12 @@
             <p data-l10n-id="aboutInfo-hostname"></p>
             <p id="aboutInfo-hostname"></p>
           </li>
-          </ul>
-          <ul>
-            <li class="noclick">
-              <p data-l10n-id="aboutInfo-systemName"></p>
-              <p id="aboutInfo-systemName"></p>
-            </li>
+        </ul>
+        <ul>
+          <li class="noclick">
+            <p data-l10n-id="aboutInfo-systemName"></p>
+            <p id="aboutInfo-systemName"></p>
+          </li>
           <li class="noclick">
             <p data-l10n-id="aboutInfo-systemVersion"></p>
             <p id="aboutInfo-systemVersion"></p>

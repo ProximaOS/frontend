@@ -4,26 +4,26 @@
   const { ipcRenderer, contextBridge } = require('electron');
   const musicMetadata = require('music-metadata-browser');
   const mime = require('mime');
-  const manifests = require('../src/js/api/manifest_permissions');
-  const WifiManager = require('../src/js/wifi');
-  const BluetoothManager = require('../src/js/bluetooth');
-  const SDCardManager = require('../src/js/storage');
-  const TimeManager = require('../src/js/time');
-  const Settings = require('../src/js/settings');
-  const AppsManager = require('../src/js/webapps');
-  const ChildProcess = require('../src/js/child_process');
-  const VirtualManager = require('../src/js/virtualization');
-  const PowerManager = require('../src/js/power');
-  const RtlsdrReciever = require('../src/js/rtlsdr');
-  const UsersManager = require('../src/js/users');
-  const TelephonyManager = require('../src/js/telephony');
-  const DisplayManager = require('../src/js/display');
-  const SmsManager = require('../src/js/sms');
-  const DeviceInformation = require('../src/js/device/device_info');
+  const manifests = require('../src/api/manifest_permissions');
+  const WifiManager = require('../src/wifi');
+  const BluetoothManager = require('../src/bluetooth');
+  const SDCardManager = require('../src/storage');
+  const TimeManager = require('../src/time');
+  const Settings = require('../src/settings');
+  const AppsManager = require('../src/webapps');
+  const ChildProcess = require('../src/child_process');
+  const VirtualManager = require('../src/virtualization');
+  const PowerManager = require('../src/power');
+  const RtlsdrReciever = require('../src/rtlsdr');
+  const UsersManager = require('../src/users');
+  const TelephonyManager = require('../src/telephony');
+  const DisplayManager = require('../src/display');
+  const SmsManager = require('../src/sms');
+  const DeviceInformation = require('../src/device/device_info');
 
   require('dotenv').config();
 
-  async function importJavascript (url) {
+  async function importJavascript(url) {
     try {
       const response = await fetch(url);
       const jsCode = await response.text();
@@ -36,7 +36,7 @@
     }
   }
 
-  function registerEvent (ipcName, windowName) {
+  function registerEvent(ipcName, windowName) {
     ipcRenderer.on(ipcName, (event, data) => {
       const customEvent = new CustomEvent(windowName, {
         detail: data,
@@ -126,7 +126,7 @@
     ...api
   });
 
-  function verifyAccess (permission, mapName, value) {
+  function verifyAccess(permission, mapName, value) {
     manifests.checkPermission(permission).then((result) => {
       if (result) {
         api[mapName] = value;
@@ -135,7 +135,7 @@
     });
   }
 
-  function setAccess (permission, mapName, property, value) {
+  function setAccess(permission, mapName, property, value) {
     manifests.checkPermission(permission).then((result) => {
       if (result) {
         api[mapName][property] = value;
@@ -178,22 +178,22 @@
   // contextBridge.exposeInMainWorld('_open', require('./v8js/open'));
   contextBridge.exposeInMainWorld(
     'OrchidNotification',
-    require('./v8js/notifications')
+    require('./vanilla/notifications')
   );
   contextBridge.exposeInMainWorld(
     '_alert',
-    require('./v8js/modal_dialogs').alert
+    require('./vanilla/modal_dialogs').alert
   );
   contextBridge.exposeInMainWorld(
     '_confirm',
-    require('./v8js/modal_dialogs').confirm
+    require('./vanilla/modal_dialogs').confirm
   );
   contextBridge.exposeInMainWorld(
     '_prompt',
-    require('./v8js/modal_dialogs').prompt
+    require('./vanilla/modal_dialogs').prompt
   );
 
-  function playStereoAudio (audioFilePath, xPosition) {
+  function playStereoAudio(audioFilePath, xPosition) {
     const audioContext = new (window.AudioContext ||
       window.webkitAudioContext)();
     const stereoPanner = audioContext.createStereoPanner();
@@ -295,12 +295,12 @@
     });
   });
 
-  function convertToAbsoluteUrl (relativeUrl) {
+  function convertToAbsoluteUrl(relativeUrl) {
     const baseUrl = window.location.origin;
     return new URL(relativeUrl, baseUrl).href;
   }
 
-  async function getFileAsUint8Array (url) {
+  async function getFileAsUint8Array(url) {
     const response = await fetch(url);
     const arrayBuffer = await response.arrayBuffer();
     return new Uint8Array(arrayBuffer);
@@ -465,7 +465,7 @@
 
   document.addEventListener('DOMContentLoaded', function () {
     // Define a function to handle the mutation
-    function handleMutation (mutations) {
+    function handleMutation(mutations) {
       mutations.forEach((mutation) => {
         mutation.addedNodes.forEach((node) => {
           if (node.tagName !== 'WEBVIEW') {
@@ -613,13 +613,11 @@
         title: event.target.getAttribute('title')
       });
       console.log(event.target.getAttribute('title'));
+    } else {
+      ipcRenderer.send('message', {
+        type: 'title',
+        action: 'hide'
+      });
     }
-  });
-
-  document.addEventListener('mouseleave', () => {
-    ipcRenderer.send('message', {
-      type: 'title',
-      action: 'hide'
-    });
   });
 })(window);

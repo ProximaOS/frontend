@@ -41,7 +41,7 @@
     },
 
     handleLuminance: function (luminance) {
-      if (luminance >= 0.6) {
+      if (luminance >= 0.75) {
         this.app.classList.add('light');
         this.app.classList.remove('dark');
         this.isLight = true;

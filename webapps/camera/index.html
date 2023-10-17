@@ -8,16 +8,25 @@
   <title>Camera</title>
   <link rel="stylesheet" type="text/css" href="http://shared.localhost:8081/style/layout.css" />
   <link rel="stylesheet" type="text/css" href="http://shared.localhost:8081/style/icons/icons.css" />
+  <link rel="stylesheet" type="text/css" href="http://shared.localhost:8081/style/transitions.css" />
   <link rel="stylesheet" type="text/css" href="style/viewfinder.css">
   <link rel="stylesheet" type="text/css" href="style/toolbar.css">
   <link rel="stylesheet" type="text/css" href="style/controls.css">
+  <script defer type="text/javascript" src="http://shared.localhost:8081/js/transitions.js"></script>
   <script defer type="text/javascript" src="js/camera.js"></script>
   <script defer type="text/javascript" src="js/viewfinder.js"></script>
+
+  <script type="text/javascript" src="http://shared.localhost:8081/js/l10n.js"></script>
+  <meta name="defaultLanguage" content="en-US">
+  <meta name="availableLanguages"
+    content="af, ar, az, be, bg, bn, ca, cs, cy, da, de, el, eo, et, en-US, es, eu, fa, fi, fr, ga, gu, gl, he, hi, hr, ht, hu, id, is, it, ja, kn, ko, ku, lt, lv, mk, ms, nl, no, pl, pt, ro, ru, sq, sk, sl, sr, sw, ta, te, th, tl, tr, uk, ur, vi, yi, zh, fr-psaccent, ar-psbidi">
+  <link rel="localization" href="/locales/main.{locale}.properties">
 </head>
 
 <body>
   <div class="app">
-    <div class="panel">
+    <div class="panel visible">
+      <video id="viewfinder" autoplay></video>
       <div class="toolbar">
         <button id="settings-button" data-icon="settings"></button>
         <button id="switch-button" data-icon="camera-cameraorientation"></button>
@@ -28,7 +37,6 @@
           <span data-icon="gallery-filterscircleopacity100"></span>
         </button>
       </div>
-      <video id="viewfinder" autoplay></video>
       <div id="controls">
         <div id="record-button" data-icon="camera-videorecorder"></div>
         <div id="shutter-button"></div>

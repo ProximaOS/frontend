@@ -8,7 +8,7 @@
   max-width: 40rem;
   height: max-content;
   max-height: calc(100% - var(--statusbar-height) - 2.5rem);
-  background-color: var(--acrylic-background);
+  background-color: var(--acrylic-background-plus);
   border-radius: 2rem;
   --background: transparent;
 }
@@ -22,7 +22,7 @@
 
 #utility-tray-wifi .headerbar,
 #utility-tray-bluetooth .headerbar {
-  --statusbar-height: 0rem;
+  --statusbar-height: 0.5rem;
   background-image: none;
   backdrop-filter: none;
 }

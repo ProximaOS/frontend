@@ -43,5 +43,27 @@
     "telephony": {},
     "sms": {}
   },
-  "display": "immersive"
+  "display": "immersive",
+  "shortcuts": [
+    {
+      "icon": "/style/shortcuts/wifi.png",
+      "name": "Wi-Fi",
+      "launch_path": "?page=wifi"
+    },
+    {
+      "icon": "/style/shortcuts/bluetooth.png",
+      "name": "Bluetooth",
+      "launch_path": "?page=bluetooth"
+    },
+    {
+      "icon": "/style/shortcuts/data.png",
+      "name": "Cellular Data",
+      "launch_path": "?page=data"
+    },
+    {
+      "icon": "/style/shortcuts/accessibility.png",
+      "name": "Accessibility",
+      "launch_path": "?page=accessibility"
+    }
+  ]
 }

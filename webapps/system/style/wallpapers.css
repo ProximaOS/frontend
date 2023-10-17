@@ -34,6 +34,13 @@
   visibility: hidden;
 }
 
+#screen.mobile #wallpapers.homescreen-to-cards-view .blur-overlay {
+  backdrop-filter: blur(calc(20px * var(--motion-progress, 0))) saturate(calc(100% + (80% * var(--motion-progress, 0))));
+  background-color: rgba(51,51,51,calc(0.3 * var(--motion-progress, 0)));
+  opacity: 1;
+  visibility: visible;
+}
+
 #screen.mobile #wallpapers.app-open .blur-overlay {
   backdrop-filter: blur(20px) saturate(180%);
   background-color: rgba(51,51,51,0.3);

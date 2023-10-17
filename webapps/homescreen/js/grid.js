@@ -19,7 +19,10 @@
     dockElement: document.getElementById('dockbar'),
     paginationBar: document.getElementById('paginationBar'),
     paginationBarDots: paginationBar.querySelector('.dots'),
-    dropIndicatorElement: document.getElementById('drop-indicator'),
+    shortcuts: document.getElementById('shortcuts'),
+    shortcutsMenu: document.getElementById('shortcuts-menu'),
+    shortcutsList: document.getElementById('shortcuts-menu-options'),
+    shortcutsFakeIcon: document.getElementById('shortcuts-fake-icon'),
     apps: [],
 
     isHoldingDown: false,
@@ -33,8 +36,10 @@
       this.gridElement.style.setProperty('--grid-columns', this.gridColumns);
       this.gridElement.style.setProperty('--grid-rows', this.gridRows);
 
+      document.addEventListener('click', this.onClick.bind(this));
       this.gridElement.addEventListener('pointerdown', this.onPointerDown.bind(this));
       this.gridElement.addEventListener('pointerup', this.onPointerUp.bind(this));
+      this.gridElement.addEventListener('contextmenu', this.handleContextMenu.bind(this));
       window.addEventListener('ipc-message', this.handleIPCMessage.bind(this));
 
       this.gridElement.addEventListener(
@@ -123,6 +128,9 @@
           }
           icon.addEventListener('click', (event) =>
             this.handleAppClick(event, app, iconContainer)
+          );
+          icon.addEventListener('contextmenu', (event) =>
+            this.handleIconContextMenu(event, app, iconContainer)
           );
 
           const iconHolder = document.createElement('div');
@@ -221,6 +229,12 @@
       }
     },
 
+    onClick: function (event) {
+      if (event.target === this.shortcuts) {
+        this.shortcuts.classList.remove('visible');
+      }
+    },
+
     onPointerDown: function () {
       this.isHoldingDown = true;
       this.timer = setInterval(() => {
@@ -236,6 +250,76 @@
     onPointerUp: function () {
       this.timePassed = 0;
       this.isHoldingDown = false;
+    },
+
+    handleContextMenu: function () {
+      this.app.dataset.editMode = !this.app.dataset.editMode;
+    },
+
+    handleIconContextMenu: async function (event, app, icon) {
+      event.preventDefault();
+
+      let langCode;
+      try {
+        langCode = navigator.mozL10n.language.code || 'en-US';
+      } catch (error) {
+        // If an error occurs, set a default value for langCode
+        langCode = 'en-US';
+      }
+
+      let manifestUrl;
+      if (app.manifestUrl[langCode]) {
+        manifestUrl = app.manifestUrl[langCode];
+      } else {
+        manifestUrl = app.manifestUrl['en-US'];
+      }
+
+      let manifest;
+      await fetch(manifestUrl)
+        .then((response) => response.json())
+        .then(function (data) {
+          manifest = data;
+          // You can perform further operations with the 'manifest' variable here
+        })
+        .catch(function (error) {
+          console.log('Error fetching manifest:', error);
+        });
+
+      this.shortcuts.classList.add('visible');
+
+      const iconBox = icon.getBoundingClientRect();
+
+      this.shortcutsFakeIcon.src = icon.src;
+      this.shortcutsFakeIcon.style.left = iconBox.left + 'px';
+      this.shortcutsFakeIcon.style.top = iconBox.top + 'px';
+
+      this.shortcutsList.innerHTML = '';
+      manifest.shortcuts.forEach(shortcut => {
+        const item = document.createElement('li');
+        this.shortcutsList.appendChild(item);
+
+        const iconHolder = document.createElement('div');
+        iconHolder.classList.add('icon-holder');
+        item.appendChild(iconHolder);
+
+        const icon = document.createElement('img');
+        const url = new URL(app.manifestUrl['en-US']);
+        icon.src = url.origin + shortcut.icon;
+        icon.classList.add('icon');
+        iconHolder.appendChild(icon);
+
+        const name = document.createElement('div');
+        name.classList.add('name');
+        name.textContent = shortcut.name;
+        item.appendChild(name);
+      });
+
+      this.shortcutsMenu.style.top = (iconBox.top + 60) + 'px';
+      if (iconBox.left > (window.innerWidth - this.shortcutsMenu.clientWidth)) {
+        this.shortcutsMenu.style.left = (iconBox.left - this.shortcutsMenu.clientWidth + 50) + 'px';
+      } else {
+        this.shortcutsMenu.style.left = iconBox.left + 'px';
+      }
     },
 
     handleIPCMessage: function (event) {

@@ -5,6 +5,10 @@
   user-select: none;
 }
 
+#home {
+  filter: none;
+}
+
 #drop-indicator {
   position: absolute;
   background-color: rgba(255, 255, 255, 0.5);
