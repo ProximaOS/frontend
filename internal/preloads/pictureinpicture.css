@@ -1,0 +1,27 @@
+.openorchid-pip-button {
+  position: absolute;
+  min-width: 50px;
+  width: max-content;
+  height: 50px;
+  background: rgba(51, 51, 51, 0.3) url(openorchid://res/picture-in-picture@2.25x.png) no-repeat center / 20px;
+  border-radius: 25px;
+  outline: 10px solid transparent;
+  outline-offset: 10px;
+  border: none;
+  backdrop-filter: blur(20px) saturate(180%);
+  transition: transform 0.3s ease;
+}
+
+.openorchid-pip-button:hover {
+  background-color: rgba(67, 67, 67, 0.3);
+}
+
+.openorchid-pip-button:active {
+  background-color: rgba(83, 83, 83, 0.3);
+  transition: none;
+  transform: scale(0.9);
+}
+
+.openorchid-pip-button.enabled {
+  background-color: #0061e0;
+}

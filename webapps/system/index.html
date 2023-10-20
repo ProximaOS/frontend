@@ -54,6 +54,7 @@
   <link rel="stylesheet" type="text/css" href="style/login_ui.css">
   <link rel="stylesheet" type="text/css" href="style/incomingcall.css">
   <link rel="stylesheet" type="text/css" href="style/utility_tray_panels.css">
+  <link rel="stylesheet" type="text/css" href="style/charging_overlay.css">
 
   <!-- Stylesheets - Desktop -->
   <link rel="stylesheet" type="text/css" href="desktop/style/desktop_system.css">
@@ -489,6 +490,13 @@
         </div>
       </div>
 
+      <div id="charging-overlay">
+        <div class="charging-overlay-container">
+          <div id="charging-overlay-icon"></div>
+          <div id="charging-overlay-detail"></div>
+        </div>
+      </div>
+
       <div id="power-screen">
         <div class="buttons">
           <button id="power-screen-shutdown-button" data-icon="power" data-l10n-id="powerScreen-shutdown"></button>
@@ -508,15 +516,15 @@
 
       <div id="drag-and-drop"></div>
 
+      <div id="snackbar" class="snackbar hidden">
+        <div id="snackbar-label" class="label"></div>
+      </div>
+
       <div id="text-selection">
         <button id="text-selection-copy-button" data-icon="textselection-copy"></button>
         <button id="text-selection-cut-button" data-icon="textselection-cut"></button>
         <button id="text-selection-paste-button" data-icon="textselection-paste"></button>
         <button id="text-selection-select-all-button" data-icon="textselection-selectall"></button>
-      </div>
-
-      <div id="snackbar" class="snackbar hidden">
-        <div id="snackbar-label" class="label"></div>
       </div>
 
       <div id="context-menu">

@@ -7,6 +7,10 @@ body {
   background-color: var(--background-minus);
 }
 
+.app, .panel {
+  background-color: var(--background-minus);
+}
+
 #keyboard {
   position: absolute;
   left: 0;
@@ -76,7 +80,7 @@ body {
 #keys .keyboard-row .key {
   width: 100%;
   height: 100%;
-  flex-grow: 1;
+  flex: 1;
   background-color: var(--background-plus);
   border-radius: 0.5rem;
   text-align: center;
@@ -86,15 +90,48 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
+  border: none;
 }
 
 #keys .keyboard-row .key.special {
   background-color: var(--item-plus);
 }
 
+#keys .keyboard-row .key.shift {
+  font-size: 0;
+  background-image: url(images/light/shift.png);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 2rem;
+}
+
+#keys .keyboard-row .key.backspace {
+  font-size: 0;
+  background-image: url(images/light/delete.png);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 2rem;
+}
+
+#keys .keyboard-row .key.shift.active {
+  background-image: url(images/light/shift_on.png);
+}
+
 #keys .keyboard-row .key.return {
+  font-size: 0;
   background-color: var(--accent-color);
+  background-image: url(images/dark/return.png);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 2rem;
   color: var(--accent-color-plus);
+}
+
+.alternate-indicator {
+  background-image: url(images/light/more.png);
+  background-repeat: no-repeat;
+  background-position: center bottom 0.5rem;
+  background-size: 1.1rem 0.3rem;
 }
 
 #toolbar {
@@ -182,6 +219,26 @@ body {
 }
 
 @media screen and (prefers-color-scheme: dark) {
+  #keys .keyboard-row .key.backspace {
+    background-image: url(images/dark/delete.png);
+  }
+
+  #keys .keyboard-row .key.shift {
+    background-image: url(images/dark/shift.png);
+  }
+
+  #keys .keyboard-row .key.shift.active {
+    background-image: url(images/dark/shift_on.png);
+  }
+
+  #keys .keyboard-row .key.return {
+    background-image: url(images/light/return.png);
+  }
+
+  .alternate-indicator {
+    background-image: url(images/dark/more.png);
+  }
+
   #voice-typing-button {
     background: url(images/dark/voice_typing.png) no-repeat center / 2.4rem;
   }

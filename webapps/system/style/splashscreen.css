@@ -20,3 +20,8 @@
   translate: -50% -50%;
   object-fit: cover;
 }
+
+#splashscreen.hidden #splashscreen-video {
+  transition: all 0.5s ease 1s;
+  opacity: 0;
+}

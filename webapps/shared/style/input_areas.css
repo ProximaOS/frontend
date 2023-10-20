@@ -1,4 +1,5 @@
 input[type="text"],
+input[type="number"],
 input[type="email"],
 input[type="password"],
 input[type="search"],
@@ -22,6 +23,7 @@ input[type="timedate"] {
 }
 
 input[type="text"]:focus,
+input[type="number"]:focus,
 input[type="username"]:focus,
 input[type="email"]:focus,
 input[type="password"]:focus,
@@ -34,11 +36,15 @@ input[type="timedate"]:focus {
 }
 
 .lists ul li input[type="text"],
+.lists ul li input[type="margin"],
 .lists ul li input[type="username"],
 .lists ul li input[type="email"],
 .lists ul li input[type="password"],
 .lists ul li input[type="search"],
-.lists ul li input[type="url"] {
+.lists ul li input[type="url"],
+.lists ul li input[type="time"],
+.lists ul li input[type="date"],
+.lists ul li input[type="timedate"] {
   margin: 0;
 }
 
@@ -58,6 +64,7 @@ form.search {
 }
 
 form.search input[type="text"],
+form.search input[type="number"],
 form.search input[type="username"],
 form.search input[type="email"],
 form.search input[type="password"],
@@ -73,6 +80,7 @@ form.search input[type="timedate"] {
 }
 
 form.search input[type="text"]:first-child,
+form.search input[type="number"]:first-child,
 form.search input[type="username"]:first-child,
 form.search input[type="email"]:first-child,
 form.search input[type="password"]:first-child,
@@ -125,6 +133,7 @@ form.messagebox {
 }
 
 form.messagebox input[type="text"],
+form.messagebox input[type="number"],
 form.messagebox input[type="username"],
 form.messagebox input[type="email"],
 form.messagebox input[type="password"],
@@ -142,6 +151,7 @@ form.messagebox input[type="timedate"] {
 }
 
 form.messagebox input[type="text"]:first-child,
+form.messagebox input[type="number"]:first-child,
 form.messagebox input[type="username"]:first-child,
 form.messagebox input[type="email"]:first-child,
 form.messagebox input[type="password"]:first-child,

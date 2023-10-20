@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Word Document Editor</title>
+  <link rel="stylesheet" type="text/css" href="http://default_theme.localhost:8081/style/index.css" />
+  <link rel="stylesheet" type="text/css" href="http://shared.localhost:8081/style/layout.css" />
+  <link rel="stylesheet" type="text/css" href="http://shared.localhost:8081/style/icons/icons.css" />
+  <link rel="stylesheet" type="text/css" href="http://shared.localhost:8081/style/panels.css" />
+  <link rel="stylesheet" type="text/css" href="http://shared.localhost:8081/style/headers.css" />
+  <link rel="stylesheet" type="text/css" href="http://shared.localhost:8081/style/buttons.css" />
+  <link rel="stylesheet" type="text/css" href="http://shared.localhost:8081/style/input_areas.css" />
+  <link rel="stylesheet" href="style/index.css">
+
+  <script type="text/javascript" src="http://shared.localhost:8081/js/l10n.js"></script>
+  <meta name="defaultLanguage" content="en-US">
+  <meta name="availableLanguages"
+    content="af, ar, az, be, bg, bn, ca, cs, cy, da, de, el, eo, et, en-US, es, eu, fa, fi, fr, ga, gu, gl, he, hi, hr, ht, hu, id, is, it, ja, kn, ko, ku, lt, lv, mk, ms, nl, no, pl, pt, ro, ru, sq, sk, sl, sr, sw, ta, te, th, tl, tr, uk, ur, vi, yi, zh, fr-psaccent, ar-psbidi">
+  <link rel="localization" href="/locales/main.{locale}.properties">
+</head>
+
+<body>
+  <div id="app" class="app">
+    <div id="root" class="panel visible">
+      <div class="headerbar compact">
+        <h1>Writer</h1>
+      </div>
+      <div class="content">
+        <div class="toolbar">
+          <select id="font-family">
+            <option value="Arial">Arial</option>
+            <option value="Verdana">Verdana</option>
+            <option value="Times New Roman">Times New Roman</option>
+          </select>
+          <input type="number" id="font-size" min="10" max="72" value="12">
+          <select id="font-style">
+            <option value="normal">Normal</option>
+            <option value="italic">Italic</option>
+            <option value="oblique">Oblique</option>
+          </select>
+          <select id="font-weight">
+            <option value="normal">Normal</option>
+            <option value="bold">Bold</option>
+            <option value="bolder">Bolder</option>
+            <option value="lighter">Lighter</option>
+          </select>
+          <select id="text-decoration">
+            <option value="none">None</option>
+            <option value="underline">Underline</option>
+            <option value="overline">Overline</option>
+            <option value="line-through">Line Through</option>
+          </select>
+          <input type="color" id="text-color" value="#000000">
+          <input type="text" id="text-shadow" placeholder="Text Shadow (e.g., 2px 2px 4px #000000)">
+          <input type="color" id="background-color" value="#ffffff">
+          <select id="text-direction">
+            <option value="ltr">Left to Right</option>
+            <option value="rtl">Right to Left</option>
+          </select>
+        </div>
+        <div id="editor" contenteditable="true"></div>
+        <button id="save">Save</button>
+        <button id="import">Import</button>
+      </div>
+    </div>
+  </div>
+  <script src="js/bootstrap.js"></script>
+</body>
+
+</html>

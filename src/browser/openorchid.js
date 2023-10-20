@@ -176,7 +176,7 @@ const { l18n, initializeLocale } = require('../locales/locale_reader');
     });
 
     // Load JavaScript and CSS files
-    webview.webContents.on('did-finish-load', () => {
+    webview.webContents.on('dom-ready', () => {
       const webviewScriptPath = path.join(__dirname, '..', '..', 'internal', 'webview', 'webview.js');
       webview.webContents.executeJavaScript(fs.readFileSync(webviewScriptPath, 'utf8'));
 

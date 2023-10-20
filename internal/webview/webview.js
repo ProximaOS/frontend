@@ -1,8 +1,6 @@
 !(function () {
   'use strict';
 
-  alert('Yes');
-
   // Define a function to handle the mutation
   function handleMutation(mutations) {
     mutations.forEach((mutation) => {
@@ -10,13 +8,15 @@
         if (node.tagName === 'WEBVIEW') {
           // Set attributes for the newly added webview
           node.setAttribute('useragent', navigator.userAgent);
-          node.setAttribute('preload', 'openorchid://preload.js');
+          if ('Environment' in window) {
+            node.setAttribute('preload', `file://${Environment.dirName().replaceAll('\\', '/')}/preload.js`);
+          }
           node.setAttribute('nodeintegration', true);
           node.setAttribute('nodeintegrationinsubframes', true);
 
-          node.addEventListener('dom-ready', () => {
+          const loadCSS = (stylesheet) => {
             const xhr = new XMLHttpRequest();
-            xhr.open('GET', 'openorchid://preloads/html.css', true);
+            xhr.open('GET', stylesheet, true);
             xhr.onreadystatechange = function () {
               if (xhr.readyState === 4 && xhr.status === 200) {
                 const cssContent = xhr.responseText;
@@ -30,9 +30,11 @@
               }
             };
             xhr.send();
+          };
 
+          const loadJavascript = (script) => {
             const xhr1 = new XMLHttpRequest();
-            xhr1.open('GET', 'openorchid://preloads/index.js', true);
+            xhr1.open('GET', script, true);
             xhr1.onreadystatechange = function () {
               if (xhr1.readyState === 4 && xhr1.status === 200) {
                 const jsContent = xhr1.responseText;
@@ -46,6 +48,15 @@
               }
             };
             xhr1.send();
+          };
+
+          node.addEventListener('dom-ready', () => {
+            loadCSS('openorchid://preloads/html.css');
+            loadCSS('openorchid://preloads/fontfamilies.css');
+            loadCSS('openorchid://preloads/pictureinpicture.css');
+            loadCSS('openorchid://preloads/videoplayer.css');
+
+            loadJavascript('openorchid://preloads/override.js');
 
             if (/^http:\/\/.*\.localhost:8081\//.test(node.getURL())) {
               node.setAttribute('nodeintegration', true);

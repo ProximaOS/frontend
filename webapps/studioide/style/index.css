@@ -101,7 +101,8 @@ html, body {
     border-inline-end: none;
   }
 
-  #root > .content {
+  #root > .content > *:not(.scroll-content),
+  #root > .content > .scroll-content > * {
     transform: translateY(0);
     opacity: 1;
     visibility: visible;

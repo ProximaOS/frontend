@@ -23,19 +23,6 @@
 
   require('dotenv').config();
 
-  async function importJavascript(url) {
-    try {
-      const response = await fetch(url);
-      const jsCode = await response.text();
-
-      // Using Function (safer than eval)
-      const func = new Function(jsCode);
-      func();
-    } catch (error) {
-      console.error('Error fetching or executing JS:', error);
-    }
-  }
-
   function registerEvent(ipcName, windowName) {
     ipcRenderer.on(ipcName, (event, data) => {
       const customEvent = new CustomEvent(windowName, {
@@ -76,8 +63,9 @@
 
   const Environment = {
     type: process.env.ORCHID_ENVIRONMENT,
+    debugPort: process.debugPort,
     currentDir: process.cwd(),
-    dirName: () => __dirname
+    dirName: () => __dirname,
   };
 
   const IPCRenderManager = {
@@ -468,72 +456,10 @@
     function handleMutation(mutations) {
       mutations.forEach((mutation) => {
         mutation.addedNodes.forEach((node) => {
-          if (node.tagName !== 'WEBVIEW') {
-            return;
+          if (node.tagName === 'WEBVIEW') {
+            // Set attributes for the newly added webview
+            node.preload = `file://${__dirname.replaceAll('\\', '/')}/preload.js`;
           }
-          // Set attributes for the newly added webview
-          node.setAttribute('useragent', navigator.userAgent);
-          node.setAttribute(
-            'preload',
-            `file://${__dirname.replaceAll('\\', '/')}/preload.js`
-          );
-          node.setAttribute('nodeintegration', true);
-          node.setAttribute('nodeintegrationinsubframes', true);
-
-          [
-            'did-start-loading',
-            'did-start-navigation',
-            'did-stop-loading',
-            'dom-ready'
-          ].forEach((eventType) => {
-            node.addEventListener(eventType, () => {
-              try {
-                const xhr = new XMLHttpRequest();
-                xhr.open('GET', 'openorchid://dom/html.css', true);
-                xhr.onreadystatechange = function () {
-                  if (xhr.readyState === 4 && xhr.status === 200) {
-                    const cssContent = xhr.responseText;
-                    node.insertCSS(cssContent);
-                  } else if (xhr.readyState === 4) {
-                    console.error(
-                      'Failed to fetch CSS:',
-                      xhr.status,
-                      xhr.statusText
-                    );
-                  }
-                };
-                xhr.send();
-
-                const xhr1 = new XMLHttpRequest();
-                xhr1.open('GET', 'openorchid://dom/index.js', true);
-                xhr1.onreadystatechange = function () {
-                  if (xhr1.readyState === 4 && xhr1.status === 200) {
-                    const jsContent = xhr1.responseText;
-                    node.executeJavaScript(jsContent);
-                  } else if (xhr1.readyState === 4) {
-                    console.error(
-                      'Failed to fetch JS:',
-                      xhr1.status,
-                      xhr1.statusText
-                    );
-                  }
-                };
-                xhr1.send();
-              } catch (error) {
-                console.error(error);
-              }
-
-              if (
-                /^http:\/\/.*\.localhost:8081\//.test(node.getAttribute('src'))
-              ) {
-                node.setAttribute('nodeintegration', true);
-                node.setAttribute('nodeintegrationinsubframes', true);
-              } else {
-                node.setAttribute('nodeintegration', false);
-                node.setAttribute('nodeintegrationinsubframes', false);
-              }
-            });
-          });
         });
       });
     }

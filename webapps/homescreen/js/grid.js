@@ -37,9 +37,18 @@
       this.gridElement.style.setProperty('--grid-rows', this.gridRows);
 
       document.addEventListener('click', this.onClick.bind(this));
-      this.gridElement.addEventListener('pointerdown', this.onPointerDown.bind(this));
-      this.gridElement.addEventListener('pointerup', this.onPointerUp.bind(this));
-      this.gridElement.addEventListener('contextmenu', this.handleContextMenu.bind(this));
+      this.gridElement.addEventListener(
+        'pointerdown',
+        this.onPointerDown.bind(this)
+      );
+      this.gridElement.addEventListener(
+        'pointerup',
+        this.onPointerUp.bind(this)
+      );
+      this.gridElement.addEventListener(
+        'contextmenu',
+        this.handleContextMenu.bind(this)
+      );
       window.addEventListener('ipc-message', this.handleIPCMessage.bind(this));
 
       this.gridElement.addEventListener(
@@ -90,7 +99,10 @@
         (obj) => this.HIDDEN_ROLES.indexOf(obj.manifest.role) === -1
       );
 
-      const pages = this.splitArray(this.apps, this.gridColumns * this.gridRows);
+      const pages = this.splitArray(
+        this.apps,
+        this.gridColumns * this.gridRows
+      );
       pages.forEach((array, offset) => {
         const rtl = document.dir === 'rtl';
 
@@ -294,29 +306,35 @@
       this.shortcutsFakeIcon.style.top = iconBox.top + 'px';
 
       this.shortcutsList.innerHTML = '';
-      manifest.shortcuts.forEach(shortcut => {
-        const item = document.createElement('li');
-        this.shortcutsList.appendChild(item);
+      if (manifest && manifest.shortcuts) {
+        this.shortcutsList.style.display = 'block';
+        manifest.shortcuts.forEach((shortcut) => {
+          const item = document.createElement('li');
+          this.shortcutsList.appendChild(item);
 
-        const iconHolder = document.createElement('div');
-        iconHolder.classList.add('icon-holder');
-        item.appendChild(iconHolder);
+          const iconHolder = document.createElement('div');
+          iconHolder.classList.add('icon-holder');
+          item.appendChild(iconHolder);
 
-        const icon = document.createElement('img');
-        const url = new URL(app.manifestUrl['en-US']);
-        icon.src = url.origin + shortcut.icon;
-        icon.classList.add('icon');
-        iconHolder.appendChild(icon);
+          const icon = document.createElement('img');
+          const url = new URL(app.manifestUrl['en-US']);
+          icon.src = url.origin + shortcut.icon;
+          icon.classList.add('icon');
+          iconHolder.appendChild(icon);
 
-        const name = document.createElement('div');
-        name.classList.add('name');
-        name.textContent = shortcut.name;
-        item.appendChild(name);
-      });
+          const name = document.createElement('div');
+          name.classList.add('name');
+          name.textContent = shortcut.name;
+          item.appendChild(name);
+        });
+      } else {
+        this.shortcutsList.style.display = 'none';
+      }
 
-      this.shortcutsMenu.style.top = (iconBox.top + 60) + 'px';
-      if (iconBox.left > (window.innerWidth - this.shortcutsMenu.clientWidth)) {
-        this.shortcutsMenu.style.left = (iconBox.left - this.shortcutsMenu.clientWidth + 50) + 'px';
+      this.shortcutsMenu.style.top = iconBox.top + 60 + 'px';
+      if (iconBox.left > window.innerWidth - this.shortcutsMenu.clientWidth) {
+        this.shortcutsMenu.style.left =
+          iconBox.left - this.shortcutsMenu.clientWidth + 50 + 'px';
       } else {
         this.shortcutsMenu.style.left = iconBox.left + 'px';
       }

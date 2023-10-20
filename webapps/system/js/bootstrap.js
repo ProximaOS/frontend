@@ -1,7 +1,7 @@
 !(function (exports) {
   'use strict';
 
-  document.addEventListener('DOMContentLoaded', function () {
+  window.addEventListener('load', function () {
     const screen = document.getElementById('screen');
 
     Settings.addObserver('general.lang.code', (value) => {

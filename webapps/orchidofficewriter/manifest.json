@@ -1,0 +1,30 @@
+{
+  "version": "1.0",
+  "name": "Writer",
+  "long_name": "Orchid Office Writer",
+  "description": "",
+  "launch_path": "/index.html",
+  "icons": {
+    "16": "/style/icons/officewriter_16.png",
+    "32": "/style/icons/officewriter_32.png",
+    "48": "/style/icons/officewriter_48.png",
+    "64": "/style/icons/officewriter_64.png",
+    "128": "/style/icons/officewriter_128.png",
+    "256": "/style/icons/officewriter_256.png"
+  },
+  "developer": {
+    "name": "Orchid Org.",
+    "url": "https://openorchid.github.io/"
+  },
+  "default_locale": "en",
+  "orientation": "portrait-primary",
+  "background_color": "#f0f6ff",
+  "theme_color": "#0061e0",
+  "permissions": {
+    "settings": {},
+    "storage": {},
+    "device-storage:home": {},
+    "device-storage:others": {}
+  },
+  "display": "immersive"
+}

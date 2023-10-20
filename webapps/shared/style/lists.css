@@ -27,9 +27,6 @@
   margin: 0;
   list-style: none;
   min-height: 5rem;
-  display: inline-flex;
-  flex-direction: column;
-  justify-content: center;
   width: 100%;
   padding: 0.5rem 1.5rem;
   box-sizing: border-box;
@@ -128,6 +125,7 @@ html[dir="rtl"] .lists ul li.page::after {
   border-radius: 50%;
   flex-shrink: 0;
   background-color: var(--background-minus);
+  margin-inline-start: -0.5rem;
   margin-inline-end: 1rem;
 }
 

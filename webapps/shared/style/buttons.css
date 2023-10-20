@@ -169,9 +169,12 @@ select {
   width: 100%;
   height: 4rem;
   line-height: 4rem;
-  background: var(--button-normal) url(buttons/images/light/expand.png) no-repeat right 1rem center / 1.6rem;
   border: solid 0.1rem var(--button-normal);
   border-radius: 1rem;
+  background-image: url(buttons/images/light/expand.png);
+  background-color: var(--button-normal);
+  background-repeat: no-repeat;
+  background-size: 1.6rem;
   text-align: left;
   color: transparent;
   text-shadow: 0 0 0 var(--text-color);
@@ -185,6 +188,12 @@ select {
   white-space: nowrap;
   text-overflow: ellipsis;
   outline: none;
+}
+html[dir="ltr"] select {
+  background-position: right 1rem center;
+}
+html[dir="rtl"] select {
+  background-position: left 1rem center;
 }
 
 .lists ul li select {

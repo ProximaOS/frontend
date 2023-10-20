@@ -361,12 +361,20 @@
       gridPreview.classList.add('preview');
       gridTab.appendChild(gridPreview);
 
+      const browserView = document.createElement('div');
+      browserView.classList.add('browser-view');
+      this.browserContainer().appendChild(browserView);
+
       const webview = document.createElement('webview');
       webview.src = url || this.DEFAULT_URL;
       webview.classList.add('browser');
       webview.nodeintegration = true;
       webview.nodeintegrationinsubframes = true;
-      webview.preload = `file://${Environment.dirName().replaceAll('\\', '/')}/preload.js`;
+      webview.preload = `file://${Environment.dirName().replaceAll(
+        '\\',
+        '/'
+      )}/preload.js`;
+      browserView.appendChild(webview);
 
       function updateUserAgent(value) {
         switch (value) {
@@ -378,10 +386,9 @@
             break;
 
           case 'desktop':
-            webview.useragent = navigator.userAgent.replace(
-              /\((.*)\)/i,
-              '(X11; Linux x86_64)'
-            ).replace('Mobile ', '');
+            webview.useragent = navigator.userAgent
+              .replace(/\((.*)\)/i, '(X11; Linux x86_64)')
+              .replace('Mobile ', '');
             break;
 
           case 'default':
@@ -397,7 +404,16 @@
         webview.partition = 'private';
         webview.classList.add('private');
       }
-      this.browserContainer().appendChild(webview);
+
+      const devToolsView = document.createElement('webview');
+      devToolsView.classList.add('devtools');
+      devToolsView.nodeintegration = true;
+      devToolsView.nodeintegrationinsubframes = true;
+      devToolsView.preload = `file://${Environment.dirName().replaceAll(
+        '\\',
+        '/'
+      )}/preload.js`;
+      browserView.appendChild(devToolsView);
 
       webview.addEventListener('ipc-message', this.handleIpcMessage.bind(this));
       webview.addEventListener(
@@ -448,7 +464,7 @@
       webview.addEventListener('close', () => {
         tab.remove();
         gridTab.remove();
-        webview.remove();
+        browserView.remove();
 
         if (this.browserContainer().children.length === 0) {
           if ('AppWindow' in window) {
@@ -489,16 +505,16 @@
           gridTab.classList.remove('active');
         });
 
-        const webviews = this.chrome().querySelectorAll(
-          '.browser-container webview'
+        const browserViews = this.chrome().querySelectorAll(
+          '.browser-container .browser-view'
         );
-        webviews.forEach(function (webview) {
-          webview.classList.remove('active');
+        browserViews.forEach(function (browserView) {
+          browserView.classList.remove('active');
         });
 
         tab.classList.add('active');
         gridTab.classList.add('active');
-        webview.classList.add('active');
+        browserView.classList.add('active');
       };
 
       focus();
@@ -522,7 +538,7 @@
           gridTab.classList.remove('shrink');
           gridTab.remove();
         });
-        webview.remove();
+        browserView.remove();
       });
 
       gridCloseButton.addEventListener('click', (event) => {
@@ -541,7 +557,7 @@
           gridTab.classList.remove('shrink');
           gridTab.remove();
         });
-        webview.remove();
+        browserView.remove();
       });
     },
 
@@ -558,7 +574,7 @@
             suggestion.classList.add('suggestion');
             suggestion.addEventListener('click', () => {
               const webview = this.chrome().querySelector(
-                '.browser-container .browser.active'
+                '.browser-container .browser-view.active > .browser'
               );
               webview.src = this.searchUrl.replace(
                 '{searchTerms}',
@@ -602,7 +618,7 @@
 
       if (event.key === 'Enter') {
         const webview = this.chrome().querySelector(
-          '.browser-container .browser.active'
+          '.browser-container .browser-view.active > .browser'
         );
         const input = event.target.value;
         if (checkURL(input).isURL && checkURL(input).hasProtocol) {
@@ -621,26 +637,26 @@
     },
 
     handleNavbarBackButton: function () {
-      const webview = this.browserContainer().querySelector('.browser.active');
+      const webview = this.browserContainer().querySelector('.browser-view.active > .browser');
       if (webview.canGoBack()) {
         webview.goBack();
       }
     },
 
     handleNavbarForwardButton: function () {
-      const webview = this.browserContainer().querySelector('.browser.active');
+      const webview = this.browserContainer().querySelector('.browser-view.active > .browser');
       if (webview.canGoForward()) {
         webview.goForward();
       }
     },
 
     handleNavbarReloadButton: function () {
-      const webview = this.browserContainer().querySelector('.browser.active');
+      const webview = this.browserContainer().querySelector('.browser-view.active > .browser');
       webview.reload();
     },
 
     handleNavbarHomeButton: function () {
-      const webview = this.browserContainer().querySelector('.browser.active');
+      const webview = this.browserContainer().querySelector('.browser-view.active > .browser');
       webview.src = this.DEFAULT_URL;
     },
 
@@ -662,7 +678,7 @@
     },
 
     handleNavbarOptionsButton: async function (event) {
-      const webview = this.browserContainer().querySelector('.browser.active');
+      const webview = this.browserContainer().querySelector('.browser-view.active > .browser');
 
       const box = this.navbarOptionsButton().getBoundingClientRect();
       const rtl = document.dir === 'rtl';
@@ -896,7 +912,7 @@
     },
 
     handleUrlbarSSLButton: async function (event) {
-      const webview = this.browserContainer().querySelector('.browser.active');
+      const webview = this.browserContainer().querySelector('.browser-view.active > .browser');
 
       const box = this.urlbarSSLButton().getBoundingClientRect();
       const rtl = document.dir === 'rtl';
@@ -969,7 +985,7 @@
     },
 
     handleIpcMessage: function (event) {
-      const webview = this.browserContainer().querySelector('.browser.active');
+      const webview = this.browserContainer().querySelector('.browser-view.active > .browser');
 
       const scrollPosition = event.args[0].top;
       let progress = scrollPosition / 80;
@@ -988,7 +1004,9 @@
     },
 
     handleContextMenu: function (event) {
-      const webview = this.browserContainer().querySelector('.browser.active');
+      const browserView = this.browserContainer().querySelector('.browser-view.active');
+      const webview = this.browserContainer().querySelector('.browser-view.active > .browser');
+      const devToolsView = this.browserContainer().querySelector('.browser-view.active > .devtools');
 
       const itemsBefore = [
         {
@@ -1140,7 +1158,8 @@
           icon: 'edit',
           onclick: () => {
             webview.focus();
-            webview.openDevTools();
+            devToolsView.src = `openorchid://devtools/inspector.html?ws=127.0.0.1:${Environment.debugPort}&webContentsId${webview.getWebContentsId()}`;
+            browserView.classList.toggle('devtools-visible');
           }
         }
       ];
@@ -1176,7 +1195,7 @@
     },
 
     handleDidStartNavigation: function () {
-      const webview = this.browserContainer().querySelector('.browser.active');
+      const webview = this.browserContainer().querySelector('.browser-view.active > .browser');
       this.urlbarInput().value = webview.getURL();
 
       if (webview.getURL() === this.DEFAULT_URL) {
@@ -1194,7 +1213,7 @@
     },
 
     handleThemeColorUpdated: function (event) {
-      const webview = this.browserContainer().querySelector('.browser.active');
+      const webview = this.browserContainer().querySelector('.browser-view.active > .browser');
       const color = event.themeColor;
       if (color) {
         webview.dataset.themeColor = (color + 'C0').toLowerCase();

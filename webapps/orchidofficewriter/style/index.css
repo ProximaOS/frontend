@@ -1,0 +1,97 @@
+body {
+  margin: 0;
+  padding: 0;
+}
+
+.headerbar::before,
+.headerbar::after {
+  display: none;
+}
+
+.toolbar {
+  display: flex;
+  background-color: var(--background);
+  padding: 0 1.5rem 1rem;
+  box-sizing: border-box;
+  width: 100%;
+  overflow-x: auto;
+}
+
+.toolbar select,
+.toolbar input[type="number"],
+.toolbar input[type="color"] {
+  margin: 0;
+  margin-inline-end: 1rem;
+  width: max-content;
+}
+
+.toolbar input[type="color"] {
+  height: 4rem;
+  line-height: 4rem;
+  width: 4rem;
+  border-radius: 50%;
+  border: none;
+  padding: 0;
+  flex-shrink: 0;
+}
+
+.toolbar input[type="color"]::-webkit-color-swatch-wrapper {
+  padding: 0;
+}
+
+.toolbar input[type="color"]::-webkit-color-swatch {
+  border: none;
+  border-radius: 50%;
+  padding: 0;
+}
+
+.toolbar input[type="text"] {
+  margin-inline-end: 1rem;
+  width: 25rem;
+}
+
+.button-group {
+  margin-inline-start: auto;
+}
+
+#editor {
+  width: 100%;
+  height: 100%;
+  border: none;
+  padding: 1.5rem;
+  box-sizing: border-box;
+  font-size: 16px;
+  line-height: 1.6;
+  outline: none;
+  resize: none;
+  background-color: white;
+  border-radius: 1.5rem;
+  flex-grow: 1;
+}
+
+#editor-container {
+  flex-grow: 1;
+  display: flex;
+  width: 100%;
+}
+
+#save,
+#import {
+  padding: 10px 20px;
+  box-sizing: border-box;
+  font-size: 16px;
+  width: 100%;
+}
+
+#editor-container textarea {
+  width: 100%;
+  height: 100%;
+  border: none;
+  padding: 10px;
+  box-sizing: border-box;
+  font-size: 16px;
+  line-height: 1.6;
+  outline: none;
+  resize: none;
+  background-color: white;
+}

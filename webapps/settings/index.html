@@ -74,13 +74,22 @@
           <button type="submit" data-icon="search"></button>
         </form>
 
-        <ul id="account-button-holder">
+        <ul>
           <li id="account-button" class="page hbox" data-page-id="account">
             <img src="" alt="" id="account-button-avatar">
             <div class="vbox">
-              <div id="account-button-username"></div>
-              <div id="account-button-contact"></div>
+              <p id="account-button-username"></p>
+              <p id="account-button-contact"></p>
             </div>
+          </li>
+          <li id="login-button" class="page" data-icon="user">
+            <p data-l10n-id="accountLogin"></p>
+          </li>
+          <li id="devices-button" class="page" data-icon="desktop">
+            <p data-l10n-id="accountDevices"></p>
+          </li>
+          <li id="sync-button" class="page" data-icon="sync">
+            <p data-l10n-id="accountSync"></p>
           </li>
         </ul>
 
@@ -646,7 +655,7 @@
 
       <div class="content lists">
         <ul>
-          <li class="page" data-icon="unlock">
+          <li class="page" data-icon="unlock" data-page-id="lockScreen-mode">
             <p data-l10n-id="lockScreen-mode"></p>
           </li>
           <li class="page" data-icon="usb">
@@ -664,6 +673,26 @@
           </li>
           <li class="page" data-icon="accessibility">
             <p data-l10n-id="lockScreen-irisScanner"></p>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <div id="lockScreen-mode" class="panel">
+      <div class="headerbar">
+        <div class="safezone">
+          <a href="#" data-icon="browser-back" data-page-id="lockScreen"></a>
+          <h1 data-l10n-id="lockScreen-mode"></h1>
+        </div>
+      </div>
+
+      <div class="content lists">
+        <ul>
+          <li id="lockScreen-mode-swipe" class="page">
+            <p data-l10n-id="lockScreen-mode-swipe"></p>
+          </li>
+          <li class="page" data-icon="usb">
+            <p data-l10n-id="lockScreen-mode-pinLock"></p>
           </li>
         </ul>
       </div>

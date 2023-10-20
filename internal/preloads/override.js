@@ -1,8 +1,8 @@
 !(function (exports) {
   'use strict';
 
-  // exports.alert = window._alert;
-  exports.confirm = window._confirm;
-  exports.prompt = window._prompt;
-  exports.Notification = window.OrchidNotification;
+  window.alert = window._alert;
+  window.confirm = window._confirm;
+  window.prompt = window._prompt;
+  window.Notification = window.OrchidNotification;
 })(window);

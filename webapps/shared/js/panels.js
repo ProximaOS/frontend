@@ -23,6 +23,11 @@
           return;
         }
 
+        const children = content.querySelectorAll(':scope > *');
+        children.forEach((child, index) => {
+          child.style.transitionDelay = (500 + (index * 50)) + 'ms';
+        });
+
         if ('Scrollbar' in window) {
           const scrollbar = Scrollbar.init(content, {
             plugins: {

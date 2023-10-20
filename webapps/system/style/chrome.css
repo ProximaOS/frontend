@@ -73,7 +73,7 @@
 }
 
 .chrome.dark .tablist-holder {
-  --background-plus: rgba(0,0,0,0.75);
+  --background-plus: rgba(51,51,51,0.75);
 }
 
 .chrome .tablist {
@@ -291,6 +291,7 @@
 
 .chrome .tablist-holder > button[data-icon]::before,
 .chrome .navbar button[data-icon]::before {
+  position: static;
   font-size: 2rem;
 }
 
@@ -492,7 +493,7 @@
   flex-grow: 1;
 }
 
-.chrome .browser-container > .browser {
+.chrome .browser-container > .browser-view {
   position: absolute;
   top: calc(var(--chrome-tablist-height) + var(--chrome-navbar-height) + (var(--chrome-toolbar-gap) * 3));
   width: 100%;
@@ -501,12 +502,49 @@
   transition: transform 0.5s ease;
 }
 
-.chrome .browser-container > .browser.active {
+.chrome .browser-container > .browser-view.active {
   visibility: visible;
 }
 
-#screen.context-menu-visible .chrome .browser-container > .browser {
+#screen.context-menu-visible .chrome .browser-container > .browser-view {
   pointer-events: none;
+}
+
+.chrome .browser-container > .browser-view.devtools-visible {
+  background-color: var(--background);
+}
+
+.chrome .browser-container > .browser-view .browser {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  transition: all 0.3s ease;
+}
+
+.chrome .browser-container > .browser-view.devtools-visible .browser {
+  background-color: var(--background-plus);
+  width: calc(100% - 31rem);
+  border-radius: 0 1.5rem 1.5rem 0;
+}
+
+.chrome .browser-container > .browser-view .devtools {
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 30rem;
+  height: 100%;
+  background-color: var(--background-minus);
+  border-radius: 1.5rem 0 0 1.5rem;
+  transition: all 0.3s ease;
+  opacity: 0;
+  visibility: hidden;
+}
+
+.chrome .browser-container > .browser-view.devtools-visible .devtools {
+  opacity: 1;
+  visibility: visible;
 }
 
 /* Tabs View */
@@ -987,17 +1025,17 @@ html[dir="rtl"] .chrome.sidetabs .toolbar .tablist-holder {
   height: calc(var(--chrome-navbar-height) + (var(--chrome-toolbar-gap) * 2));
 }
 
-.chrome.sidetabs .browser-container .browser {
+.chrome.sidetabs .browser-container .browser-view {
   top: 5rem;
   width: calc(100% - 6rem);
   height: calc(100% - 5rem);
   overflow: hidden;
 }
-html[dir="ltr"] .chrome.sidetabs .browser-container .browser {
+html[dir="ltr"] .chrome.sidetabs .browser-container .browser-view {
   left: 6rem;
   border-radius: 2rem 0 0 0;
 }
-html[dir="rtl"] .chrome.sidetabs .browser-container .browser {
+html[dir="rtl"] .chrome.sidetabs .browser-container .browser-view {
   right: 6rem;
   border-radius: 0 2rem 0 0;
 }
@@ -1067,11 +1105,11 @@ html[dir="rtl"] .chrome.sidetabs .browser-container .browser {
     background-color: var(--item-active);
   }
 
-  .chrome .browser-container > .browser {
+  .chrome .browser-container > .browser-view {
     transform-origin: top;
   }
 
-  .chrome.tabs-view-visible .browser-container > .browser {
+  .chrome.tabs-view-visible .browser-container > .browser-view {
     transform: scale(0.9);
     overflow: hidden;
     border-radius: 1.5rem;

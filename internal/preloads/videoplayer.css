@@ -1,0 +1,57 @@
+video {
+
+}
+
+video::-webkit-media-controls-panel {
+  background-color: rgba(0, 0, 0, 0.5);
+  border: none;
+}
+
+video::-webkit-media-controls-play-button {
+  color: #fff;
+  background-color: transparent;
+  font-size: 20px;
+}
+
+video::-webkit-media-controls-timeline {
+  background-color: #333;
+}
+
+video::-webkit-media-controls-current-time-display {
+  color: #fff;
+  font-size: 16px;
+}
+
+video::-webkit-media-controls-time-remaining-display {
+  color: #fff;
+  font-size: 16px;
+}
+
+video::-webkit-media-controls-mute-button {
+  color: #fff;
+  font-size: 16px;
+}
+
+video::-webkit-media-controls-volume-slider {
+  background-color: #333;
+}
+
+video::-webkit-media-controls-fullscreen-button {
+  color: #fff;
+  font-size: 18px;
+}
+
+video::-webkit-media-controls-rewind-button {
+  color: #fff;
+  font-size: 18px;
+}
+
+video::-webkit-media-controls-return-to-realtime-button {
+  color: #fff;
+  font-size: 18px;
+}
+
+video::-webkit-media-controls-toggle-closed-captions-button {
+  color: #fff;
+  font-size: 18px;
+}

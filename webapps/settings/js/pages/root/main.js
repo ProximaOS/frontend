@@ -6,11 +6,13 @@
     accountButtonAvatar: document.getElementById('account-button-avatar'),
     accountButtonUsername: document.getElementById('account-button-username'),
     accountButtonContact: document.getElementById('account-button-contact'),
+    loginButton: document.getElementById('login-button'),
 
     init: async function () {
       if ('OrchidServices' in window) {
         if (await OrchidServices.isUserLoggedIn()) {
-          this.accountButton.classList.add('visible');
+          this.loginButton.style.display = 'none';
+          this.accountButton.style.display = '';
           OrchidServices.getWithUpdate(
             `profile/${await OrchidServices.userId()}`,
             (data) => {
@@ -19,6 +21,9 @@
               this.accountButtonContact.textContent = data.email;
             }
           );
+        } else {
+          this.loginButton.style.display = '';
+          this.accountButton.style.display = 'none';
         }
       }
     }

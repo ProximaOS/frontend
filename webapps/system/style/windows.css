@@ -296,7 +296,7 @@
   border-radius: 0 !important;
 }
 
-.appframe .chrome .browser-container > .browser {
+.appframe .chrome .browser-container > .browser-view {
   position: absolute;
   left: 0;
   top: var(--statusbar-height);
@@ -304,11 +304,11 @@
   height: calc(100% - var(--statusbar-height) - 2.5rem);
 }
 
-#screen.context-menu-visible .appframe .chrome .browser-container > .browser {
+#screen.context-menu-visible .appframe .chrome .browser-container > .browser-view {
   pointer-events: none;
 }
 
-.appframe:not(.fullscreen) .chrome.visible .browser {
+.appframe:not(.fullscreen) .chrome.visible .browser-view {
   top: calc(
     var(--statusbar-height) + var(--chrome-tablist-height) +
       var(--chrome-navbar-height) + (var(--chrome-toolbar-gap) * 2)
@@ -319,7 +319,7 @@
   );
 }
 
-.appframe:not(.fullscreen) .chrome.bottom.visible .browser {
+.appframe:not(.fullscreen) .chrome.bottom.visible .browser-view {
   top: var(--statusbar-height);
 }
 
@@ -327,15 +327,15 @@
   .appframe
   .chrome
   .browser-container
-  > .browser {
+  > .browser-view {
   height: calc(100% - var(--statusbar-height) - var(--software-buttons-height));
 }
 
-#screen .appframe.window .chrome .browser-container > .browser {
+#screen .appframe.window .chrome .browser-container > .browser-view {
   height: 100%;
 }
 
-#screen.software-buttons-enabled .appframe:not(.fullscreen) .chrome.visible .browser {
+#screen.software-buttons-enabled .appframe:not(.fullscreen) .chrome.visible .browser-view {
   top: calc(
     var(--statusbar-height) + var(--chrome-tablist-height) +
       var(--chrome-navbar-height) + (var(--chrome-toolbar-gap) * 2)
@@ -348,7 +348,7 @@
 }
 
 @media screen and (max-width: 767px) and (orientation: landscape) {
-  #screen.software-buttons-enabled .appframe:not(.fullscreen) .chrome.visible .browser {
+  #screen.software-buttons-enabled .appframe:not(.fullscreen) .chrome.visible .browser-view {
     top: calc(
       var(--statusbar-height) +
         var(--chrome-navbar-height) + var(--chrome-toolbar-gap)
@@ -360,7 +360,7 @@
   }
 }
 
-#screen .appframe.window .chrome.visible .browser {
+#screen .appframe.window .chrome.visible .browser-view {
   top: calc(
     var(--chrome-tablist-height) + var(--chrome-navbar-height) +
       (var(--chrome-toolbar-gap) * 2)
@@ -371,23 +371,23 @@
   );
 }
 
-#screen.software-buttons-enabled .appframe .chrome.bottom.visible .browser {
+#screen.software-buttons-enabled .appframe .chrome.bottom.visible .browser-view {
   top: var(--statusbar-height);
 }
 
-.appframe.overlay .chrome .browser {
+.appframe.overlay .chrome .browser-view {
   top: 0;
   height: calc(100% - 2.5rem);
 }
 
-#screen.software-buttons-enabled .appframe.overlay .chrome .browser {
+#screen.software-buttons-enabled .appframe.overlay .chrome .browser-view {
   height: calc(100% - var(--software-buttons-height));
 }
 
-.appframe.immersive .chrome .browser,
-.appframe.fullscreen .chrome .browser,
-#screen.software-buttons-enabled .appframe.immersive .chrome .browser,
-#screen.software-buttons-enabled .appframe.fullscreen .chrome .browser {
+.appframe.immersive .chrome .browser-view,
+.appframe.fullscreen .chrome .browser-view,
+#screen.software-buttons-enabled .appframe.immersive .chrome .browser-view,
+#screen.software-buttons-enabled .appframe.fullscreen .chrome .browser-view {
   top: 0;
   height: 100%;
 }
@@ -399,7 +399,7 @@
 }
 
 @media screen and (max-width: 767px) and (orientation: portrait) {
-  .appframe:not(.fullscreen) .chrome.visible .browser {
+  .appframe:not(.fullscreen) .chrome.visible .browser-view {
     top: calc(
       var(--statusbar-height) + var(--chrome-navbar-height) +
         var(--chrome-toolbar-gap)
@@ -410,7 +410,7 @@
     );
   }
 
-  #screen.software-buttons-enabled .appframe:not(.fullscreen) .chrome.visible .browser {
+  #screen.software-buttons-enabled .appframe:not(.fullscreen) .chrome.visible .browser-view {
     top: calc(
       var(--statusbar-height) + var(--chrome-navbar-height) +
         var(--chrome-toolbar-gap)
@@ -686,11 +686,11 @@ html[dir='rtl'] .appframe .titlebar {
     left: 0;
   }
 
-  #screen.software-buttons-enabled .appframe.overlay .chrome .browser {
+  #screen.software-buttons-enabled .appframe.overlay .chrome .browser-view {
     height: 100%;
   }
 
-  #screen.software-buttons-enabled .appframe.immersive .chrome .browser {
+  #screen.software-buttons-enabled .appframe.immersive .chrome .browser-view {
     height: calc(100% + var(--software-buttons-height));
   }
 }
