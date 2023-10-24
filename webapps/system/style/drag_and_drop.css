@@ -3,7 +3,7 @@
   left: 0;
   top: 0;
   background: var(--background) no-repeat top left / 100vw;
-  box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.3);
+  box-shadow: 0 0.4rem 1.2rem rgba(0, 0, 0, 0.1);
   border-radius: 1.5rem;
   pointer-events: none;
   transition: all 0.3s ease;

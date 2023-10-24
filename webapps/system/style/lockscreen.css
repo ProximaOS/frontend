@@ -41,63 +41,27 @@
   background: #000 url(/resources/wallpapers/default.png) no-repeat center / cover;
   transform: translateY(calc(100vh * (1 - var(--motion-progress, 1))));
   opacity: var(--motion-progress, 1);
-  mask-image: radial-gradient(circle at 50% 100%, transparent, transparent calc(50% - 50vh), white calc(50% + 50vh), white);
+  mask-image: radial-gradient(circle at 50% 100%, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.2) calc(50% - 50vh), white calc(50% + 50vh), white);
   mask-size: calc(200% + 100vh);
   mask-position: 0 calc(200vh + 100vh);
-  -webkit-mask-image: radial-gradient(circle at 50% 100%, transparent, transparent calc(50% - 50vh), white calc(50% + 50vh), white);
+  -webkit-mask-image: radial-gradient(circle at 50% 100%, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.2) calc(50% - 50vh), white calc(50% + 50vh), white);
   -webkit-mask-size: 100% calc(200% + 100vh);
   -webkit-mask-position: 0 calc(200vh + 100vh);
   transition: all 0.3s ease;
 }
 
-#lockscreen-foreground {
-  position: absolute;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  background: url(/resources/wallpapers/foreground.png) no-repeat center / cover;
-  transform: translateY(calc(100vh * (1 - var(--motion-progress, 1))));
-  opacity: var(--motion-progress, 1);
-  mask-image: radial-gradient(circle at 50% 100%, rgba(255,255,255,0.2), rgba(255,255,255,0.2) calc(50% - 50vh), white calc(50% + 50vh), white);
-  mask-size: calc(200% + 100vh);
-  mask-position: 0 calc(200vh + 100vh);
-  -webkit-mask-image: radial-gradient(circle at 50% 100%, rgba(255,255,255,0.2), rgba(255,255,255,0.2) calc(50% - 50vh), white calc(50% + 50vh), white);
-  -webkit-mask-size: 100% calc(200% + 100vh);
-  -webkit-mask-position: 0 calc(200vh + 100vh);
-  z-index: 1;
-  transition: all 0.3s ease;
-}
-
-@media screen and (orientation: landscape) {
-  #lockscreen-foreground {
-    opacity: 0;
-    filter: blur(20px);
-    visibility: hidden;
-  }
-}
-
-#lockscreen.pin-lock #lockscreen-background,
-#lockscreen.pin-lock #lockscreen-foreground {
+#lockscreen.pin-lock #lockscreen-background {
   transform: none;
   opacity: 1;
 }
 
-#lockscreen.transitioning #lockscreen-background,
-#lockscreen.transitioning #lockscreen-foreground {
+#lockscreen.transitioning #lockscreen-background {
   transition: all 0.5s ease;
 }
 
-#lockscreen.low-power #lockscreen-background,
-#lockscreen.low-power #lockscreen-foreground {
+#lockscreen.low-power #lockscreen-background {
   mask-position: 100% 100vh;
   -webkit-mask-position: 0 100vh;
-}
-
-#screen.close-reach #lockscreen-foreground {
-  opacity: 0;
-  filter: blur(20px);
-  visibility: hidden;
 }
 
 #lockscreen-container {
@@ -201,12 +165,14 @@
   font-weight: bold;
   color: #fff;
   line-height: 7.8rem;
+  text-shadow: 0 0 0.4rem rgba(0, 0, 0, 0.1);
 }
 
 #lockscreen-date {
   font-size: 2rem;
   color: #fff;
   z-index: 2;
+  text-shadow: 0 0 0.4rem rgba(0, 0, 0, 0.1);
 }
 
 #lockscreen-toolbar {

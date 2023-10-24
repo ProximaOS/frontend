@@ -73,6 +73,8 @@
   <script type="text/javascript" src="http://shared.localhost:8081/js/directional_scale.js"></script>
   <script defer type="text/javascript" src="http://shared.localhost:8081/js/card_panels.js"></script>
   <script defer type="text/javascript" src="http://shared.localhost:8081/js/transitions.js"></script>
+  <script defer type="text/javascript" src="http://shared.localhost:8081/js/color_picker.js"></script>
+  <script defer type="text/javascript" src="http://shared.localhost:8081/js/depthmap.js"></script>
 
   <!-- Initial scripts -->
   <script type="text/javascript" src="js/bootstrap.js"></script>
@@ -182,7 +184,6 @@
 
     <div id="lockscreen" data-z-index-layer="lockscreen" class="visible">
       <div id="lockscreen-background"></div>
-      <div id="lockscreen-foreground"></div>
       <div id="lockscreen-container">
         <div class="lockscreen-row">
           <span id="lockscreen-icon"></span>
@@ -250,23 +251,52 @@
               </div>
             </div>
             <ul id="connection-settings">
-              <li><a href="#" id="quick-settings-wifi" data-icon="wifi" data-l10n-id="quickSettings-wifi"></a></li>
-              <li><a href="#" id="quick-settings-bluetooth" data-icon="bluetooth"
-                  data-l10n-id="quickSettings-bluetooth"></a></li>
+              <li>
+                <a href="#" id="quick-settings-wifi">
+                  <span data-icon="wifi"></span>
+                  <span data-l10n-id="quickSettings-wifi"></span>
+                </a>
+              </li>
+              <li>
+                <a href="#" id="quick-settings-bluetooth">
+                  <span data-icon="bluetooth"></span>
+                  <span data-l10n-id="quickSettings-bluetooth"></span>
+                </a>
+              </li>
             </ul>
           </div>
           <div class="control-center-row">
             <div id="quick-settings">
               <ul id="quick-settings-grid">
-                <li><a href="#" id="quick-settings-cellular-data" data-icon="data"
-                    data-l10n-id="quickSettings-data"></a></li>
-                <li><a href="#" id="quick-settings-airplane" data-icon="airplane"
-                    data-l10n-id="quickSettings-airplaneMode"></a></li>
-                <li><a href="#" id="quick-settings-audio" data-icon="bell" data-l10n-id="quickSettings-audio"></a></li>
-                <li><a href="#" id="quick-settings-screen-capture" data-icon="video"
-                    data-l10n-id="quickSettings-screenCapture"></a></li>
-                <li><a href="#" id="quick-settings-flashlight" data-icon="flashlight"
-                    data-l10n-id="quickSettings-flashlight"></a></li>
+                <li>
+                  <a href="#" id="quick-settings-cellular-data">
+                    <span data-icon="data"></span>
+                    <span data-l10n-id="quickSettings-data"></span>
+                  </a>
+                </li>
+                <li>
+                  <a href="#" id="quick-settings-airplane">
+                    <span data-icon="airplane"></span>
+                    <span data-l10n-id="quickSettings-airplaneMode"></span>
+                  </a>
+                </li>
+                <li>
+                  <a href="#" id="quick-settings-audio">
+                    <span data-icon="bell"></span><span data-l10n-id="quickSettings-audio"></span>
+                  </a>
+                </li>
+                <li>
+                  <a href="#" id="quick-settings-screen-capture">
+                    <span data-icon="video"></span>
+                    <span data-l10n-id="quickSettings-screenCapture"></span>
+                  </a>
+                </li>
+                <li>
+                  <a href="#" id="quick-settings-flashlight">
+                    <span data-icon="flashlight"></span>
+                    <span data-l10n-id="quickSettings-flashlight"></span>
+                  </a>
+                </li>
 
                 <!-- <li><a href="#" id="quick-settings-focus-mode" data-icon="moon" data-l10n-id="quickSettings-focusMode"></a></li>
                 <li><a href="#" id="quick-settings-bike-mode" data-icon="airplane" data-l10n-id="quickSettings-bikeMode"></a></li>
@@ -521,10 +551,10 @@
       </div>
 
       <div id="text-selection">
-        <button id="text-selection-copy-button" data-icon="textselection-copy"></button>
-        <button id="text-selection-cut-button" data-icon="textselection-cut"></button>
-        <button id="text-selection-paste-button" data-icon="textselection-paste"></button>
-        <button id="text-selection-select-all-button" data-icon="textselection-selectall"></button>
+        <button id="text-selection-copy-button" data-icon="copy"></button>
+        <button id="text-selection-cut-button" data-icon="cut"></button>
+        <button id="text-selection-paste-button" data-icon="paste"></button>
+        <button id="text-selection-select-all-button" data-icon="select-all"></button>
       </div>
 
       <div id="context-menu">

@@ -52,9 +52,16 @@
 }
 
 .profile-banner > .container figcaption .username::after {
-  content: 'tick-circle';
-  font-family: 'openorchid-icons';
+  content: '';
+  display: inline-block;
   margin-inline-start: 0.5rem;
+  mask: no-repeat center / 1em;
+  -webkit-mask: no-repeat center / 1em;
+  mask-image: url('images/verified.svg');
+  -webkit-mask-image: url('images/verified.svg');
+  background-color: currentColor;
+  width: 1em;
+  height: 1em;
 }
 
 .profile-banner > .container figcaption .stats {
@@ -284,16 +291,16 @@
     visibility: visible;
   }
 
-  .panel:not(#root) {
+  [role="panel"]:not(#root) {
     position: absolute;
     top: 0;
     width: calc(100% - 32rem);
     height: 100%;
   }
-  html[dir="ltr"] .panel:not(#root) {
+  html[dir="ltr"] [role="panel"]:not(#root) {
     left: 32rem;
   }
-  html[dir="rtl"] .panel:not(#root) {
+  html[dir="rtl"] [role="panel"]:not(#root) {
     right: 32rem;
   }
 }

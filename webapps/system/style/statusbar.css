@@ -206,27 +206,6 @@ html[dir="rtl"] .statusbar-icons > .right {
   color: var(--text-color-faded);
 }
 
-#statusbar-battery.charging::after {
-  content: 'battery-charging';
-  position: absolute;
-  left: 0;
-  top: 0;
-  font-family: "openorchid-icons";
-  width: 2rem;
-  height: 2rem;
-  line-height: 2rem;
-  font-size: 1.8rem;
-  color: #fff;
-}
-
-#screen:not(.desktop, .cards-view-visible) #statusbar:not(.tray-open).light #statusbar-battery.charging::after {
-  color: #333;
-}
-
-#screen.desktop #statusbar-battery.charging::after {
-  color: var(--text-color);
-}
-
 #statusbar-battery-percentage {
   opacity: 0;
   transform: scale(0.2);
@@ -261,19 +240,6 @@ html[dir="rtl"] .statusbar-icons > .right {
   font-size: 1.8rem;
 }
 
-#statusbar-cellular-signal::after {
-  content: 'signal-5';
-  position: absolute;
-  left: 0;
-  top: 0;
-  font-family: "openorchid-icons";
-  width: 2rem;
-  height: 2rem;
-  line-height: 2rem;
-  font-size: 1.8rem;
-  opacity: 0.5;
-}
-
 #statusbar-data::before {
   font-size: 1.8rem;
 }
@@ -294,19 +260,6 @@ html[dir="rtl"] .statusbar-icons > .right {
   height: 2rem;
   line-height: 2rem;
   font-size: 1.8rem;
-}
-
-#statusbar-wifi::after {
-  content: 'wifi-4';
-  position: absolute;
-  left: 0;
-  top: 0;
-  font-family: "openorchid-icons";
-  width: 2rem;
-  height: 2rem;
-  line-height: 2rem;
-  font-size: 1.8rem;
-  opacity: 0.5;
 }
 
 #statusbar-bluetooth::before {

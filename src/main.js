@@ -62,11 +62,14 @@ dialog.showSaveDialog = (options, callback) => {
   }
 };
 
-protocols.register('openorchid', (uri) => {
+protocols.register('orchid', (uri) => {
   if (uri.pathname) {
     return path.join(__dirname, '..', 'internal', uri.host, uri.pathname);
   }
   return path.join(__dirname, '..', 'internal', uri.host);
+});
+protocols.register('orchidreader', (uri) => {
+  return path.join(__dirname, '..', 'internal', 'readermode.html');
 });
 
 // This method will be called when Electron has finished

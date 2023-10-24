@@ -2,17 +2,23 @@
   'use strict';
 
   const WallpaperManager = {
+    screen: document.getElementById('screen'),
     wallpaperImage: document.getElementById('wallpaper-image'),
     wallpaperVideo: document.getElementById('wallpaper-video'),
+    lockscreenBackground: document.getElementById('lockscreen-background'),
 
     init: function () {
       Settings.getValue('video.wallpaper.url').then((value) => {
         this.wallpaperImage.src = value;
         this.wallpaperVideo.src = '';
+
+        this.lockscreenBackground.style.backgroundImage = `url(${value})`;
       });
       Settings.addObserver('video.wallpaper.url', (value) => {
         this.wallpaperImage.src = value;
         this.wallpaperVideo.src = '';
+
+        this.lockscreenBackground.style.backgroundImage = `url(${value})`;
       });
     },
 

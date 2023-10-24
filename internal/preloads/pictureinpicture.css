@@ -3,7 +3,7 @@
   min-width: 50px;
   width: max-content;
   height: 50px;
-  background: rgba(51, 51, 51, 0.3) url(openorchid://res/picture-in-picture@2.25x.png) no-repeat center / 20px;
+  background: rgba(51, 51, 51, 0.3) url(orchid://res/picture-in-picture@2.25x.png) no-repeat center / 20px;
   border-radius: 25px;
   outline: 10px solid transparent;
   outline-offset: 10px;

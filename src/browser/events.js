@@ -176,6 +176,9 @@
     ipcMain.on('shortcut', (event, data) => {
       webview.webContents.send('shortcut', data);
     });
+    ipcMain.on('input', (event, data) => {
+      webview.webContents.sendInputEvent(data);
+    });
     ipcMain.on('rotate', (event, data) => {
       webview.webContents.send('rotate', data);
       const size = mainWindow.getSize();

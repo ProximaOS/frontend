@@ -136,8 +136,10 @@ button[data-icon]::before,
 .button[data-icon]::before {
   position: absolute;
   top: 0;
-  width: 2rem;
   font-size: 2rem;
+  width: 2rem;
+  height: 4rem;
+  line-height: 4rem;
 }
 html[dir="ltr"] button[data-icon]::before,
 html[dir="ltr"] .button[data-icon]::before {

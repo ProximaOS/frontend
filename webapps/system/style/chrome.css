@@ -20,8 +20,8 @@
   padding: var(--statusbar-height, var(--chrome-toolbar-gap)) 0 var(--chrome-toolbar-gap);
   box-sizing: border-box;
   background-color: var(--theme-color, var(--background));
-  transform: translateY(-100%);
   visibility: hidden;
+  opacity: 0;
   gap: var(--chrome-toolbar-gap);
   z-index: 10;
   transition: all 0.5s cubic-bezier(0.2, 0.9, 0.1, 1);
@@ -39,7 +39,6 @@
   top: unset;
   bottom: 0;
   padding: var(--chrome-toolbar-gap) 0 2.5rem;
-  transform: translateY(100%);
 }
 
 #screen.software-buttons-enabled .chrome.bottom .toolbar {
@@ -53,7 +52,7 @@
 }
 
 .appframe:not(.fullscreen) .chrome.visible .toolbar {
-  transform: translateY(0) !important;
+  opacity: 1;
   visibility: visible;
 }
 
@@ -78,17 +77,22 @@
 
 .chrome .tablist {
   max-width: 100%;
-  height: var(--chrome-tablist-height);
+  height: 0;
   display: flex;
   gap: var(--chrome-toolbar-gap);
   margin: 0;
   padding: 0;
   overflow: hidden;
+  transition: height 0.5s cubic-bezier(0.2, 0.9, 0.1, 1);
+}
+
+.chrome.visible .tablist {
+  height: var(--chrome-tablist-height);
 }
 
 .chrome .tablist li {
   width: 24rem;
-  height: var(--chrome-tablist-height);
+  height: 0;
   display: flex;
   gap: var(--chrome-toolbar-gap);
   list-style: none;
@@ -99,6 +103,11 @@
   box-sizing: border-box;
   align-items: center;
   overflow: hidden;
+  transition: height 0.5s cubic-bezier(0.2, 0.9, 0.1, 1);
+}
+
+.chrome.visible .tablist li {
+  height: var(--chrome-tablist-height);
 }
 
 .chrome .tablist li:hover {
@@ -180,6 +189,9 @@
 .chrome .tablist li > .favicons .loading-icon {
   width: 2rem;
   height: 2rem;
+  mask: url(chrome/images/spinner.svg) no-repeat center / cover;
+  -webkit-mask: url(chrome/images/spinner.svg) no-repeat center / cover;
+  background-color: var(--accent-color);
   transform: scale(1.25);
   opacity: 0;
   visibility: hidden;
@@ -254,6 +266,8 @@
 .chrome .tablist li > .close-button[data-icon]::before {
   position: static;
   font-size: 1.6rem;
+  height: 3.2rem;
+  line-height: 3.2rem;
 }
 
 .chrome .tablist li.private.active > .mute-button,
@@ -275,7 +289,7 @@
 .chrome .navbar button {
   width: max-content;
   min-width: 4rem;
-  height: var(--chrome-navbar-height);
+  height: 0;
   line-height: var(--chrome-navbar-height);
   margin: 0;
   padding: 0 1rem;
@@ -287,12 +301,19 @@
   color: var(--text-color);
   font-size: 1.6rem;
   text-align: center;
+  transition: height 0.5s cubic-bezier(0.2, 0.9, 0.1, 1);
+}
+
+.chrome.visible .tablist-holder > button,
+.chrome.visible .navbar button {
+  height: var(--chrome-navbar-height);
 }
 
 .chrome .tablist-holder > button[data-icon]::before,
 .chrome .navbar button[data-icon]::before {
   position: static;
   font-size: 2rem;
+  height: 100%;
 }
 
 .chrome .tablist-holder > button:hover,
@@ -301,21 +322,21 @@
 }
 
 .chrome .tablist-holder > button:active,
-.chrome .navbar button:active {
+.chrome .tablist-holder > button.active,
+.chrome .navbar button:active,
+.chrome .navbar button.active {
   background-color: var(--item-active);
 }
 
-/* .chrome .tablist-holder > button {
-  background-color: var(--item-plus);
+.navbar-assistant-button {
+  background: url(chrome/images/assistant.svg) no-repeat center / 3rem;
 }
 
-.chrome .tablist-holder > button:hover {
-  background-color: var(--item-hover-plus);
+.navbar-assistant-button:hover,
+.navbar-assistant-button:active,
+.navbar-assistant-button.active {
+  background-image: url(chrome/images/assistant_active.svg);
 }
-
-.chrome .tablist-holder > button:active {
-  background-color: var(--item-active-plus);
-} */
 
 #screen:not(.desktop) .chrome .side-tabs-button {
   display: none;
@@ -339,7 +360,7 @@
 .chrome .navbar .urlbar {
   position: relative;
   width: 100%;
-  height: var(--chrome-navbar-height);
+  height: 0;
   display: flex;
   border-radius: 2rem;
   margin: 0;
@@ -347,7 +368,11 @@
   background-color: var(--item-hover);
   flex-grow: 1;
   overflow: hidden;
-  transition: height 0.5s cubic-bezier(1, 0, 0, 1), background-color 0.2s ease 0.5s;
+  transition: height 0.5s cubic-bezier(0.2, 0.9, 0.1, 1), background-color 0.2s ease 0.5s;
+}
+
+.chrome.visible .navbar .urlbar {
+  height: var(--chrome-navbar-height);
 }
 
 .chrome .navbar .urlbar.suggestions-visible {
@@ -499,7 +524,7 @@
   width: 100%;
   height: calc(100% - var(--chrome-tablist-height) + var(--chrome-navbar-height) + (var(--chrome-toolbar-gap) * 3));
   visibility: hidden;
-  transition: transform 0.5s ease;
+  transition: all 0.5s cubic-bezier(0.2, 0.9, 0.1, 1);
 }
 
 .chrome .browser-container > .browser-view.active {
@@ -511,7 +536,7 @@
 }
 
 .chrome .browser-container > .browser-view.devtools-visible {
-  background-color: var(--background);
+  background-color: var(--theme-color, var(--background));
 }
 
 .chrome .browser-container > .browser-view .browser {
@@ -717,6 +742,8 @@
 .chrome .tabs-view .content .grid .tab .header > .close-button[data-icon]::before {
   position: static;
   font-size: 1.6rem;
+  height: 2.4rem;
+  line-height: 2.4rem;
 }
 
 .chrome .tabs-view .content .grid .tab .preview {
@@ -979,7 +1006,7 @@ html[dir="rtl"] .chrome .ftu-dialog .container .buttons {
 }
 
 /* Side Tabs */
-.chrome.sidetabs .toolbar {
+.chrome.side-tabs .toolbar {
   position: absolute;
   height: 100%;
   background-color: transparent;
@@ -987,7 +1014,7 @@ html[dir="rtl"] .chrome .ftu-dialog .container .buttons {
   padding: 0;
 }
 
-.chrome.sidetabs .toolbar .tablist-holder {
+.chrome.side-tabs .toolbar .tablist-holder {
   position: absolute;
   top: calc(var(--chrome-navbar-height) + (var(--chrome-toolbar-gap) * 2));
   width: 6rem;
@@ -997,45 +1024,45 @@ html[dir="rtl"] .chrome .ftu-dialog .container .buttons {
   pointer-events: all;
   transition: all 0.3s ease;
 }
-html[dir="ltr"] .chrome.sidetabs .toolbar .tablist-holder {
+html[dir="ltr"] .chrome.side-tabs .toolbar .tablist-holder {
   left: 0;
 }
-html[dir="rtl"] .chrome.sidetabs .toolbar .tablist-holder {
+html[dir="rtl"] .chrome.side-tabs .toolbar .tablist-holder {
   right: 0;
 }
 
-.chrome.sidetabs .toolbar .tablist-holder:hover {
+.chrome.side-tabs .toolbar .tablist-holder:hover {
   width: 32rem;
   transition: all 0.3s ease 0.3s;
 }
 
-.chrome.sidetabs .toolbar .tablist-holder .tablist {
+.chrome.side-tabs .toolbar .tablist-holder .tablist {
   flex-direction: column;
   height: unset;
 }
 
-.chrome.sidetabs .toolbar .tablist-holder .tablist > li {
+.chrome.side-tabs .toolbar .tablist-holder .tablist > li {
   width: 100%;
 }
 
-.chrome.sidetabs .toolbar .navbar {
+.chrome.side-tabs .toolbar .navbar {
   padding: var(--chrome-toolbar-gap);
   padding-inline-end: 15rem;
   pointer-events: all;
   height: calc(var(--chrome-navbar-height) + (var(--chrome-toolbar-gap) * 2));
 }
 
-.chrome.sidetabs .browser-container .browser-view {
+.chrome.side-tabs .browser-container .browser-view {
   top: 5rem;
   width: calc(100% - 6rem);
   height: calc(100% - 5rem);
   overflow: hidden;
 }
-html[dir="ltr"] .chrome.sidetabs .browser-container .browser-view {
+html[dir="ltr"] .chrome.side-tabs .browser-container .browser-view {
   left: 6rem;
   border-radius: 2rem 0 0 0;
 }
-html[dir="rtl"] .chrome.sidetabs .browser-container .browser-view {
+html[dir="rtl"] .chrome.side-tabs .browser-container .browser-view {
   right: 6rem;
   border-radius: 0 2rem 0 0;
 }
@@ -1076,6 +1103,7 @@ html[dir="rtl"] .chrome.sidetabs .browser-container .browser-view {
     margin: 0 var(--chrome-toolbar-gap);
   }
 
+  .chrome .navbar-split-button,
   .chrome .navbar-downloads-button,
   .chrome .navbar-addons-button,
   .chrome .navbar-library-button,
@@ -1088,6 +1116,7 @@ html[dir="rtl"] .chrome.sidetabs .browser-container .browser-view {
   .chrome .navbar-back-button,
   .chrome .navbar-forward-button,
   .chrome .navbar-reload-button,
+  .chrome .navbar-split-button,
   .chrome .navbar-downloads-button,
   .chrome .navbar-addons-button,
   .chrome .navbar-library-button,
@@ -1101,7 +1130,7 @@ html[dir="rtl"] .chrome.sidetabs .browser-container .browser-view {
     visibility: hidden;
   }
 
-  .chrome.tabs-view-visible .browser-container {
+  .chrome.bottom.tabs-view-visible .browser-container {
     background-color: var(--item-active);
   }
 
@@ -1109,7 +1138,7 @@ html[dir="rtl"] .chrome.sidetabs .browser-container .browser-view {
     transform-origin: top;
   }
 
-  .chrome.tabs-view-visible .browser-container > .browser-view {
+  .chrome.bottom.tabs-view-visible .browser-container > .browser-view {
     transform: scale(0.9);
     overflow: hidden;
     border-radius: 1.5rem;

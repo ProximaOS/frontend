@@ -55,7 +55,7 @@ input[type="timedate"]:focus {
 }
 
 /* Search box */
-form.search {
+[role="search"] {
   width: 100%;
   height: 4rem;
   display: flex;
@@ -63,36 +63,36 @@ form.search {
   border-radius: 2rem;
 }
 
-form.search input[type="text"],
-form.search input[type="number"],
-form.search input[type="username"],
-form.search input[type="email"],
-form.search input[type="password"],
-form.search input[type="search"],
-form.search input[type="url"],
-form.search input[type="time"],
-form.search input[type="date"],
-form.search input[type="timedate"] {
+[role="search"] input[type="text"],
+[role="search"] input[type="number"],
+[role="search"] input[type="username"],
+[role="search"] input[type="email"],
+[role="search"] input[type="password"],
+[role="search"] input[type="search"],
+[role="search"] input[type="url"],
+[role="search"] input[type="time"],
+[role="search"] input[type="date"],
+[role="search"] input[type="timedate"] {
   flex-grow: 1;
   background-color: transparent;
   padding: 0;
   box-shadow: none;
 }
 
-form.search input[type="text"]:first-child,
-form.search input[type="number"]:first-child,
-form.search input[type="username"]:first-child,
-form.search input[type="email"]:first-child,
-form.search input[type="password"]:first-child,
-form.search input[type="search"]:first-child,
-form.search input[type="url"]:first-child,
-form.search input[type="time"]:first-child,
-form.search input[type="date"]:first-child,
-form.search input[type="timedate"]:first-child {
+[role="search"] input[type="text"]:first-child,
+[role="search"] input[type="number"]:first-child,
+[role="search"] input[type="username"]:first-child,
+[role="search"] input[type="email"]:first-child,
+[role="search"] input[type="password"]:first-child,
+[role="search"] input[type="search"]:first-child,
+[role="search"] input[type="url"]:first-child,
+[role="search"] input[type="time"]:first-child,
+[role="search"] input[type="date"]:first-child,
+[role="search"] input[type="timedate"]:first-child {
   padding-inline-start: 1.5rem;
 }
 
-form.search button {
+[role="search"] button {
   width: 4rem;
   height: 4rem;
   line-height: 4rem;
@@ -104,7 +104,7 @@ form.search button {
   border: none;
 }
 
-form.search button[type="submit"] {
+[role="search"] button[type="submit"] {
   width: 5rem;
   height: 3rem;
   line-height: 3rem;
@@ -115,13 +115,15 @@ form.search button[type="submit"] {
   margin-inline-start: 0;
 }
 
-form.search button[data-icon]::before {
+[role="search"] button[data-icon]::before {
   position: static;
   font-size: 2rem;
+  height: 3rem;
+  line-height: 3rem;
 }
 
 /* Message box */
-form.messagebox {
+[role="messagebox"] {
   width: 100%;
   height: 4.6rem;
   display: flex;
@@ -132,16 +134,16 @@ form.messagebox {
   gap: 0.5rem;
 }
 
-form.messagebox input[type="text"],
-form.messagebox input[type="number"],
-form.messagebox input[type="username"],
-form.messagebox input[type="email"],
-form.messagebox input[type="password"],
-form.messagebox input[type="search"],
-form.messagebox input[type="url"],
-form.messagebox input[type="time"],
-form.messagebox input[type="date"],
-form.messagebox input[type="timedate"] {
+[role="messagebox"] input[type="text"],
+[role="messagebox"] input[type="number"],
+[role="messagebox"] input[type="username"],
+[role="messagebox"] input[type="email"],
+[role="messagebox"] input[type="password"],
+[role="messagebox"] input[type="search"],
+[role="messagebox"] input[type="url"],
+[role="messagebox"] input[type="time"],
+[role="messagebox"] input[type="date"],
+[role="messagebox"] input[type="timedate"] {
   flex-grow: 1;
   height: 4.6rem;
   line-height: 4.6rem;
@@ -150,20 +152,20 @@ form.messagebox input[type="timedate"] {
   box-shadow: none;
 }
 
-form.messagebox input[type="text"]:first-child,
-form.messagebox input[type="number"]:first-child,
-form.messagebox input[type="username"]:first-child,
-form.messagebox input[type="email"]:first-child,
-form.messagebox input[type="password"]:first-child,
-form.messagebox input[type="search"]:first-child,
-form.messagebox input[type="url"]:first-child,
-form.messagebox input[type="time"]:first-child,
-form.messagebox input[type="date"]:first-child,
-form.messagebox input[type="timedate"]:first-child {
+[role="messagebox"] input[type="text"]:first-child,
+[role="messagebox"] input[type="number"]:first-child,
+[role="messagebox"] input[type="username"]:first-child,
+[role="messagebox"] input[type="email"]:first-child,
+[role="messagebox"] input[type="password"]:first-child,
+[role="messagebox"] input[type="search"]:first-child,
+[role="messagebox"] input[type="url"]:first-child,
+[role="messagebox"] input[type="time"]:first-child,
+[role="messagebox"] input[type="date"]:first-child,
+[role="messagebox"] input[type="timedate"]:first-child {
   padding-inline-start: 1.5rem;
 }
 
-form.messagebox button {
+[role="messagebox"] button {
   width: 3.6rem;
   height: 3.6rem;
   line-height: 3.6rem;
@@ -174,16 +176,16 @@ form.messagebox button {
   flex-shrink: 0;
 }
 
-form.messagebox button:hover {
+[role="messagebox"] button:hover {
   background-color: var(--item-hover);
 }
 
-form.messagebox button:active {
+[role="messagebox"] button:active {
   background-color: var(--item-active);
   color: var(--text-color-faded);
 }
 
-form.messagebox button[type="submit"] {
+[role="messagebox"] button[type="submit"] {
   width: 5rem;
   height: 3.6rem;
   line-height: 3.6rem;
@@ -193,7 +195,7 @@ form.messagebox button[type="submit"] {
   margin-inline-start: 0;
 }
 
-form.messagebox button[data-icon]::before {
+[role="messagebox"] button[data-icon]::before {
   position: static;
   font-size: 2rem;
 }

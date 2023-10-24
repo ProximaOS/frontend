@@ -8,6 +8,9 @@
 
     currentLanguage: 'en',
 
+    keySound: new Audio('/resources/sounds/key.wav'),
+    keySpecialSound: new Audio('/resources/sounds/special.wav'),
+
     init: function () {
       this.keys = document.getElementById('keys');
 
@@ -24,7 +27,7 @@
       }
 
       const symbolsButton = {
-        value: targetPage === 0 ? '123' : data.shortLabel,
+        value: targetPage === 0 ? '?123' : data.shortLabel,
         keyCode: KeyEvent.DOM_VK_ALT,
         targetPage: targetPage === 0 ? 1 : 0,
         ratio: 2,
@@ -32,7 +35,8 @@
       };
 
       const quickSymbolButton = {
-        value: '.'
+        value: '.',
+        className: 'alternate-indicator'
       };
 
       this.keys.innerHTML = '';
@@ -88,7 +92,22 @@
             keyButton.style.flex = key.ratio;
           }
 
-          keyButton.addEventListener('click', () => {
+          keyButton.addEventListener('pointerdown', () => {
+            if (
+              (key.keyCode === KeyEvent.DOM_VK_CAPS_LOCKkey.keyCode) ===
+                KeyEvent.DOM_VK_ALT ||
+              key.keyCode === KeyEvent.DOM_VK_BACK_SPACE ||
+              key.keyCode === KeyEvent.DOM_VK_RETURN
+            ) {
+              this.keySpecialSound.currentTime = 0;
+              this.keySpecialSound.play();
+            } else {
+              this.keySound.currentTime = 0;
+              this.keySound.play();
+            }
+          });
+
+          keyButton.addEventListener('pointerup', () => {
             if (key.keyCode === KeyEvent.DOM_VK_CAPS_LOCK) {
               this.createLayoutKeyset({
                 isCapsLock: !isCapsLock
@@ -96,6 +115,22 @@
             } else if (key.keyCode === KeyEvent.DOM_VK_ALT) {
               this.createLayoutKeyset({
                 targetPage: key.targetPage
+              });
+            } else if (key.keyCode === KeyEvent.DOM_VK_BACK_SPACE) {
+              IPC.send('input', {
+                type: 'keyDown',
+                keyCode: 'Backspace'
+              });
+            } else if (key.keyCode === KeyEvent.DOM_VK_RETURN) {
+              IPC.send('input', {
+                type: 'keyDown',
+                keyCode: 'Enter'
+              });
+            } else {
+              const keyCode = key.keyCode || key.value.charCodeAt();
+              IPC.send('input', {
+                type: 'char',
+                keyCode
               });
             }
           });

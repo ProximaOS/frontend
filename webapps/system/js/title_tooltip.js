@@ -26,7 +26,7 @@
 
       const elementBox = this.element.getBoundingClientRect();
       const webviewBox = document
-        .querySelector('.appframe.active .browser-container .browser.active')
+        .querySelector('.appframe.active .browser-container .browser-view.active > .browser')
         .getBoundingClientRect();
 
       if (x > window.innerWidth - (elementBox.width + 10)) {

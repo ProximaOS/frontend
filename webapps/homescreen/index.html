@@ -34,8 +34,8 @@
     <link rel="localization" href="/locales/main.{locale}.properties">
   </head>
   <body>
-    <div id="app" class="app">
-      <div id="home" class="panel visible">
+    <main id="app" role="app">
+      <section id="home" class="visible" role="panel">
         <div id="grid"></div>
         <div id="paginationBar">
           <div class="dots"></div>
@@ -52,27 +52,27 @@
             </ul>
           </div>
         </div>
-      </div>
+      </section>
 
-      <div id="search" class="panel">
-        <div class="headerbar compact">
-          <form action="" class="search">
+      <section id="search" role="panel">
+        <header class="compact" role="header">
+          <form action="" role="search">
             <input type="text" name="" id="">
             <button type="reset" data-icon="close"></button>
             <button type="submit" data-icon="search"></button>
           </form>
-        </div>
+        </header>
 
         <div class="content lists">
           <ul id="search-results"></ul>
         </div>
-      </div>
+      </section>
 
       <div id="tour-ui">
         <div class="tour-page dashboard"></div>
         <div class="tour-page search"></div>
         <div class="tour-page finish"></div>
       </div>
-    </div>
+    </>
   </body>
 </html>

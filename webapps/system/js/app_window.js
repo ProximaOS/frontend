@@ -87,7 +87,7 @@
           // You can perform further operations with the 'manifest' variable here
         })
         .catch(function (error) {
-          console.log('Error fetching manifest:', error);
+          console.error('Error fetching manifest:', error);
         });
 
       // Apply window options

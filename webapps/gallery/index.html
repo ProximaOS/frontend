@@ -36,64 +36,64 @@
 </head>
 
 <body>
-  <div id="app" class="app">
-    <div class="tablist">
+  <main id="app" role="app">
+    <nav role="tablist">
       <ul>
         <li><a href="#library" id="tab-library" data-icon="library" data-l10n-id="library" class="selected"></a></li>
         <li><a href="#folders" id="tab-folders" data-icon="folder" data-l10n-id="folders"></a></li>
-        <li><a href="#memories" id="tab-memories" data-icon="tree" data-l10n-id="memories"></a></li>
+        <li><a href="#memories" id="tab-memories" data-icon="memories" data-l10n-id="memories"></a></li>
       </ul>
-    </div>
+    </nav>
 
     <div id="views">
-      <div id="library" class="panel visible">
-        <div class="headerbar">
+      <section id="library" class="visible" role="panel">
+        <header class="header">
           <div class="safezone">
             <h1 data-l10n-id="title"></h1>
             <menu role="toolbar">
               <a href="#" data-icon="more"></a>
             </menu>
           </div>
-        </div>
+        </header>
         <div class="content">
           <div id="images-container"></div>
         </div>
-      </div>
+      </section>
 
-      <div id="folders" class="panel">
-        <div class="headerbar">
+      <section id="folders" role="panel">
+        <header role="header">
           <div class="safezone">
             <h1 data-l10n-id="folders"></h1>
             <menu role="toolbar">
               <a href="#" data-icon="more"></a>
             </menu>
           </div>
-        </div>
+        </header>
         <div class="content"></div>
-      </div>
+      </section>
 
-      <div id="memories" class="panel">
-        <div class="headerbar">
+      <section id="memories" role="panel">
+        <header role="header">
           <div class="safezone">
             <h1 data-l10n-id="memories"></h1>
             <menu role="toolbar">
               <a href="#" data-icon="more"></a>
             </menu>
           </div>
-        </div>
+        </header>
         <div class="content"></div>
-      </div>
+      </section>
     </div>
 
-    <div id="image-viewer" class="panel">
-      <div class="headerbar compact">
+    <section id="image-viewer" role="panel">
+      <header class="compact" role="header">
         <div class="safezone">
           <h1 id="image-viewer-title"></h1>
           <menu role="toolbar">
             <a href="#" data-icon="help"></a>
           </menu>
         </div>
-      </div>
+      </header>
       <div class="content">
         <div id="images-container"></div>
       </div>
@@ -106,8 +106,8 @@
           <button id="image-viewer-delete" data-icon="delete"></button>
         </div>
       </div>
-    </div>
-  </div>
+    </section>
+  </main>
 </body>
 
 </html>

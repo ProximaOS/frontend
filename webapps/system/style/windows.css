@@ -37,6 +37,7 @@
 #windows.dragging .appframe {
   pointer-events: none;
   border-radius: var(--screen-radius);
+  box-shadow: 0 1.2rem 2.4rem rgba(0, 0, 0, 0.1);
 }
 
 #windows .appframe.dragging {
@@ -270,13 +271,13 @@
 
 .appframe.window {
   border-radius: 2.5rem !important;
-  box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.25);
+  box-shadow: 0 0.4rem 0.8rem rgba(0, 0, 0, 0.1);
   transform: translateY(0);
   transition: transform 0.3s ease;
 }
 
 .appframe.window.active {
-  box-shadow: 0 2rem 4rem rgba(0, 0, 0, 0.25);
+  box-shadow: 0 1.2rem 2.4rem rgba(0, 0, 0, 0.2);
 }
 
 .appframe.window.maximized {

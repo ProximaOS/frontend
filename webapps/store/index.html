@@ -17,7 +17,10 @@
   <link rel="stylesheet" type="text/css" href="http://shared.localhost:8081/style/switches.css" />
   <link rel="stylesheet" type="text/css" href="http://shared.localhost:8081/style/toolbars.css" />
   <link rel="stylesheet" type="text/css" href="http://shared.localhost:8081/style/input_areas.css" />
+  <link rel="stylesheet" type="text/css" href="http://shared.localhost:8081/style/transitions.css" />
   <link rel="stylesheet" type="text/css" href="style/index.css" />
+  <link rel="stylesheet" type="text/css" href="style/slideshow.css" />
+  <link rel="stylesheet" type="text/css" href="style/webapps.css" />
   <link rel="stylesheet" type="text/css" href="style/search.css" />
   <link rel="stylesheet" type="text/css" href="style/notifications.css" />
   <script type="module" src="http://shared.localhost:8081/services/orchid_services.js"></script>
@@ -25,8 +28,10 @@
   <script defer type="text/javascript" src="http://shared.localhost:8081/js/plugins/overscroll.js"></script>
   <script defer type="text/javascript" src="http://shared.localhost:8081/js/panels.js"></script>
   <script defer type="text/javascript" src="http://shared.localhost:8081/js/spatial_navigation.js"></script>
+  <script defer type="text/javascript" src="http://shared.localhost:8081/js/transitions.js"></script>
+  <script defer type="text/javascript" src="http://shared.localhost:8081/js/common/page_controller.js"></script>
   <script type="text/javascript" src="js/bootstrap.js"></script>
-  <script defer type="text/javascript" src="js/pages.js"></script>
+  <script defer type="text/javascript" src="js/webapps.js"></script>
 
   <script type="text/javascript" src="http://shared.localhost:8081/js/l10n.js"></script>
   <meta name="defaultLanguage" content="en-US">
@@ -35,9 +40,9 @@
   <link rel="localization" href="/locales/main.{locale}.properties">
 </head>
 <body>
-  <div id="app" class="app">
-    <div id="root" class="panel visible">
-      <header class="headerbar compact">
+  <main id="app" role="app">
+    <section id="root" class="visible" role="panel">
+      <header class="compact" role="header">
         <div class="safezone">
           <a href="#" data-icon="menu"></a>
           <div class="logo"></div>
@@ -48,14 +53,20 @@
           </div>
         </div>
       </header>
-      <div class="content lists">
-        <div id="slideshow-container"></div>
+      <div class="content">
+        <div id="slideshow-container">
+          <div id="slideshow"></div>
+          <div id="slideshow-dots"></div>
+
+          <button id="slideshow-previous-button" data-icon="chevron-left"></button>
+          <button id="slideshow-next-button" data-icon="chevron-right"></button>
+        </div>
         <div id="webapps"></div>
       </div>
-    </div>
+    </section>
 
-    <div id="search" class="panel">
-      <header class="headerbar compact">
+    <section id="search" role="panel">
+      <header class="compact" role="header">
         <div class="safezone">
           <a href="#" class="back-button" data-icon="browser-back" data-page-id="root"></a>
           <form action="" class="search" id="searchbox">
@@ -66,17 +77,36 @@
         </div>
       </header>
       <div class="content lists"></div>
-    </div>
+    </section>
 
-    <div id="notifications" class="panel">
-      <header class="headerbar compact">
+    <section id="notifications" role="panel">
+      <header class="compact" role="header">
         <div class="safezone">
           <a href="#" class="back-button" data-icon="browser-back" data-page-id="root"></a>
           <h1 data-l10n-id="notifications"></h1>
         </div>
       </header>
       <div class="content lists"></div>
-    </div>
-  </div>
+    </section>
+
+    <section id="webapp" role="panel">
+      <header class="compact" role="header">
+        <div class="safezone">
+          <a href="#" class="back-button" data-icon="browser-back" data-page-id="root"></a>
+          <h1 id="webapp-header-name"></h1>
+        </div>
+      </header>
+      <div class="content lists">
+        <div id="webapp-description"></div>
+
+        <ul>
+          <li>
+            <p data-l10n-id="webappLicense"></p>
+            <p id="webapp-license"></p>
+          </li>
+        </ul>
+      </div>
+    </section>
+  </main>
 </body>
 </html>

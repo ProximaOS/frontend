@@ -2,6 +2,8 @@
   'use strict';
 
   const MessageHandler = {
+    keyboardSource: '',
+
     init: function () {
       window.addEventListener('ipc-message', this.handleIPCMessage.bind(this));
     },
@@ -110,10 +112,11 @@
       clearTimeout(this.keyboardTimer);
       if (data.action === 'show') {
         Keyboard.show();
+        this.keyboardSource = data.origin;
       } else {
-        this.keyboardTimer = setTimeout(() => {
+        if (data.origin === this.keyboardSource) {
           Keyboard.hide();
-        }, 500);
+        }
       }
     },
 

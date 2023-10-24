@@ -6,6 +6,7 @@
   const http = require('http');
   const AdmZip = require('adm-zip');
   const express = require('express');
+  const mime = require('mime');
 
   const WifiManager = require('../wifi');
   const BluetoothManager = require('../bluetooth');
@@ -58,7 +59,7 @@
               res.end('File not found');
               return;
             }
-            const contentType = getContentType(path.extname(filePath));
+            const contentType = mime.getType(path.extname(filePath));
             sendRequest(data, contentType); // Pass the content type to sendRequest
           });
 
@@ -79,7 +80,7 @@
           }
 
           const data = zipEntry.getData();
-          const contentType = getContentType(path.extname(zipEntry.entryName));
+          const contentType = mime.getType(path.extname(zipEntry.entryName));
           sendRequest(data, contentType); // Pass the content type to sendRequest
         } else {
           filePath = path.join(webAppsDir, subdomain, req.url);
@@ -90,7 +91,7 @@
               res.end('File not found');
               return;
             }
-            const contentType = getContentType(path.extname(filePath));
+            const contentType = mime.getType(path.extname(filePath));
             sendRequest(data, contentType); // Pass the content type to sendRequest
           });
         }
@@ -110,21 +111,6 @@
       });
     });
   };
-
-  function getContentType (fileExt) {
-    switch (fileExt.toLowerCase()) {
-      case '.html':
-        return 'text/html';
-      case '.css':
-        return 'text/css';
-      case '.js':
-        return 'text/javascript';
-      case '.json':
-        return 'application/json';
-      default:
-        return 'application/octet-stream';
-    }
-  }
 
   // Bluetooth
   app.get('/bluetooth/enable', (req, res) => {

@@ -1,4 +1,4 @@
-.toolbar {
+[role="toolbar"] {
   width: 100%;
   height: calc(4.5rem + var(--software-buttons-height));
   padding: 0.5rem 0.5rem var(--software-buttons-height);
@@ -8,7 +8,7 @@
   gap: 0.5rem;
 }
 
-.toolbar .safezone {
+[role="toolbar"] .safezone {
   width: 100%;
   max-width: calc(var(--safezone-width) - 1rem);
   margin: 0 auto;
@@ -16,7 +16,7 @@
   gap: 0.5rem;
 }
 
-.toolbar button {
+[role="toolbar"] button {
   width: 100%;
   height: 4rem;
   background-color: transparent;
@@ -27,15 +27,15 @@
   text-align: center;
 }
 
-.toolbar button:hover {
+[role="toolbar"] button:hover {
   background-color: var(--item-hover);
 }
 
-.toolbar button:active {
+[role="toolbar"] button:active {
   background-color: var(--item-active);
   color: var(--text-color-faded);
 }
 
-.toolbar button[data-icon]::before {
+[role="toolbar"] button[data-icon]::before {
   position: static;
 }

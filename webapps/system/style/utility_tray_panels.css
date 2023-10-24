@@ -11,6 +11,13 @@
   background-color: var(--acrylic-background-plus);
   border-radius: 2rem;
   --background: transparent;
+  transition: all 0.3s ease;
+  visibility: hidden;
+}
+
+#utility-tray-wifi.visible,
+#utility-tray-bluetooth.visible {
+  visibility: visible;
 }
 
 #screen.software-buttons-enabled #utility-tray-wifi,

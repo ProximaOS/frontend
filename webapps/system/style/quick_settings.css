@@ -86,8 +86,8 @@
   padding-inline-start: 0;
 }
 
-#connection-settings li > a[data-icon]::before,
-#quick-settings li > a[data-icon]::before {
+#connection-settings li > a > span[data-icon],
+#quick-settings li > a > span[data-icon] {
   width: 4rem;
   background-color: var(--item-plus);
   border-radius: 2rem;
@@ -101,16 +101,22 @@
   position: absolute;
   top: 0;
 }
-html[dir="ltr"] #connection-settings li > a[data-icon]::before,
-html[dir="ltr"] #quick-settings li > a[data-icon]::before {
+html[dir="ltr"] #connection-settings li > a > span[data-icon],
+html[dir="ltr"] #quick-settings li > a > span[data-icon] {
   left: 0;
 }
-html[dir="rtl"] #connection-settings li > a[data-icon]::before,
-html[dir="rtl"] #quick-settings li > a[data-icon]::before {
+html[dir="rtl"] #connection-settings li > a > span[data-icon],
+html[dir="rtl"] #quick-settings li > a > span[data-icon] {
   right: 0;
 }
 
-#quick-settings li > a[data-icon]::before {
+#connection-settings li > a > span[data-icon]::before,
+#quick-settings li > a > span[data-icon]::before {
+  height: 4rem;
+  line-height: 4rem;
+}
+
+#quick-settings li > a > span[data-icon] {
   margin: 1.75rem auto 0.75rem;
   position: relative;
 }
@@ -142,13 +148,13 @@ html[dir="rtl"] #quick-settings li > a[data-icon]::before {
 }
 
 #connection-settings li.enabled,
-#quick-settings li.enabled > a::before {
+#quick-settings li.enabled > a > span[data-icon] {
   background-color: var(--accent-color);
   color: var(--accent-color-plus);
 }
 
 #connection-settings li.enabled > a,
-#quick-settings li.enabled > a {
+#quick-settings li.enabled > a > span[data-icon]::before {
   color: var(--accent-color-plus);
 }
 
@@ -156,7 +162,7 @@ html[dir="rtl"] #quick-settings li > a[data-icon]::before {
   font-weight: bold;
 }
 
-#connection-settings li.enabled > a[data-icon]::before {
+#connection-settings li.enabled > a > span[data-icon] {
   background-color: var(--accent-color-hover);
 }
 

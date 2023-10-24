@@ -11,7 +11,7 @@
 
     // Initialize the panel object
     init: function () {
-      this.panels = document.querySelectorAll('.panel');
+      this.panels = document.querySelectorAll('[role="panel"]');
       this.bindScrollEvents();
     },
 

@@ -1,79 +1,79 @@
 @font-face {
   font-family: 'Jali Arabic';
   font-weight: 200;
-  src: url(openorchid://fonts/JaliArabic-ExtraLight.ttf);
+  src: url(orchid://fonts/JaliArabic-ExtraLight.ttf);
 }
 
 @font-face {
   font-family: 'Jali Arabic';
   font-weight: 300;
-  src: url(openorchid://fonts/JaliArabic-Light.ttf);
+  src: url(orchid://fonts/JaliArabic-Light.ttf);
 }
 
 @font-face {
   font-family: 'Jali Arabic';
   font-weight: 400;
-  src: url(openorchid://fonts/JaliArabic-Regular.ttf);
+  src: url(orchid://fonts/JaliArabic-Regular.ttf);
 }
 
 @font-face {
   font-family: 'Jali Arabic';
   font-weight: 500;
-  src: url(openorchid://fonts/JaliArabic-Medium.ttf);
+  src: url(orchid://fonts/JaliArabic-Medium.ttf);
 }
 
 @font-face {
   font-family: 'Jali Arabic';
   font-weight: 600;
-  src: url(openorchid://fonts/JaliArabic-SemiBold.ttf);
+  src: url(orchid://fonts/JaliArabic-SemiBold.ttf);
 }
 
 @font-face {
   font-family: 'Jali Arabic';
   font-weight: 700;
-  src: url(openorchid://fonts/JaliArabic-Bold.ttf);
+  src: url(orchid://fonts/JaliArabic-Bold.ttf);
 }
 
 @font-face {
   font-family: 'Jali Arabic';
   font-weight: 800;
-  src: url(openorchid://fonts/JaliArabic-ExtraBold.ttf);
+  src: url(orchid://fonts/JaliArabic-ExtraBold.ttf);
 }
 
 @font-face {
   font-family: 'Jali Arabic';
   font-weight: 900;
-  src: url(openorchid://fonts/JaliArabic-Black.ttf);
+  src: url(orchid://fonts/JaliArabic-Black.ttf);
 }
 
 @font-face {
   font-family: monospace;
-  src: url(openorchid://fonts/DroidSansMono.ttf);
+  src: url(orchid://fonts/DroidSansMono.ttf);
 }
 
 @font-face {
   font-family: 'Times New Roman';
   font-weight: normal;
-  src: url(openorchid://fonts/TimesNewRoman-Regular.ttf);
+  src: url(orchid://fonts/TimesNewRoman-Regular.ttf);
 }
 
 @font-face {
   font-family: 'Times New Roman';
   font-weight: bold;
-  src: url(openorchid://fonts/TimesNewRoman-Bold.ttf);
+  src: url(orchid://fonts/TimesNewRoman-Bold.ttf);
 }
 
 @font-face {
   font-family: 'Times New Roman';
   font-style: italic;
-  src: url(openorchid://fonts/TimesNewRoman-Italic.ttf);
+  src: url(orchid://fonts/TimesNewRoman-Italic.ttf);
 }
 
 @font-face {
   font-family: 'Times New Roman';
   font-weight: bold;
   font-style: italic;
-  src: url(openorchid://fonts/TimesNewRoman-BoldItalic.ttf);
+  src: url(orchid://fonts/TimesNewRoman-BoldItalic.ttf);
 }
 
 *,

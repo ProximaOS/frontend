@@ -1,4 +1,4 @@
-.headerbar {
+[role="header"] {
   position: relative;
   width: 100%;
   height: calc(var(--statusbar-height) + 5rem + (4rem * (1 - var(--progress, 0))));
@@ -13,7 +13,7 @@
   backdrop-filter: blur(20px) saturate(calc(100% + (80% * var(--progress, 0))));
 }
 
-.headerbar::before {
+[role="header"]::before {
   content: '';
   position: absolute;
   left: 1.5rem;
@@ -24,7 +24,7 @@
   box-shadow: 0 -1.5rem 0 var(--background);
 }
 
-.headerbar::after {
+[role="header"]::after {
   content: '';
   position: absolute;
   right: 1.5rem;
@@ -35,11 +35,11 @@
   box-shadow: 0 -1.5rem 0 var(--background);
 }
 
-.headerbar.compact {
+[role="header"].compact {
   height: calc(var(--statusbar-height) + 5rem);
 }
 
-.headerbar .safezone {
+[role="header"] .safezone {
   width: 100%;
   max-width: var(--safezone-width);
   margin: 0 auto;
@@ -49,7 +49,7 @@
   z-index: 1;
 }
 
-.headerbar h1 {
+[role="header"] h1 {
   flex-grow: 1;
   margin: 0;
   padding: 0 1rem;
@@ -68,31 +68,31 @@
   width: 100%;
   font-size: 2rem;
 }
-html[dir="ltr"] .headerbar h1 {
+html[dir="ltr"] [role="header"] h1 {
   transform-origin: left;
 }
-html[dir="rtl"] .headerbar h1 {
+html[dir="rtl"] [role="header"] h1 {
   transform-origin: right;
 }
 
-.headerbar.compact h1 {
+[role="header"].compact h1 {
   height: 5rem;
   line-height: 5rem;
   transform: scale(1);
 }
 
-html[dir="ltr"] .headerbar:not(.compact) a + h1 {
+html[dir="ltr"] [role="header"]:not(.compact) a + h1 {
   transform:
     translate(calc(-4.5rem * (1 - var(--progress, 0))), calc(4.5rem * (1 - var(--progress, 0)) + (13rem * var(--overscroll-progress, 0))))
     scale(calc(1 + (0.25 * (1 - var(--progress, 0))) + (0.25 * var(--overscroll-progress, 0))));
 }
-html[dir="rtl"] .headerbar:not(.compact) a + h1 {
+html[dir="rtl"] [role="header"]:not(.compact) a + h1 {
   transform:
     translate(calc(4.5rem * (1 - var(--progress, 0))), calc(4.5rem * (1 - var(--progress, 0)) + (13rem * var(--overscroll-progress, 0))))
     scale(calc(1 + (0.25 * (1 - var(--progress, 0))) + (0.25 * var(--overscroll-progress, 0))));
 }
 
-.headerbar a {
+[role="header"] a {
   width: 3.6rem;
   height: 3.6rem;
   background-color: transparent;
@@ -110,42 +110,42 @@ html[dir="rtl"] .headerbar:not(.compact) a + h1 {
   transition: all 0.3s ease;
 }
 
-.headerbar a:hover {
+[role="header"] a:hover {
   background-color: var(--item-hover);
   transition: transform 0.3s ease;
 }
 
-.headerbar a:active {
+[role="header"] a:active {
   background-color: var(--item-active);
   color: var(--text-color-faded);
   transform: scale(0.9);
   transition: none;
 }
 
-.headerbar a[data-icon]::before {
+[role="header"] a[data-icon]::before {
   width: 2rem;
   height: 3.6rem;
   font-size: 2rem;
 }
 
-.headerbar a[data-icon]::before {
+[role="header"] a[data-icon]::before {
   transition: transform 0.3s cubic-bezier(1, 1, 0, 2);
 }
 
-.headerbar a[data-icon]:hover::before {
+[role="header"] a[data-icon]:hover::before {
   transition: transform 0.3s cubic-bezier(1, -1, 0, 1);
 }
 
-html[dir="ltr"] .headerbar a[data-icon="back"]:hover::before,
-html[dir="ltr"] .headerbar a[data-icon="browser-back"]:hover::before {
+html[dir="ltr"] [role="header"] a[data-icon="back"]:hover::before,
+html[dir="ltr"] [role="header"] a[data-icon="browser-back"]:hover::before {
   transform: translateX(-0.3rem);
 }
-html[dir="rtl"] .headerbar a[data-icon="back"]:hover::before,
-html[dir="rtl"] .headerbar a[data-icon="browser-back"]:hover::before {
+html[dir="rtl"] [role="header"] a[data-icon="back"]:hover::before,
+html[dir="rtl"] [role="header"] a[data-icon="browser-back"]:hover::before {
   transform: translateX(0.3rem) scaleX(-1);
 }
 
-.headerbar menu[role="toolbar"] {
+[role="header"] menu[role="toolbar"] {
   display: inline-flex;
   height: 5rem;
   flex-shrink: 0;
@@ -155,15 +155,15 @@ html[dir="rtl"] .headerbar a[data-icon="browser-back"]:hover::before {
   /* transform: translate(0, calc(50% * (1 - var(--progress, 0)))); */
 }
 
-.headerbar form.search {
+[role="header"] form.search {
   margin: 0.5rem 0;
 }
 
-.headerbar form.search:first-child {
+[role="header"] form.search:first-child {
   margin-inline-start: 0.5rem;
 }
 
-.headerbar form.search:last-child {
+[role="header"] form.search:last-child {
   margin-inline-end: 0.5rem;
 }
 

@@ -1,7 +1,7 @@
 <svg viewBox="0 0 16 16" width="29" height="29" xmlns="http://www.w3.org/2000/svg">
   <style>
     path {
-      animation: spinner 3s ease-in-out infinite;
+      animation: spinner 2s ease-in-out infinite;
       stroke-dasharray: 1,200;
       stroke-dashoffset: 0;
       fill: none;
@@ -9,7 +9,7 @@
       stroke-miterlimit: 10;
       stroke-linecap: round;
       transform-origin: 50% 50%;
-      stroke: #0061e0;
+      stroke: #fff;
     }
 
     @keyframes spinner {
@@ -20,7 +20,7 @@
       }
       100% {
         stroke-dasharray: 130,200;
-        stroke-dashoffset: -43.9;
+        stroke-dashoffset: -43;
         transform: rotate(-360deg);
       }
     }

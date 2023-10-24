@@ -44,7 +44,7 @@
   max-width: 40rem;
   background-color: var(--background-plus);
   border-radius: 2rem;
-  box-shadow: 0 1rem 2rem rgba(0,0,0,0.1);
+  box-shadow: 0 1.6rem 3.2rem rgba(0, 0, 0, 0.2);
   transition: all 0.3s ease;
 }
 

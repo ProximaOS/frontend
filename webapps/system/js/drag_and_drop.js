@@ -17,7 +17,7 @@
 
       const detail = event.detail;
       const webview = document.querySelector(
-        '.appframe.active .browser-container .browser.active'
+        '.appframe.active .browser-container .browser-view.active > .browser'
       );
       const webviewBox = webview.getBoundingClientRect();
 
@@ -88,7 +88,7 @@
     handleDrop: function (event) {
       const detail = event.detail;
       const webview = document.querySelector(
-        '.appframe.active .browser-container .browser.active'
+        '.appframe.active .browser-container .browser-view.active > .browser'
       );
       const webviewBox = webview.getBoundingClientRect();
 

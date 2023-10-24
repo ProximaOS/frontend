@@ -5,7 +5,7 @@
   background-color: var(--acrylic-background-plus);
   border-radius: 1rem;
   backdrop-filter: blur(20px) saturate(180%);
-  box-shadow: 0 1.5rem 3rem rgba(0, 0, 0, 0.3);
+  box-shadow: 0 0.8rem 1.6rem rgba(0, 0, 0, 0.1);
   pointer-events: none;
   transition: width 0.3s ease, height 0.3s ease, opacity 0.5s ease, visibility 0.5s ease;
   opacity: 0;

@@ -1,4 +1,4 @@
-.snackbar {
+[role="snackbar"] {
   position: absolute;
   left: 50%;
   translate: -50% 0;
@@ -15,12 +15,12 @@
   transition: opacity 0.3s ease, transform 0.3s ease;
 }
 
-.snackbar.hidden {
+[role="snackbar"].hidden {
   transform: scale(0.9);
   opacity: 0;
 }
 
-.snackbar .label {
+[role="snackbar"] .label {
   font-size: 1.6rem;
   font-weight: normal;
   color: var(--text-color);

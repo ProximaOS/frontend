@@ -53,7 +53,9 @@
       browser.id = webviewId;
       browser.classList.add('browser');
       const url = new URL(manifestUrl);
-      browser.src = url.origin + manifest.launch_path;
+      setTimeout(() => {
+        browser.src = url.origin + manifest.launch_path;
+      }, 250);
       keyboard.appendChild(browser);
     }
   };

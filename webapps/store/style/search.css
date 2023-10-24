@@ -4,6 +4,10 @@
   background-color: transparent;
 }
 
+#search [role="header"] {
+  background-image: none;
+}
+
 #search form,
 #search .content {
   transition: opacity 0.3s ease;
@@ -15,13 +19,13 @@
   opacity: 1;
 }
 
-#search .headerbar .back-button {
+#search [role="header"] .back-button {
   transition: transform 0.3s ease, opacity 0.3s ease;
   transform: translateX(100%);
   opacity: 0;
 }
 
-#search.visible .headerbar .back-button {
+#search.visible [role="header"] .back-button {
   transform: translateX(0);
   opacity: 1;
 }

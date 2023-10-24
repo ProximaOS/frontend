@@ -25,14 +25,14 @@
   <script defer type="text/javascript" src="js/account.js"></script>
 </head>
 <body>
-  <div id="app" class="app">
-    <div id="root" class="panel">
-      <div class="headerbar">
+  <main id="app" role="app">
+    <section id="root" role="panel">
+      <header role="header">
         <div class="safezone">
           <a href="#" data-icon="home"></a>
           <h1>Orchid Aurora</h1>
         </div>
-      </div>
+      </h>
       <div class="content lists">
         <ul>
           <li data-icon="add">
@@ -48,15 +48,15 @@
           </li>
         </ul>
       </div>
-    </div>
+    </section>
 
-    <div id="chat" class="panel visible">
-      <div class="headerbar compact">
+    <section id="chat" class="visible" role="panel">
+      <header class="compact" role="header">
         <div class="safezone">
           <a href="#" data-icon="menu"></a>
           <h1>New Chat</h1>
         </div>
-      </div>
+      </header>
 
       <div class="content messages">
         <div class="chat-container">
@@ -65,15 +65,15 @@
       </div>
 
       <div class="messagebox-container">
-        <form action="" id="chat-form" class="messagebox">
+        <form action="" id="chat-form" role="messagebox">
           <button data-icon="attachments"></button>
           <button data-icon="mic"></button>
           <input type="text" name="" id="chat-form-input" data-l10n-id="type-message">
           <button type="submit" data-icon="send"></button>
         </form>
       </div>
-    </div>
-  </div>
+    </section>
+  </main>
   <script src="js/chatbot.js"></script>
   <script src="model/intents/small_talk.js"></script>
   <script src="model/intents/small_talk_ar.js"></script>

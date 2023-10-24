@@ -65,7 +65,7 @@
     type: process.env.ORCHID_ENVIRONMENT,
     debugPort: process.debugPort,
     currentDir: process.cwd(),
-    dirName: () => __dirname,
+    dirName: () => __dirname
   };
 
   const IPCRenderManager = {
@@ -302,22 +302,26 @@
       inputElement.addEventListener('focus', function () {
         ipcRenderer.send('message', {
           type: 'keyboard',
-          action: 'show'
+          action: 'show',
+          origin: location.href
         });
       });
+    });
 
-      inputElement.addEventListener('blur', function () {
+    document.addEventListener('click', function (event) {
+      if (['INPUT', 'TEXTAREA'].indexOf(event.target.nodeName) === -1) {
         ipcRenderer.send('message', {
           type: 'keyboard',
-          action: 'hide'
+          action: 'hide',
+          origin: location.href
         });
-      });
+      }
     });
 
     const mediaElements = document.querySelectorAll('audio, video');
     mediaElements.forEach((mediaElement) => {
       mediaElement.addEventListener('play', function (event) {
-        console.log(event);
+        console.log(mediaElement.src, event);
         const url = convertToAbsoluteUrl(mediaElement.src);
         getFileAsUint8Array(url).then((data) => {
           musicMetadata
@@ -393,8 +397,137 @@
       document.body.appendChild(button);
     });
 
+    function ColorPicker(url, options = {}) {
+      return new Promise((resolve, reject) => {
+        const canvas = document.createElement('canvas');
+        const colors = [];
+
+        useCanvas(canvas, url)
+          .then(() => {
+            const downsamplingFactor = options.downsampling || 1;
+            const imageData = canvas
+              .getContext('2d')
+              .getImageData(
+                0,
+                0,
+                Math.floor(canvas.width / downsamplingFactor),
+                Math.floor(canvas.height / downsamplingFactor)
+              ).data;
+
+            for (let i = 0; i < imageData.length; i += 4) {
+              const brightness = options.brightness || 1;
+              const r =
+                imageData[i] +
+                parseInt((255 - imageData[i]) * (brightness - 1));
+              const g =
+                imageData[i + 1] +
+                parseInt((255 - imageData[i + 1]) * (brightness - 1));
+              const b =
+                imageData[i + 2] +
+                parseInt((255 - imageData[i + 2]) * (brightness - 1));
+
+              colors.push({ r, g, b });
+            }
+
+            if (options.linearGradient !== undefined) {
+              resolve(
+                'linear-gradient(' +
+                  options.linearGradient +
+                  ', ' +
+                  colors.join(', ') +
+                  ')'
+              );
+            } else {
+              resolve(colors);
+            }
+          })
+          .catch(reject);
+      });
+
+      function useCanvas(element, imageUrl) {
+        return new Promise((resolve, reject) => {
+          const image = new Image();
+          image.crossOrigin = 'anonymous';
+          image.src = imageUrl;
+
+          image.onload = () => {
+            element.width = image.width;
+            element.height = image.height;
+
+            element
+              .getContext('2d')
+              .drawImage(image, 0, 0, image.width, image.height);
+
+            resolve();
+          };
+
+          image.onerror = reject;
+        });
+      }
+    }
+
+    const handleWallpaperAccent = (value) => {
+      ColorPicker(value, { colors: 3, brightness: 1 }).then((color) => {
+        // Convert the color to RGB values
+        let r = color[1].r;
+        let g = color[1].g;
+        let b = color[1].b;
+
+        // Calculate relative luminance
+        const luminance = (0.2126 * r + 0.7152 * g + 0.0722 * b) / 255;
+
+        // Store original values
+        const originalR = r;
+        const originalG = g;
+        const originalB = b;
+
+        if (luminance < 0.3 && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+          // Brighten the color
+          r = Math.round((r + 128) / 2);
+          g = Math.round((g + 128) / 2);
+          b = Math.round((b + 128) / 2);
+
+          // Ensure color values are within the valid range (0 - 255)
+          r = Math.max(0, Math.min(255, r));
+          g = Math.max(0, Math.min(255, g));
+          b = Math.max(0, Math.min(255, b));
+        }
+
+        // Check if the resulting color is too bright, and if so, darken it
+        if (luminance > 0.8 && window.matchMedia('(prefers-color-scheme: light)').matches) {
+          const maxColorValue = Math.max(r, g, b);
+          if (maxColorValue > 200) {
+            r = Math.round(originalR * 0.8);
+            g = Math.round(originalG * 0.8);
+            b = Math.round(originalB * 0.8);
+          }
+        }
+
+        document.scrollingElement.style.setProperty('--accent-color-r', r);
+        document.scrollingElement.style.setProperty('--accent-color-g', g);
+        document.scrollingElement.style.setProperty('--accent-color-b', b);
+
+        // Calculate relative luminance
+        const accentLuminance = (0.2126 * originalR + 0.7152 * originalG + 0.0722 * originalB) / 255;
+
+        if (accentLuminance > 0.5) {
+          document.scrollingElement.style.setProperty(
+            '--accent-color-plus',
+            'rgba(0,0,0,0.75)'
+          );
+        } else {
+          document.scrollingElement.style.setProperty(
+            '--accent-color-plus',
+            'rgba(255,255,255,0.75)'
+          );
+        }
+      });
+    };
+    Settings.getValue('video.wallpaper.url').then(handleWallpaperAccent);
+    Settings.addObserver('video.wallpaper.url', handleWallpaperAccent);
+
     const handleAccentColor = (value) => {
-      if (document.querySelector('.app')) {
+      if (value && document.querySelector('.app')) {
         document.scrollingElement.style.setProperty(
           '--accent-color-r',
           value.r
@@ -408,6 +541,26 @@
           value.b
         );
       }
+
+      // Convert the color to RGB values
+      const r = parseInt(value.r, 16);
+      const g = parseInt(value.g, 16);
+      const b = parseInt(value.b, 16);
+
+      // Calculate relative luminance
+      const luminance = (0.2126 * r + 0.7152 * g + 0.0722 * b) / 255;
+
+      if (luminance > 0.5) {
+        document.scrollingElement.style.setProperty(
+          '--accent-color-plus',
+          'rgba(0,0,0,0.75)'
+        );
+      } else {
+        document.scrollingElement.style.setProperty(
+          '--accent-color-plus',
+          'rgba(255,255,255,0.75)'
+        );
+      }
     };
     Settings.getValue('homescreen.accent_color.rgb').then(handleAccentColor);
     Settings.addObserver('homescreen.accent_color.rgb', handleAccentColor);
@@ -419,9 +572,7 @@
             .querySelector('.app')
             .style.setProperty('--software-buttons-height', '4rem');
         } else {
-          if (
-            location.origin.includes(`homescreen.localhost:${location.port}`)
-          ) {
+          if (location.origin.includes(`homescreen.localhost:8081`)) {
             document
               .querySelector('.app')
               .style.setProperty('--software-buttons-height', '1rem');
@@ -441,14 +592,18 @@
       handleSoftwareButtons
     );
 
-    if ('mozL10n' in navigator) {
+    setTimeout(() => {
       Settings.getValue('general.lang.code').then((value) => {
-        navigator.mozL10n.language.code = value;
+        if ('mozL10n' in navigator) {
+          navigator.mozL10n.language.code = value;
+        }
       });
       Settings.addObserver('general.lang.code', (value) => {
-        navigator.mozL10n.language.code = value;
+        if ('mozL10n' in navigator) {
+          navigator.mozL10n.language.code = value;
+        }
       });
-    }
+    }, 500);
   });
 
   document.addEventListener('DOMContentLoaded', function () {
@@ -458,7 +613,10 @@
         mutation.addedNodes.forEach((node) => {
           if (node.tagName === 'WEBVIEW') {
             // Set attributes for the newly added webview
-            node.preload = `file://${__dirname.replaceAll('\\', '/')}/preload.js`;
+            node.preload = `file://${__dirname.replaceAll(
+              '\\',
+              '/'
+            )}/preload.js`;
           }
         });
       });

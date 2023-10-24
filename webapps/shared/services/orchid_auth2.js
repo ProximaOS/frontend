@@ -28,7 +28,7 @@ const OrchidAuth2 = {
 
   loginWithToken: function (token) {
     const storageKey = 'orchidaccount.token';
-    if (Settings) {
+    if ('Settings' in window) {
       Settings.setValue(storageKey, token);
     } else {
       localStorage.setItem(storageKey, token);

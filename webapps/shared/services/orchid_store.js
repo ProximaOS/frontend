@@ -11,6 +11,7 @@ const OrchidStore = {
       token,
       moderation: {
         reports: [],
+        warnings: [],
         isTimedOut: false,
         timeoutExpiryDate: '',
         isBanned: false,
@@ -18,6 +19,8 @@ const OrchidStore = {
         warnStage: 0
       },
       // Webapp
+      timeCreated: Date.now(),
+      publisherId: await OrchidServices.userId(),
       banner: orchidApp.banner || '',
       name: orchidApp.name,
       description: orchidApp.description || '',
@@ -31,13 +34,13 @@ const OrchidStore = {
       patchLogs: orchidApp.patchLogs || '',
       ageRating: orchidApp.ageRating || 'unset',
       price: orchidApp.price || 0,
-      publisher: orchidApp.publisher || '',
       screenshots: orchidApp.screenshots || [],
       categories: orchidApp.categories || [],
       // User
       achievements: [],
       downloads: [],
-      platforms: orchidApp.platforms || ['openorchid']
+      platforms: orchidApp.platforms || ['openorchid'],
+      commentRatings: []
     });
     if (OrchidServices.DEBUG) console.log('Added document with ID: ', token);
   },

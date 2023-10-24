@@ -1,5 +1,4 @@
-.app,
-.panel {
+[role="app"], [role="panel"] {
   background-color: transparent;
   overflow: hidden;
   user-select: none;

@@ -12,6 +12,7 @@ import OrchidStore from './orchid_store.js';
 import Achievements from './achievements.js';
 import OrchidAuth2 from './orchid_auth2.js';
 import OrchidFileDB from './orchid_file_db.js';
+import OrchidArticles from './orchid_articles.js';
 
 const appConfig = await (
   await fetch('http://shared.localhost:8081/services/appConfig.json')
@@ -48,14 +49,14 @@ const OrchidServices = {
   },
 
   isUserLoggedIn: async function () {
-    const token = await (Settings
+    const token = await ('Settings' in window
       ? Settings.getValue('orchidaccount.token')
       : localStorage.getItem('orchidaccount.token'));
     return !!token;
   },
 
   userId: async function () {
-    return await (Settings
+    return await ('Settings' in window
       ? Settings.getValue('orchidaccount.token')
       : localStorage.getItem('orchidaccount.token'));
   },
@@ -101,7 +102,8 @@ const OrchidServices = {
   auth: OrchidAuth2,
   achievements: Achievements,
   storage: OrchidFileDB,
-  store: OrchidStore
+  store: OrchidStore,
+  articles: OrchidArticles
 };
 
 export default OrchidServices;

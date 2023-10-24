@@ -18,8 +18,15 @@
     suggestUrl:
       'https://www.google.com/complete/search?output=chrome&q={searchTerms}',
 
+    lastScroll: 0,
+    currentScroll: 0,
+
     toolbar: function () {
       return this.chrome().querySelector('.toolbar');
+    },
+
+    tablistHolder: function () {
+      return this.chrome().querySelector('.tablist-holder');
     },
 
     tablist: function () {
@@ -128,7 +135,7 @@
           return chromeElement;
         }
 
-        if (AppWindow) {
+        if ('AppWindow' in window) {
           return document.querySelector('.appframe.active .chrome');
         }
       };
@@ -191,12 +198,16 @@
                 OrchidServices.getWithUpdate(
                   `profile/${await OrchidServices.userId()}`,
                   function (data) {
-                    avatarImage.src = data.profile_picture;
+                    avatarImage.src = data.profilePicture;
                   }
                 );
               }
             }
 
+            this.tablistHolder().addEventListener(
+              'contextmenu',
+              this.handleTablistHolderContextMenu.bind(this)
+            );
             this.sideTabsButton().addEventListener(
               'click',
               this.handeSideTabsButton.bind(this)
@@ -262,8 +273,69 @@
       );
     },
 
+    handleTablistHolderContextMenu: function (event) {
+      const appId = this.chrome().parentElement.id;
+
+      const x = event.clientX;
+      const y = event.clientY;
+
+      const menu = [
+        {
+          name: 'Close',
+          l10nId: 'browserMenu-close',
+          icon: 'windowmanager-close',
+          onclick: () => AppWindow.close(appId)
+        },
+        {
+          name: 'Maximize',
+          l10nId: 'browserMenu-maximize',
+          icon: 'windowmanager-maximize',
+          onclick: () => this.openNewTab(true)
+        },
+        {
+          name: 'Minimize',
+          l10nId: 'browserMenu-minimize',
+          icon: 'windowmanager-minimize',
+          onclick: () => this.openNewTab(true)
+        },
+        { type: 'separator' },
+        {
+          name: 'New Tab',
+          l10nId: 'browserMenu-newTab',
+          icon: 'add',
+          onclick: () => this.openNewTab(false)
+        },
+        {
+          name: 'New Private Tab',
+          l10nId: 'browserMenu-newPrivateTab',
+          icon: 'privacy',
+          onclick: () => this.openNewTab(true)
+        },
+        { type: 'separator' },
+        {
+          name: 'Toggle Side Tabs',
+          l10nId: 'browserMenu-sideTabs',
+          icon: 'side-tabs',
+          onclick: () => this.chrome().classList.toggle('side-tabs')
+        },
+        { type: 'separator' },
+        {
+          name: 'Customize Toolbar',
+          l10nId: 'browserMenu-customizeToolbar',
+          icon: 'theme',
+          onclick: () => this.openNewTab(false, 'orchid://customize.html')
+        }
+      ];
+
+      // Delaying the context menu opening so it won't fire the same time click
+      // does and instantly hide as soon as it opens
+      setTimeout(() => {
+        ContextMenu.show(x, y, menu);
+      }, 16);
+    },
+
     handeSideTabsButton: function () {
-      this.chrome().classList.toggle('sidetabs');
+      this.chrome().classList.toggle('side-tabs');
     },
 
     openNewTab: function (isPrivate = false, url) {
@@ -290,37 +362,6 @@
 
       const loadingIcon = document.createElement('div');
       loadingIcon.classList.add('loading-icon');
-      loadingIcon.innerHTML = `
-        <svg viewBox="0 0 16 16" width="20" height="20" xmlns="http://www.w3.org/2000/svg">
-          <style>
-            path {
-              animation: spinner 2s ease-in-out infinite;
-              stroke-dasharray: 1,200;
-              stroke-dashoffset: 0;
-              fill: none;
-              stroke-width: 2;
-              stroke-miterlimit: 10;
-              stroke-linecap: round;
-              transform-origin: 50% 50%;
-              stroke: var(--accent-color);
-            }
-
-            @keyframes spinner {
-              0% {
-                stroke-dasharray: 0,200;
-                stroke-dashoffset: 0;
-                transform: rotate(0deg);
-              }
-              100% {
-                stroke-dasharray: 130,200;
-                stroke-dashoffset: -43.9;
-                transform: rotate(-360deg);
-              }
-            }
-          </style>
-          <path d="M8 1A1 1 0 008 15 1 1 0 008 1"></path>
-        </svg>
-      `;
       favicons.appendChild(loadingIcon);
 
       const title = document.createElement('span');
@@ -366,17 +407,13 @@
       this.browserContainer().appendChild(browserView);
 
       const webview = document.createElement('webview');
-      webview.src = url || this.DEFAULT_URL;
+      setTimeout(() => {
+        webview.src = url || this.DEFAULT_URL;
+      }, 250);
       webview.classList.add('browser');
-      webview.nodeintegration = true;
-      webview.nodeintegrationinsubframes = true;
-      webview.preload = `file://${Environment.dirName().replaceAll(
-        '\\',
-        '/'
-      )}/preload.js`;
       browserView.appendChild(webview);
 
-      function updateUserAgent(value) {
+      function updateUserAgent (value) {
         switch (value) {
           case 'android':
             webview.useragent = navigator.userAgent.replace(
@@ -603,7 +640,7 @@
     },
 
     handleUrlbarInputKeydown: function (event) {
-      function checkURL(url) {
+      function checkURL (url) {
         const urlPattern =
           /^(https?:\/\/)?([\w-]+\.)*[\w-]+(:\d+)?(\/[\w-./?%&=]*)?$/;
 
@@ -693,7 +730,7 @@
           buttons: [
             {
               l10nId: 'contextMenu-back',
-              icon: 'browser-back',
+              icon: 'arrow-back',
               disabled: !webview.canGoBack(),
               onclick: () => {
                 webview.focus();
@@ -702,7 +739,7 @@
             },
             {
               l10nId: 'contextMenu-forward',
-              icon: 'browser-forward',
+              icon: 'arrow-forward',
               disabled: !webview.canGoForward(),
               onclick: () => {
                 webview.focus();
@@ -711,7 +748,7 @@
             },
             {
               l10nId: 'contextMenu-reload',
-              icon: 'browser-reload',
+              icon: 'reload',
               onclick: () => {
                 webview.focus();
                 webview.reload();
@@ -719,7 +756,7 @@
             },
             {
               l10nId: 'contextMenu-bookmark',
-              icon: 'browser-bookmark',
+              icon: 'bookmark',
               onclick: () => {
                 webview.focus();
                 webview.reload();
@@ -727,24 +764,24 @@
             }
           ]
         },
-        { type: 'separator' },
         {
-          name: 'New Tab',
-          l10nId: 'dropdown-newTab',
-          icon: 'browser-add',
-          onclick: () => this.openNewTab(false)
+          type: 'separator',
+          hidden:
+            (await Settings.getValue('general.chrome.position')) !== 'bottom'
         },
         {
-          name: 'New Private Tab',
-          l10nId: 'dropdown-newPrivateTab',
-          icon: 'do-not-track',
-          onclick: () => this.openNewTab(true)
+          name: 'Move Chrome Up',
+          l10nId: 'dropdown-moveChromeUp',
+          icon: 'browser-moveup',
+          hidden:
+            (await Settings.getValue('general.chrome.position')) !== 'bottom',
+          onclick: () => Settings.setValue('general.chrome.position', 'top')
         },
         { type: 'separator' },
         {
           name: 'History',
           l10nId: 'dropdown-history',
-          icon: 'browser-history',
+          icon: 'history',
           onclick: () => {}
         },
         {
@@ -761,31 +798,21 @@
         },
         { type: 'separator' },
         {
-          name: 'Move Chrome Up',
-          l10nId: 'dropdown-moveChromeUp',
-          icon: 'browser-sidetabs',
-          hidden:
-            (await Settings.getValue('general.chrome.position')) !== 'bottom',
-          onclick: () => Settings.setValue('general.chrome.position', 'top')
-        },
-        {
-          name: 'Move Chrome Down',
-          l10nId: 'dropdown-moveChromeDown',
-          icon: 'browser-sidetabs',
-          hidden:
-            (await Settings.getValue('general.chrome.position')) !== 'top',
-          onclick: () => Settings.setValue('general.chrome.position', 'bottom')
-        },
-        {
           name: 'Reader Mode',
           l10nId: 'dropdown-readerMode',
-          icon: 'browser-readermode',
-          onclick: () => {}
+          icon: 'reader-mode',
+          onclick: () => {
+            if (webview.getURL().startsWith('orchidreader://')) {
+              webview.url = webview.getURL().substring('orchidreader://readermode.html?content='.length);
+            } else {
+              webview.url = `orchidreader://readermode.html?content=${webview.getURL()}`;
+            }
+          }
         },
         {
           name: 'Translate',
           l10nId: 'dropdown-translate',
-          icon: 'languages',
+          icon: 'translate',
           onclick: () => {}
         },
         { type: 'separator' },
@@ -794,14 +821,14 @@
           buttons: [
             {
               l10nId: 'dropdown-zoomOut',
-              icon: 'contact-delete-minus',
+              icon: 'remove',
               onclick: () => {
                 const zoom = webview.getZoomFactor();
                 const targetZoom = Math.min(5, Math.max(0.3, zoom - 0.2));
                 const duration = 500; // 500ms transition time
 
                 const startTime = performance.now();
-                function animateZoom() {
+                function animateZoom () {
                   const currentTime = performance.now();
                   const progress = Math.min(
                     (currentTime - startTime) / duration,
@@ -832,7 +859,7 @@
                 const duration = 500; // 500ms transition time
 
                 const startTime = performance.now();
-                function animateZoom() {
+                function animateZoom () {
                   const currentTime = performance.now();
                   const progress = Math.min(
                     (currentTime - startTime) / duration,
@@ -861,7 +888,7 @@
                 const duration = 500; // 500ms transition time
 
                 const startTime = performance.now();
-                function animateZoom() {
+                function animateZoom () {
                   const currentTime = performance.now();
                   const progress = Math.min(
                     (currentTime - startTime) / duration,
@@ -888,12 +915,12 @@
           name: 'Settings',
           l10nId: 'dropdown-settings',
           icon: 'settings',
-          onclick: () => {}
+          onclick: () => this.openNewTab(false, 'orchid://settings.html')
         },
         {
           name: 'Quit',
           l10nId: 'dropdown-quit',
-          icon: 'logout',
+          icon: 'power',
           onclick: () => {
             if ('AppWindow' in window) {
               AppWindow.close(this.chrome().parentElement.id);
@@ -901,6 +928,19 @@
               window.close();
             }
           }
+        },
+        {
+          type: 'separator',
+          hidden:
+            (await Settings.getValue('general.chrome.position')) !== 'top'
+        },
+        {
+          name: 'Move Chrome Down',
+          l10nId: 'dropdown-moveChromeDown',
+          icon: 'browser-movedown',
+          hidden:
+            (await Settings.getValue('general.chrome.position')) !== 'top',
+          onclick: () => Settings.setValue('general.chrome.position', 'bottom')
         }
       ];
 
@@ -992,10 +1032,17 @@
 
       switch (event.channel) {
         case 'scroll':
-          if (progress >= 1) {
-            progress = 1;
-          }
+          progress = Math.min(1, progress);
           webview.style.setProperty('--scroll-progress', progress);
+
+          this.currentScroll = event.args[0].top;
+          if (this.currentScroll > this.lastScroll + 50) {
+            this.chrome().classList.remove('visible');
+            this.lastScroll = event.args[0].top;
+          } else if (this.currentScroll < this.lastScroll - 50) {
+            this.chrome().classList.add('visible');
+            this.lastScroll = event.args[0].top;
+          }
           break;
 
         default:
@@ -1014,7 +1061,7 @@
           buttons: [
             {
               l10nId: 'contextMenu-back',
-              icon: 'browser-back',
+              icon: 'arrow-back',
               disabled: !webview.canGoBack(),
               onclick: () => {
                 webview.focus();
@@ -1023,7 +1070,7 @@
             },
             {
               l10nId: 'contextMenu-forward',
-              icon: 'browser-forward',
+              icon: 'arrow-forward',
               disabled: !webview.canGoForward(),
               onclick: () => {
                 webview.focus();
@@ -1032,7 +1079,7 @@
             },
             {
               l10nId: 'contextMenu-reload',
-              icon: 'browser-reload',
+              icon: 'reload',
               onclick: () => {
                 webview.focus();
                 webview.reload();
@@ -1040,7 +1087,7 @@
             },
             {
               l10nId: 'contextMenu-bookmark',
-              icon: 'browser-bookmark',
+              icon: 'bookmark',
               onclick: () => {
                 webview.focus();
                 webview.reload();
@@ -1055,7 +1102,7 @@
         {
           name: 'Copy',
           l10nId: 'contextMenu-copy',
-          icon: 'textselection-copy',
+          icon: 'copy',
           disabled: !event.params.editFlags.canCopy,
           onclick: () => {
             webview.focus();
@@ -1065,7 +1112,7 @@
         {
           name: 'Cut',
           l10nId: 'contextMenu-cut',
-          icon: 'textselection-cut',
+          icon: 'cut',
           disabled: !event.params.editFlags.canCut,
           hidden: !event.params.isEditable,
           onclick: () => {
@@ -1076,7 +1123,7 @@
         {
           name: 'Paste',
           l10nId: 'contextMenu-paste',
-          icon: 'textselection-paste',
+          icon: 'paste',
           disabled: !event.params.editFlags.canPaste,
           hidden: !event.params.isEditable,
           onclick: () => {
@@ -1087,7 +1134,7 @@
         {
           name: 'Select All',
           l10nId: 'contextMenu-selectAll',
-          icon: 'textselection-selectall',
+          icon: 'select-all',
           disabled: !event.params.editFlags.canSelectAll,
           onclick: () => {
             webview.focus();
@@ -1135,20 +1182,20 @@
         {
           name: `Save ${event.params.mediaType}`,
           l10nId: `contextMenu-saveFile-${event.params.mediaType}`,
-          icon: 'wallpaper',
+          icon: 'save-media',
           hidden: event.params.mediaType === 'none',
           onclick: () => {}
         },
         {
           name: 'Print',
           l10nId: 'contextMenu-print',
-          icon: 'file',
+          icon: 'printer',
           onclick: () => {}
         },
         {
           name: 'Capture Page',
           l10nId: 'contextMenu-capturePage',
-          icon: 'gallery-crop',
+          icon: 'screenshot',
           onclick: () => {}
         },
         { type: 'separator' },
@@ -1158,7 +1205,7 @@
           icon: 'edit',
           onclick: () => {
             webview.focus();
-            devToolsView.src = `openorchid://devtools/inspector.html?ws=127.0.0.1:${Environment.debugPort}&webContentsId${webview.getWebContentsId()}`;
+            devToolsView.src = `orchid://devtools/inspector.html?ws=127.0.0.1:${Environment.debugPort}&webContentsId${webview.getWebContentsId()}`;
             browserView.classList.toggle('devtools-visible');
           }
         }
@@ -1177,7 +1224,6 @@
         ...suggestions,
         ...itemsAfter
       ]);
-      console.log(event.params);
     },
 
     handlePageFaviconUpdated: function (event) {

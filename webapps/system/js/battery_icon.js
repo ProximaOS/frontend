@@ -13,9 +13,15 @@
 
         let level = battery.level;
         let charging = battery.charging;
-        this.iconElement.dataset.icon = `battery-${
-          Math.round(level * 10) * 10
-        }`;
+        if (charging) {
+          this.iconElement.dataset.icon = `battery-${
+            Math.round(level * 10) * 10
+          }`;
+        } else {
+          this.iconElement.dataset.icon = `battery-charging-${
+            Math.round(level * 10) * 10
+          }`;
+        }
         this.percentageElement.dataset.l10nId = 'batteryStatusPercentage';
         this.percentageElement.dataset.l10nArgs = `{"value":"${Math.round(
           level * 100
@@ -26,19 +32,20 @@
             `-${this.percentageElement.offsetWidth / 2}px`
           );
         }, 100);
-        if (charging) {
-          this.iconElement.classList.add('charging');
-        } else {
-          this.iconElement.classList.remove('charging');
-        }
 
         ['chargingchange', 'levelchange'].forEach((event) => {
           battery.addEventListener(event, () => {
             level = battery.level;
             charging = battery.charging;
-            this.iconElement.dataset.icon = `battery-${
-              Math.round(level * 10) * 10
-            }`;
+            if (charging) {
+              this.iconElement.dataset.icon = `battery-${
+                Math.round(level * 10) * 10
+              }`;
+            } else {
+              this.iconElement.dataset.icon = `battery-charging-${
+                Math.round(level * 10) * 10
+              }`;
+            }
             this.percentageElement.dataset.l10nId = 'batteryStatusPercentage';
             this.percentageElement.dataset.l10nArgs = `{"value":"${Math.round(
               level * 100
@@ -47,11 +54,6 @@
               '--hide-margin',
               `-${this.percentageElement.offsetWidth / 2}px`
             );
-            if (charging) {
-              this.iconElement.classList.add('charging');
-            } else {
-              this.iconElement.classList.remove('charging');
-            }
           });
         });
       });

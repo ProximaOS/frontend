@@ -36,19 +36,19 @@
   <link rel="localization" href="/locales/main.{locale}.properties">
 </head>
 <body>
-  <div id="app" class="app">
-    <div class="tablist">
+  <main id="app" role="app">
+    <nav role="tablist">
       <ul>
         <li><a href="#alarms" id="tab-alarms" data-icon="alarm-clock" class="selected">Alarms</a></li>
-        <li><a href="#world-clock" id="tab-world-clock" data-icon="web">World Clock</a></li>
-        <li><a href="#stopwatch" id="tab-stopwatch" data-icon="history">Stopwatch</a></li>
-        <li><a href="#timer" id="tab-timer" data-icon="storage">Timer</a></li>
+        <li><a href="#world-clock" id="tab-world-clock" data-icon="world-clock">World Clock</a></li>
+        <li><a href="#stopwatch" id="tab-stopwatch" data-icon="stopwatch">Stopwatch</a></li>
+        <li><a href="#timer" id="tab-timer" data-icon="timer">Timer</a></li>
       </ul>
-    </div>
+    </nav>
 
     <div id="views">
-      <div id="alarms" class="panel visible">
-        <header class="headerbar compact">
+      <section id="alarms" class="visible" role="panel">
+        <header class="compact" role="header">
           <div class="safezone">
             <h1>Clock</h1>
             <menu role="toolbar">
@@ -70,10 +70,10 @@
 
           <ul id="alarms-list"></ul>
         </div>
-      </div>
+      </section>
 
-      <div id="world-clock" class="panel">
-        <header class="headerbar compact">
+      <section id="world-clock" role="panel">
+        <header class="compact" role="headerbar">
           <div class="safezone">
             <h1>Clock</h1>
             <menu role="toolbar">
@@ -83,10 +83,10 @@
         </header>
 
         <div class="content"></div>
-      </div>
+      </section>
 
-      <div id="stopwatch" class="panel">
-        <header class="headerbar compact">
+      <section id="stopwatch" role="panel">
+        <header class="compact" role="headerbar">
           <div class="safezone">
             <h1 data-l10n-id="stopwatch"></h1>
             <menu role="toolbar">
@@ -114,9 +114,9 @@
         </div>
 
         <ul id="stopwatch-laps"></ul>
-      </div>
+      </section>
 
-      <div id="timer" class="panel">
+      <section id="timer" role="panel">
         <header class="headerbar compact">
           <div class="safezone">
             <h1>Clock</h1>
@@ -134,8 +134,8 @@
             <div id="timer-clock-digital"></div>
           </div>
         </div>
-      </div>
-    </div>
+      </section>
+    </d>
   </div>
 </body>
 </html>
