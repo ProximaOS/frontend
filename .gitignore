@@ -22,11 +22,6 @@ build_stage/
 logs/
 *.log
 
-# Unfinished products
-/*apps/newspaper
-/*apps/orchid_articles
-/*apps/weather
-
 *.orcbin
 *.orclib
 *.orchidapp
