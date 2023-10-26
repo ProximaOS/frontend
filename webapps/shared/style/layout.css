@@ -7,10 +7,13 @@ html, body {
   -webkit-tap-highlight-color: transparent;
 }
 
-[role="app"] {
+:root {
   --statusbar-height: 4rem;
-  --software-buttons-height: 4rem;
+  --software-buttons-height: 0rem;
   --safezone-width: 75rem;
+}
+
+[role="app"] {
   position: fixed;
   left: 0;
   top: 0;

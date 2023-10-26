@@ -14,11 +14,11 @@
         let level = battery.level;
         let charging = battery.charging;
         if (charging) {
-          this.iconElement.dataset.icon = `battery-${
+          this.iconElement.dataset.icon = `battery-charging-${
             Math.round(level * 10) * 10
           }`;
         } else {
-          this.iconElement.dataset.icon = `battery-charging-${
+          this.iconElement.dataset.icon = `battery-${
             Math.round(level * 10) * 10
           }`;
         }
@@ -38,11 +38,11 @@
             level = battery.level;
             charging = battery.charging;
             if (charging) {
-              this.iconElement.dataset.icon = `battery-${
+              this.iconElement.dataset.icon = `battery-charging-${
                 Math.round(level * 10) * 10
               }`;
             } else {
-              this.iconElement.dataset.icon = `battery-charging-${
+              this.iconElement.dataset.icon = `battery-${
                 Math.round(level * 10) * 10
               }`;
             }

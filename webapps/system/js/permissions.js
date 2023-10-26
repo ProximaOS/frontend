@@ -10,7 +10,8 @@
     },
 
     handlePermissionRequest: async function (event) {
-      const settingId = `${event.detail.origin}`;
+      const url = new URL(event.detail.origin);
+      const settingId = `${url.origin}`;
       Settings.getValue(settingId, 'permissions.json').then((value) => {
         if (value && value[event.detail.type]) {
           IPC.send('permissionrequest', {

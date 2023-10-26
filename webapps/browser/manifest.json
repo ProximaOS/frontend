@@ -23,5 +23,11 @@
   "permissions": {},
   "chrome": {
     "navigation": true
+  },
+  "window_bounds": {
+    "left": "calc(50% - 512px)",
+    "top": "calc(50% - (640px + var(--software-buttons-height) + 2rem) / 2)",
+    "width": "1024px",
+    "height": "640px"
   }
 }

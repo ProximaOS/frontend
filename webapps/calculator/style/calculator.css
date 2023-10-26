@@ -5,6 +5,7 @@
   display: flex;
   flex-direction: column;
   height: 100%;
+  position: relative;
 }
 
 .calculator input {
@@ -12,8 +13,8 @@
   margin-bottom: 1rem;
   padding: 0 1rem;
   box-sizing: border-box;
-  height: 25vh;
-  line-height: 25vh;
+  height: 20vh;
+  line-height: 20vh;
   font-size: 5rem;
   font-weight: 200;
   background-color: transparent;
@@ -25,12 +26,13 @@
 .calculator .buttons {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: repeat(5, 1fr);
   grid-gap: 1rem;
   flex-grow: 1;
   padding: 1.5rem;
   box-sizing: border-box;
   border-radius: 3rem 3rem 0 0;
-  background: linear-gradient(to bottom, var(--background-minus), transparent);
+  background-color: var(--background-minus);
 }
 
 .calculator .button {
@@ -42,24 +44,28 @@
   border: none;
   border-radius: 1.5rem;
   font-weight: 300;
-  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.05);
 }
 
 .calculator .button:active {
   opacity: 0.75;
-  box-shadow: none;
+}
+
+.calculator .button[data-icon] {
+  font-size: 0;
+}
+
+.calculator .button[data-icon]::before {
+  font-size: 2.4rem;
 }
 
 #clear {
   grid-column: span 2;
   background-color: #c00040;
   color: rgba(255, 255, 255, 0.75);
-  box-shadow: 0 0.5rem 1rem rgba(192, 0, 64, 0.25);
 }
 
 #equals {
   grid-row: span 2;
   background-color: var(--accent-color);
   color: var(--accent-color-plus);
-  box-shadow: 0 0.5rem 1rem -1rem var(--accent-color);
 }

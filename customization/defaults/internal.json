@@ -1,0 +1,6 @@
+{
+  "system.blank.url": "http://system.localhost:8081/blank.html",
+  "system.main.url": "http://system.localhost:8081/index.html",
+  "system.net_error.url": "http://system.localhost:8081/net_error.html",
+  "system.edition": "desktop"
+}

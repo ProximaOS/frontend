@@ -1,0 +1,9 @@
+:root {
+  --statusbar-height: 0rem;
+  --software-buttons-height: 0rem;
+}
+
+#screen.smart-tv #statusbar,
+#screen.smart-tv #software-buttons {
+  display: none;
+}

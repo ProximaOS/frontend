@@ -33,15 +33,15 @@
         x = window.innerWidth - (elementBox.width + 10);
       }
 
-      if (originType === 'webapp') {
-        this.element.style.left = `${webviewBox.left + x}px`;
-        this.element.style.top = `${webviewBox.top + y}px`;
-      } else {
-        this.element.style.left = `${x}px`;
-        this.element.style.top = `${y}px`;
-      }
       this.element.style.width = this.label.scrollWidth + 'px';
       this.element.style.height = this.label.scrollHeight + 'px';
+      if (originType === 'webapp') {
+        this.element.style.left = `${webviewBox.left + x}px`;
+        this.element.style.top = `${webviewBox.top + 24}px`;
+      } else {
+        this.element.style.left = `${x}px`;
+        this.element.style.top = `${y + 24}px`;
+      }
     },
 
     hide: function () {

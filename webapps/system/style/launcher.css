@@ -3,17 +3,41 @@
   left: 50%;
   bottom: calc(var(--software-buttons-height) + 2rem);
   translate: -50% 0;
-  width: 57rem;
-  height: 40rem;
-  background-color: var(--background);
-  border-radius: 2rem;
+  width: 56rem;
+  height: 44rem;
+  background-color: var(--acrylic-background-plus);
+  backdrop-filter: blur(20px) saturate(180%);
+  border-radius: 2.5rem;
+  box-shadow: 0 1.2rem 2.4rem rgba(0, 0, 0, 0.2);
+  display: flex;
+  flex-direction: column;
+  transform-origin: bottom;
+  transition: all 0.5s cubic-bezier(0.2, 0.9, 0.1, 1);
+  transform: translateY(var(--software-buttons-height)) scale(0.75);
+  opacity: 0;
   visibility: hidden;
 }
 
-#launcher .header {
-  position: absolute;
+#launcher.visible {
+  transition: all 0.5s cubic-bezier(0.2, 0.9, 0.1, 1.1);
+  transform: translateY(0);
+  opacity: 1;
+  visibility: visible;
+}
+
+#launcher.maximized {
   left: 0;
-  top: 0;
+  bottom: 0;
+  background-color: var(--acrylic-background);
+  border-radius: 0;
+  translate: 0 0;
+  width: 100%;
+  height: 100%;
+  padding: 1rem 1.5rem calc(var(--software-buttons-height) + 2rem);
+  box-sizing: border-box;
+}
+
+#launcher .header {
   width: 100%;
   height: 7rem;
   padding: 1.5rem;
@@ -28,15 +52,14 @@
   line-height: 4rem;
   padding: 0 1.5rem;
   box-sizing: border-box;
-  background-color: var(--background-plus);
+  background-color: var(--background-minus);
   border-radius: 2rem;
   color: var(--text-color-faded);
+  font-size: 1.6rem;
+  font-weight: normal;
 }
 
 #launcher .footer {
-  position: absolute;
-  left: 0;
-  bottom: 0;
   width: 100%;
   height: 7rem;
   padding: 1.5rem;
@@ -60,5 +83,382 @@
 #launcher .footer button {
   width: 4rem;
   padding: 0 1rem;
+  box-sizing: border-box;
+  flex-shrink: 0;
+}
+
+#launcher .header button[data-icon]::before,
+#launcher .footer button[data-icon]::before {
+  position: static;
+}
+
+/* Grid */
+#launcher-grid {
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  flex-grow: 1;
+  overflow-x: scroll;
+  overflow-y: hidden;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  display: flex;
+  transform: translateY(calc(3rem * (var(--motion-progress, 0) + (var(--overscroll-progress, 0)))));
+  transition: all 0.3s ease;
+}
+
+.page {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  display: grid;
+  grid-template-columns: repeat(var(--grid-columns), 1fr);
+  grid-template-rows: repeat(var(--grid-rows), 1fr);
+  perspective: 100vw;
+  overflow: hidden;
+  scroll-snap-align: start;
+  flex-shrink: 0;
+  margin: 0;
+  padding: 0;
+}
+
+.icon {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  list-style: none;
+}
+
+.icon.dragging {
+  transition: none;
+}
+
+.icon .icon-holder {
+  width: 4.8rem;
+  margin: 0 auto;
+  padding-top: 0.4rem;
+  position: relative;
+}
+
+.icon .icon-holder > * {
+  width: 4.8rem;
+  height: 4.8rem;
+  border-radius: 25%;
+  display: block;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.icon:hover .icon-holder > img {
+  transform: scale(1.05);
+}
+
+.icon.dragging .icon-holder > img {
+  transform: scale(1.25);
+}
+
+.icon:active .icon-holder > img {
+  filter: brightness(0.75);
+}
+
+[data-edit-mode="true"] .icon:not(.dragging) .icon-holder > img {
+  transform-origin: center !important;
+  animation: icon-edit-wiggle 0.3s ease-in-out infinite;
+}
+
+[data-edit-mode="true"] .icon:not(.dragging):nth-child(3n-1) .icon-holder > img {
+  animation-delay: 0.2s;
+}
+
+[data-edit-mode="true"] .icon:not(.dragging):nth-child(3n) .icon-holder > img {
+  animation-delay: 0.1s;
+}
+
+@keyframes icon-edit-wiggle {
+  0% {
+    transform: rotate(-5deg);
+  }
+  50% {
+    transform: rotate(5deg);
+  }
+  100% {
+    transform: rotate(-5deg);
+  }
+}
+
+.icon .icon-holder > .notification-badge {
+  position: absolute;
+  left: -0.5rem;
+  top: 0;
+  min-width: 2.4rem;
+  height: 2.4rem;
+  line-height: 2.4rem;
+  margin: 0;
+  padding: 0 0.5rem;
+  box-sizing: border-box;
+  background-color: #c00040;
+  border-radius: 2.4rem;
+  color: rgba(255, 255, 255, 0.75);
+  font-size: 1.4rem;
+  font-weight: normal;
+  text-align: center;
+  transition: all 0.3s ease;
+  transform: scale(0);
+  opacity: 0;
+  visibility: hidden;
+}
+
+.icon .icon-holder > .uninstall-button {
+  position: absolute;
+  right: -0.5rem;
+  top: 0;
+  width: 3rem;
+  height: 3rem;
+  line-height: 3rem;
+  margin: 0;
+  padding: 0 0.7rem;
+  background-color: var(--acrylic-background);
+  backdrop-filter: blur(20px) saturate(180%);
+  border-radius: 50%;
+  color: var(--text-color);
+  border: none;
+  transition: all 0.3s ease;
+  transform: scale(0);
+  opacity: 0;
+  visibility: hidden;
+}
+
+[data-edit-mode="true"] .icon .icon-holder > .uninstall-button {
+  transform: scale(1);
+  opacity: 1;
+  visibility: visible;
+}
+
+.icon .icon-holder > .uninstall-button[data-icon]::before {
+  font-size: 1.6rem;
+  height: 3rem;
+  line-height: 4rem;
+}
+
+.icon .name {
+  width: 100%;
+  margin: 0.4rem 0 1rem;
+  text-align: center;
+  font-size: 1.2rem;
+  color: var(--text-color);
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  transition: all 0.3s ease;
+}
+
+#app.light .icon .name {
+  color: rgba(0, 0, 0, 0.75);
+  font-weight: bold;
+  text-shadow: none;
+}
+
+.icon.icon.dragging .name {
+  opacity: 0;
+}
+
+[data-edit-mode="true"] .icon:not(.dragging) .name {
+  transform-origin: 50% -3rem !important;
+  animation: icon-edit-wiggle 0.3s ease-in-out infinite;
+}
+
+[data-edit-mode="true"] .icon:not(.dragging):nth-child(3n-1) .name {
+  animation-delay: 0.2s;
+}
+
+[data-edit-mode="true"] .icon:not(.dragging):nth-child(3n) .name {
+  animation-delay: 0.1s;
+}
+
+/* Pagination Dots */
+#launcher-paginationBar {
+  position: absolute;
+  left: 50%;
+  translate: -50% 0;
+  bottom: 5rem;
+  border-radius: 2rem;
+  height: 2rem;
+  display: flex;
+  gap: 0.5rem;
+}
+
+#launcher-paginationBar > .dot {
+  width: calc(0.8rem + (0.8rem * var(--pagination-progress, 0)));
+  height: 0.8rem;
+  background-color: #fff;
+  border-radius: 1rem;
+  transition: all 0.3s ease;
+  opacity: calc(0.5 + (0.5 * var(--pagination-progress, 0)));
+}
+
+#launcher-paginationBar > .dot.active {
+  width: 1.6rem;
+  opacity: 1;
+}
+
+/* Shortcuts */
+#launcher-shortcuts {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0,0,0,0.3);
+  backdrop-filter: blur(20px) saturate(180%);
+  z-index: 50;
+  transition: all 0.3s ease;
+  opacity: 0;
+  visibility: hidden;
+}
+
+#launcher-shortcuts.visible {
+  opacity: 1;
+  visibility: visible;
+}
+
+#launcher-shortcuts-fake-icon {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 4.8rem;
+  height: 4.8rem;
+  background-color: #fff;
+  border-radius: 25%;
+}
+
+#launcher-shortcuts-menu {
+  position: absolute;
+  background-color: var(--acrylic-background-plus);
+  border-radius: 1.5rem;
+  width: max-content;
+  transform-origin: 0 0;
+  transition: all 0.3s cubic-bezier(0.2, 0.9, 0.1, 1.1);
+  transform: scale(0.75);
+}
+
+#launcher-shortcuts.visible #launcher-shortcuts-menu {
+  transform: scale(1);
+}
+
+#launcher-shortcuts-menu > ul {
+  width: 100%;
+  margin: 0;
+  padding: 0.5rem;
+  border-bottom: solid 0.5rem var(--item-plus);
+  box-sizing: border-box;
+}
+
+#launcher-shortcuts-menu > ul:last-child {
+  border-bottom: none;
+}
+
+#launcher-shortcuts-menu > ul li {
+  width: 100%;
+  height: 4rem;
+  line-height: 4rem;
+  border-radius: 1rem;
+  margin: 0;
+  padding: 0 1rem;
+  box-sizing: border-box;
+  list-style: none;
+  color: var(--text-color);
+  font-size: 1.6rem;
+  font-weight: normal;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  position: relative;
+}
+
+#launcher-shortcuts-menu > ul li:hover {
+  background: var(--item-hover);
+}
+
+#launcher-shortcuts-menu > ul li:active {
+  background: var(--item-active);
+}
+
+#launcher-shortcuts-menu > ul li::after {
+  content: '';
+  position: absolute;
+  left: 1.5rem;
+  top: 0;
+  width: calc(100% - 3rem);
+  height: 100%;
+  pointer-events: none;
+  border-top: solid 0.1rem var(--item-plus);
+  box-sizing: border-box;
+}
+
+#launcher-shortcuts-menu > ul li:hover::after,
+#launcher-shortcuts-menu > ul li:active::after,
+#launcher-shortcuts-menu > ul li:hover + li::after,
+#launcher-shortcuts-menu > ul li:active + li::after,
+#launcher-shortcuts-menu > ul li:first-child::after,
+#context-menu-content .separator + li::after {
+  border-top: none !important;
+}
+
+#launcher-shortcuts-menu > ul li[disabled] {
+  opacity: 0.4;
+  pointer-events: none;
+}
+
+#launcher-shortcuts-menu > ul li[data-icon] {
+  -moz-padding-start: 4rem;
+  padding-inline-start: 4rem;
+}
+
+#launcher-shortcuts-menu > ul li[data-icon]:before {
+  position: absolute;
+  top: 0;
+  width: 2rem;
+  height: 100%;
+  font-size: 2rem;
+}
+html[dir='ltr'] #launcher-shortcuts-menu > ul li[data-icon]:before {
+  left: 1rem;
+}
+html[dir='rtl'] #launcher-shortcuts-menu > ul li[data-icon]:before {
+  right: 1rem;
+}
+
+#launcher-shortcuts-menu > #launcher-shortcuts-menu-options li {
+  height: 5rem;
+  line-height: 5rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+#launcher-shortcuts-menu > #launcher-shortcuts-menu-options li > .icon-holder {
+  padding: 0.5rem 0;
+  box-sizing: border-box;
+  flex-shrink: 0;
+  height: 100%;
+}
+
+#launcher-shortcuts-menu > #launcher-shortcuts-menu-options li > .icon-holder > img {
+  width: 4rem;
+  height: 4rem;
+  border-radius: 25%;
+}
+
+#launcher-shortcuts-menu > #launcher-shortcuts-menu-options li > .name {
+  width: 100%;
+  flex-grow: 1;
+  height: 100%;
+  line-height: 2.2rem;
+  display: flex;
+  align-items: center;
+  padding: 0.5rem 0;
   box-sizing: border-box;
 }

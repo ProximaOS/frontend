@@ -17,6 +17,7 @@
   <link rel="stylesheet" type="text/css" href="http://shared.localhost:8081/style/checkboxes.css" />
   <link rel="stylesheet" type="text/css" href="http://shared.localhost:8081/style/card_panels.css" />
   <link rel="stylesheet" type="text/css" href="http://shared.localhost:8081/style/transitions.css" />
+  <link rel="stylesheet" type="text/css" href="http://shared.localhost:8081/style/counters.css" />
 
   <!-- Stylesheets -->
   <link rel="stylesheet" type="text/css" href="dist/main.bundle.css">
@@ -75,6 +76,7 @@
   <script defer type="text/javascript" src="http://shared.localhost:8081/js/transitions.js"></script>
   <script defer type="text/javascript" src="http://shared.localhost:8081/js/color_picker.js"></script>
   <script defer type="text/javascript" src="http://shared.localhost:8081/js/depthmap.js"></script>
+  <script defer type="text/javascript" src="http://shared.localhost:8081/js/counters.js"></script>
 
   <!-- Initial scripts -->
   <script type="text/javascript" src="js/bootstrap.js"></script>
@@ -106,7 +108,7 @@
   <script defer type="text/javascript" src="js/keybinds.js"></script>
   <script defer type="text/javascript" src="js/utility_tray.js"></script>
   <script defer type="text/javascript" src="js/wallpaper_manager.js"></script>
-  <script defer type="text/javascript" src="js/homescreen_launcher.js"></script>
+  <!-- <script defer type="text/javascript" src="js/homescreen_launcher.js"></script> -->
   <script defer type="text/javascript" src="js/gesture_panels.js"></script>
   <script defer type="text/javascript" src="js/text_selection.js"></script>
   <script defer type="text/javascript" src="js/context_menu.js"></script>
@@ -123,6 +125,7 @@
   <script defer type="text/javascript" src="js/drag_and_drop.js"></script>
   <script defer type="text/javascript" src="js/title_tooltip.js"></script>
   <script defer type="text/javascript" src="js/login_ui.js"></script>
+  <script defer type="text/javascript" src="js/app_launcher.js"></script>
   <script defer type="text/javascript" src="js/lockscreen/motion.js"></script>
   <script defer type="text/javascript" src="js/lockscreen/clock.js"></script>
   <script defer type="text/javascript" src="js/lockscreen/date.js"></script>
@@ -189,7 +192,7 @@
           <span id="lockscreen-icon"></span>
         </div>
         <div class="lockscreen-row">
-          <div id="lockscreen-clock"></div>
+          <div id="lockscreen-clock" role="counter"></div>
           <div id="lockscreen-date"></div>
           <div id="lockscreen-charging"></div>
         </div>
@@ -198,7 +201,6 @@
       <div id="lockscreen-notifications"></div>
       <div id="lockscreen-toolbar">
         <button id="lockscreen-camera-button" data-icon="camera"></button>
-        <button id="lockscreen-flashlight-button" data-icon="flashlight"></button>
       </div>
 
       <div id="lockscreen-pin">
@@ -305,7 +307,7 @@
                 <li><a href="#" id="quick-settings-cast" data-icon="cast" data-l10n-id="quickSettings-cast"></a></li> -->
               </ul>
               <div id="brightness">
-                <span data-icon="moon"></span>
+                <span data-icon="brightness-low"></span>
                 <input type="range" id="brightness-slider" min="0" max="100" step="1">
                 <span data-icon="brightness"></span>
               </div>
@@ -479,13 +481,14 @@
       <div id="dock"></div>
     </div>
 
-    <div id="launcher">
+    <div id="launcher" data-z-index-layer="launcher">
       <div class="header">
         <div id="launcher-search" data-l10n-id="type-here-to-search"></div>
-        <button id="launcher-resize" data-icon="fullscreen"></button>
+        <button id="launcher-maximize-button" data-icon="fullscreen"></button>
       </div>
 
       <div id="launcher-grid"></div>
+      <div id="launcher-paginationBar"></div>
 
       <div class="footer">
         <div class="left">
@@ -501,6 +504,17 @@
           <button data-icon="power"></button>
           <button data-icon="settings"></button>
           <button data-icon="home"></button>
+        </div>
+      </div>
+
+      <div id="launcher-shortcuts">
+        <img src="" alt="" id="launcher-shortcuts-fake-icon">
+        <div id="launcher-shortcuts-menu">
+          <ul id="launcher-shortcuts-menu-options"></ul>
+          <ul>
+            <li id="launcher-shortcuts-edit-button" data-icon="edit" data-l10n-id="launcher-shortcuts-edit"></li>
+            <li id="launcher-shortcuts-uninstall-button" data-icon="delete" data-l10n-id="launcher-shortcuts-uninstall"></li>
+          </ul>
         </div>
       </div>
     </div>

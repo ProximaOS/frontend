@@ -1,10 +1,15 @@
 #statusbar {
   position: fixed;
-  left: 0;
   top: 0;
   width: 100%;
   height: var(--statusbar-height);
   transition: all 0.3s ease;
+}
+html[dir="ltr"] #statusbar {
+  right: 0;
+}
+html[dir="rtl"] #statusbar {
+  left: 0;
 }
 
 #screen:not(.desktop) #statusbar.hidden {
@@ -186,6 +191,10 @@ html[dir="rtl"] .statusbar-icons > .right {
   transition: all 0.3s ease;
 }
 
+#screen.desktop #statusbar #statusbar-date {
+  display: none;
+}
+
 #statusbar-battery::before {
   width: 2rem;
   height: 2rem;
@@ -224,6 +233,10 @@ html[dir="rtl"] .statusbar-icons > .right {
   margin: 0 calc(var(--hide-margin, -1rem) * (1 - var(--motion-progress, 0)));
   filter: blur(calc(1rem * (1 - var(--motion-progress, 0))));
   transition: all 0.3s ease;
+}
+
+#screen.desktop #statusbar #statusbar-battery-percentage {
+  display: none;
 }
 
 #statusbar-cellular-signal {

@@ -29,7 +29,7 @@
     timer: null,
     timePassed: 0,
 
-    DEFAULT_PAGE_INDEX: 1,
+    DEFAULT_PAGE_INDEX: 0,
 
     init: function () {
       this.dockElement.style.setProperty('--grid-columns', this.gridColumns);
@@ -110,8 +110,8 @@
         page.id = `page${offset}`;
         page.classList.add('page');
         page.style.transform = rtl
-          ? `translateX(-${(offset + 1) * 100}%)`
-          : `translateX(${(offset + 1) * 100}%)`;
+          ? `translateX(-${offset * 100}%)`
+          : `translateX(${offset * 100}%)`;
         if (this.DEFAULT_PAGE_INDEX === offset) {
           page.scrollIntoView();
         }
@@ -164,6 +164,16 @@
           DirectionalScale.init(iconContainer);
           iconHolder.appendChild(iconContainer);
 
+          const notificationBadge = document.createElement('span');
+          notificationBadge.textContent = 0;
+          notificationBadge.classList.add('notification-badge');
+          iconHolder.appendChild(notificationBadge);
+
+          const uninstallButton = document.createElement('button');
+          uninstallButton.dataset.icon = 'remove';
+          uninstallButton.classList.add('uninstall-button');
+          iconHolder.appendChild(uninstallButton);
+
           const name = document.createElement('div');
           name.classList.add('name');
           name.textContent = app.manifest.name;
@@ -186,7 +196,6 @@
             (carouselItems[index].getBoundingClientRect().left +
               this.gridElement.clientWidth / 2)
         );
-        console.log(index, distance);
         const fadeDistance = this.gridElement.clientWidth / 2;
 
         if (distance < fadeDistance) {

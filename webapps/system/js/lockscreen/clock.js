@@ -18,11 +18,16 @@
           ? 'ar-SA'
           : navigator.mozL10n.language.code;
 
-      this.clockElement.innerText = currentTime.toLocaleTimeString(langCode, {
-        hour12: this.is12HourFormat,
-        hour: 'numeric',
-        minute: '2-digit'
-      }).split(' ')[0];
+      Counter.increment(
+        this.clockElement,
+        currentTime
+          .toLocaleTimeString(langCode, {
+            hour12: this.is12HourFormat,
+            hour: 'numeric',
+            minute: '2-digit'
+          })
+          .split(' ')[0]
+      );
 
       clearTimeout(this.timer);
       this.timer = setTimeout(this.update.bind(this), 1000);

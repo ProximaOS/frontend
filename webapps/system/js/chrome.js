@@ -204,13 +204,18 @@
               }
             }
 
+            this.statusbar.addEventListener(
+              'dblclick',
+              this.handleStatusbarDoubleClick.bind(this)
+            );
+
             this.tablistHolder().addEventListener(
               'contextmenu',
               this.handleTablistHolderContextMenu.bind(this)
             );
             this.sideTabsButton().addEventListener(
               'click',
-              this.handeSideTabsButton.bind(this)
+              this.handleSideTabsButton.bind(this)
             );
             this.addButton().addEventListener(
               'click',
@@ -271,6 +276,28 @@
           });
         }
       );
+    },
+
+    handleStatusbarDoubleClick: function () {
+      const webview = this.chrome().querySelector(
+        '.browser-container .browser-view.active > .browser'
+      );
+      webview.executeJavaScript(`
+        const panelContent = document.querySelector('[role="panel"].visible > .content');
+        if (panelContent) {
+          panelContent.scroll({
+            left: 0,
+            top: 0,
+            behavior: 'smooth'
+          });
+        } else {
+          document.scrollingElement.scroll({
+            left: 0,
+            top: 0,
+            behavior: 'smooth'
+          });
+        }
+      `);
     },
 
     handleTablistHolderContextMenu: function (event) {
@@ -334,7 +361,7 @@
       }, 16);
     },
 
-    handeSideTabsButton: function () {
+    handleSideTabsButton: function () {
       this.chrome().classList.toggle('side-tabs');
     },
 
@@ -409,11 +436,11 @@
       const webview = document.createElement('webview');
       setTimeout(() => {
         webview.src = url || this.DEFAULT_URL;
-      }, 250);
+      }, 300);
       webview.classList.add('browser');
       browserView.appendChild(webview);
 
-      function updateUserAgent (value) {
+      function updateUserAgent(value) {
         switch (value) {
           case 'android':
             webview.useragent = navigator.userAgent.replace(
@@ -476,10 +503,17 @@
 
       webview.addEventListener('did-start-loading', () => {
         favicons.classList.add('loading');
+        favicons.classList.remove('dom-loading');
+      });
+
+      webview.addEventListener('dom-ready', () => {
+        favicons.classList.add('loading');
+        favicons.classList.add('dom-loading');
       });
 
       webview.addEventListener('did-stop-loading', () => {
         favicons.classList.remove('loading');
+        favicons.classList.remove('dom-loading');
 
         const splashElement =
           this.chrome().parentElement.querySelector('.splashscreen');
@@ -640,7 +674,7 @@
     },
 
     handleUrlbarInputKeydown: function (event) {
-      function checkURL (url) {
+      function checkURL(url) {
         const urlPattern =
           /^(https?:\/\/)?([\w-]+\.)*[\w-]+(:\d+)?(\/[\w-./?%&=]*)?$/;
 
@@ -674,26 +708,34 @@
     },
 
     handleNavbarBackButton: function () {
-      const webview = this.browserContainer().querySelector('.browser-view.active > .browser');
+      const webview = this.browserContainer().querySelector(
+        '.browser-view.active > .browser'
+      );
       if (webview.canGoBack()) {
         webview.goBack();
       }
     },
 
     handleNavbarForwardButton: function () {
-      const webview = this.browserContainer().querySelector('.browser-view.active > .browser');
+      const webview = this.browserContainer().querySelector(
+        '.browser-view.active > .browser'
+      );
       if (webview.canGoForward()) {
         webview.goForward();
       }
     },
 
     handleNavbarReloadButton: function () {
-      const webview = this.browserContainer().querySelector('.browser-view.active > .browser');
+      const webview = this.browserContainer().querySelector(
+        '.browser-view.active > .browser'
+      );
       webview.reload();
     },
 
     handleNavbarHomeButton: function () {
-      const webview = this.browserContainer().querySelector('.browser-view.active > .browser');
+      const webview = this.browserContainer().querySelector(
+        '.browser-view.active > .browser'
+      );
       webview.src = this.DEFAULT_URL;
     },
 
@@ -715,7 +757,9 @@
     },
 
     handleNavbarOptionsButton: async function (event) {
-      const webview = this.browserContainer().querySelector('.browser-view.active > .browser');
+      const webview = this.browserContainer().querySelector(
+        '.browser-view.active > .browser'
+      );
 
       const box = this.navbarOptionsButton().getBoundingClientRect();
       const rtl = document.dir === 'rtl';
@@ -803,7 +847,9 @@
           icon: 'reader-mode',
           onclick: () => {
             if (webview.getURL().startsWith('orchidreader://')) {
-              webview.url = webview.getURL().substring('orchidreader://readermode.html?content='.length);
+              webview.url = webview
+                .getURL()
+                .substring('orchidreader://readermode.html?content='.length);
             } else {
               webview.url = `orchidreader://readermode.html?content=${webview.getURL()}`;
             }
@@ -828,7 +874,7 @@
                 const duration = 500; // 500ms transition time
 
                 const startTime = performance.now();
-                function animateZoom () {
+                function animateZoom() {
                   const currentTime = performance.now();
                   const progress = Math.min(
                     (currentTime - startTime) / duration,
@@ -859,7 +905,7 @@
                 const duration = 500; // 500ms transition time
 
                 const startTime = performance.now();
-                function animateZoom () {
+                function animateZoom() {
                   const currentTime = performance.now();
                   const progress = Math.min(
                     (currentTime - startTime) / duration,
@@ -888,7 +934,7 @@
                 const duration = 500; // 500ms transition time
 
                 const startTime = performance.now();
-                function animateZoom () {
+                function animateZoom() {
                   const currentTime = performance.now();
                   const progress = Math.min(
                     (currentTime - startTime) / duration,
@@ -931,8 +977,7 @@
         },
         {
           type: 'separator',
-          hidden:
-            (await Settings.getValue('general.chrome.position')) !== 'top'
+          hidden: (await Settings.getValue('general.chrome.position')) !== 'top'
         },
         {
           name: 'Move Chrome Down',
@@ -952,7 +997,9 @@
     },
 
     handleUrlbarSSLButton: async function (event) {
-      const webview = this.browserContainer().querySelector('.browser-view.active > .browser');
+      const webview = this.browserContainer().querySelector(
+        '.browser-view.active > .browser'
+      );
 
       const box = this.urlbarSSLButton().getBoundingClientRect();
       const rtl = document.dir === 'rtl';
@@ -1025,7 +1072,9 @@
     },
 
     handleIpcMessage: function (event) {
-      const webview = this.browserContainer().querySelector('.browser-view.active > .browser');
+      const webview = this.browserContainer().querySelector(
+        '.browser-view.active > .browser'
+      );
 
       const scrollPosition = event.args[0].top;
       let progress = scrollPosition / 80;
@@ -1051,9 +1100,15 @@
     },
 
     handleContextMenu: function (event) {
-      const browserView = this.browserContainer().querySelector('.browser-view.active');
-      const webview = this.browserContainer().querySelector('.browser-view.active > .browser');
-      const devToolsView = this.browserContainer().querySelector('.browser-view.active > .devtools');
+      const browserView = this.browserContainer().querySelector(
+        '.browser-view.active'
+      );
+      const webview = this.browserContainer().querySelector(
+        '.browser-view.active > .browser'
+      );
+      const devToolsView = this.browserContainer().querySelector(
+        '.browser-view.active > .devtools'
+      );
 
       const itemsBefore = [
         {
@@ -1205,7 +1260,9 @@
           icon: 'edit',
           onclick: () => {
             webview.focus();
-            devToolsView.src = `orchid://devtools/inspector.html?ws=127.0.0.1:${Environment.debugPort}&webContentsId${webview.getWebContentsId()}`;
+            devToolsView.src = `orchid://devtools/inspector.html?ws=127.0.0.1:${
+              Environment.debugPort
+            }&webContentsId${webview.getWebContentsId()}`;
             browserView.classList.toggle('devtools-visible');
           }
         }
@@ -1241,7 +1298,9 @@
     },
 
     handleDidStartNavigation: function () {
-      const webview = this.browserContainer().querySelector('.browser-view.active > .browser');
+      const webview = this.browserContainer().querySelector(
+        '.browser-view.active > .browser'
+      );
       this.urlbarInput().value = webview.getURL();
 
       if (webview.getURL() === this.DEFAULT_URL) {
@@ -1259,7 +1318,9 @@
     },
 
     handleThemeColorUpdated: function (event) {
-      const webview = this.browserContainer().querySelector('.browser-view.active > .browser');
+      const webview = this.browserContainer().querySelector(
+        '.browser-view.active > .browser'
+      );
       const color = event.themeColor;
       if (color) {
         webview.dataset.themeColor = (color + 'C0').toLowerCase();

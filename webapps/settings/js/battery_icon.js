@@ -10,26 +10,28 @@
 
         let level = battery.level;
         let charging = battery.charging;
-        this.iconElement.dataset.icon = `battery-${
-          Math.round(level * 10) * 10
-        }`;
         if (charging) {
-          this.iconElement.classList.add('charging');
+          this.iconElement.dataset.icon = `battery-charging-${
+            Math.round(level * 10) * 10
+          }`;
         } else {
-          this.iconElement.classList.remove('charging');
+          this.iconElement.dataset.icon = `battery-${
+            Math.round(level * 10) * 10
+          }`;
         }
 
         ['chargingchange', 'levelchange'].forEach((event) => {
           battery.addEventListener(event, () => {
             level = battery.level;
             charging = battery.charging;
-            this.iconElement.dataset.icon = `battery-${
-              Math.round(level * 10) * 10
-            }`;
             if (charging) {
-              this.iconElement.classList.add('charging');
+              this.iconElement.dataset.icon = `battery-charging-${
+                Math.round(level * 10) * 10
+              }`;
             } else {
-              this.iconElement.classList.remove('charging');
+              this.iconElement.dataset.icon = `battery-${
+                Math.round(level * 10) * 10
+              }`;
             }
           });
         });

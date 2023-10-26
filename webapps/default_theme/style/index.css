@@ -57,7 +57,7 @@
     --accent-color-hover: rgba(0, 0, 0, 0.05);
     --accent-color-active: rgba(0, 0, 0, 0.1);
 
-    --background: #000;
+    --background: rgb(calc(4 + ((var(--accent-color-r) / 255) * 4)), calc(4 + ((var(--accent-color-g) / 255) * 4)), calc(4 + ((var(--accent-color-b) / 255) * 4)));
     --background-plus: rgb(calc(34 + ((var(--accent-color-r) / 255) * 5)), calc(34 + ((var(--accent-color-g) / 255) * 5)), calc(34 + ((var(--accent-color-b) / 255) * 5)));
     --background-minus: rgb(calc(19 + ((var(--accent-color-r) / 255) * 1)), calc(19 + ((var(--accent-color-g) / 255) * 1)), calc(19 + ((var(--accent-color-b) / 255) * 1)));
 
@@ -67,9 +67,9 @@
     --text-color: #e7e7e7;
     --text-color-faded: rgba(231, 231, 231, 0.5);
 
-    --headerbar-r: 0;
-    --headerbar-g: 0;
-    --headerbar-b: 0;
+    --headerbar-r: calc(4 + ((var(--accent-color-r) / 255) * 4));
+    --headerbar-g: calc(4 + ((var(--accent-color-g) / 255) * 4));
+    --headerbar-b: calc(4 + ((var(--accent-color-b) / 255) * 4));
   }
 }
 

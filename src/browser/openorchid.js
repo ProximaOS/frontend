@@ -1,9 +1,16 @@
 const { l18n, initializeLocale } = require('../locales/locale_reader');
+const Settings = require('../settings');
 
 !(function () {
   'use strict';
 
-  const { BrowserWindow, nativeTheme, Menu, ipcMain, BrowserView } = require('electron');
+  const {
+    BrowserWindow,
+    nativeTheme,
+    Menu,
+    ipcMain,
+    BrowserView
+  } = require('electron');
   const settings = require('../settings');
   const os = require('os');
   const path = require('path');
@@ -35,73 +42,83 @@ const { l18n, initializeLocale } = require('../locales/locale_reader');
 
   initializeLocale();
 
-  module.exports = function () {
-    let systemConfig = {
-      id: 'mobile',
-      width: 320,
-      height: 640,
-      type: 'Mobile'
-    };
+  module.exports = async function () {
+    let systemConfig;
+    let defaultEdition = await Settings.getValue(
+      'system.edition',
+      'internal.json'
+    );
 
     if (options.type) {
-      switch (options.type) {
-        case 'desktop':
-          systemConfig = {
-            id: 'desktop',
-            width: 1024,
-            height: 640,
-            type: 'Desktop'
-          };
-          break;
+      defaultEdition = options.type;
+    }
 
-        case 'smart_tv':
-          systemConfig = {
-            id: 'smart_tv',
-            width: 1280,
-            height: 720,
-            type: 'Smart TV'
-          };
-          break;
+    switch (defaultEdition) {
+      case 'mobile':
+        systemConfig = {
+          id: 'mobile',
+          width: 1024,
+          height: 640,
+          type: 'Mobile'
+        };
+        break;
 
-        case 'vr':
-          systemConfig = {
-            id: 'vr',
-            width: 1280,
-            height: 720,
-            type: 'VR'
-          };
-          break;
+      case 'desktop':
+        systemConfig = {
+          id: 'desktop',
+          width: 1024,
+          height: 640,
+          type: 'Desktop'
+        };
+        break;
 
-        case 'homepad':
-          systemConfig = {
-            id: 'home',
-            width: 1280,
-            height: 720,
-            type: 'Homepad'
-          };
-          break;
+      case 'smart_tv':
+        systemConfig = {
+          id: 'smart_tv',
+          width: 1280,
+          height: 720,
+          type: 'Smart TV'
+        };
+        break;
 
-        case 'wear':
-          systemConfig = {
-            id: 'watch',
-            width: 240,
-            height: 240,
-            type: 'Wear'
-          };
-          break;
+      case 'vr':
+        systemConfig = {
+          id: 'vr',
+          width: 1280,
+          height: 720,
+          type: 'VR'
+        };
+        break;
 
-        case 'featurephone':
-          systemConfig = {
-            id: 'featurephone',
-            width: 240,
-            height: 320,
-            type: 'Mobile/Featurephone'
-          };
-          break;
+      case 'homepad':
+        systemConfig = {
+          id: 'home',
+          width: 1280,
+          height: 720,
+          type: 'Homepad'
+        };
+        break;
 
-        default:
-          break;
-      }
+      case 'wear':
+        systemConfig = {
+          id: 'watch',
+          width: 240,
+          height: 240,
+          type: 'Wear'
+        };
+        break;
+
+      case 'featurephone':
+        systemConfig = {
+          id: 'featurephone',
+          width: 240,
+          height: 320,
+          type: 'Mobile/Featurephone'
+        };
+        break;
+
+      default:
+        break;
     }
 
     // Create the browser window.
@@ -124,13 +141,13 @@ const { l18n, initializeLocale } = require('../locales/locale_reader');
           ? systemConfig.height
           : systemConfig.height + 37,
       // show: false,
-      fullscreenable: false,
+      // fullscreenable: false,
       disableAutoHideCursor: true,
       autoHideMenuBar: true,
       center: true,
       backgroundColor: '#000000',
       tabbingIdentifier: 'openorchid',
-      kiosk: true
+      // kiosk: true
     });
 
     const menu = Menu.buildFromTemplate(require('./dropmenu')(mainWindow));
@@ -171,33 +188,65 @@ const { l18n, initializeLocale } = require('../locales/locale_reader');
     } Safari/537.36`;
 
     // and load the index.html of the app.
-    webview.webContents.loadURL('http://system.localhost:8081/index.html', {
-      userAgent
-    });
+    webview.webContents.loadURL(
+      await Settings.getValue('system.main.url', 'internal.json'),
+      {
+        userAgent
+      }
+    );
+    console.log(await Settings.getValue('system.main.url', 'internal.json'));
 
     // Load JavaScript and CSS files
     webview.webContents.on('dom-ready', () => {
-      const webviewScriptPath = path.join(__dirname, '..', '..', 'internal', 'webview', 'webview.js');
-      webview.webContents.executeJavaScript(fs.readFileSync(webviewScriptPath, 'utf8'));
+      const webviewScriptPath = path.join(
+        __dirname,
+        '..',
+        '..',
+        'internal',
+        'webview',
+        'webview.js'
+      );
+      webview.webContents.executeJavaScript(
+        fs.readFileSync(webviewScriptPath, 'utf8')
+      );
 
-      fs.readdir(path.join(__dirname, '..', '..', 'internal', 'preloads'), (error, files) => {
-        if (error) {
-          console.error(error);
-          return;
+      fs.readdir(
+        path.join(__dirname, '..', '..', 'internal', 'preloads'),
+        (error, files) => {
+          if (error) {
+            console.error(error);
+            return;
+          }
+
+          files.forEach((file) => {
+            if (file.endsWith('.js')) {
+              const scriptPath = path.join(
+                __dirname,
+                '..',
+                '..',
+                'internal',
+                'preloads',
+                file
+              );
+              webview.webContents.executeJavaScript(
+                fs.readFileSync(scriptPath, 'utf8')
+              );
+            }
+
+            if (file.endsWith('.css')) {
+              const cssPath = path.join(
+                __dirname,
+                '..',
+                '..',
+                'internal',
+                'preloads',
+                file
+              );
+              webview.webContents.insertCSS(fs.readFileSync(cssPath, 'utf8'));
+            }
+          });
         }
-
-        files.forEach(file => {
-          if (file.endsWith('.js')) {
-            const scriptPath = path.join(__dirname, '..', '..', 'internal', 'preloads', file);
-            webview.webContents.executeJavaScript(fs.readFileSync(scriptPath, 'utf8'));
-          }
-
-          if (file.endsWith('.css')) {
-            const cssPath = path.join(__dirname, '..', '..', 'internal', 'preloads', file);
-            webview.webContents.insertCSS(fs.readFileSync(cssPath, 'utf8'));
-          }
-        });
-      });
+      );
     });
 
     // Open the DevTools.
@@ -223,11 +272,6 @@ const { l18n, initializeLocale } = require('../locales/locale_reader');
       nativeTheme.themeSource = theme;
     });
 
-    // mainWindow.on('resized', () => {
-    //   const { width, height } = mainWindow.getContentBounds();
-    //   webview.setBounds({ x: 0, y: 0, width: width - 50, height });
-    // });
-
     mainWindow.on('blur', async () => {
       setActivity(await l18n('idle-inactive'));
     });
@@ -238,19 +282,27 @@ const { l18n, initializeLocale } = require('../locales/locale_reader');
       setActivity(await l18n('idle-minimized'));
     });
     mainWindow.on('show', async () => {
-      setActivity(isDev ? await l18n('activeState-dev') : await l18n('activeState-prod'));
+      setActivity(
+        isDev ? await l18n('activeState-dev') : await l18n('activeState-prod')
+      );
     });
     mainWindow.on('focus', async () => {
-      setActivity(isDev ? await l18n('activeState-dev') : await l18n('activeState-prod'));
+      setActivity(
+        isDev ? await l18n('activeState-dev') : await l18n('activeState-prod')
+      );
     });
     mainWindow.on('restore', async () => {
-      setActivity(isDev ? await l18n('activeState-dev') : await l18n('activeState-prod'));
+      setActivity(
+        isDev ? await l18n('activeState-dev') : await l18n('activeState-prod')
+      );
     });
     mainWindow.on('unresponsive', async () => {
       setActivity(await l18n('activeState-hang'));
     });
     mainWindow.on('responsive', async () => {
-      setActivity(isDev ? await l18n('activeState-dev') : await l18n('activeState-prod'));
+      setActivity(
+        isDev ? await l18n('activeState-dev') : await l18n('activeState-prod')
+      );
     });
 
     registerEvents(mainWindow, webview);

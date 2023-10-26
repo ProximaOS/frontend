@@ -47,3 +47,9 @@ html[dir="rtl"] #screen.desktop #utility-tray-motion {
   padding: 0;
   flex-grow: 1;
 }
+
+#screen.desktop #control-center {
+  height: max-content;
+  flex-grow: unset;
+  flex-shrink: 0;
+}

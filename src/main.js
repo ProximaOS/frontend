@@ -26,7 +26,7 @@ app.setPath('crashDumps', path.join(profileDir, 'crash-dumps'));
 
 // Disable error dialogs by overriding
 dialog.showErrorBox = function (title, content) {
-  console.error(`${title}\n${content}`);
+  // console.error(`${title}\n${content}`);
 };
 dialog.showMessageBox = function (options, callback) {
   // Trigger your IPC event instead of displaying the native dialog
@@ -112,12 +112,6 @@ app.on('activate', () => {
 });
 
 if (isDev) {
-  electronReload(path.join(__dirname, '..'), {
-    hardResetMethod: 'exit'
-  });
-  electronReload(path.join(__dirname, '..', '..', 'internal'), {
-    hardResetMethod: 'exit'
-  });
   electronReload(path.resolve(process.env.OPENORCHID_WEBAPPS), {
     hardResetMethod: 'exit'
   });

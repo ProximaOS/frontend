@@ -16,14 +16,13 @@
     dock: document.getElementById('dock'),
 
     HIDDEN_ROLES: ['homescreen', 'keyboard', 'system', 'theme'],
-    SPLASH_ICON_SIZE: 60,
-    DOCK_ICON_SIZE: 40,
-
     OPEN_ANIMATION: 'expand',
     CLOSE_ANIMATION: 'shrink',
     CLOSE_TO_HOMESCREEN_ANIMATION: 'shrink-to-homescreen',
+    DOCK_ICON_SIZE: 40,
+    SPLASH_ICON_SIZE: 60,
 
-    timer: null,
+    timeoutID: null,
     isDragging: false,
     isResizing: false,
     resizingWindow: null,
@@ -36,14 +35,8 @@
      * The function that initiates windows and adds the event listeners.
      */
     init: function () {
-      this.softwareBackButton.addEventListener(
-        'click',
-        this.onButtonClick.bind(this)
-      );
-      this.softwareHomeButton.addEventListener(
-        'click',
-        this.onButtonClick.bind(this)
-      );
+      this.softwareBackButton.addEventListener('click', this.onButtonClick.bind(this));
+      this.softwareHomeButton.addEventListener('click', this.onButtonClick.bind(this));
     },
 
     /**
@@ -58,248 +51,239 @@
      * @returns null
      */
     create: async function (manifestUrl, options = {}) {
-      const existingWindow = this.containerElement.querySelector(
-        `[data-manifest-url="${manifestUrl}"]`
-      );
+      // Check if a window with the same manifest URL already exists
+      const existingWindow = this.containerElement.querySelector(`[data-manifest-url="${manifestUrl}"]`);
       if (existingWindow) {
-        if (options.animVariables) {
-          if (this.homescreenElement) {
-            this.homescreenElement.style.transformOrigin = `${options.animVariables.xPos}px ${options.animVariables.yPos}px`;
-          }
-          existingWindow.style.transformOrigin = `${options.animVariables.xPos}px ${options.animVariables.yPos}px`;
-          existingWindow.style.setProperty('--icon-pos-x', options.animVariables.iconXPos + 'px');
-          existingWindow.style.setProperty('--icon-pos-y', options.animVariables.iconYPos + 'px');
-          existingWindow.style.setProperty('--icon-scale-x', options.animVariables.iconXScale);
-          existingWindow.style.setProperty('--icon-scale-y', options.animVariables.iconYScale);
+        if (options.animationVariables) {
+          // Update transform origin if animation variables are provided
+          this.updateTransformOrigin(existingWindow, options.animationVariables);
         }
+        // Unminimize the existing window and return
         this.unminimize(existingWindow.id);
         return;
       }
 
+      const manifest = await this.fetchManifest(manifestUrl);
+
       const windowId = `appframe${AppWindow._id}`;
       AppWindow._id++;
 
-      let manifest;
-      await fetch(manifestUrl)
-        .then((response) => response.json())
-        .then(function (data) {
-          manifest = data;
-          // You can perform further operations with the 'manifest' variable here
-        })
-        .catch(function (error) {
-          console.error('Error fetching manifest:', error);
-        });
-
-      // Apply window options
-      const windowOptions = Object.assign(
-        {
-          start_url: manifest.start_url,
-          launch_path: manifest.launch_path,
-          width: manifest.width,
-          height: manifest.height,
-          windowed: window.platform() === 'desktop',
-          cli_args: []
-        },
-        options
-      );
+      // Create and initialize the window container
+      const windowDiv = this.createWindowContainer(manifest, windowId, options.animationVariables);
+      windowDiv.dataset.manifestUrl = manifestUrl;
 
       // Create dock icon
-      if (this.HIDDEN_ROLES.indexOf(manifest.role) === -1) {
-        const icon = document.createElement('div');
-        icon.classList.add('icon');
-        icon.dataset.manifestUrl = manifestUrl;
-        icon.onclick = () => {
-          this.focus(windowId);
-        };
-        this.dock.appendChild(icon);
-
-        icon.classList.add(this.OPEN_ANIMATION);
-        icon.addEventListener('animationend', () => {
-          icon.classList.remove(this.OPEN_ANIMATION);
-        });
-
-        const iconImage = document.createElement('img');
-        iconImage.crossOrigin = 'anonymous';
-        Object.entries(manifest.icons).forEach((entry) => {
-          if (entry[0] <= this.DOCK_ICON_SIZE) {
-            return;
-          }
-          const url = new URL(manifestUrl);
-          iconImage.src = url.origin + '/' + entry[1];
-        });
-        iconImage.onerror = () => {
-          iconImage.src = '/style/images/default.png';
-        };
-        icon.appendChild(iconImage);
+      if (!this.HIDDEN_ROLES.includes(manifest.role)) {
+        this.createDockIcon(manifestUrl, windowId, manifest.icons);
       }
 
-      // Create window container
+      // Create a splash screen with an icon
+      this.createSplashScreen(windowDiv, manifest.icons, manifestUrl);
+
+      if (platform() === 'desktop') {
+        this.createWindowedWindow(windowDiv, manifest, windowId, options);
+      }
+
+      // Create chrome container and initialize the browser
+      const chromeContainer = this.createChromeContainer(windowDiv);
+      const url = new URL(manifestUrl);
+      this.initializeBrowser(chromeContainer, url.origin + manifest.launch_path || manifest.start_url, manifest.chrome?.navigation || false);
+    },
+
+    fetchManifest: async function (manifestUrl) {
+      try {
+        const response = await fetch(manifestUrl);
+        if (!response.ok) {
+          throw new Error(`Failed to fetch manifest: ${response.status}`);
+        }
+        const data = await response.json();
+        return data;
+      } catch (error) {
+        console.error('Error fetching manifest:', error);
+      }
+    },
+
+    updateTransformOrigin: function (element, animationVariables) {
+      element.style.transformOrigin = `${animationVariables.xPos}px ${animationVariables.yPos}px`;
+      element.style.setProperty('--icon-pos-x', animationVariables.iconXPos + 'px');
+      element.style.setProperty('--icon-pos-y', animationVariables.iconYPos + 'px');
+      element.style.setProperty('--icon-scale-x', animationVariables.iconXScale);
+      element.style.setProperty('--icon-scale-y', animationVariables.iconYScale);
+    },
+
+    createDockIcon: function (manifestUrl, windowId, icons) {
+      const icon = document.createElement('div');
+      icon.classList.add('icon');
+      icon.dataset.manifestUrl = manifestUrl;
+      icon.onclick = () => this.focus(windowId);
+      this.dock.appendChild(icon);
+
+      // Add icon image
+      this.addIconImage(icon, icons, manifestUrl);
+
+      // Add animation class
+      this.addAnimationClass(icon, this.OPEN_ANIMATION);
+    },
+
+    createWindowContainer: function (manifest, windowId, animationVariables) {
       const windowDiv = document.createElement('div');
-      windowDiv.dataset.manifestUrl = manifestUrl;
-      if (manifest.role === 'homescreen') {
-        windowDiv.id = 'homescreen';
-        AppWindow.homescreenElement = windowDiv;
-      } else {
-        windowDiv.id = windowId;
-      }
+      windowDiv.id = manifest.role === 'homescreen' ? 'homescreen' : windowId;
       windowDiv.classList.add('appframe');
+
       if (manifest.statusbar && manifest.statusbar !== 'normal') {
         windowDiv.classList.add(manifest.statusbar);
       }
+
       if (manifest.display && manifest.display !== 'standalone') {
         windowDiv.classList.add(manifest.display);
       }
+
       if (manifest.transparent) {
         windowDiv.classList.add('transparent');
       }
-      if (windowOptions.animVariables) {
-        if (this.homescreenElement) {
-          this.homescreenElement.style.transformOrigin = `${windowOptions.animVariables.xPos}px ${windowOptions.animVariables.yPos}px`;
-        }
-        windowDiv.style.transformOrigin = `${windowOptions.animVariables.xPos}px ${windowOptions.animVariables.yPos}px`;
-        windowDiv.style.setProperty('--icon-pos-x', options.animVariables.iconXPos + 'px');
-        windowDiv.style.setProperty('--icon-pos-y', options.animVariables.iconYPos + 'px');
-        windowDiv.style.setProperty('--icon-scale-x', options.animVariables.iconXScale);
-        windowDiv.style.setProperty('--icon-scale-y', options.animVariables.iconYScale);
+
+      if (animationVariables) {
+        this.updateTransformOrigin(windowDiv, animationVariables);
       }
+
       this.containerElement.appendChild(windowDiv);
 
       // Focus the app window
       this.focus(windowDiv.id);
 
-      windowDiv.classList.add(this.OPEN_ANIMATION);
-      windowDiv.addEventListener('animationend', () => {
-        windowDiv.classList.remove(this.OPEN_ANIMATION);
-      });
+      // Add animation class
+      this.addAnimationClass(windowDiv, this.OPEN_ANIMATION);
+      return windowDiv;
+    },
 
+    createSplashScreen: function (windowDiv, icons, manifestUrl) {
       const splashScreen = document.createElement('div');
       splashScreen.classList.add('splashscreen');
       windowDiv.appendChild(splashScreen);
-
       const splashScreenIcon = document.createElement('img');
       splashScreenIcon.classList.add('icon');
       splashScreen.appendChild(splashScreenIcon);
-      Object.entries(manifest.icons).forEach((entry) => {
-        if (entry[0] <= this.SPLASH_ICON_SIZE) {
-          return;
-        }
-        const url = new URL(manifestUrl);
-        splashScreenIcon.src = url.origin + '/' + entry[1];
+      this.addIconImage(splashScreenIcon, icons, manifestUrl);
+    },
+
+    createWindowedWindow: function (windowDiv, manifest, windowId, options) {
+      windowDiv.classList.add('window');
+      windowDiv.style.left = manifest.window_bounds?.left || '3.6rem';
+      windowDiv.style.top = manifest.window_bounds?.top || '2.4rem';
+      windowDiv.style.width = manifest.window_bounds?.width || '76.8rem';
+      windowDiv.style.height = manifest.window_bounds?.height || '60rem';
+
+      // Create titlebar and its buttons
+      this.createTitlebar(windowDiv, windowId);
+
+      // Create resize handlers
+      this.createResizeHandlers(windowDiv);
+    },
+
+    createTitlebar: function (windowDiv, windowId) {
+      const titlebar = document.createElement('div');
+      titlebar.classList.add('titlebar');
+      windowDiv.appendChild(titlebar);
+
+      const titlebarGrippy = document.createElement('div');
+      titlebarGrippy.classList.add('titlebar-grippy');
+      titlebarGrippy.addEventListener('mousedown', this.startDrag.bind(this, windowId));
+      titlebarGrippy.addEventListener('touchstart', this.startDrag.bind(this, windowId));
+      titlebar.appendChild(titlebarGrippy);
+
+      const titlebarButtons = document.createElement('div');
+      titlebarButtons.classList.add('titlebar-buttons');
+      titlebar.appendChild(titlebarButtons);
+
+      const closeButton = document.createElement('button');
+      closeButton.classList.add('close-button');
+      closeButton.addEventListener('click', (event) => {
+        event.preventDefault();
+        event.stopPropagation();
+        this.close(windowId);
       });
-      splashScreenIcon.onerror = () => {
-        splashScreenIcon.src = '/style/images/default.png';
-      };
+      titlebarButtons.appendChild(closeButton);
 
-      if (windowOptions.windowed) {
-        if (windowDiv !== this.homescreenElement) {
-          windowDiv.classList.add('window');
+      const resizeButton = document.createElement('button');
+      resizeButton.classList.add('resize-button');
+      resizeButton.addEventListener('click', (event) => {
+        event.preventDefault();
+        event.stopPropagation();
+        this.maximize(windowId);
+      });
+      titlebarButtons.appendChild(resizeButton);
 
-          windowDiv.style.left = '32px';
-          windowDiv.style.top = '32px';
-          windowDiv.style.width = '1024px';
-          windowDiv.style.height = '640px';
+      const minimizeButton = document.createElement('button');
+      minimizeButton.classList.add('minimize-button');
+      minimizeButton.addEventListener('click', (event) => {
+        event.preventDefault();
+        event.stopPropagation();
+        this.minimize(windowId);
+      });
+      titlebarButtons.appendChild(minimizeButton);
+    },
 
-          const titlebar = document.createElement('div');
-          titlebar.classList.add('titlebar');
-          windowDiv.appendChild(titlebar);
+    createResizeHandlers: function (windowDiv) {
+      const resizeHandlers = [];
 
-          const titlebarGrippy = document.createElement('div');
-          titlebarGrippy.classList.add('titlebar-grippy');
-          titlebarGrippy.addEventListener(
-            'mousedown',
-            this.startDrag.bind(this, windowDiv.id)
-          );
-          titlebarGrippy.addEventListener(
-            'touchstart',
-            this.startDrag.bind(this, windowDiv.id)
-          );
-          titlebar.appendChild(titlebarGrippy);
-
-          const titlebarButtons = document.createElement('div');
-          titlebarButtons.classList.add('titlebar-buttons');
-          titlebar.appendChild(titlebarButtons);
-
-          const closeButton = document.createElement('button');
-          closeButton.classList.add('close-button');
-          closeButton.addEventListener('click', (event) => {
-            event.preventDefault();
-            event.stopPropagation();
-            this.close(windowId);
-          });
-          titlebarButtons.appendChild(closeButton);
-
-          const resizeButton = document.createElement('button');
-          resizeButton.classList.add('resize-button');
-          resizeButton.addEventListener('click', (event) => {
-            event.preventDefault();
-            event.stopPropagation();
-            this.maximize(windowId);
-          });
-          titlebarButtons.appendChild(resizeButton);
-
-          const minimizeButton = document.createElement('button');
-          minimizeButton.classList.add('minimize-button');
-          minimizeButton.addEventListener('click', (event) => {
-            event.preventDefault();
-            event.stopPropagation();
-            this.minimize(windowId);
-          });
-          titlebarButtons.appendChild(minimizeButton);
-        }
-
-        const resizeHandlers = [];
-
-        // Create and append the resize handlers in all directions
-        for (let i = 0; i < 9; i++) {
-          const resizeHandler = document.createElement('div');
-          resizeHandler.classList.add('resize-handler');
-          windowDiv.appendChild(resizeHandler);
-          resizeHandlers.push(resizeHandler);
-        }
-
-        // Set the cursor style for each resize handler
-        resizeHandlers[0].classList.add('nw-resize');
-        resizeHandlers[1].classList.add('n-resize');
-        resizeHandlers[2].classList.add('ne-resize');
-        resizeHandlers[3].classList.add('w-resize');
-        resizeHandlers[4].classList.add('e-resize');
-        resizeHandlers[5].classList.add('sw-resize');
-        resizeHandlers[6].classList.add('s-resize');
-        resizeHandlers[7].classList.add('se-resize');
-
-        // Attach event listeners to each resize handler
-        resizeHandlers.forEach((resizeHandler, index) => {
-          resizeHandler.addEventListener('mousedown', (event) =>
-            this.startResize(event, windowDiv)
-          );
-          resizeHandler.addEventListener('touchstart', (event) =>
-            this.startResize(event, windowDiv)
-          );
-        });
+      // Create and append the resize handlers in all directions
+      for (let i = 0; i < 9; i++) {
+        const resizeHandler = document.createElement('div');
+        resizeHandler.classList.add('resize-handler');
+        windowDiv.appendChild(resizeHandler);
+        resizeHandlers.push(resizeHandler);
       }
 
-      // Create chrome
+      // Set the cursor style for each resize handler
+      resizeHandlers[0].classList.add('nw-resize');
+      resizeHandlers[1].classList.add('n-resize');
+      resizeHandlers[2].classList.add('ne-resize');
+      resizeHandlers[3].classList.add('w-resize');
+      resizeHandlers[4].classList.add('e-resize');
+      resizeHandlers[5].classList.add('sw-resize');
+      resizeHandlers[6].classList.add('s-resize');
+      resizeHandlers[7].classList.add('se-resize');
+
+      // Attach event listeners to each resize handler
+      resizeHandlers.forEach((resizeHandler, index) => {
+        resizeHandler.addEventListener('mousedown', (event) => this.startResize(event, windowDiv, index));
+        resizeHandler.addEventListener('touchstart', (event) => this.startResize(event, windowDiv, index));
+      });
+    },
+
+    createChromeContainer: function (windowDiv) {
       const chromeContainer = document.createElement('div');
       chromeContainer.classList.add('chrome');
       windowDiv.appendChild(chromeContainer);
+      return chromeContainer;
+    },
 
-      let isChromeEnabled = false;
-      if (manifest.chrome && manifest.chrome.navigation) {
-        isChromeEnabled = true;
-      }
+    initializeBrowser: function (chromeContainer, startUrl, isChromeEnabled) {
+      Browser.init(chromeContainer, startUrl, isChromeEnabled);
+    },
 
-      if (manifest.start_url) {
-        Browser.init(chromeContainer, manifest.start_url, isChromeEnabled);
-      } else {
-        if (manifest.launch_path) {
-          const url = new URL(manifestUrl);
-          Browser.init(
-            chromeContainer,
-            url.origin + manifest.launch_path,
-            isChromeEnabled
-          );
+    // Utility methods for adding an icon image and an animation class
+    addIconImage: function (element, icons, manifestUrl) {
+      const iconImage = document.createElement('img');
+      iconImage.crossOrigin = 'anonymous';
+      Object.entries(icons).forEach((entry) => {
+        if (entry[0] <= this.DOCK_ICON_SIZE) {
+          return;
         }
-      }
+        const url = new URL(manifestUrl);
+        iconImage.src = url.origin + '/' + entry[1];
+      });
+      iconImage.onerror = () => {
+        iconImage.src = '/style/images/default.png';
+      };
+      element.appendChild(iconImage);
+    },
+
+    addAnimationClass: function (element, animationClass) {
+      element.classList.add(animationClass);
+      element.addEventListener('animationend', () => {
+        element.classList.remove(animationClass);
+      });
     },
 
     /**
@@ -319,9 +303,7 @@
 
       const windowDiv = document.getElementById(id);
       const manifestUrl = windowDiv.dataset.manifestUrl;
-      const dockIcon = this.dock.querySelector(
-        `[data-manifest-url="${manifestUrl}"]`
-      );
+      const dockIcon = this.dock.querySelector(`[data-manifest-url="${manifestUrl}"]`);
       const focusedWindow = this.focusedWindow;
 
       windowDiv.style.transform = '';
@@ -356,15 +338,9 @@
       this.focusedWindow = windowDiv;
 
       this.handleThemeColorFocusUpdated(id);
-      Settings.addObserver('video.dark_mode.enabled', () =>
-        this.handleThemeColorFocusUpdated(id)
-      );
+      Settings.addObserver('video.dark_mode.enabled', () => this.handleThemeColorFocusUpdated(id));
 
-      if (
-        focusedWindow &&
-        focusedWindow !== this.homescreenElement &&
-        windowDiv !== this.homescreenElement
-      ) {
+      if (focusedWindow && focusedWindow !== this.homescreenElement && windowDiv !== this.homescreenElement) {
         if (windowDiv === focusedWindow) {
           return;
         }
@@ -411,9 +387,7 @@
 
       const windowDiv = document.getElementById(id);
       const manifestUrl = windowDiv.dataset.manifestUrl;
-      const dockIcon = this.dock.querySelector(
-        `[data-manifest-url="${manifestUrl}"]`
-      );
+      const dockIcon = this.dock.querySelector(`[data-manifest-url="${manifestUrl}"]`);
 
       if (isFast) {
         windowDiv.remove();
@@ -449,9 +423,7 @@
 
       const windowDiv = document.getElementById(id);
       const manifestUrl = windowDiv.dataset.manifestUrl;
-      const dockIcon = this.dock.querySelector(
-        `[data-manifest-url="${manifestUrl}"]`
-      );
+      const dockIcon = this.dock.querySelector(`[data-manifest-url="${manifestUrl}"]`);
 
       this.focus('homescreen');
       windowDiv.classList.add(this.CLOSE_TO_HOMESCREEN_ANIMATION);
@@ -462,7 +434,7 @@
         this.focus('homescreen');
       });
       // Focus plays a 0.5s switch animation which could mess up the close animation timer
-      this.timer = setTimeout(() => {
+      this.timeoutID = setTimeout(() => {
         windowDiv.style.transform = '';
         windowDiv.classList.remove('active');
         windowDiv.classList.remove(this.CLOSE_TO_HOMESCREEN_ANIMATION);
@@ -480,9 +452,7 @@
 
       const windowDiv = document.getElementById(id);
       const manifestUrl = windowDiv.dataset.manifestUrl;
-      const dockIcon = this.dock.querySelector(
-        `[data-manifest-url="${manifestUrl}"]`
-      );
+      const dockIcon = this.dock.querySelector(`[data-manifest-url="${manifestUrl}"]`);
 
       if (windowDiv === this.focusedWindow) {
         return;
@@ -506,18 +476,14 @@
       const windowDiv = document.getElementById(id);
       windowDiv.classList.add('transitioning');
       windowDiv.classList.toggle('maximized');
-      windowDiv.addEventListener('animationend', () => {
-        windowDiv.classList.remove('transitioning');
-      });
+      windowDiv.addEventListener('transitionend', () => windowDiv.classList.remove('transitioning'));
     },
 
     onButtonClick: function (event) {
       switch (event.target) {
         case this.softwareBackButton:
           if (!this.screen.classList.contains('keyboard-visible')) {
-            const webview = this.focusedWindow.querySelector(
-              '.browser-container .browser.active'
-            );
+            const webview = this.focusedWindow.querySelector('.browser-container .browser.active');
             if (webview.canGoBack()) {
               webview.goBack();
             } else {
@@ -540,9 +506,7 @@
 
     handleThemeColorFocusUpdated: function (id) {
       const windowDiv = document.getElementById(id);
-      const webview = windowDiv.querySelector(
-        '.browser-container .browser.active'
-      );
+      const webview = windowDiv.querySelector('.browser-container .browser.active');
       let color;
       if (webview) {
         color = webview.dataset.themeColor.substring(0, 7);
@@ -594,10 +558,8 @@
       AppWindow.containerElement.classList.add('dragging');
       const windowDiv = document.getElementById(windowId);
 
-      windowDiv.classList.add('transitioning-bouncy');
-      windowDiv.addEventListener('transitionend', () =>
-        windowDiv.classList.remove('transitioning-bouncy')
-      );
+      windowDiv.classList.add('transitioning');
+      windowDiv.addEventListener('transitionend', () => windowDiv.classList.remove('transitioning'));
       windowDiv.classList.add('dragging');
 
       // Get initial position
@@ -640,10 +602,8 @@
         event.preventDefault();
         AppWindow.containerElement.classList.remove('dragging');
 
-        windowDiv.classList.add('transitioning-bouncy');
-        windowDiv.addEventListener('transitionend', () =>
-          windowDiv.classList.remove('transitioning-bouncy')
-        );
+        windowDiv.classList.add('transitioning');
+        windowDiv.addEventListener('transitionend', () => windowDiv.classList.remove('transitioning'));
         windowDiv.classList.remove('dragging');
 
         document.removeEventListener('mousemove', dragWindow);
@@ -663,18 +623,10 @@
       this.startWidth = this.resizingWindow.offsetWidth;
       this.startHeight = this.resizingWindow.offsetHeight;
 
-      document.addEventListener('mousemove', (event1) =>
-        this.resize(event1, event.target)
-      );
-      document.addEventListener('touchmove', (event1) =>
-        this.resize(event1, event.target)
-      );
-      document.addEventListener('mouseup', (event1) =>
-        this.stopResize(event1, event.target)
-      );
-      document.addEventListener('touchend', (event1) =>
-        this.stopResize(event1, event.target)
-      );
+      document.addEventListener('mousemove', (event1) => this.resize(event1, event.target));
+      document.addEventListener('touchmove', (event1) => this.resize(event1, event.target));
+      document.addEventListener('mouseup', (event1) => this.stopResize(event1, event.target));
+      document.addEventListener('touchend', (event1) => this.stopResize(event1, event.target));
     },
 
     resize: function (event, gripper) {

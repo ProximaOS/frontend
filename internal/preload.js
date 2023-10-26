@@ -527,7 +527,7 @@
     Settings.addObserver('video.wallpaper.url', handleWallpaperAccent);
 
     const handleAccentColor = (value) => {
-      if (value && document.querySelector('.app')) {
+      if (value && document.querySelector('[role="app"]')) {
         document.scrollingElement.style.setProperty(
           '--accent-color-r',
           value.r
@@ -566,19 +566,19 @@
     Settings.addObserver('homescreen.accent_color.rgb', handleAccentColor);
 
     const handleSoftwareButtons = (value) => {
-      if (document.querySelector('.app')) {
-        if (value) {
+      if (document.querySelector('[role="app"]')) {
+        if (navigator.userAgent.includes('Desktop') || value) {
           document
-            .querySelector('.app')
+            .querySelector('[role="app"]')
             .style.setProperty('--software-buttons-height', '4rem');
         } else {
-          if (location.origin.includes(`homescreen.localhost:8081`)) {
+          if (location.origin.includes('homescreen.localhost:8081')) {
             document
-              .querySelector('.app')
+              .querySelector('[role="app"]')
               .style.setProperty('--software-buttons-height', '1rem');
           } else {
             document
-              .querySelector('.app')
+              .querySelector('[role="app"]')
               .style.setProperty('--software-buttons-height', '2.5rem');
           }
         }

@@ -26,6 +26,11 @@
   padding: 1.5rem 0;
 }
 
+#dockbar .icon .icon-holder > .notification-badge,
+#dockbar .icon .icon-holder > .uninstall-button {
+  top: 1rem;
+}
+
 #dockbar .icon .name {
   display: none;
 }

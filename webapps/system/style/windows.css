@@ -41,7 +41,7 @@
 }
 
 #windows .appframe.dragging {
-  transform: scale(0.25);
+  box-shadow: 0 0 0 1rem var(--item-active);
 }
 
 #screen.cards-view-visible #windows,
@@ -67,11 +67,7 @@
 }
 
 .appframe.transitioning {
-  transition: all 0.3s ease;
-}
-
-.appframe.transitioning-bouncy {
-  transition: all 0.5s cubic-bezier(0.4, -0.25, 0, 1.25);
+  transition: all 0.5s cubic-bezier(0.2, 0.9, 0.1, 1);
 }
 
 .appframe.expand {
@@ -114,7 +110,7 @@
 
 @keyframes shrink-to-homescreen {
   from {
-    transform: translateY(var(--offset-y, 0)) scale(var(--scale, 1));
+    transform: translate(var(--offset-x, 0), var(--offset-y, 0)) scale(var(--scale, 1));
   }
   to {
     transform-origin: 0 0;
@@ -273,7 +269,6 @@
   border-radius: 2.5rem !important;
   box-shadow: 0 0.4rem 0.8rem rgba(0, 0, 0, 0.1);
   transform: translateY(0);
-  transition: transform 0.3s ease;
 }
 
 .appframe.window.active {
@@ -293,7 +288,7 @@
 
 #screen.desktop .appframe.window.maximized {
   top: 0 !important;
-  height: calc(100% - var(--software-buttons-height)) !important;
+  height: calc(100% - var(--software-buttons-height) - 2rem) !important;
   border-radius: 0 !important;
 }
 
@@ -320,6 +315,17 @@
   );
 }
 
+.appframe:not(.fullscreen) .chrome.side-tabs.visible .browser-view {
+  top: calc(
+    var(--statusbar-height) +
+      var(--chrome-navbar-height) + (var(--chrome-toolbar-gap) * 2)
+  );
+  height: calc(
+    100% - var(--statusbar-height) - 2.5rem -
+      var(--chrome-navbar-height) - (var(--chrome-toolbar-gap) * 2)
+  );
+}
+
 .appframe:not(.fullscreen) .chrome.bottom.visible .browser-view {
   top: var(--statusbar-height);
 }
@@ -333,7 +339,12 @@
 }
 
 #screen .appframe.window .chrome .browser-container > .browser-view {
-  height: 100%;
+  height: calc(100% - var(--statusbar-height));
+}
+
+#screen .appframe.window.fullscreen .chrome .browser-container > .browser-view,
+#screen .appframe.window.immersive .chrome .browser-container > .browser-view {
+  height: calc(100% + 4rem);
 }
 
 #screen.software-buttons-enabled .appframe:not(.fullscreen) .chrome.visible .browser-view {
@@ -564,6 +575,7 @@ html[dir='rtl'] .appframe .titlebar {
   height: 100%;
   background: transparent no-repeat center / 1.6rem;
   opacity: 0.8;
+  transition: all 0.3s cubic-bezier(0.2, 0.9, 0.1, 1);
 }
 
 .appframe .titlebar .close-button::before {
@@ -576,6 +588,7 @@ html[dir='rtl'] .appframe .titlebar {
 
 .appframe.maximized .titlebar .resize-button::before {
   background-image: url(images/restore.png);
+  transform: rotate(360deg);
 }
 
 .appframe .titlebar .minimize-button::before {

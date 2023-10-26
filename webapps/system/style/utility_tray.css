@@ -130,6 +130,8 @@
 
 .utility-tray-header menu[role="toolbar"] > a[data-icon]::before {
   font-size: 2rem;
+  height: 4rem;
+  line-height: 4rem;
 }
 
 #control-center,

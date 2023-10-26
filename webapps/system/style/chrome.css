@@ -19,7 +19,8 @@
   width: 100%;
   padding: var(--statusbar-height, var(--chrome-toolbar-gap)) 0 var(--chrome-toolbar-gap);
   box-sizing: border-box;
-  background-color: var(--theme-color, var(--background));
+  background-color: var(--theme-color, var(--header-background));
+  /* backdrop-filter: blur(20px) saturate(180%); */
   visibility: hidden;
   opacity: 0;
   gap: var(--chrome-toolbar-gap);
@@ -106,7 +107,8 @@
   transition: height 0.5s cubic-bezier(0.2, 0.9, 0.1, 1);
 }
 
-.chrome.visible .tablist li {
+.chrome.visible .tablist li,
+.chrome.side-tabs .tablist li {
   height: var(--chrome-tablist-height);
 }
 
@@ -191,7 +193,7 @@
   height: 2rem;
   mask: url(chrome/images/spinner.svg) no-repeat center / cover;
   -webkit-mask: url(chrome/images/spinner.svg) no-repeat center / cover;
-  background-color: var(--accent-color);
+  background-color: var(--text-color-faded);
   transform: scale(1.25);
   opacity: 0;
   visibility: hidden;
@@ -204,6 +206,10 @@
   /* Setting it to 'visible' shows them even if tablist-holder is hidden
      Which is why we set it to 'unset' */
   visibility: unset;
+}
+
+.chrome .tablist li > .favicons.dom-loading .loading-icon {
+  background-color: var(--accent-color);
 }
 
 .chrome .tablist li.private > .favicons {
@@ -298,13 +304,19 @@
   border-radius: 0.6rem;
   flex-shrink: 0;
   background-color: transparent;
-  color: var(--text-color);
+  color: var(--text-color-faded);
   font-size: 1.6rem;
   text-align: center;
   transition: height 0.5s cubic-bezier(0.2, 0.9, 0.1, 1);
 }
 
+.appframe.active .chrome .tablist-holder > button,
+.appframe.active .chrome .navbar button {
+  color: var(--text-color);
+}
+
 .chrome.visible .tablist-holder > button,
+.chrome.side-tabs .tablist-holder > button,
 .chrome.visible .navbar button {
   height: var(--chrome-navbar-height);
 }
@@ -338,9 +350,9 @@
   background-image: url(chrome/images/assistant_active.svg);
 }
 
-#screen:not(.desktop) .chrome .side-tabs-button {
+/* #screen:not(.desktop) .chrome .side-tabs-button {
   display: none;
-}
+} */
 
 .chrome .navbar-tabs-button {
   position: relative;
@@ -413,6 +425,7 @@
 }
 
 .chrome .navbar .urlbar:hover > .urlbar-input,
+.chrome .navbar .urlbar:focus-within > .urlbar-input,
 .chrome .navbar .urlbar.suggestions-visible > .urlbar-input {
   display: block;
 }
@@ -495,14 +508,14 @@
   visibility: visible;
 }
 
-.chrome .navbar .urlbar > .urlbar-go {
+.chrome .navbar .urlbar > .urlbar-go-button {
   transition: margin 0.3s ease, opacity 0.3s ease, visibility 0.3s ease;
   margin: 0 -2rem;
   opacity: 0;
   visibility: hidden;
 }
 
-.chrome .navbar .urlbar:focus-within > .urlbar-go {
+.chrome .navbar .urlbar:focus-within > .urlbar-go-button {
   margin: 0;
   opacity: 1;
   visibility: visible;
@@ -545,6 +558,7 @@
   top: 0;
   width: 100%;
   height: 100%;
+  overflow: hidden;
   transition: all 0.3s ease;
 }
 
@@ -640,6 +654,8 @@
 
 .chrome .tabs-view .content .headerbar > menu[role="toolbar"] > a[data-icon]::before {
   font-size: 1.6rem;
+  height: 3rem;
+  line-height: 3rem;
 }
 
 .chrome .tabs-view .content .grid {
@@ -1010,6 +1026,7 @@ html[dir="rtl"] .chrome .ftu-dialog .container .buttons {
   position: absolute;
   height: 100%;
   background-color: transparent;
+  backdrop-filter: none;
   pointer-events: none;
   padding: 0;
 }
@@ -1022,6 +1039,8 @@ html[dir="rtl"] .chrome .ftu-dialog .container .buttons {
   flex-direction: column;
   padding: 0 1rem;
   pointer-events: all;
+  background-color: var(--theme-color, var(--header-background));
+  backdrop-filter: blur(20px);
   transition: all 0.3s ease;
 }
 html[dir="ltr"] .chrome.side-tabs .toolbar .tablist-holder {
@@ -1029,6 +1048,11 @@ html[dir="ltr"] .chrome.side-tabs .toolbar .tablist-holder {
 }
 html[dir="rtl"] .chrome.side-tabs .toolbar .tablist-holder {
   right: 0;
+}
+
+#screen.mobile .chrome.side-tabs .toolbar .tablist-holder {
+  top: calc(var(--statusbar-height) + var(--chrome-navbar-height) + (var(--chrome-toolbar-gap) * 2));
+  height: calc(100% - (var(--statusbar-height) + var(--chrome-navbar-height) + (var(--chrome-toolbar-gap) * 2)));
 }
 
 .chrome.side-tabs .toolbar .tablist-holder:hover {
@@ -1047,24 +1071,42 @@ html[dir="rtl"] .chrome.side-tabs .toolbar .tablist-holder {
 
 .chrome.side-tabs .toolbar .navbar {
   padding: var(--chrome-toolbar-gap);
-  padding-inline-end: 15rem;
   pointer-events: all;
   height: calc(var(--chrome-navbar-height) + (var(--chrome-toolbar-gap) * 2));
 }
 
+#screen.desktop .chrome.side-tabs .toolbar .navbar {
+  padding-inline-end: 15rem;
+}
+
 .chrome.side-tabs .browser-container .browser-view {
-  top: 5rem;
-  width: calc(100% - 6rem);
-  height: calc(100% - 5rem);
+  top: var(--statusbar-height);
+  width: 100%;
+  height: calc(100% - var(--statusbar-height) - 2.5rem);
   overflow: hidden;
 }
-html[dir="ltr"] .chrome.side-tabs .browser-container .browser-view {
-  left: 6rem;
-  border-radius: 2rem 0 0 0;
+
+.chrome.side-tabs.visible .browser-container .browser-view {
+  width: calc(100% - 6rem);
 }
-html[dir="rtl"] .chrome.side-tabs .browser-container .browser-view {
+html[dir="ltr"] .chrome.side-tabs.visible .browser-container .browser-view {
+  left: 6rem;
+  border-radius: 1rem 0 0 0;
+}
+html[dir="rtl"] .chrome.side-tabs.visible .browser-container .browser-view {
   right: 6rem;
-  border-radius: 0 2rem 0 0;
+  border-radius: 0 1rem 0 0;
+}
+
+html[dir="ltr"] #screen.mobile .chrome.side-tabs.visible .browser-container .browser-view {
+  border-radius: 1rem 0 0 1rem;
+}
+html[dir="rtl"] #screen.mobile .chrome.side-tabs.visible .browser-container .browser-view {
+  border-radius: 0 1rem 1rem 0;
+}
+
+#screen.software-buttons-enabled .chrome.side-tabs .browser-container .browser-view {
+  height: calc(100% - var(--statusbar-height) - var(--software-buttons-height));
 }
 
 .chrome .profile-button {
@@ -1107,7 +1149,8 @@ html[dir="rtl"] .chrome.side-tabs .browser-container .browser-view {
   .chrome .navbar-downloads-button,
   .chrome .navbar-addons-button,
   .chrome .navbar-library-button,
-  .chrome .urlbar-go {
+  .chrome .navbar-assistant-button,
+  .chrome .urlbar-go-button {
     display: none;
   }
 }
@@ -1120,8 +1163,9 @@ html[dir="rtl"] .chrome.side-tabs .browser-container .browser-view {
   .chrome .navbar-downloads-button,
   .chrome .navbar-addons-button,
   .chrome .navbar-library-button,
-  .chrome .urlbar-go,
-  .chrome .urlbar-bookmark {
+  .chrome .navbar-assistant-button,
+  .chrome .urlbar-go-button,
+  .chrome .urlbar-bookmark-button {
     display: none;
   }
 

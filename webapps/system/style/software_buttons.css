@@ -107,7 +107,20 @@ html[dir="rtl"] #software-buttons #software-back-button::before {
   width: calc(var(--software-buttons-height) - 1rem);
   height: calc(var(--software-buttons-height) - 1rem);
   margin: 0.5rem;
+  background: no-repeat center / cover;
   border-radius: 25%;
+}
+
+#software-buttons .desktop #software-launcher-button {
+  background-image: url(images/launcher.svg);
+}
+
+#software-buttons .desktop #software-search-button {
+  background-image: url(images/search.svg);
+}
+
+#software-buttons .desktop #software-dashboard-button {
+  background-image: url(images/dashboard.svg);
 }
 
 /* Dock */

@@ -22,14 +22,11 @@
       document.addEventListener('mouseup', this.handlePointerUp.bind(this));
       document.addEventListener('touchmove', this.handlePointerMove.bind(this));
       document.addEventListener('mousemove', this.handlePointerMove.bind(this));
-
-      document.addEventListener('click', () => {
-        this.screen.classList.remove('close-reach');
-      });
     },
 
     handleBottomPanel: function (event) {
       event.preventDefault();
+      this.startX = event.clientX;
       this.startY = event.clientY;
       this.isDragging = true;
       AppWindow.containerElement.classList.add('dragging');
@@ -39,9 +36,12 @@
     handlePointerMove: function (event) {
       event.preventDefault();
       if (this.isDragging) {
+        const currentXPosition = event.clientX;
         const currentYPosition = event.clientY;
+        const distanceX = currentXPosition - this.startX;
         const distanceY = currentYPosition - this.startY;
 
+        const translateX = Math.min(0, distanceX / 2);
         const translateY = Math.min(0, distanceY / 2);
         const scale = Math.min(
           1,
@@ -63,11 +63,16 @@
           AppWindow.focusedWindow.style.transform = `scale(${
             0.75 + scale * 0.25
           })`;
+          AppWindow.focusedWindow.style.setProperty('--offset-x', 0);
           AppWindow.focusedWindow.style.setProperty('--offset-y', 0);
           AppWindow.focusedWindow.style.setProperty('--scale', scale);
         } else {
           AppWindow.focusedWindow.style.transformOrigin = 'center bottom';
-          AppWindow.focusedWindow.style.transform = `translateY(${translateY}px) scale(${scale})`;
+          AppWindow.focusedWindow.style.transform = `translate(${translateX}px, ${translateY}px) scale(${scale})`;
+          AppWindow.focusedWindow.style.setProperty(
+            '--offset-x',
+            `${translateX}px`
+          );
           AppWindow.focusedWindow.style.setProperty(
             '--offset-y',
             `${translateY}px`
@@ -78,6 +83,10 @@
         if (distanceY <= -300) {
           CardsView.element.classList.add('will-be-visible');
           if (AppWindow.focusedWindow.id !== 'homescreen') {
+            CardsView.element.style.setProperty(
+              '--offset-x',
+              `${translateX}px`
+            );
             CardsView.element.style.setProperty(
               '--offset-y',
               `${translateY}px`
@@ -93,13 +102,16 @@
     handlePointerUp: function (event) {
       event.preventDefault();
       if (this.isDragging) {
+        const currentXPosition = event.clientX;
         const currentYPosition = event.clientY;
+        const distanceX = currentXPosition - this.startX;
         const distanceY = currentYPosition - this.startY;
 
         // Reset the window transform
         AppWindow.focusedWindow.style.transformOrigin =
           AppWindow.focusedWindow.dataset.oldTransformOrigin;
 
+        this.startX = null;
         this.startY = null;
         this.isDragging = false;
 

@@ -32,6 +32,10 @@
           day: 'numeric',
           month: 'short'
         });
+      this.dateElement.style.setProperty(
+        '--hide-margin',
+        `-${this.dateElement.offsetWidth / 2}px`
+      );
 
       clearTimeout(this.timer);
       this.timer = setTimeout(this.update.bind(this), 1000);

@@ -1,10 +1,42 @@
 !(function (exports) {
   'use strict';
 
-  window.addEventListener('load', function () {
-    const screen = document.getElementById('screen');
+  const Bootstrap = {
+    screen: document.getElementById('screen'),
 
-    Settings.addObserver('general.lang.code', (value) => {
+    settings: [
+      'ftu.enabled',
+      'general.lang.code',
+      'general.software_buttons.enabled',
+      'video.dark_mode.enabled',
+      'video.reader_mode.enabled',
+      'video.warm_colors.enabled'
+    ],
+    SETTINGS_FTU_ENABLED: 0,
+    SETTINGS_GENERAL_LANG_CODE: 1,
+    SETTINGS_GENERAL_SOFTWARE_BUTTONS: 2,
+    SETTINGS_VIDEO_DARK_MODE: 3,
+    SETTINGS_VIDEO_READER_MODE: 4,
+    SETTINGS_VIDEO_WARM_COLORS: 5,
+
+    init: function () {
+      Settings.getValue(this.SETTINGS_GENERAL_SOFTWARE_BUTTONS).then(this.handleSoftwareButtons.bind(this));
+      Settings.getValue(this.SETTINGS_VIDEO_WARM_COLORS).then(this.handleWarmColors.bind(this));
+      Settings.getValue(this.SETTINGS_VIDEO_READER_MODE).then(this.handleReaderMode.bind(this));
+
+      Settings.addObserver(this.SETTINGS_GENERAL_LANG_CODE, this.handleLanguageChange.bind(this));
+      Settings.addObserver(this.SETTINGS_VIDEO_DARK_MODE, this.handleColorScheme.bind(this));
+      Settings.addObserver(this.SETTINGS_GENERAL_SOFTWARE_BUTTONS, this.handleSoftwareButtons.bind(this));
+      Settings.addObserver(this.SETTINGS_VIDEO_WARM_COLORS, this.handleWarmColors.bind(this));
+      Settings.addObserver(this.SETTINGS_VIDEO_READER_MODE, this.handleReaderMode.bind(this));
+
+      AppsManager.getAll().then(() => {
+        Settings.getValue(this.SETTINGS_FTU_ENABLED).then(this.handleFirstLaunch.bind(this));
+        Splashscreen.hide();
+      });
+    },
+
+    handleLanguageChange: function (value) {
       if (navigator.mozL10n.language.code !== value) {
         LoadingScreen.show();
         LoadingScreen.element.textContent = navigator.mozL10n.get('changingLanguage');
@@ -13,68 +45,33 @@
           LoadingScreen.hide();
         });
       }
-    });
+    },
 
-    Settings.addObserver(
-      'video.dark_mode.enabled',
-      (value) => {
-        IPC.send('change-theme', value ? 'dark' : 'light');
+    handleColorScheme: function (value) {
+      IPC.send('change-theme', value ? 'dark' : 'light');
+    },
+
+    handleSoftwareButtons: function (value) {
+      this.screen.classList.toggle('software-buttons-enabled', value);
+    },
+
+    handleWarmColors: function (value) {
+      this.screen.classList.toggle('warm-colors', value);
+    },
+
+    handleReaderMode: function (value) {
+      this.screen.classList.toggle('reader-mode', value);
+    },
+
+    handleFirstLaunch: function (value) {
+      if (value) {
+        LockscreenMotion.hideMotionElement();
+        AppWindow.create(`http://ftu.localhost:${location.port}/manifest.json`, {});
+      } else {
+        LazyLoader.load('js/homescreen_launcher.js');
       }
-    );
+    }
+  };
 
-    Settings
-      .getValue('general.software_buttons.enabled')
-      .then((value) => {
-        screen.classList.toggle('software-buttons-enabled', value);
-      });
-    Settings.addObserver(
-      'general.software_buttons.enabled',
-      (value) => {
-        screen.classList.toggle('software-buttons-enabled', value);
-      }
-    );
-
-    Settings
-      .getValue('video.warm_colors.enabled')
-      .then((value) => {
-        screen.classList.toggle('warm-colors', value);
-      });
-    Settings.addObserver(
-      'video.warm_colors.enabled',
-      (value) => {
-        screen.classList.toggle('warm-colors', value);
-      }
-    );
-
-    Settings
-      .getValue('video.ebook_mode.enabled')
-      .then((value) => {
-        screen.classList.toggle('ebook', value);
-      });
-    Settings.addObserver(
-      'video.ebook_mode.enabled',
-      (value) => {
-        screen.classList.toggle('ebook', value);
-      }
-    );
-
-    window.AppsManager.getAll().then(() => {
-      Splashscreen.hide();
-
-      Settings.getValue('ftu.enabled').then((value) => {
-        if (value) {
-          LockscreenMotion.hideMotionElement();
-          AppWindow.create(`http://ftu.localhost:${location.port}/manifest.json`, {});
-        } else {
-          Settings.getValue('homescreen.manifest_url').then((value) => {
-            AppWindow.create(value, {});
-          });
-          Settings.addObserver('homescreen.manifest_url', (value) => {
-            AppWindow.close('homescreen');
-            AppWindow.create(value, {});
-          });
-        }
-      });
-    });
-  });
+  window.addEventListener('load', () => Bootstrap.init());
 })(window);

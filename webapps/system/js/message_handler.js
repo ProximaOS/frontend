@@ -85,11 +85,7 @@
 
     handleTextSelection: function (data) {
       if (data.action === 'show') {
-        TextSelection.show(
-          data.selectedText,
-          data.position.left,
-          data.position.top
-        );
+        TextSelection.show(data.selectedText, data.position.left, data.position.top);
       } else {
         TextSelection.hide();
       }
@@ -97,12 +93,7 @@
 
     handleTitleTooltip: function (data) {
       if (data.action === 'show') {
-        TitleTooltip.show(
-          data.title,
-          data.position.left,
-          data.position.top,
-          data.originType
-        );
+        TitleTooltip.show(data.title, data.position.left, data.position.top, data.originType);
       } else {
         TitleTooltip.hide();
       }
@@ -122,7 +113,7 @@
 
     handleAppLaunch: function (data) {
       AppWindow.create(data.manifestUrl, {
-        animVariables: {
+        animationVariables: {
           xPos: data.xPos,
           yPos: data.yPos,
           xScale: data.xScale,

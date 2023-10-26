@@ -132,5 +132,6 @@
     "**/locales/*.cy.properties": true,
     "**/locales/*.id.properties": true,
     "**/locales/*.yi.properties": true
-  }
+  },
+  "svg.preview.background": "dark-transparent"
 }

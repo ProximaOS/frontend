@@ -18,9 +18,9 @@
 </head>
 
 <body>
-  <div id="app" class="app">
-    <div class="panel visible">
-      <div class="headerbar compact">
+  <main id="app" role="app">
+    <section class="visible" role="panel">
+      <header class="compact" role="header">
         <div class="safezone">
           <h1>Sketch</h1>
           <menu role="toolbar">
@@ -30,7 +30,7 @@
             <a href="#" data-icon="options"></a>
           </menu>
         </div>
-      </div>
+      </header>
       <div class="content">
         <div class="controls">
           <div class="controls-row">
@@ -45,17 +45,17 @@
             </select>
           </div>
           <div class="controls-row">
-            <span data-icon="themes"></span>
+            <span data-icon="brush-size"></span>
             <input type="range" id="lineWidth" min="1" max="10" step="1" value="1">
           </div>
           <div class="controls-row">
-            <span data-icon="paintbrush"></span>
+            <span data-icon="brush-opacity"></span>
             <input type="range" id="opacity" min="0" max="1" step="0.1" value="1">
           </div>
         </div>
         <canvas id="paintCanvas"></canvas>
       </div>
-    </div>
+    </section>
   </div>
   <script type="text/javascript" src="js/sketch.js"></script>
 </body>

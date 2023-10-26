@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      #counter {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        translate: -50% -50%;
+        font-size: 5rem;
+        display: flex;
+        width: max-content;
+      }
+
+      #counter .char {
+        position: relative;
+      }
+
+      #counter .char > span {
+        position: absolute;
+        left: 0;
+        top: 0;
+      }
+
+      .slide-up-from {
+        animation: slideUpFrom 0.5s cubic-bezier(0.5, 0.8, 0, 1.1) both;
+      }
+
+      .slide-up-to {
+        animation: slideUpTo 0.5s cubic-bezier(0.5, 0.8, 0, 1.1) both;
+      }
+
+      .slide-down-from {
+        animation: slideDownFrom 0.5s cubic-bezier(0.5, 0.8, 0, 1.1) both;
+      }
+
+      .slide-down-to {
+        animation: slideDownTo 0.5s cubic-bezier(0.5, 0.8, 0, 1.1) both;
+      }
+
+      @keyframes slideUpFrom {
+        0% {
+          transform: translateY(100%);
+          opacity: 0;
+          filter: blur(20px);
+        }
+
+        100% {
+          transform: translateY(0);
+          opacity: 1;
+          filter: blur(0px);
+        }
+      }
+
+      @keyframes slideUpTo {
+        0% {
+          transform: translateY(0);
+          opacity: 1;
+          filter: blur(0px);
+        }
+
+        100% {
+          transform: translateY(-100%);
+          opacity: 0;
+          filter: blur(20px);
+        }
+      }
+
+      @keyframes slideDownFrom {
+        0% {
+          transform: translateY(-100%);
+          opacity: 0;
+          filter: blur(20px);
+        }
+
+        100% {
+          transform: translateY(0);
+          opacity: 1;
+          filter: blur(0px);
+        }
+      }
+
+      @keyframes slideDownTo {
+        0% {
+          transform: translateY(0);
+          opacity: 1;
+          filter: blur(0px);
+        }
+
+        100% {
+          transform: translateY(100%);
+          opacity: 0;
+          filter: blur(20px);
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <div id="counter"></div>
+    <script>
+      let i = 0;
+      const counter = document.getElementById('counter');
+      let isHovered = false;
+
+      setInterval(() => {
+        Counter.increment(
+          counter,
+          isHovered
+            ? 'Hello, World!'
+            : new Date().toLocaleTimeString('en', {
+                hour: 'numeric',
+                minute: 'numeric',
+                second: 'numeric',
+                hour12: true
+              })
+        );
+      }, 1000);
+
+      counter.addEventListener('mouseover', () => {
+        isHovered = true;
+      });
+
+      counter.addEventListener('mouseout', () => {
+        isHovered = false;
+      });
+
+      var Counter = {
+        increment: function (counter, value) {
+          const originalText = counter.textContent;
+          counter.innerHTML = '';
+          const originalChars = originalText.split('');
+
+          console.log(originalText, '->', value);
+
+          value
+            .toString()
+            .split('')
+            .forEach((char, index) => {
+              const charElement = document.createElement('span');
+              charElement.classList.add('char');
+              counter.appendChild(charElement);
+
+              const oldValue = document.createElement('span');
+              oldValue.classList.add('old');
+              oldValue.textContent = originalChars[index] || '';
+              oldValue.style.animationDuration = 250 + index * 50 + 'ms';
+              charElement.appendChild(oldValue);
+
+              charElement.style.width = `${oldValue.offsetWidth}px`;
+              charElement.style.height = `${oldValue.offsetHeight}px`;
+
+              const newValue = document.createElement('span');
+              newValue.classList.add('new');
+              newValue.textContent = char;
+              newValue.style.animationDuration = 250 + index * 50 + 'ms';
+              charElement.appendChild(newValue);
+
+              charElement.style.transition = '0.3s ease';
+              charElement.style.width = `${newValue.offsetWidth}px`;
+              charElement.style.height = `${newValue.offsetHeight}px`;
+
+              setTimeout(() => {
+                oldValue.textContent = '';
+              }, 250 + index * 50);
+              if (originalChars[index] !== char) {
+                oldValue.classList.add('slide-up-to');
+                newValue.classList.add('slide-up-from');
+
+                setTimeout(() => {
+                  oldValue.classList.remove('slide-up-to');
+                  newValue.classList.remove('slide-up-from');
+                }, 250 + index * 50);
+              }
+            });
+        },
+
+        decrement: function (counter, value) {
+          const oldValue = counter.querySelector('.counter.old');
+          const newValue = counter.querySelector('.counter.new');
+
+          oldValue.classList.add('slide-down-to');
+          newValue.classList.add('slide-down-from');
+          newValue.textContent = value;
+
+          setTimeout(() => {
+            oldValue.classList.remove('slide-down-to');
+            newValue.classList.remove('slide-down-from');
+            oldValue.textContent = value;
+          }, 500);
+        }
+      };
+    </script>
+  </body>
+</html>

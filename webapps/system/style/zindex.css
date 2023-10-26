@@ -23,7 +23,8 @@
   z-index: 32768;
 }
 
-[data-z-index-layer="utility-tray"] {
+[data-z-index-layer="utility-tray"],
+[data-z-index-layer="launcher"] {
   z-index: 4096;
 }
 

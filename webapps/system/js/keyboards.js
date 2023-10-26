@@ -55,7 +55,7 @@
       const url = new URL(manifestUrl);
       setTimeout(() => {
         browser.src = url.origin + manifest.launch_path;
-      }, 250);
+      }, 300);
       keyboard.appendChild(browser);
     }
   };

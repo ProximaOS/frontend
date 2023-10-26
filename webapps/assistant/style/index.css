@@ -156,16 +156,16 @@
     visibility: visible;
   }
 
-  .panel:not(#root) {
+  [role="panel"]:not(#root) {
     position: absolute;
     top: 0;
     width: calc(100% - 32rem);
     height: 100%;
   }
-  html[dir="ltr"] .panel:not(#root) {
+  html[dir="ltr"] [role="panel"]:not(#root) {
     left: 32rem;
   }
-  html[dir="rtl"] .panel:not(#root) {
+  html[dir="rtl"] [role="panel"]:not(#root) {
     right: 32rem;
   }
 }

@@ -7,12 +7,15 @@
   backdrop-filter: blur(20px) saturate(180%);
   box-shadow: 0 0.8rem 1.6rem rgba(0, 0, 0, 0.1);
   pointer-events: none;
-  transition: width 0.3s ease, height 0.3s ease, opacity 0.5s ease, visibility 0.5s ease;
+  overflow: hidden;
+  transition: width 0.3s ease, height 0.3s ease, transform 0.3s ease, opacity 0.3s ease, visibility 0.3s ease;
+  transform: scale(0.9);
   opacity: 0;
   visibility: hidden;
 }
 
 #title-tooltip.visible {
+  transform: scale(1);
   opacity: 1;
   visibility: visible;
 }
@@ -40,12 +43,10 @@
 
 @keyframes tooltip-previous {
   from {
-    filter: blur(0px);
     transform: scale(1);
     opacity: 1;
   }
   to {
-    filter: blur(20px);
     transform: scale(var(--scale-x), var(--scale-y));
     opacity: 0;
   }
@@ -57,12 +58,10 @@
 
 @keyframes tooltip-next {
   from {
-    filter: blur(20px);
     transform: scale(var(--scale-x), var(--scale-y));
     opacity: 0;
   }
   to {
-    filter: blur(0px);
     transform: scale(1);
     opacity: 1;
   }
