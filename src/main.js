@@ -1,11 +1,12 @@
-const { app, dialog, ipcMain } = require('electron');
+const { app, dialog, ipcMain, protocol, net } = require('electron');
+const fs = require('fs');
 const path = require('path');
 const loadChrome = require('./browser/chrome');
 const initiateServer = require('./server');
 const loadOpenOrchid = require('./browser/openorchid');
-const protocols = require('electron-protocols');
 const isDev = require('electron-is-dev');
 const electronReload = require('electron-reload');
+const { pathToFileURL } = require('url');
 
 require('dotenv').config();
 
@@ -62,20 +63,38 @@ dialog.showSaveDialog = (options, callback) => {
   }
 };
 
-protocols.register('orchid', (uri) => {
-  if (uri.pathname) {
-    return path.join(__dirname, '..', 'internal', uri.host, uri.pathname);
-  }
-  return path.join(__dirname, '..', 'internal', uri.host);
-});
-protocols.register('orchidreader', (uri) => {
-  return path.join(__dirname, '..', 'internal', 'readermode.html');
-});
+protocol.registerSchemesAsPrivileged([
+  { scheme: 'orchid', privileges: { standard: true, secure: true, supportFetchAPI: true } },
+  { scheme: 'orchidreader', privileges: { standard: true, secure: true, supportFetchAPI: false } }
+]);
 
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
-app.on('ready', function () {
+app.whenReady().then(() => {
+  protocol.registerFileProtocol('orchid', (request, callback) => {
+    let url = request.url.substring('orchid://'.length); // Remove 'orchid://'
+    if (!url.startsWith('/')) url = '/' + url; // Add leading slash if missing
+
+    let filePath = path.join(__dirname, '..', 'internal', url);
+
+    // Check if it's a directory
+    if (fs.existsSync(filePath) && fs.lstatSync(filePath).isDirectory()) {
+      if (!url.endsWith('/')) {
+        url += '/'; // Add trailing slash if missing
+        filePath = path.join(__dirname, '..', 'internal', url, 'index.html');
+      } else {
+        filePath = path.join(__dirname, '..', 'internal', url, 'index.html');
+      }
+    }
+
+    callback({ path: filePath });
+  });
+  protocol.handle('orchidreader', (uri) => {
+    const filePath = path.join(__dirname, '..', 'internal', 'readermode.html');
+    return net.fetch(`file://${pathToFileURL(filePath).toString()}`);
+  });
+
   process.on('uncaughtException', (error) => {
     console.error('Uncaught exception:', error);
     // Handle the error as needed

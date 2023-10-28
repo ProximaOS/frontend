@@ -1,7 +1,7 @@
 #screen.desktop #statusbar {
   position: absolute;
-  bottom: 1rem;
   top: unset;
+  bottom: 1rem;
   width: max-content;
   height: var(--software-buttons-height);
 }
@@ -17,13 +17,13 @@ html[dir="rtl"] #screen.desktop #statusbar {
 }
 
 #screen.desktop .statusbar-icons {
+  display: flex;
   position: static;
-  margin: 0 1.5rem;
+  flex-direction: row-reverse;
+  align-items: center;
   width: max-content;
   height: 100%;
-  display: flex;
-  align-items: center;
-  flex-direction: row-reverse;
+  margin: 0 1.5rem;
 }
 
 #screen.desktop .statusbar-icons > div {

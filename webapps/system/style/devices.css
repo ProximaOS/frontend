@@ -1,10 +1,10 @@
 #devices {
-  width: 100%;
-  flex-grow: 1;
-  background-color: var(--acrylic-background-plus);
-  border-radius: 2rem;
   position: relative;
+  flex-grow: 1;
+  width: 100%;
   height: 14rem;
+  border-radius: 2rem;
+  background-color: var(--acrylic-background-plus);
   transition: all 0.3s ease;
 }
 
@@ -13,34 +13,34 @@
 }
 
 #devices > header {
+  box-sizing: border-box;
   display: flex;
   width: 100%;
   height: 6.5rem;
   padding: 0 1.5rem;
-  box-sizing: border-box;
 }
 
 #devices > header h1 {
+  flex-grow: 1;
   width: 100%;
   height: 4rem;
-  line-height: 4rem;
-  flex-grow: 1;
-  color: var(--text-color);
-  font-size: 1.6rem;
-  font-weight: normal;
   margin: 0;
+  color: var(--text-color);
+  font-weight: normal;
+  font-size: 1.6rem;
+  line-height: 4rem;
 }
 
 #devices > header button {
   width: 4rem;
   height: 4rem;
-  line-height: 4rem;
   margin: 0;
   padding: 0;
-  background-color: transparent;
   border: none;
-  color: var(--text-color);
   border-radius: 0;
+  background-color: transparent;
+  color: var(--text-color);
+  line-height: 4rem;
 }
 
 #devices > header button[data-icon]::before {

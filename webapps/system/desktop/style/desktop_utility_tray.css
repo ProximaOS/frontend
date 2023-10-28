@@ -1,7 +1,7 @@
 #screen.desktop #utility-tray {
   position: fixed;
-  left: unset;
   top: 0;
+  left: unset;
   width: 37rem;
   height: 100%;
   pointer-events: none;
@@ -14,42 +14,42 @@ html[dir="rtl"] #screen.desktop #utility-tray {
 }
 
 #screen.desktop #utility-tray-motion {
-  padding-inline-start: 5rem;
-  padding-bottom: calc(var(--software-buttons-height) + 1rem);
   box-sizing: border-box;
   display: flex;
   flex-direction: column-reverse;
+  padding-bottom: calc(var(--software-buttons-height) + 1rem);
+  padding-inline-start: 5rem;
   transition: all 0.5s ease;
 }
 html[dir="ltr"] #screen.desktop #utility-tray-motion {
+  -webkit-mask-image: linear-gradient(to right, transparent, white 5rem, white);
   transform: translateX(100%);
   mask-image: linear-gradient(to right, transparent, white 5rem, white);
-  -webkit-mask-image: linear-gradient(to right, transparent, white 5rem, white);
 }
 html[dir="rtl"] #screen.desktop #utility-tray-motion {
-  transform: translateX(-100%);
   -webkit-mask-image: linear-gradient(to left, transparent, white 5rem, white);
+  transform: translateX(-100%);
   mask-image: linear-gradient(to left, transparent, white 5rem, white);
 }
 
 #screen.desktop #utility-tray-motion.visible {
+  visibility: visible;
   transform: translateX(0) !important;
   opacity: 1;
-  visibility: visible;
 }
 
 #screen.desktop #control-center,
 #screen.desktop #notifications {
   position: relative;
-  left: 0;
   top: 0;
+  left: 0;
+  flex-grow: 1;
   height: 100%;
   padding: 0;
-  flex-grow: 1;
 }
 
 #screen.desktop #control-center {
-  height: max-content;
   flex-grow: unset;
   flex-shrink: 0;
+  height: max-content;
 }

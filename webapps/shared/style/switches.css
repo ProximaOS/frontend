@@ -1,34 +1,34 @@
 .pack-switch {
-  width: 100%;
   display: inline-flex;
+  width: 100%;
   overflow: hidden;
 }
 
 .pack-switch > label {
-  width: 100%;
   display: inline-flex;
+  flex-grow: 1;
   flex-direction: column;
   justify-content: center;
-  flex-grow: 1;
+  width: 100%;
 }
 
 .pack-switch > span {
-  flex-shrink: 0;
   display: inline-flex;
+  flex-shrink: 0;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
 }
 
 .pack-switch > span input[type="checkbox"] {
-  background-color: var(--switch-normal);
+  appearance: none;
+  position: relative;
   width: 5rem;
   height: 2.5rem;
-  border-radius: 2.5rem;
   border: none;
-  position: relative;
+  border-radius: 2.5rem;
   outline: none;
-  appearance: none;
+  background-color: var(--switch-normal);
   transition: all 0.1s ease;
 }
 
@@ -45,17 +45,17 @@
 }
 
 .pack-switch > span input[type="checkbox"]::before {
-  content: '';
+  z-index: 1;
   position: absolute;
-  left: 0.5rem;
   top: 0.5rem;
+  left: 0.5rem;
   width: 1.5rem;
   height: 1.5rem;
-  background-color: var(--text-color);
   border-radius: 1.5rem;
-  transition: all 0.3s cubic-bezier(0, 0.2, 0, 1);
-  z-index: 1;
+  background-color: var(--text-color);
+  content: '';
   pointer-events: none;
+  transition: all 0.3s cubic-bezier(0, 0.2, 0, 1);
 }
 
 .pack-switch > span input[type="checkbox"]:hover::before {
@@ -63,8 +63,8 @@
 }
 
 .pack-switch > span input[type="checkbox"]:active::before {
-  transform: scale(0.8);
   width: 4rem;
+  transform: scale(0.8);
 }
 
 .pack-switch > span input[type="checkbox"]:checked::before {

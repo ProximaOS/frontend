@@ -1,7 +1,7 @@
 [role="counter"] {
   display: flex;
-  direction: ltr;
   width: max-content;
+  direction: ltr;
 }
 
 [role="counter"] .character {
@@ -10,8 +10,8 @@
 
 [role="counter"] .character > span {
   position: absolute;
-  left: 0;
   top: 0;
+  left: 0;
 }
 
 [role="counter"] .character > span.slide-up-from {
@@ -37,55 +37,55 @@
 @keyframes slideUpFrom {
   0% {
     transform: scale(0.75) translateY(3rem);
-    opacity: 0;
     filter: blur(20px);
+    opacity: 0;
   }
 
   100% {
     transform: translateY(0);
-    opacity: 1;
     filter: blur(0px);
+    opacity: 1;
   }
 }
 
 @keyframes slideUpTo {
   0% {
     transform: translateY(0);
-    opacity: 1;
     filter: blur(0px);
+    opacity: 1;
   }
 
   100% {
     transform: scale(0.75) translateY(-3rem);
-    opacity: 0;
     filter: blur(20px);
+    opacity: 0;
   }
 }
 
 @keyframes slideDownFrom {
   0% {
     transform: scale(0.75) translateY(-3rem);
-    opacity: 0;
     filter: blur(20px);
+    opacity: 0;
   }
 
   100% {
     transform: translateY(0);
-    opacity: 1;
     filter: blur(0px);
+    opacity: 1;
   }
 }
 
 @keyframes slideDownTo {
   0% {
     transform: translateY(0);
-    opacity: 1;
     filter: blur(0px);
+    opacity: 1;
   }
 
   100% {
     transform: scale(0.75) translateY(3rem);
-    opacity: 0;
     filter: blur(20px);
+    opacity: 0;
   }
 }

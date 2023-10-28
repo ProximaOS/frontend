@@ -1,13 +1,13 @@
 #notification-toaster {
   position: absolute;
-  left: 0;
   top: var(--statusbar-height);
+  left: 0;
   width: calc(100% - 2rem);
   margin: 0 1rem;
-  background-color: var(--acrylic-background-plus);
-  backdrop-filter: blur(20px) saturate(180%);
-  box-shadow: 0 1.5rem 3rem rgba(0, 0, 0, 0.3);
   transform: translateY(calc(-100% - var(--statusbar-height) - 4.5rem));
+  backdrop-filter: blur(20px) saturate(180%);
+  background-color: var(--acrylic-background-plus);
+  box-shadow: 0 1.5rem 3rem rgba(0, 0, 0, 0.3);
   transition: all 0.5s cubic-bezier(0.8, 0.1, 0.9, 0);
 }
 
@@ -18,14 +18,14 @@
 
 #notifications-container {
   position: absolute;
-  left: 1rem;
   top: calc(5rem + (6rem * var(--overflow-progress)));
+  left: 1rem;
   width: calc(100% - 2rem);
   height: calc(100% - 2.5rem - (5rem + (6rem * var(--overflow-progress))));
-  overflow-y: auto;
-  border-radius: 2rem;
   margin: 0;
   padding: 0;
+  overflow-y: auto;
+  border-radius: 2rem;
 }
 
 #screen.software-buttons-enabled #notifications-container {
@@ -45,8 +45,8 @@
 }
 
 #notifications-container .notification {
-  margin: 0 0 1rem;
   width: 100%;
+  margin: 0 0 1rem;
   list-style: none;
   transition: all 0.3s ease, translate 0ms;
 }
@@ -57,8 +57,8 @@
 
 #utility-tray-motion:not(.visible) #notifications-container .notification,
 #utility-tray-motion.fade-out #notifications-container .notification {
-  opacity: 0;
   transform: translateY(3rem);
+  opacity: 0;
 }
 
 #notifications-container .notification:last-child {
@@ -66,117 +66,117 @@
 }
 
 .notification {
-  background-color: var(--acrylic-background-plus);
-  border-radius: 2rem;
   width: 100%;
   margin: 0 0 1rem;
+  border-radius: 2rem;
+  background-color: var(--acrylic-background-plus);
 }
 
 .notification .titlebar {
-  width: 100%;
-  padding: 1rem 1.5rem;
   box-sizing: border-box;
   display: flex;
   align-items: center;
-  background-color: var(--acrylic-background-plus);
-  border-radius: 2rem 2rem 0.5rem 0.5rem;
+  width: 100%;
   margin: 0 0 0.2rem;
+  padding: 1rem 1.5rem;
+  border-radius: 2rem 2rem 0.5rem 0.5rem;
+  background-color: var(--acrylic-background-plus);
 }
 
 .notification .titlebar .badge {
+  flex-shrink: 0;
   width: 2rem;
   height: 2rem;
   margin-inline-end: 1rem;
-  flex-shrink: 0;
 }
 
 .notification .titlebar .source-name {
+  flex-grow: 1;
+  width: 100%;
   height: 2rem;
-  line-height: 2rem;
   margin-inline-end: 1rem;
+  overflow: hidden;
   color: var(--text-color);
   font-size: 1.4rem;
-  flex-grow: 1;
-  overflow: hidden;
-  white-space: nowrap;
+  line-height: 2rem;
   text-overflow: ellipsis;
-  width: 100%;
+  white-space: nowrap;
 }
 
 .notification .content {
-  width: 100%;
-  padding: 0 1.5rem 1rem;
   box-sizing: border-box;
   display: flex;
   align-items: center;
-  background-color: var(--acrylic-background-plus);
+  width: 100%;
+  padding: 0 1.5rem 1rem;
   border-radius: 0.5rem 0.5rem 2rem 2rem;
+  background-color: var(--acrylic-background-plus);
 }
 
 .notification .content .icon {
+  flex-shrink: 0;
   width: 4.5rem;
   height: 4.5rem;
   margin-inline-end: 1rem;
-  flex-shrink: 0;
 }
 
 .notification .content .text-holder {
-  color: var(--text-color);
-  flex-grow: 1;
   display: flex;
+  flex-grow: 1;
   flex-direction: column;
   width: 100%;
   overflow: hidden;
+  color: var(--text-color);
 }
 
 .notification .content .text-holder .title {
+  width: 100%;
+  overflow: hidden;
   color: var(--text-color);
   font-size: 1.6rem;
   line-height: 2.2rem;
-  overflow: hidden;
-  white-space: nowrap;
   text-overflow: ellipsis;
-  width: 100%;
+  white-space: nowrap;
 }
 
 .notification .content .text-holder .detail {
+  width: 100%;
+  overflow: hidden;
   color: var(--text-color);
   font-size: 1.4rem;
   line-height: 2rem;
-  opacity: 0.5;
-  overflow: hidden;
-  white-space: nowrap;
   text-overflow: ellipsis;
-  width: 100%;
+  white-space: nowrap;
+  opacity: 0.5;
 }
 
 .notification .content .text-holder .progress {
+  position: relative;
   width: 100%;
   height: 0.5rem;
-  border-radius: 0.5rem;
-  position: relative;
   margin: 0.5rem 0;
+  border-radius: 0.5rem;
   background: #858585;
 }
 
 .notification .content .text-holder .progress::before {
-  content: '';
   position: absolute;
   width: calc(100% * var(--progress));
   height: 0.5rem;
   border-radius: 0.5rem;
   background: var(--accent-color);
+  content: '';
   transition: all 0.3s cubic-bezier(1, 0, 0, 1);
 }
 
 .notification .media {
-  width: 100%;
-  aspect-ratio: 16 / 9;
-  display: grid;
-  grid-template-columns: repeat(auto-fit, 1fr);
-  grid-template-rows: repeat(auto-fit, 1fr);
-  padding: 0 1.5rem 1rem;
   box-sizing: border-box;
+  display: grid;
+  grid-template-rows: repeat(auto-fit, 1fr);
+  grid-template-columns: repeat(auto-fit, 1fr);
+  aspect-ratio: 16 / 9;
+  width: 100%;
+  padding: 0 1.5rem 1rem;
 }
 
 .notification .media:empty {
@@ -184,30 +184,30 @@
 }
 
 .notification .media > img {
-  object-fit: cover;
   width: 100%;
   height: 100%;
+  object-fit: cover;
 }
 
 .notification .actions {
-  width: 100%;
-  padding: 0 1.5rem 1rem;
   box-sizing: border-box;
   display: flex;
   align-items: center;
+  width: 100%;
+  padding: 0 1.5rem 1rem;
   gap: 1rem;
 }
 
 .notification .actions button {
-  padding: 0 1.5rem;
   box-sizing: border-box;
   height: 3rem;
-  line-height: 3rem;
-  border-radius: 1.5rem;
+  padding: 0 1.5rem;
   border: none;
+  border-radius: 1.5rem;
   background-color: transparent;
   color: var(--text-color);
   font-size: 1.6rem;
+  line-height: 3rem;
 }
 
 .notification .actions button:hover {

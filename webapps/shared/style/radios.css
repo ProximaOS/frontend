@@ -1,35 +1,35 @@
 .pack-radio {
-  width: 100%;
   display: inline-flex;
+  width: 100%;
   overflow: hidden;
 }
 
 .pack-radio > label {
-  width: 100%;
   display: inline-flex;
+  flex-grow: 1;
   flex-direction: column;
   justify-content: center;
-  flex-grow: 1;
+  width: 100%;
 }
 
 .pack-radio > span {
-  flex-shrink: 0;
   display: inline-flex;
+  flex-shrink: 0;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
 }
 
 .pack-radio > span input[type="radio"] {
-  background-color: var(--radio-normal);
+  appearance: none;
+  position: relative;
   width: 2.5rem;
   height: 2.5rem;
-  border-radius: 50%;
-  border: none;
-  position: relative;
-  outline: none;
-  appearance: none;
   margin: 0;
+  border: none;
+  border-radius: 50%;
+  outline: none;
+  background-color: var(--radio-normal);
   transition: all 0.1s ease;
 }
 
@@ -50,19 +50,19 @@
 }
 
 .pack-radio > span input[type="radio"]::before {
-  content: '';
+  z-index: 1;
   position: absolute;
-  left: 0.65rem;
   top: 0.65rem;
+  left: 0.65rem;
   width: 1.2rem;
   height: 1.2rem;
-  background-color: var(--accent-color-plus);
-  border-radius: 50%;
-  z-index: 1;
-  transition: all 0.3s cubic-bezier(0.2, 0, 0, 1);
   transform: scale(0);
+  border-radius: 50%;
+  background-color: var(--accent-color-plus);
+  content: '';
   opacity: 0;
   pointer-events: none;
+  transition: all 0.3s cubic-bezier(0.2, 0, 0, 1);
 }
 
 .pack-radio.danger > span input[type="radio"]::before {
@@ -70,7 +70,7 @@
 }
 
 .pack-radio > span input[type="radio"]:checked::before {
-  transition: all 0.3s cubic-bezier(0.2, 0, 0, 1.5);
   transform: scale(1);
   opacity: 1;
+  transition: all 0.3s cubic-bezier(0.2, 0, 0, 1.5);
 }

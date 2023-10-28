@@ -1,0 +1,233 @@
+html, body {
+  margin: 0;
+  padding: 0;
+  font-size: 10px;
+  font-family: 'Jali Arabic', system-ui;
+  accent-color: var(--accent-color);
+  -webkit-tap-highlight-color: transparent;
+}
+
+[role="app"] {
+  --statusbar-height: 4rem;
+  --software-buttons-height: 4rem;
+  --safezone-width: 75rem;
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: var(--background);
+}
+
+[role="panel"] {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: var(--background);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  transition: all 1s cubic-bezier(0.2, 0.9, 0.1, 1), opacity 0.3s cubic-bezier(0.2, 0.9, 0.1, 1);
+  opacity: 0;
+  visibility: hidden;
+}
+
+[role="panel"].previous {
+  /* filter: brightness(50%); */
+}
+html[dir="ltr"] [role="panel"].previous {
+  transform: translateX(-3rem);
+}
+html[dir="rtl"] [role="panel"].previous {
+  transform: translateX(3rem);
+}
+
+[role="panel"].next {
+  /* filter: brightness(100%); */
+}
+html[dir="ltr"] [role="panel"].next {
+  transform: translateX(3rem);
+}
+html[dir="rtl"] [role="panel"].next {
+  transform: translateX(-3rem);
+}
+
+html[dir="ltr"] [role="panel"].visible,
+html[dir="rtl"] [role="panel"].visible {
+  transition: all 1s cubic-bezier(0.2, 0.9, 0.1, 1), opacity 0.7s cubic-bezier(0.2, 0.9, 0.1, 1) 0.3s;
+  transform: translateX(0);
+  filter: brightness(100%);
+  opacity: 1;
+  visibility: visible;
+}
+
+[role="panel"] > .content {
+  width: 100%;
+  height: 100%;
+  flex-grow: 1;
+  overflow-y: auto;
+  margin-top: calc((-9rem - var(--statusbar-height)) * var(--progress, 0));
+  padding-bottom: var(--software-buttons-height);
+  box-sizing: border-box;
+  scrollbar-width: none;
+}
+
+[role="panel"] > .content > *:not(.scroll-content),
+[role="panel"] > .content > .scroll-content > * {
+  transition: transform 0.5s cubic-bezier(0.2, 0.9, 0.1, 1) 0.5s, opacity 0.5s cubic-bezier(0.2, 0.9, 0.1, 1) 0.5s, visibility 0.5s ease 0.5s;
+  transform: translateY(3rem);
+  opacity: 0;
+  visibility: hidden;
+}
+
+[role="panel"].visible > .content > *:not(.scroll-content),
+[role="panel"].visible > .content > .scroll-content > * {
+  transition: transform 0.5s cubic-bezier(0.2, 0.9, 0.1, 1) 0.5s, opacity 0.5s cubic-bezier(0.2, 0.9, 0.1, 1) 0.5s, visibility 0.5s ease 0.5s;
+  transform: translateY(0);
+  opacity: 1;
+  visibility: visible;
+}
+
+[role="panel"] > .content [role="search"] {
+  width: calc(100% - 3rem);
+  max-width: calc(var(--safezone-width) - 3rem);
+  margin: 0 auto 1.5rem;
+}
+
+[role="panel"] > .content aside {
+  margin: 0 auto 1.5rem;
+  padding: 0;
+  background-color: var(--background-minus);
+  border-radius: 1.5rem;
+  width: calc(100% - 3rem);
+  max-width: 71.8rem;
+  box-sizing: border-box;
+}
+
+[role="panel"] > .content aside header {
+  width: 100%;
+  padding: 0 2rem;
+  box-sizing: border-box;
+  height: 3rem;
+  line-height: 3rem;
+  color: #858585;
+  font-size: 1.6rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  margin: 1rem 0 0;
+}
+
+[role="panel"] > .content aside ul {
+  margin: 0;
+  padding: 0 0.5rem 0.5rem;
+  width: 100%;
+  background-color: transparent;
+}
+
+[role="panel"] > .content aside ul li {
+  min-height: 3.2rem;
+  background-color: transparent;
+  list-style: none;
+}
+
+[role="panel"] > .content aside ul li > a {
+  color: var(--accent-color);
+  width: max-content;
+  line-height: 2.2rem;
+  font-size: 1.6rem;
+  text-decoration: none;
+  transition: box-shadow 0.2s ease;
+}
+
+[role="panel"] > .content aside ul li > a:hover {
+  box-shadow: 0 0.2rem 0 var(--accent-color);
+}
+
+[role="panel"] > .content aside ul li > a:active {
+  opacity: 0.5;
+}
+
+[role="panel"] > .content .scrollbar-track {
+  background-color: transparent;
+  overflow: hidden;
+  border-radius: 1rem;
+  margin: 0.25rem;
+}
+
+[role="panel"] > .content .scrollbar-track-x {
+  height: 0.75rem;
+  bottom: var(--software-buttons-height);
+}
+
+[role="panel"] > .content .scrollbar-track-y {
+  right: 0;
+  width: 0.75rem;
+  top: calc(0.5rem + (5rem * var(--progress)));
+  height: calc(100% - 1rem - var(--software-buttons-height) - (5rem * var(--progress)));
+}
+html[dir="rtl"] [role="panel"] > .content .scrollbar-track-y {
+  right: unset;
+  left: 0;
+}
+
+[role="panel"] > .headerbar:not(.compact) + .content .scrollbar-track-y {
+  top: calc(0.5rem + (5rem * var(--progress)) + (13rem * var(--overscroll-progress)));
+  height: calc(100% - 1rem - var(--software-buttons-height) - (5rem * var(--progress)) + (13rem * var(--overscroll-progress)));
+}
+
+[role="panel"] > .content .scrollbar-thumb {
+  border-radius: 1rem;
+  box-sizing: border-box;
+  width: 0.75rem;
+  height: 0.75rem;
+  background-color: var(--text-color-faded);
+  background-clip: content-box;
+}
+
+.hbox {
+  display: flex;
+  flex-direction: row;
+}
+
+.vbox {
+  display: flex;
+  flex-direction: column;
+}
+
+.start {
+  align-items: start;
+  justify-content: start;
+}
+
+.center {
+  align-items: center;
+  justify-content: center;
+}
+
+.end {
+  align-items: end;
+  justify-content: end;
+}
+
+.fit {
+  flex-grow: 1;
+}
+
+@media screen and (max-width: 320px) and (max-height: 240px),
+       screen and (max-width: 240px) and (max-height: 320px) {
+  .app {
+    --statusbar-height: 3rem;
+  }
+}
+
+@media screen and (min-width: 1536px) {
+  [role="panel"] > .content aside {
+    position: absolute;
+    right: 0;
+    top: calc(5rem + var(--statusbar-height) + (4rem * (1 - var(--progress, 0))));
+    width: 22rem;
+    margin: calc(1.5rem * var(--progress, 0)) 1.5rem 1.5rem;
+  }
+}

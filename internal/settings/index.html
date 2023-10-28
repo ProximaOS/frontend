@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Orchid Settings</title>
+  <link rel="shortcut icon" href="orchid://settings/style/images/settings_light.svg" type="image/svg" media="(prefers-color-scheme: light)">
+  <link rel="shortcut icon" href="orchid://settings/style/images/settings_dark.svg" type="image/svg" media="(prefers-color-scheme: dark)">
+  <link rel="stylesheet" href="orchid://shared/themes/default_theme.css">
+  <link rel="stylesheet" href="orchid://shared/style/layout.css">
+  <link rel="stylesheet" href="orchid://shared/style/icons/icons.css">
+  <link rel="stylesheet" href="orchid://shared/style/headers.css">
+  <link rel="stylesheet" href="orchid://shared/style/lists.css">
+  <link rel="stylesheet" href="orchid://settings/style/index.css">
+  <script defer src="orchid://shared/js/common/page_controller.js"></script>
+  <script defer src="orchid://settings/js/main.js"></script>
+
+  <script type="text/javascript" src="orchid://shared/js/l10n.js"></script>
+  <meta name="defaultLanguage" content="en-US">
+  <meta name="availableLanguages"
+    content="af, ar, az, be, bg, bn, ca, cs, cy, da, de, el, eo, et, en-US, es, eu, fa, fi, fr, ga, gu, gl, he, hi, hr, ht, hu, id, is, it, ja, kn, ko, ku, lt, lv, mk, ms, nl, no, pl, pt, ro, ru, sq, sk, sl, sr, sw, ta, te, th, tl, tr, uk, ur, vi, yi, zh, fr-psaccent, ar-psbidi">
+  <link rel="localization" href="orchid://locales/settings.{locale}.ftl">
+</head>
+<body>
+  <div id="app" role="app">
+    <section id="root" class="visible" role="panel">
+      <header role="header">
+        <h1>Settings</h1>
+      </header>
+      <section class="content lists">
+        <ul>
+          <li data-icon="settings" data-page-id="general">
+            <p>General</p>
+          </li>
+          <li data-icon="privacy" data-page-id="privacy">
+            <p>Privacy</p>
+          </li>
+          <li data-icon="brush-size" data-page-id="appearance">
+            <p>Appearance</p>
+          </li>
+          <li data-icon="about" data-page-id="about">
+            <p>About</p>
+          </li>
+        </ul>
+      </section>
+    </section>
+
+    <section id="general" role="panel"></section>
+    <section id="privacy" role="panel"></section>
+    <section id="appearance" role="panel"></section>
+
+    <section id="about" role="panel">
+      <header role="header">
+        <h1>About Orchid Browser</h1>
+      </header>
+      <div class="content lists">
+        <ul>
+          <li>
+            <p>Version</p>
+            <p>117.0.1-b50</p>
+          </li>
+          <li>
+            <p>Release Branch</p>
+            <p>Developer</p>
+          </li>
+        </ul>
+      </div>
+    </section>
+  </div>
+</body>
+</html>

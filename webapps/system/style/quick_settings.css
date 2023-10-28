@@ -1,10 +1,10 @@
 #connection-settings {
-  width: 100%;
+  display: flex;
   flex-grow: 1;
+  flex-wrap: wrap;
+  width: 100%;
   margin: 0;
   padding: 0;
-  display: flex;
-  flex-wrap: wrap;
   gap: 1rem;
   transition: all 0.3s ease;
 }
@@ -14,20 +14,20 @@
 }
 
 #connection-settings li {
-  width: 12rem;
   flex-grow: 1;
-  background-color: var(--acrylic-background-plus);
-  border-radius: 2rem;
-  margin: 0;
+  width: 12rem;
   height: 6.5rem;
+  margin: 0;
+  border-radius: 2rem;
+  background-color: var(--acrylic-background-plus);
   list-style: none;
 }
 
 #quick-settings {
-  width: 100%;
   flex-grow: 1;
-  background-color: var(--acrylic-background-plus);
+  width: 100%;
   border-radius: 2rem;
+  background-color: var(--acrylic-background-plus);
   transition: all 0.3s ease;
 }
 
@@ -36,15 +36,15 @@
 }
 
 #quick-settings-grid {
-  width: 100%;
-  overflow: hidden;
-  margin: 0;
-  padding: 0 1.5rem;
   box-sizing: border-box;
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(4rem, 1fr));
-  gap: 1rem;
   justify-content: center;
+  width: 100%;
+  margin: 0;
+  padding: 0 1.5rem;
+  overflow: hidden;
+  gap: 1rem;
   transition: all 0.3s ease;
 }
 
@@ -57,28 +57,28 @@
 }
 
 #quick-settings li {
+  aspect-ratio: 1 / 1;
   width: 100%;
   height: 6.5rem;
-  aspect-ratio: 1 / 1;
   list-style: none;
 }
 
 #connection-settings li > a,
 #quick-settings li > a {
+  box-sizing: border-box;
+  display: inline-flex;
+  position: relative;
+  align-items: center;
   width: 100%;
   height: 100%;
-  line-height: 1;
-  display: inline-flex;
-  align-items: center;
-  text-decoration: none;
+  padding-inline-start: 6.25rem;
+  overflow: hidden;
   color: var(--text-color);
   font-size: 1.4rem;
-  overflow: hidden;
-  white-space: nowrap;
+  line-height: 1;
+  text-decoration: none;
   text-overflow: ellipsis;
-  padding-inline-start: 6.25rem;
-  box-sizing: border-box;
-  position: relative;
+  white-space: nowrap;
 }
 
 #quick-settings li > a {
@@ -88,18 +88,18 @@
 
 #connection-settings li > a > span[data-icon],
 #quick-settings li > a > span[data-icon] {
-  width: 4rem;
-  background-color: var(--item-plus);
-  border-radius: 2rem;
-  height: 4rem;
-  line-height: 4rem;
-  margin: 1.25rem;
-  text-align: center;
-  font-size: 2.4rem;
-  flex-shrink: 0;
-  pointer-events: none;
   position: absolute;
   top: 0;
+  flex-shrink: 0;
+  width: 4rem;
+  height: 4rem;
+  margin: 1.25rem;
+  border-radius: 2rem;
+  background-color: var(--item-plus);
+  font-size: 2.4rem;
+  line-height: 4rem;
+  text-align: center;
+  pointer-events: none;
 }
 html[dir="ltr"] #connection-settings li > a > span[data-icon],
 html[dir="ltr"] #quick-settings li > a > span[data-icon] {
@@ -117,18 +117,18 @@ html[dir="rtl"] #quick-settings li > a > span[data-icon] {
 }
 
 #quick-settings li > a > span[data-icon] {
-  margin: 1.75rem auto 0.75rem;
   position: relative;
+  margin: 1.75rem auto 0.75rem;
 }
 
 #connection-settings li > a::after {
-  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
   width: 100%;
   height: 100%;
-  position: absolute;
-  left: 0;
-  top: 0;
   border-radius: 2rem;
+  content: '';
 }
 
 #connection-settings li > a:hover::after {
@@ -167,19 +167,19 @@ html[dir="rtl"] #quick-settings li > a > span[data-icon] {
 }
 
 #quick-settings > .grippy-bar {
+  position: relative;
   width: 100%;
   height: 2rem;
-  position: relative;
 }
 
 #quick-settings > .grippy-bar::before {
-  content: '';
   position: absolute;
-  left: 50%;
   top: 0.25rem;
+  left: 50%;
   width: 5rem;
   height: 0.5rem;
   margin-left: -2.5rem;
-  background-color: var(--item-hover);
   border-radius: 0.5rem;
+  background-color: var(--item-hover);
+  content: '';
 }

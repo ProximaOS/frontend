@@ -1,10 +1,10 @@
 html, body {
+  -webkit-tap-highlight-color: transparent;
   margin: 0;
   padding: 0;
+  accent-color: var(--accent-color);
   font-size: 10px;
   font-family: 'Jali Arabic', system-ui;
-  accent-color: var(--accent-color);
-  -webkit-tap-highlight-color: transparent;
 }
 
 :root {
@@ -15,26 +15,26 @@ html, body {
 
 [role="app"] {
   position: fixed;
-  left: 0;
   top: 0;
+  left: 0;
   width: 100%;
   height: 100%;
   background-color: var(--background);
 }
 
 [role="panel"] {
+  display: flex;
+  visibility: hidden;
   position: absolute;
-  left: 0;
   top: 0;
+  left: 0;
+  flex-direction: column;
   width: 100%;
   height: 100%;
-  background-color: var(--background);
-  display: flex;
-  flex-direction: column;
   overflow: hidden;
-  transition: all 1s cubic-bezier(0.2, 0.9, 0.1, 1), opacity 0.3s cubic-bezier(0.2, 0.9, 0.1, 1);
+  background-color: var(--background);
   opacity: 0;
-  visibility: hidden;
+  transition: all 1s cubic-bezier(0.2, 0.9, 0.1, 1), opacity 0.3s cubic-bezier(0.2, 0.9, 0.1, 1);
 }
 
 [role="panel"].previous {
@@ -59,38 +59,38 @@ html[dir="rtl"] [role="panel"].next {
 
 html[dir="ltr"] [role="panel"].visible,
 html[dir="rtl"] [role="panel"].visible {
-  transition: all 1s cubic-bezier(0.2, 0.9, 0.1, 1), opacity 0.7s cubic-bezier(0.2, 0.9, 0.1, 1) 0.3s;
+  visibility: visible;
   transform: translateX(0);
   filter: brightness(100%);
   opacity: 1;
-  visibility: visible;
+  transition: all 1s cubic-bezier(0.2, 0.9, 0.1, 1), opacity 0.7s cubic-bezier(0.2, 0.9, 0.1, 1) 0.3s;
 }
 
 [role="panel"] > .content {
+  box-sizing: border-box;
+  flex-grow: 1;
   width: 100%;
   height: 100%;
-  flex-grow: 1;
-  overflow-y: auto;
   margin-top: calc((-9rem - var(--statusbar-height)) * var(--progress, 0));
   padding-bottom: var(--software-buttons-height);
-  box-sizing: border-box;
+  overflow-y: auto;
   scrollbar-width: none;
 }
 
 [role="panel"] > .content > *:not(.scroll-content),
 [role="panel"] > .content > .scroll-content > * {
-  transition: transform 0.5s cubic-bezier(0.2, 0.9, 0.1, 1) 0.5s, opacity 0.5s cubic-bezier(0.2, 0.9, 0.1, 1) 0.5s, visibility 0.5s ease 0.5s;
+  visibility: hidden;
   transform: translateY(3rem);
   opacity: 0;
-  visibility: hidden;
+  transition: transform 0.5s cubic-bezier(0.2, 0.9, 0.1, 1) 0.5s, opacity 0.5s cubic-bezier(0.2, 0.9, 0.1, 1) 0.5s, visibility 0.5s ease 0.5s;
 }
 
 [role="panel"].visible > .content > *:not(.scroll-content),
 [role="panel"].visible > .content > .scroll-content > * {
-  transition: transform 0.5s cubic-bezier(0.2, 0.9, 0.1, 1) 0.5s, opacity 0.5s cubic-bezier(0.2, 0.9, 0.1, 1) 0.5s, visibility 0.5s ease 0.5s;
+  visibility: visible;
   transform: translateY(0);
   opacity: 1;
-  visibility: visible;
+  transition: transform 0.5s cubic-bezier(0.2, 0.9, 0.1, 1) 0.5s, opacity 0.5s cubic-bezier(0.2, 0.9, 0.1, 1) 0.5s, visibility 0.5s ease 0.5s;
 }
 
 [role="panel"] > .content [role="search"] {
@@ -100,32 +100,32 @@ html[dir="rtl"] [role="panel"].visible {
 }
 
 [role="panel"] > .content aside {
-  margin: 0 auto 1.5rem;
-  padding: 0;
-  background-color: var(--background-minus);
-  border-radius: 1.5rem;
+  box-sizing: border-box;
   width: calc(100% - 3rem);
   max-width: 71.8rem;
-  box-sizing: border-box;
+  margin: 0 auto 1.5rem;
+  padding: 0;
+  border-radius: 1.5rem;
+  background-color: var(--background-minus);
 }
 
 [role="panel"] > .content aside header {
-  width: 100%;
-  padding: 0 2rem;
   box-sizing: border-box;
+  width: 100%;
   height: 3rem;
-  line-height: 3rem;
-  color: #858585;
-  font-size: 1.6rem;
-  font-weight: bold;
-  text-transform: uppercase;
   margin: 1rem 0 0;
+  padding: 0 2rem;
+  color: #858585;
+  font-weight: bold;
+  font-size: 1.6rem;
+  line-height: 3rem;
+  text-transform: uppercase;
 }
 
 [role="panel"] > .content aside ul {
+  width: 100%;
   margin: 0;
   padding: 0 0.5rem 0.5rem;
-  width: 100%;
   background-color: transparent;
 }
 
@@ -136,10 +136,10 @@ html[dir="rtl"] [role="panel"].visible {
 }
 
 [role="panel"] > .content aside ul li > a {
-  color: var(--accent-color);
   width: max-content;
-  line-height: 2.2rem;
+  color: var(--accent-color);
   font-size: 1.6rem;
+  line-height: 2.2rem;
   text-decoration: none;
   transition: box-shadow 0.2s ease;
 }
@@ -153,21 +153,21 @@ html[dir="rtl"] [role="panel"].visible {
 }
 
 [role="panel"] > .content .scrollbar-track {
-  background-color: transparent;
+  margin: 0.25rem;
   overflow: hidden;
   border-radius: 1rem;
-  margin: 0.25rem;
+  background-color: transparent;
 }
 
 [role="panel"] > .content .scrollbar-track-x {
-  height: 0.75rem;
   bottom: var(--software-buttons-height);
+  height: 0.75rem;
 }
 
 [role="panel"] > .content .scrollbar-track-y {
+  top: calc(0.5rem + (5rem * var(--progress)));
   right: 0;
   width: 0.75rem;
-  top: calc(0.5rem + (5rem * var(--progress)));
   height: calc(100% - 1rem - var(--software-buttons-height) - (5rem * var(--progress)));
 }
 html[dir="rtl"] [role="panel"] > .content .scrollbar-track-y {
@@ -181,12 +181,12 @@ html[dir="rtl"] [role="panel"] > .content .scrollbar-track-y {
 }
 
 [role="panel"] > .content .scrollbar-thumb {
-  border-radius: 1rem;
   box-sizing: border-box;
   width: 0.75rem;
   height: 0.75rem;
-  background-color: var(--text-color-faded);
+  border-radius: 1rem;
   background-clip: content-box;
+  background-color: var(--text-color-faded);
 }
 
 .hbox {
@@ -228,8 +228,8 @@ html[dir="rtl"] [role="panel"] > .content .scrollbar-track-y {
 @media screen and (min-width: 1536px) {
   [role="panel"] > .content aside {
     position: absolute;
-    right: 0;
     top: calc(5rem + var(--statusbar-height) + (4rem * (1 - var(--progress, 0))));
+    right: 0;
     width: 22rem;
     margin: calc(1.5rem * var(--progress, 0)) 1.5rem 1.5rem;
   }

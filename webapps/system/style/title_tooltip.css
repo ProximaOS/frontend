@@ -1,36 +1,36 @@
 #title-tooltip {
+  visibility: hidden;
   position: absolute;
-  left: 0;
   top: 0;
-  background-color: var(--acrylic-background-plus);
+  left: 0;
+  overflow: hidden;
+  transform: scale(0.9);
   border-radius: 1rem;
   backdrop-filter: blur(20px) saturate(180%);
+  background-color: var(--acrylic-background-plus);
   box-shadow: 0 0.8rem 1.6rem rgba(0, 0, 0, 0.1);
-  pointer-events: none;
-  overflow: hidden;
-  transition: width 0.3s ease, height 0.3s ease, transform 0.3s ease, opacity 0.3s ease, visibility 0.3s ease;
-  transform: scale(0.9);
   opacity: 0;
-  visibility: hidden;
+  pointer-events: none;
+  transition: width 0.3s ease, height 0.3s ease, transform 0.3s ease, opacity 0.3s ease, visibility 0.3s ease;
 }
 
 #title-tooltip.visible {
+  visibility: visible;
   transform: scale(1);
   opacity: 1;
-  visibility: visible;
 }
 
 #title-tooltip-label,
 #title-tooltip-label-previous {
-  position: absolute;
-  left: 0;
-  top: 0;
   display: inline-block;
+  position: absolute;
+  top: 0;
+  left: 0;
   width: max-content;
   padding: 0.5rem 1rem;
   color: var(--text-color);
-  font-size: 1.6rem;
   font-weight: normal;
+  font-size: 1.6rem;
 }
 
 #title-tooltip-label-previous {

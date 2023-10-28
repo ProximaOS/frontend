@@ -1,0 +1,103 @@
+.pack-checkbox {
+  width: 100%;
+  display: inline-flex;
+  overflow: hidden;
+}
+
+.pack-checkbox > label {
+  width: 100%;
+  display: inline-flex;
+  flex-direction: column;
+  justify-content: center;
+  flex-grow: 1;
+}
+
+.pack-checkbox > span {
+  flex-shrink: 0;
+  display: inline-flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.pack-checkbox > span input[type="checkbox"] {
+  background-color: var(--checkbox-normal);
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 25%;
+  border: none;
+  position: relative;
+  outline: none;
+  appearance: none;
+  transition: all 0.5s ease;
+}
+
+.pack-checkbox > span input[type="checkbox"]:hover {
+  background-color: var(--checkbox-hover);
+}
+
+.pack-checkbox > span input[type="checkbox"]:hover {
+  background-color: var(--checkbox-active);
+}
+
+.pack-checkbox > span input[type="checkbox"]:checked {
+  background-color: var(--accent-color);
+}
+
+.pack-checkbox.danger > span input[type="checkbox"]:checked {
+  background-color: #c00040;
+}
+
+.pack-checkbox > span input[type="checkbox"]::before {
+  content: '';
+  position: absolute;
+  left: 0.4rem;
+  top: 1.125rem;
+  width: 0.2rem;
+  height: 0rem;
+  background-color: var(--accent-color-plus);
+  border-radius: 0.2rem;
+  transform-origin: 50% 0.1rem;
+  transition: all 0.1s cubic-bezier(0, 0.2, 0, 1) 0.1s;
+  opacity: 0;
+  transform: rotate(-45deg);
+  z-index: 1;
+  pointer-events: none;
+}
+
+.pack-checkbox.danger > span input[type="checkbox"]::before {
+  background-color: rgba(255, 255, 255, 0.75);
+}
+
+.pack-checkbox > span input[type="checkbox"]:checked::before {
+  transition: all 0.4s cubic-bezier(0, 0.2, 0, 1);
+  height: 1rem;
+  opacity: 1;
+}
+
+.pack-checkbox > span input[type="checkbox"]::after {
+  content: '';
+  position: absolute;
+  left: 1rem;
+  bottom: 0.6rem;
+  width: 0.2rem;
+  height: 0rem;
+  background-color: var(--accent-color-plus);
+  border-radius: 0.2rem;
+  transform-origin: 50% calc(100% - 0.1rem);
+  transition: all 0.1s cubic-bezier(0, 0.2, 0, 1);
+  opacity: 0;
+  transform: rotate(45deg);
+  z-index: 1;
+  pointer-events: none;
+}
+
+.pack-checkbox.danger > span input[type="checkbox"]::after {
+  background-color: rgba(255, 255, 255, 0.75);
+}
+
+.pack-checkbox > span input[type="checkbox"]:checked::after {
+  transition: all 0.3s cubic-bezier(0, 0.2, 0, 1) 0.1s;
+  height: 1.5rem;
+  opacity: 1;
+}

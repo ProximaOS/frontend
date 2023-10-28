@@ -1,39 +1,39 @@
 #text-selection {
-  position: absolute;
-  left: 0;
-  top: 0;
-  background-color: var(--background-plus);
-  height: 4rem;
-  border-radius: 2rem;
-  display: flex;
-  padding: 0.5rem;
   box-sizing: border-box;
+  display: flex;
+  visibility: hidden;
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 4rem;
+  padding: 0.5rem;
+  transform: translateY(3rem);
+  border-radius: 2rem;
+  background-color: var(--background-plus);
   box-shadow: 0 1rem 3rem rgba(0, 0, 0, 0.3);
   direction: ltr;
-  transition: transform 0.3s ease, opacity 0.3s ease, visibility 0.3s ease;
-  transform: translateY(3rem);
   opacity: 0;
-  visibility: hidden;
+  transition: transform 0.3s ease, opacity 0.3s ease, visibility 0.3s ease;
 }
 
 #text-selection.visible {
+  visibility: visible;
   transform: translateY(0);
   opacity: 1;
-  visibility: visible;
 }
 
 #text-selection > button {
+  position: relative;
   width: max-content;
   height: 3rem;
-  line-height: 3rem;
-  background-color: transparent;
-  border-radius: 1.5rem;
   margin: 0;
   padding: 0 1rem;
-  font-size: 1.4rem;
-  color: var(--text-color);
-  position: relative;
   overflow: visible;
+  border-radius: 1.5rem;
+  background-color: transparent;
+  color: var(--text-color);
+  font-size: 1.4rem;
+  line-height: 3rem;
   transition: all 0.3s ease;
 }
 
@@ -48,21 +48,21 @@
 }
 
 #text-selection > button[data-icon]::before {
-  font-size: 2rem;
   position: static;
   height: 3rem;
+  font-size: 2rem;
   line-height: 3rem;
 }
 
 #text-selection > button::after {
-  content: '';
   position: absolute;
-  left: 0;
   top: 0.5rem;
+  left: 0;
   width: 0.1rem;
   height: 2rem;
-  background-color: var(--item-plus);
   border-radius: 0.1rem;
+  background-color: var(--item-plus);
+  content: '';
 }
 
 #text-selection > button:first-child::after,

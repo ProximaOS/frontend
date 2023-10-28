@@ -1,0 +1,76 @@
+.pack-radio {
+  width: 100%;
+  display: inline-flex;
+  overflow: hidden;
+}
+
+.pack-radio > label {
+  width: 100%;
+  display: inline-flex;
+  flex-direction: column;
+  justify-content: center;
+  flex-grow: 1;
+}
+
+.pack-radio > span {
+  flex-shrink: 0;
+  display: inline-flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.pack-radio > span input[type="radio"] {
+  background-color: var(--radio-normal);
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 50%;
+  border: none;
+  position: relative;
+  outline: none;
+  appearance: none;
+  margin: 0;
+  transition: all 0.1s ease;
+}
+
+.pack-radio > span input[type="radio"]:hover {
+  background-color: var(--radio-hover);
+}
+
+.pack-radio > span input[type="radio"]:hover {
+  background-color: var(--radio-active);
+}
+
+.pack-radio > span input[type="radio"]:checked {
+  background-color: var(--accent-color);
+}
+
+.pack-radio.danger > span input[type="radio"]:checked {
+  background-color: #c00040;
+}
+
+.pack-radio > span input[type="radio"]::before {
+  content: '';
+  position: absolute;
+  left: 0.65rem;
+  top: 0.65rem;
+  width: 1.2rem;
+  height: 1.2rem;
+  background-color: var(--accent-color-plus);
+  border-radius: 50%;
+  z-index: 1;
+  transition: all 0.3s cubic-bezier(0.2, 0, 0, 1);
+  transform: scale(0);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.pack-radio.danger > span input[type="radio"]::before {
+  background-color: rgba(255, 255, 255, 0.75);
+}
+
+.pack-radio > span input[type="radio"]:checked::before {
+  transition: all 0.3s cubic-bezier(0.2, 0, 0, 1.5);
+  transform: scale(1);
+  opacity: 1;
+}

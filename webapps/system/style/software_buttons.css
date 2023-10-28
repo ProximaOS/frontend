@@ -1,10 +1,10 @@
 #software-buttons {
-  position: absolute;
-  width: 100%;
-  bottom: 0;
-  height: var(--software-buttons-height);
   display: flex;
+  position: absolute;
+  bottom: 0;
   justify-content: center;
+  width: 100%;
+  height: var(--software-buttons-height);
   transition: all 0.3s ease;
 }
 html[dir="ltr"] #software-buttons {
@@ -35,36 +35,36 @@ html[dir="rtl"] #software-buttons {
 
 /* Mobile */
 #software-buttons .mobile > button {
+  display: flex;
   position: relative;
+  align-items: center;
+  justify-content: center;
   width: 8rem;
   height: 100%;
-  background-color: transparent;
-  border: none;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  opacity: 0.8;
   margin: 0;
+  border: none;
+  background-color: transparent;
+  opacity: 0.8;
 }
 
 #software-buttons .mobile > button::before {
-  content: '';
   width: 2rem;
   height: 2rem;
   background: transparent no-repeat center / 1.75rem;
+  content: '';
   transition: all 0.5s cubic-bezier(0.2, 0.9, 0.1, 1);
 }
 
 #software-buttons .mobile > button::after {
-  content: '';
   position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
   top: 0;
+  left: 50%;
   width: 0;
   height: 100%;
+  transform: translateX(-50%);
   border-radius: 9999px;
   background: rgba(255, 255, 255, 0.1);
+  content: '';
   opacity: 0;
   pointer-events: none;
   transition: all 0.3s ease, width 0.1s ease 0.3s;
@@ -97,8 +97,8 @@ html[dir="rtl"] #software-buttons #software-back-button::before {
 
 /* Desktop */
 #software-buttons .desktop {
-  height: var(--software-buttons-height);
   display: flex;
+  height: var(--software-buttons-height);
   gap: 0.5rem;
 }
 
@@ -107,8 +107,8 @@ html[dir="rtl"] #software-buttons #software-back-button::before {
   width: calc(var(--software-buttons-height) - 1rem);
   height: calc(var(--software-buttons-height) - 1rem);
   margin: 0.5rem;
-  background: no-repeat center / cover;
   border-radius: 25%;
+  background: no-repeat center / cover;
 }
 
 #software-buttons .desktop #software-launcher-button {
@@ -125,8 +125,8 @@ html[dir="rtl"] #software-buttons #software-back-button::before {
 
 /* Dock */
 #dock {
-  height: var(--software-buttons-height);
   display: flex;
+  height: var(--software-buttons-height);
   padding-inline-start: 0.5rem;
   gap: 0.5rem;
 }
@@ -200,11 +200,11 @@ html[dir="rtl"] #software-buttons #software-back-button::before {
   }
 
   #software-buttons .mobile > button::after {
-    left: 0;
     top: 50%;
-    transform: translateY(-50%);
+    left: 0;
     width: 100%;
     height: 0;
+    transform: translateY(-50%);
     transition: all 0.3s cubic-bezier(0.2, 0.9, 0.1, 1), height 0.1s ease 0.3s;
   }
 

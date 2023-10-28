@@ -1,13 +1,13 @@
 #screen.desktop #software-buttons {
   position: absolute;
-  left: 1.5rem;
   right: 1.5rem;
   bottom: 1rem;
+  left: 1.5rem;
   width: calc(100% - 3rem);
   height: var(--software-buttons-height);
-  background-color: var(--acrylic-background-plus);
-  backdrop-filter: blur(20px) saturate(180%);
   border-radius: calc(var(--software-buttons-height) / 2);
+  backdrop-filter: blur(20px) saturate(180%);
+  background-color: var(--acrylic-background-plus);
 }
 
 #screen.desktop:not(.software-buttons-enabled) #software-buttons {

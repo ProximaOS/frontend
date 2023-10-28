@@ -23,15 +23,15 @@
     opacity: 1;
   }
   to {
-    opacity: 0;
     transform: translate(var(--pos-x), var(--pos-y)) scale(var(--scale-x), var(--scale-y));
+    opacity: 0;
   }
 }
 
 @keyframes to-scale {
   from {
-    opacity: 0;
     transform: translate(var(--pos-x), var(--pos-y)) scale(var(--scale-x), var(--scale-y));
+    opacity: 0;
   }
   to {
     opacity: 1;

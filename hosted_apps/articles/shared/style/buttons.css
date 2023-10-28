@@ -1,0 +1,209 @@
+.buttons {
+  padding: 1.5rem;
+  box-sizing: border-box;
+  height: 7rem;
+  display: flex;
+  gap: 1rem;
+}
+
+.buttons > button {
+  flex-grow: 1;
+  margin: 0;
+}
+
+button,
+.button {
+  width: 100%;
+  height: 4rem;
+  line-height: 4rem;
+  background-color: var(--button-normal);
+  border: none;
+  border-radius: 2rem;
+  text-align: center;
+  color: var(--text-color);
+  font-size: 1.6rem;
+  font-weight: normal;
+  margin: 0 0 1rem;
+  padding: 0 1.5rem;
+  box-sizing: border-box;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  outline: none;
+}
+
+button.recommend,
+.button.recommend {
+  background-color: var(--accent-color);
+  color: var(--accent-color-plus);
+}
+
+button.recommend:hover,
+.button.recommend:hover {
+  background: var(--accent-color) linear-gradient(0deg, var(--accent-color-hover), var(--accent-color-hover));
+}
+
+button.recommend:active,
+.button.recommend:active {
+  background: var(--accent-color) linear-gradient(0deg, var(--accent-color-active), var(--accent-color-active));
+  color: var(--accent-color-minus);
+}
+
+button.danger,
+.button.danger {
+  background-color: #c00040;
+  color: rgba(255,255,255,0.75);
+}
+
+button.danger:hover,
+.button.danger:hover {
+  background: #c00040 linear-gradient(0deg, rgba(255,255,255,0.1), rgba(255,255,255,0.1));
+}
+
+button.danger:active,
+.button.danger:active {
+  background: #c00040 linear-gradient(0deg, rgba(255,255,255,0.2), rgba(255,255,255,0.2));
+}
+
+button.dial,
+.button.dial {
+  background-color: #40a060;
+  color: rgba(255,255,255,0.75);
+}
+
+button.dial:hover,
+.button.dial:hover {
+  background: #40a060 linear-gradient(0deg, rgba(255,255,255,0.1), rgba(255,255,255,0.1));
+}
+
+button.dial:active,
+.button.dial:active {
+  background: #40a060 linear-gradient(0deg, rgba(255,255,255,0.2), rgba(255,255,255,0.2));
+}
+
+button:hover,
+.button:hover {
+  background-color: var(--button-hover);
+}
+
+button:active,
+.button:active {
+  background-color: var(--button-active);
+  color: var(--text-color-faded);
+}
+
+button[disabled],
+.button[disabled] {
+  pointer-events: none;
+  opacity: 0.5;
+}
+
+button[data-icon],
+.button[data-icon] {
+  position: relative;
+  padding-inline-start: 4rem;
+}
+
+button[data-icon].previous,
+.button[data-icon].previous {
+  padding-inline-start: 4rem;
+  padding-inline-end: 1.5rem;
+}
+html[dir="ltr"] button[data-icon].previous,
+html[dir="ltr"] .button[data-icon].previous {
+  text-align: right;
+}
+html[dir="rtl"] button[data-icon].previous,
+html[dir="rtl"] .button[data-icon].previous {
+  text-align: left;
+}
+
+button[data-icon].next,
+.button[data-icon].next {
+  padding-inline-start: 1.5rem;
+  padding-inline-end: 4rem;
+}
+html[dir="ltr"] button[data-icon].next,
+html[dir="ltr"] .button[data-icon].next {
+  text-align: left;
+}
+html[dir="rtl"] button[data-icon].next,
+html[dir="rtl"] .button[data-icon].next {
+  text-align: right;
+}
+
+button[data-icon]::before,
+.button[data-icon]::before {
+  position: absolute;
+  top: 0;
+  font-size: 2rem;
+  width: 2rem;
+  height: 4rem;
+  line-height: 4rem;
+}
+html[dir="ltr"] button[data-icon]::before,
+html[dir="ltr"] .button[data-icon]::before {
+  left: 1.5rem;
+}
+html[dir="rtl"] button[data-icon]::before,
+html[dir="rtl"] .button[data-icon]::before {
+  right: 1.5rem;
+}
+
+html[dir="ltr"] button[data-icon].next::before,
+html[dir="ltr"] .button[data-icon].next::before {
+  left: unset;
+  right: 1rem;
+}
+html[dir="rtl"] button[data-icon].next::before,
+html[dir="rtl"] .button[data-icon].next::before {
+  left: 1rem;
+  right: unset;
+}
+
+.lists ul li button,
+.lists ul li .button {
+  margin: 0;
+}
+
+/* Select */
+select {
+  width: 100%;
+  height: 4rem;
+  line-height: 4rem;
+  border: solid 0.1rem var(--button-normal);
+  border-radius: 1rem;
+  background-image: url(buttons/images/light/expand.png);
+  background-color: var(--button-normal);
+  background-repeat: no-repeat;
+  background-size: 1.6rem;
+  text-align: left;
+  color: transparent;
+  text-shadow: 0 0 0 var(--text-color);
+  font-size: 1.6rem;
+  font-weight: normal;
+  margin: 0 0 1rem;
+  padding: 0 1.5rem;
+  padding-inline-end: 3.6rem;
+  box-sizing: border-box;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  outline: none;
+}
+html[dir="ltr"] select {
+  background-position: right 1rem center;
+}
+html[dir="rtl"] select {
+  background-position: left 1rem center;
+}
+
+.lists ul li select {
+  margin: 0;
+}
+
+@media screen and (prefers-color-scheme: dark) {
+  select {
+    background-image: url(buttons/images/dark/expand.png);
+  }
+}

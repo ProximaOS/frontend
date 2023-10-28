@@ -15,8 +15,7 @@
 
     searchIcon: 'https://www.google.com/favicon.ico',
     searchUrl: 'https://www.google.com/search?q={searchTerms}',
-    suggestUrl:
-      'https://www.google.com/complete/search?output=chrome&q={searchTerms}',
+    suggestUrl: 'https://www.google.com/complete/search?output=chrome&q={searchTerms}',
 
     lastScroll: 0,
     currentScroll: 0,
@@ -140,148 +139,90 @@
         }
       };
 
-      fetch('http://system.localhost:8081/elements/chrome_interface.html').then(
-        (response) => {
-          response.text().then(async (htmlContent) => {
-            this.chrome().innerHTML = htmlContent;
+      fetch('http://system.localhost:8081/elements/chrome_interface.html').then((response) => {
+        response.text().then(async (htmlContent) => {
+          this.chrome().innerHTML = htmlContent;
 
-            if (isChromeEnabled) {
-              this.chrome().classList.add('visible');
-              this.chrome().parentElement.classList.add('chrome-visible');
+          if (isChromeEnabled) {
+            this.chrome().classList.add('visible');
+            this.chrome().parentElement.classList.add('chrome-visible');
 
-              Settings.getValue('ftu.browser.enabled').then((value) => {
-                if (value) {
-                  this.openFtuDialog();
-                }
+            Settings.getValue('ftu.browser.enabled').then((value) => {
+              if (value) {
+                this.openFtuDialog();
+              }
+            });
+          }
+
+          Settings.getValue('general.chrome.position').then((data) => {
+            this.chrome().classList.add(data);
+          });
+          Settings.addObserver('general.chrome.position', (data) => {
+            this.chrome().classList.remove('top');
+            this.chrome().classList.remove('bottom');
+            this.chrome().classList.add(data);
+          });
+
+          if (this.statusbar) {
+            this.statusbar.classList.remove('light');
+            this.statusbar.classList.remove('dark');
+          }
+          if (this.softwareButtons) {
+            this.softwareButtons.classList.remove('light');
+            this.softwareButtons.classList.remove('dark');
+          }
+          if (this.bottomPanel) {
+            this.bottomPanel.classList.remove('light');
+            this.bottomPanel.classList.remove('dark');
+          }
+
+          if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            this.chrome().classList.add('dark');
+            this.chrome().parentElement.classList.add('dark');
+          } else {
+            this.chrome().classList.add('light');
+            this.chrome().parentElement.classList.add('light');
+          }
+
+          this.chrome().dataset.id = 0;
+          this.DEFAULT_URL = url;
+          CardPanel.init();
+          this.openNewTab(false, url);
+
+          const avatarImage = this.profileButton().querySelector('.avatar');
+          if ('OrchidServices' in window) {
+            if (await OrchidServices.isUserLoggedIn()) {
+              this.profileButton().classList.add('logged-in');
+              OrchidServices.getWithUpdate(`profile/${await OrchidServices.userId()}`, function (data) {
+                avatarImage.src = data.profilePicture;
               });
             }
+          }
 
-            Settings.getValue('general.chrome.position').then((data) => {
-              this.chrome().classList.add(data);
-            });
-            Settings.addObserver('general.chrome.position', (data) => {
-              this.chrome().classList.remove('top');
-              this.chrome().classList.remove('bottom');
-              this.chrome().classList.add(data);
-            });
+          this.statusbar.addEventListener('dblclick', this.handleStatusbarDoubleClick.bind(this));
 
-            if (this.statusbar) {
-              this.statusbar.classList.remove('light');
-              this.statusbar.classList.remove('dark');
-            }
-            if (this.softwareButtons) {
-              this.softwareButtons.classList.remove('light');
-              this.softwareButtons.classList.remove('dark');
-            }
-            if (this.bottomPanel) {
-              this.bottomPanel.classList.remove('light');
-              this.bottomPanel.classList.remove('dark');
-            }
-
-            if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-              this.chrome().classList.add('dark');
-              this.chrome().parentElement.classList.add('dark');
-            } else {
-              this.chrome().classList.add('light');
-              this.chrome().parentElement.classList.add('light');
-            }
-
-            this.chrome().dataset.id = 0;
-            this.DEFAULT_URL = url;
-            CardPanel.init();
-            this.openNewTab(false, url);
-
-            const avatarImage = this.profileButton().querySelector('.avatar');
-            if ('OrchidServices' in window) {
-              if (await OrchidServices.isUserLoggedIn()) {
-                this.profileButton().classList.add('logged-in');
-                OrchidServices.getWithUpdate(
-                  `profile/${await OrchidServices.userId()}`,
-                  function (data) {
-                    avatarImage.src = data.profilePicture;
-                  }
-                );
-              }
-            }
-
-            this.statusbar.addEventListener(
-              'dblclick',
-              this.handleStatusbarDoubleClick.bind(this)
-            );
-
-            this.tablistHolder().addEventListener(
-              'contextmenu',
-              this.handleTablistHolderContextMenu.bind(this)
-            );
-            this.sideTabsButton().addEventListener(
-              'click',
-              this.handleSideTabsButton.bind(this)
-            );
-            this.addButton().addEventListener(
-              'click',
-              this.openNewTab.bind(this, false)
-            );
-            this.urlbarInput().addEventListener(
-              'keydown',
-              this.handleUrlbarInputKeydown.bind(this)
-            );
-            this.navbarBackButton().addEventListener(
-              'click',
-              this.handleNavbarBackButton.bind(this)
-            );
-            this.navbarForwardButton().addEventListener(
-              'click',
-              this.handleNavbarForwardButton.bind(this)
-            );
-            this.navbarReloadButton().addEventListener(
-              'click',
-              this.handleNavbarReloadButton.bind(this)
-            );
-            this.navbarHomeButton().addEventListener(
-              'click',
-              this.handleNavbarHomeButton.bind(this)
-            );
-            this.navbarTabsButton().addEventListener(
-              'click',
-              this.handleNavbarTabsButton.bind(this)
-            );
-            this.navbarDownloadsButton().addEventListener(
-              'click',
-              this.handleNavbarDownloadsButton.bind(this)
-            );
-            this.navbarLibraryButton().addEventListener(
-              'click',
-              this.handleNavbarLibraryButton.bind(this)
-            );
-            this.navbarAddonsButton().addEventListener(
-              'click',
-              this.handleNavbarAddonsButton.bind(this)
-            );
-            this.navbarOptionsButton().addEventListener(
-              'click',
-              this.handleNavbarOptionsButton.bind(this)
-            );
-            this.urlbarSSLButton().addEventListener(
-              'click',
-              this.handleUrlbarSSLButton.bind(this)
-            );
-            this.tabsViewCloseButton().addEventListener(
-              'click',
-              this.handleTabsViewCloseButton.bind(this)
-            );
-            this.tabsViewAddButton().addEventListener(
-              'click',
-              this.openNewTab.bind(this)
-            );
-          });
-        }
-      );
+          this.tablistHolder().addEventListener('contextmenu', this.handleTablistHolderContextMenu.bind(this));
+          this.sideTabsButton().addEventListener('click', this.handleSideTabsButton.bind(this));
+          this.addButton().addEventListener('click', this.openNewTab.bind(this, false));
+          this.urlbarInput().addEventListener('keydown', this.handleUrlbarInputKeydown.bind(this));
+          this.navbarBackButton().addEventListener('click', this.handleNavbarBackButton.bind(this));
+          this.navbarForwardButton().addEventListener('click', this.handleNavbarForwardButton.bind(this));
+          this.navbarReloadButton().addEventListener('click', this.handleNavbarReloadButton.bind(this));
+          this.navbarHomeButton().addEventListener('click', this.handleNavbarHomeButton.bind(this));
+          this.navbarTabsButton().addEventListener('click', this.handleNavbarTabsButton.bind(this));
+          this.navbarDownloadsButton().addEventListener('click', this.handleNavbarDownloadsButton.bind(this));
+          this.navbarLibraryButton().addEventListener('click', this.handleNavbarLibraryButton.bind(this));
+          this.navbarAddonsButton().addEventListener('click', this.handleNavbarAddonsButton.bind(this));
+          this.navbarOptionsButton().addEventListener('click', this.handleNavbarOptionsButton.bind(this));
+          this.urlbarSSLButton().addEventListener('click', this.handleUrlbarSSLButton.bind(this));
+          this.tabsViewCloseButton().addEventListener('click', this.handleTabsViewCloseButton.bind(this));
+          this.tabsViewAddButton().addEventListener('click', this.openNewTab.bind(this));
+        });
+      });
     },
 
     handleStatusbarDoubleClick: function () {
-      const webview = this.chrome().querySelector(
-        '.browser-container .browser-view.active > .browser'
-      );
+      const webview = this.chrome().querySelector('.browser-container .browser-view.active > .browser');
       webview.executeJavaScript(`
         const panelContent = document.querySelector('[role="panel"].visible > .content');
         if (panelContent) {
@@ -349,7 +290,7 @@
         {
           name: 'Customize Toolbar',
           l10nId: 'browserMenu-customizeToolbar',
-          icon: 'theme',
+          icon: 'brush-size',
           onclick: () => this.openNewTab(false, 'orchid://customize.html')
         }
       ];
@@ -443,16 +384,11 @@
       function updateUserAgent(value) {
         switch (value) {
           case 'android':
-            webview.useragent = navigator.userAgent.replace(
-              /\((.*)\)/i,
-              '(Linux; Android 14)'
-            );
+            webview.useragent = navigator.userAgent.replace(/\((.*)\)/i, '(Linux; Android 14)');
             break;
 
           case 'desktop':
-            webview.useragent = navigator.userAgent
-              .replace(/\((.*)\)/i, '(X11; Linux x86_64)')
-              .replace('Mobile ', '');
+            webview.useragent = navigator.userAgent.replace(/\((.*)\)/i, '(X11; Linux x86_64)').replace('Mobile ', '');
             break;
 
           case 'default':
@@ -473,35 +409,18 @@
       devToolsView.classList.add('devtools');
       devToolsView.nodeintegration = true;
       devToolsView.nodeintegrationinsubframes = true;
-      devToolsView.preload = `file://${Environment.dirName().replaceAll(
-        '\\',
-        '/'
-      )}/preload.js`;
+      devToolsView.preload = `file://${Environment.dirName().replaceAll('\\', '/')}/preload.js`;
       browserView.appendChild(devToolsView);
 
       webview.addEventListener('ipc-message', this.handleIpcMessage.bind(this));
-      webview.addEventListener(
-        'context-menu',
-        this.handleContextMenu.bind(this)
-      );
-      webview.addEventListener(
-        'page-favicon-updated',
-        this.handlePageFaviconUpdated.bind(this)
-      );
-      webview.addEventListener(
-        'page-title-updated',
-        this.handlePageTitleUpdated.bind(this)
-      );
-      webview.addEventListener(
-        'did-start-navigation',
-        this.handleDidStartNavigation.bind(this)
-      );
-      webview.addEventListener(
-        'did-change-theme-color',
-        this.handleThemeColorUpdated.bind(this)
-      );
+      webview.addEventListener('context-menu', this.handleContextMenu.bind(this));
+      webview.addEventListener('page-favicon-updated', this.handlePageFaviconUpdated.bind(this));
+      webview.addEventListener('page-title-updated', this.handlePageTitleUpdated.bind(this));
+      webview.addEventListener('did-start-navigation', this.handleDidStartNavigation.bind(this));
+      webview.addEventListener('did-change-theme-color', this.handleThemeColorUpdated.bind(this));
 
       webview.addEventListener('did-start-loading', () => {
+        this.navbarReloadButton().classList.add('stop');
         favicons.classList.add('loading');
         favicons.classList.remove('dom-loading');
       });
@@ -512,11 +431,11 @@
       });
 
       webview.addEventListener('did-stop-loading', () => {
+        this.navbarReloadButton().classList.remove('stop');
         favicons.classList.remove('loading');
         favicons.classList.remove('dom-loading');
 
-        const splashElement =
-          this.chrome().parentElement.querySelector('.splashscreen');
+        const splashElement = this.chrome().parentElement.querySelector('.splashscreen');
         if (splashElement) {
           splashElement.classList.add('hidden');
         }
@@ -546,19 +465,12 @@
         }
       });
 
-      [
-        'did-start-loading',
-        'did-start-navigation',
-        'did-stop-loading',
-        'dom-ready'
-      ].forEach((eventType) => {
+      ['did-start-loading', 'did-start-navigation', 'did-stop-loading', 'dom-ready'].forEach((eventType) => {
         webview.addEventListener(eventType, () => {
           if (!isPrivate) {
-            DisplayManager.screenshot(webview.getWebContentsId()).then(
-              (data) => {
-                gridPreview.src = data;
-              }
-            );
+            DisplayManager.screenshot(webview.getWebContentsId()).then((data) => {
+              gridPreview.src = data;
+            });
           }
         });
       });
@@ -569,16 +481,12 @@
           tab.classList.remove('active');
         });
 
-        const gridTabs = this.chrome().querySelectorAll(
-          '.tabs-view .grid .tab'
-        );
+        const gridTabs = this.chrome().querySelectorAll('.tabs-view .grid .tab');
         gridTabs.forEach(function (gridTab) {
           gridTab.classList.remove('active');
         });
 
-        const browserViews = this.chrome().querySelectorAll(
-          '.browser-container .browser-view'
-        );
+        const browserViews = this.chrome().querySelectorAll('.browser-container .browser-view');
         browserViews.forEach(function (browserView) {
           browserView.classList.remove('active');
         });
@@ -635,22 +543,15 @@
     updateSuggestions: function () {
       const inputText = this.urlbarInput().value;
 
-      fetch(
-        this.suggestUrl.replace('{searchTerms}', encodeURI(inputText))
-      ).then((suggestionData) => {
+      fetch(this.suggestUrl.replace('{searchTerms}', encodeURI(inputText))).then((suggestionData) => {
         suggestionData.json().then((data) => {
           this.suggestions().innerHTML = '';
           data[1].forEach((item) => {
             const suggestion = document.createElement('div');
             suggestion.classList.add('suggestion');
             suggestion.addEventListener('click', () => {
-              const webview = this.chrome().querySelector(
-                '.browser-container .browser-view.active > .browser'
-              );
-              webview.src = this.searchUrl.replace(
-                '{searchTerms}',
-                encodeURI(item)
-              );
+              const webview = this.chrome().querySelector('.browser-container .browser-view.active > .browser');
+              webview.src = this.searchUrl.replace('{searchTerms}', encodeURI(item));
             });
             this.suggestions().appendChild(suggestion);
 
@@ -675,8 +576,7 @@
 
     handleUrlbarInputKeydown: function (event) {
       function checkURL(url) {
-        const urlPattern =
-          /^(https?:\/\/)?([\w-]+\.)*[\w-]+(:\d+)?(\/[\w-./?%&=]*)?$/;
+        const urlPattern = /^(https?:\/\/)?([\w-]+\.)*[\w-]+(:\d+)?(\/[\w-./?%&=]*)?$/;
 
         const isURL = urlPattern.test(url);
         const hasProtocol = /^(https?:\/\/)/.test(url);
@@ -688,19 +588,14 @@
       }
 
       if (event.key === 'Enter') {
-        const webview = this.chrome().querySelector(
-          '.browser-container .browser-view.active > .browser'
-        );
+        const webview = this.chrome().querySelector('.browser-container .browser-view.active > .browser');
         const input = event.target.value;
         if (checkURL(input).isURL && checkURL(input).hasProtocol) {
           webview.src = input;
         } else if (checkURL(input).isURL && !checkURL(input).hasProtocol) {
           webview.src = `https://${input}`;
         } else {
-          webview.src = this.searchUrl.replace(
-            '{searchTerms}',
-            encodeURI(input)
-          );
+          webview.src = this.searchUrl.replace('{searchTerms}', encodeURI(input));
         }
       } else {
         this.updateSuggestions();
@@ -708,34 +603,26 @@
     },
 
     handleNavbarBackButton: function () {
-      const webview = this.browserContainer().querySelector(
-        '.browser-view.active > .browser'
-      );
+      const webview = this.browserContainer().querySelector('.browser-view.active > .browser');
       if (webview.canGoBack()) {
         webview.goBack();
       }
     },
 
     handleNavbarForwardButton: function () {
-      const webview = this.browserContainer().querySelector(
-        '.browser-view.active > .browser'
-      );
+      const webview = this.browserContainer().querySelector('.browser-view.active > .browser');
       if (webview.canGoForward()) {
         webview.goForward();
       }
     },
 
     handleNavbarReloadButton: function () {
-      const webview = this.browserContainer().querySelector(
-        '.browser-view.active > .browser'
-      );
+      const webview = this.browserContainer().querySelector('.browser-view.active > .browser');
       webview.reload();
     },
 
     handleNavbarHomeButton: function () {
-      const webview = this.browserContainer().querySelector(
-        '.browser-view.active > .browser'
-      );
+      const webview = this.browserContainer().querySelector('.browser-view.active > .browser');
       webview.src = this.DEFAULT_URL;
     },
 
@@ -757,16 +644,13 @@
     },
 
     handleNavbarOptionsButton: async function (event) {
-      const webview = this.browserContainer().querySelector(
-        '.browser-view.active > .browser'
-      );
+      const webview = this.browserContainer().querySelector('.browser-view.active > .browser');
 
       const box = this.navbarOptionsButton().getBoundingClientRect();
       const rtl = document.dir === 'rtl';
 
       const x = rtl ? box.left : box.left + box.width - 25;
-      const y =
-        box.top > window.innerHeight / 2 ? box.top : box.top + box.height;
+      const y = box.top > window.innerHeight / 2 ? box.top : box.top + box.height;
 
       const menu = [
         {
@@ -800,25 +684,20 @@
             },
             {
               l10nId: 'contextMenu-bookmark',
-              icon: 'bookmark',
-              onclick: () => {
-                webview.focus();
-                webview.reload();
-              }
+              icon: (await Settings.getValue('bookmarks', 'bookmarks.json')).some((item) => item.url === webview.getURL()) ? 'bookmarked' : 'bookmark',
+              onclick: this.requestBookmark.bind(this)
             }
           ]
         },
         {
           type: 'separator',
-          hidden:
-            (await Settings.getValue('general.chrome.position')) !== 'bottom'
+          hidden: (await Settings.getValue('general.chrome.position')) !== 'bottom'
         },
         {
           name: 'Move Chrome Up',
           l10nId: 'dropdown-moveChromeUp',
           icon: 'browser-moveup',
-          hidden:
-            (await Settings.getValue('general.chrome.position')) !== 'bottom',
+          hidden: (await Settings.getValue('general.chrome.position')) !== 'bottom',
           onclick: () => Settings.setValue('general.chrome.position', 'top')
         },
         { type: 'separator' },
@@ -826,19 +705,19 @@
           name: 'History',
           l10nId: 'dropdown-history',
           icon: 'history',
-          onclick: () => {}
+          onclick: () => this.openNewTab(false, 'orchid://history/')
         },
         {
           name: 'Add-Ons',
           l10nId: 'dropdown-addons',
           icon: 'addons',
-          onclick: () => {}
+          onclick: () => this.openNewTab(false, 'orchid://addons/')
         },
         {
           name: 'Webapps',
           l10nId: 'dropdown-webapps',
           icon: 'apps',
-          onclick: () => {}
+          onclick: () => this.openNewTab(false, 'orchid://webapps/')
         },
         { type: 'separator' },
         {
@@ -847,11 +726,9 @@
           icon: 'reader-mode',
           onclick: () => {
             if (webview.getURL().startsWith('orchidreader://')) {
-              webview.url = webview
-                .getURL()
-                .substring('orchidreader://readermode.html?content='.length);
+              webview.url = webview.getURL().substring('orchidreader://?content='.length);
             } else {
-              webview.url = `orchidreader://readermode.html?content=${webview.getURL()}`;
+              webview.url = `orchidreader://?content=${webview.getURL()}`;
             }
           }
         },
@@ -876,13 +753,9 @@
                 const startTime = performance.now();
                 function animateZoom() {
                   const currentTime = performance.now();
-                  const progress = Math.min(
-                    (currentTime - startTime) / duration,
-                    1
-                  );
+                  const progress = Math.min((currentTime - startTime) / duration, 1);
 
-                  const easedProgress =
-                    0.5 - 0.5 * Math.cos(progress * Math.PI);
+                  const easedProgress = 0.5 - 0.5 * Math.cos(progress * Math.PI);
                   const newZoom = zoom + (targetZoom - zoom) * easedProgress;
                   webview.setZoomFactor(newZoom);
 
@@ -907,13 +780,9 @@
                 const startTime = performance.now();
                 function animateZoom() {
                   const currentTime = performance.now();
-                  const progress = Math.min(
-                    (currentTime - startTime) / duration,
-                    1
-                  );
+                  const progress = Math.min((currentTime - startTime) / duration, 1);
 
-                  const easedProgress =
-                    0.5 - 0.5 * Math.cos(progress * Math.PI);
+                  const easedProgress = 0.5 - 0.5 * Math.cos(progress * Math.PI);
                   const newZoom = zoom + (targetZoom - zoom) * easedProgress;
                   webview.setZoomFactor(newZoom);
 
@@ -936,13 +805,9 @@
                 const startTime = performance.now();
                 function animateZoom() {
                   const currentTime = performance.now();
-                  const progress = Math.min(
-                    (currentTime - startTime) / duration,
-                    1
-                  );
+                  const progress = Math.min((currentTime - startTime) / duration, 1);
 
-                  const easedProgress =
-                    0.5 - 0.5 * Math.cos(progress * Math.PI);
+                  const easedProgress = 0.5 - 0.5 * Math.cos(progress * Math.PI);
                   const newZoom = zoom + (targetZoom - zoom) * easedProgress;
                   webview.setZoomFactor(newZoom);
 
@@ -961,7 +826,7 @@
           name: 'Settings',
           l10nId: 'dropdown-settings',
           icon: 'settings',
-          onclick: () => this.openNewTab(false, 'orchid://settings.html')
+          onclick: () => this.openNewTab(false, 'orchid://settings/')
         },
         {
           name: 'Quit',
@@ -983,8 +848,7 @@
           name: 'Move Chrome Down',
           l10nId: 'dropdown-moveChromeDown',
           icon: 'browser-movedown',
-          hidden:
-            (await Settings.getValue('general.chrome.position')) !== 'top',
+          hidden: (await Settings.getValue('general.chrome.position')) !== 'top',
           onclick: () => Settings.setValue('general.chrome.position', 'bottom')
         }
       ];
@@ -996,23 +860,37 @@
       }, 16);
     },
 
+    requestBookmark: function () {
+      const webview = this.browserContainer().querySelector('.browser-view.active > .browser');
+
+      ModalDialog.showPrompt(navigator.mozL10n.get('bookmark'), navigator.mozL10n.get('bookmark-detail'), (value) => {
+        const newItem = {
+          name: value,
+          url: webview.getURL(),
+          timeCreated: Date.now()
+        };
+
+        Settings.getValue('bookmarks', 'bookmarks.json').then((value) => {
+          if (array.some((item) => item.url === newItem.url)) {
+            value.push(newItem);
+            Settings.setValue('bookmarks', value, 'bookmarks.json');
+          }
+        });
+      });
+    },
+
     handleUrlbarSSLButton: async function (event) {
-      const webview = this.browserContainer().querySelector(
-        '.browser-view.active > .browser'
-      );
+      const webview = this.browserContainer().querySelector('.browser-view.active > .browser');
 
       const box = this.urlbarSSLButton().getBoundingClientRect();
       const rtl = document.dir === 'rtl';
 
       const x = rtl ? box.left : box.left + box.width - 25;
-      const y =
-        box.top > window.innerHeight / 2 ? box.top : box.top + box.height;
+      const y = box.top > window.innerHeight / 2 ? box.top : box.top + box.height;
 
       const menu = [
         {
-          name: webview.getURL().startsWith('https')
-            ? 'This webpage is secure.'
-            : 'This webpage is unsecure.',
+          name: webview.getURL().startsWith('https') ? 'This webpage is secure.' : 'This webpage is unsecure.',
           disabled: true
         },
         { type: 'separator' },
@@ -1023,32 +901,20 @@
         {
           name: 'Default',
           l10nId: 'ssl-userAgent-default',
-          icon:
-            (await Settings.getValue('general.chrome.user_agent')) === 'default'
-              ? 'tick'
-              : ' ',
-          onclick: () =>
-            Settings.setValue('general.chrome.user_agent', 'default')
+          icon: (await Settings.getValue('general.chrome.user_agent')) === 'default' ? 'tick' : ' ',
+          onclick: () => Settings.setValue('general.chrome.user_agent', 'default')
         },
         {
           name: 'Android (Phone)',
           l10nId: 'ssl-userAgent-android',
-          icon:
-            (await Settings.getValue('general.chrome.user_agent')) === 'android'
-              ? 'tick'
-              : ' ',
-          onclick: () =>
-            Settings.setValue('general.chrome.user_agent', 'android')
+          icon: (await Settings.getValue('general.chrome.user_agent')) === 'android' ? 'tick' : ' ',
+          onclick: () => Settings.setValue('general.chrome.user_agent', 'android')
         },
         {
           name: 'Desktop',
           l10nId: 'ssl-userAgent-desktop',
-          icon:
-            (await Settings.getValue('general.chrome.user_agent')) === 'desktop'
-              ? 'tick'
-              : ' ',
-          onclick: () =>
-            Settings.setValue('general.chrome.user_agent', 'desktop')
+          icon: (await Settings.getValue('general.chrome.user_agent')) === 'desktop' ? 'tick' : ' ',
+          onclick: () => Settings.setValue('general.chrome.user_agent', 'desktop')
         },
         { type: 'separator' },
         {
@@ -1072,9 +938,7 @@
     },
 
     handleIpcMessage: function (event) {
-      const webview = this.browserContainer().querySelector(
-        '.browser-view.active > .browser'
-      );
+      const webview = this.browserContainer().querySelector('.browser-view.active > .browser');
 
       const scrollPosition = event.args[0].top;
       let progress = scrollPosition / 80;
@@ -1100,15 +964,9 @@
     },
 
     handleContextMenu: function (event) {
-      const browserView = this.browserContainer().querySelector(
-        '.browser-view.active'
-      );
-      const webview = this.browserContainer().querySelector(
-        '.browser-view.active > .browser'
-      );
-      const devToolsView = this.browserContainer().querySelector(
-        '.browser-view.active > .devtools'
-      );
+      const browserView = this.browserContainer().querySelector('.browser-view.active');
+      const webview = this.browserContainer().querySelector('.browser-view.active > .browser');
+      const devToolsView = this.browserContainer().querySelector('.browser-view.active > .devtools');
 
       const itemsBefore = [
         {
@@ -1260,9 +1118,7 @@
           icon: 'edit',
           onclick: () => {
             webview.focus();
-            devToolsView.src = `orchid://devtools/inspector.html?ws=127.0.0.1:${
-              Environment.debugPort
-            }&webContentsId${webview.getWebContentsId()}`;
+            devToolsView.src = `orchid://devtools/inspector.html?ws=127.0.0.1:${Environment.debugPort}&webContentsId${webview.getWebContentsId()}`;
             browserView.classList.toggle('devtools-visible');
           }
         }
@@ -1276,31 +1132,25 @@
         });
       }
 
-      ContextMenu.show(event.params.x, event.params.y, [
-        ...itemsBefore,
-        ...suggestions,
-        ...itemsAfter
-      ]);
+      ContextMenu.show(event.params.x, event.params.y, [...itemsBefore, ...suggestions, ...itemsAfter]);
     },
 
     handlePageFaviconUpdated: function (event) {
-      const favicon = this.tablist().querySelector('.active .favicon');
-      const gridFavicon = this.tabsViewList().querySelector('.active .favicon');
+      const favicon = this.tablist().querySelector('li.active .favicon');
+      const gridFavicon = this.tabsViewList().querySelector('li.active .favicon');
       favicon.src = event.favicons[0];
       gridFavicon.src = event.favicons[0];
     },
 
     handlePageTitleUpdated: function (event) {
-      const title = this.tablist().querySelector('.active .title');
-      const gridTitle = this.tabsViewList().querySelector('.active .title');
+      const title = this.tablist().querySelector('li.active .title');
+      const gridTitle = this.tabsViewList().querySelector('li.active .title');
       title.textContent = event.title;
       gridTitle.textContent = event.title;
     },
 
     handleDidStartNavigation: function () {
-      const webview = this.browserContainer().querySelector(
-        '.browser-view.active > .browser'
-      );
+      const webview = this.browserContainer().querySelector('.browser-view.active > .browser');
       this.urlbarInput().value = webview.getURL();
 
       if (webview.getURL() === this.DEFAULT_URL) {
@@ -1318,18 +1168,13 @@
     },
 
     handleThemeColorUpdated: function (event) {
-      const webview = this.browserContainer().querySelector(
-        '.browser-view.active > .browser'
-      );
+      const webview = this.browserContainer().querySelector('.browser-view.active > .browser');
       const color = event.themeColor;
       if (color) {
         webview.dataset.themeColor = (color + 'C0').toLowerCase();
         this.chrome().parentElement.dataset.themeColor = color.substring(0, 7);
         this.chrome().parentElement.style.setProperty('--theme-color', color);
-        this.toolbar().style.setProperty(
-          '--theme-color',
-          (color + 'C0').toLowerCase()
-        );
+        this.toolbar().style.setProperty('--theme-color', (color + 'C0').toLowerCase());
 
         // Calculate the luminance of the color
         const luminance = this.calculateLuminance(color);
@@ -1455,11 +1300,7 @@
     openFtuDialog: function () {
       this.ftuDialog().classList.add('visible');
       this.ftuDialog().onclick = () => {
-        if (process.platform === 'win32') {
-          new Audio('file://C:/Windows/Media/Windows Background.wav').play();
-        } else {
-          new Audio('/resources/sounds/exclamation.wav').play();
-        }
+        new Audio('/resources/sounds/exclamation.wav').play();
         this.ftuDialog().classList.add('alert');
         this.ftuDialog().addEventListener('transitionend', () => {
           this.ftuDialog().classList.remove('alert');
@@ -1472,9 +1313,7 @@
 
       const pageButtons = this.ftuDialog().querySelectorAll('[data-page-id]');
       pageButtons.forEach((button) => {
-        button.addEventListener('click', () =>
-          this.handlePageButtonClick(button)
-        );
+        button.addEventListener('click', () => this.handlePageButtonClick(button));
       });
 
       const panels = this.ftuDialog().querySelectorAll('.page');
@@ -1488,21 +1327,11 @@
         this.ftuDialog().classList.remove('visible');
       };
 
-      const accentColorRed = this.ftuDialog().querySelector(
-        '.accent-colors .red'
-      );
-      const accentColorYellow = this.ftuDialog().querySelector(
-        '.accent-colors .yellow'
-      );
-      const accentColorGreen = this.ftuDialog().querySelector(
-        '.accent-colors .green'
-      );
-      const accentColorBlue = this.ftuDialog().querySelector(
-        '.accent-colors .blue'
-      );
-      const accentColorPurple = this.ftuDialog().querySelector(
-        '.accent-colors .purple'
-      );
+      const accentColorRed = this.ftuDialog().querySelector('.accent-colors .red');
+      const accentColorYellow = this.ftuDialog().querySelector('.accent-colors .yellow');
+      const accentColorGreen = this.ftuDialog().querySelector('.accent-colors .green');
+      const accentColorBlue = this.ftuDialog().querySelector('.accent-colors .blue');
+      const accentColorPurple = this.ftuDialog().querySelector('.accent-colors .purple');
 
       accentColorRed.onclick = () => {
         document.scrollingElement.style.setProperty('--accent-color-r', 192);
@@ -1568,25 +1397,13 @@
 
       if (selectedPanel) {
         selectedPanel.classList.toggle('visible');
-        selectedPanel.classList.toggle(
-          'previous',
-          selectedPanel.dataset.index <= targetPanel.dataset.index
-        );
-        selectedPanel.classList.toggle(
-          'next',
-          selectedPanel.dataset.index >= targetPanel.dataset.index
-        );
+        selectedPanel.classList.toggle('previous', selectedPanel.dataset.index <= targetPanel.dataset.index);
+        selectedPanel.classList.toggle('next', selectedPanel.dataset.index >= targetPanel.dataset.index);
       }
 
       targetPanel.classList.toggle('visible');
-      targetPanel.classList.toggle(
-        'previous',
-        selectedPanel.dataset.index <= targetPanel.dataset.index
-      );
-      targetPanel.classList.toggle(
-        'next',
-        selectedPanel.dataset.index >= targetPanel.dataset.index
-      );
+      targetPanel.classList.toggle('previous', selectedPanel.dataset.index <= targetPanel.dataset.index);
+      targetPanel.classList.toggle('next', selectedPanel.dataset.index >= targetPanel.dataset.index);
     }
   };
 

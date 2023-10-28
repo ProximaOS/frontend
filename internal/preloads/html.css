@@ -13,12 +13,12 @@
 }
 
 ::-webkit-scrollbar-thumb {
-  background-color: #858585;
-  background-clip: content-box;
-  border: 2px solid transparent;
-  border-radius: 8px;
   width: 8px;
   height: 8px;
+  border: 2px solid transparent;
+  border-radius: 8px;
+  background-clip: content-box;
+  background-color: #858585;
 }
 
 ::selection {
@@ -27,9 +27,9 @@
 
 button,
 input[type="button"] {
+  border: solid 1px #858585;
   border-radius: 3px;
   background-color: #c0c0c0;
-  border: solid 1px #858585;
 }
 
 button:hover,

@@ -1,8 +1,8 @@
 .buttons {
-  padding: 1.5rem;
   box-sizing: border-box;
-  height: 7rem;
   display: flex;
+  height: 7rem;
+  padding: 1.5rem;
   gap: 1rem;
 }
 
@@ -13,23 +13,23 @@
 
 button,
 .button {
+  box-sizing: border-box;
   width: 100%;
   height: 4rem;
-  line-height: 4rem;
-  background-color: var(--button-normal);
-  border: none;
-  border-radius: 2rem;
-  text-align: center;
-  color: var(--text-color);
-  font-size: 1.6rem;
-  font-weight: normal;
   margin: 0 0 1rem;
   padding: 0 1.5rem;
-  box-sizing: border-box;
   overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
+  border: none;
+  border-radius: 2rem;
   outline: none;
+  background-color: var(--button-normal);
+  color: var(--text-color);
+  font-weight: normal;
+  font-size: 1.6rem;
+  line-height: 4rem;
+  text-align: center;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 button.recommend,
@@ -94,8 +94,8 @@ button:active,
 
 button[disabled],
 .button[disabled] {
-  pointer-events: none;
   opacity: 0.5;
+  pointer-events: none;
 }
 
 button[data-icon],
@@ -136,9 +136,9 @@ button[data-icon]::before,
 .button[data-icon]::before {
   position: absolute;
   top: 0;
-  font-size: 2rem;
   width: 2rem;
   height: 4rem;
+  font-size: 2rem;
   line-height: 4rem;
 }
 html[dir="ltr"] button[data-icon]::before,
@@ -152,13 +152,13 @@ html[dir="rtl"] .button[data-icon]::before {
 
 html[dir="ltr"] button[data-icon].next::before,
 html[dir="ltr"] .button[data-icon].next::before {
-  left: unset;
   right: 1rem;
+  left: unset;
 }
 html[dir="rtl"] button[data-icon].next::before,
 html[dir="rtl"] .button[data-icon].next::before {
-  left: 1rem;
   right: unset;
+  left: 1rem;
 }
 
 .lists ul li button,
@@ -168,28 +168,28 @@ html[dir="rtl"] .button[data-icon].next::before {
 
 /* Select */
 select {
+  box-sizing: border-box;
   width: 100%;
   height: 4rem;
-  line-height: 4rem;
-  border: solid 0.1rem var(--button-normal);
-  border-radius: 1rem;
-  background-image: url(buttons/images/light/expand.png);
-  background-color: var(--button-normal);
-  background-repeat: no-repeat;
-  background-size: 1.6rem;
-  text-align: left;
-  color: transparent;
-  text-shadow: 0 0 0 var(--text-color);
-  font-size: 1.6rem;
-  font-weight: normal;
   margin: 0 0 1rem;
   padding: 0 1.5rem;
   padding-inline-end: 3.6rem;
-  box-sizing: border-box;
   overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
+  border: solid 0.1rem var(--button-normal);
+  border-radius: 1rem;
   outline: none;
+  background-image: url(buttons/images/light/expand.png);
+  background-size: 1.6rem;
+  background-repeat: no-repeat;
+  background-color: var(--button-normal);
+  color: transparent;
+  font-weight: normal;
+  font-size: 1.6rem;
+  line-height: 4rem;
+  text-align: left;
+  text-overflow: ellipsis;
+  text-shadow: 0 0 0 var(--text-color);
+  white-space: nowrap;
 }
 html[dir="ltr"] select {
   background-position: right 1rem center;

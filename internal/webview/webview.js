@@ -19,11 +19,7 @@
             const cssContent = xhr.responseText;
             node.insertCSS(cssContent);
           } else if (xhr.readyState === 4) {
-            console.error(
-              'Failed to fetch CSS:',
-              xhr.status,
-              xhr.statusText
-            );
+            console.error('Failed to fetch CSS:', xhr.status, xhr.statusText);
           }
         };
         xhr.send();
@@ -37,11 +33,7 @@
             const jsContent = xhr1.responseText;
             node.executeJavaScript(jsContent);
           } else if (xhr1.readyState === 4) {
-            console.error(
-              'Failed to fetch JS:',
-              xhr1.status,
-              xhr1.statusText
-            );
+            console.error('Failed to fetch JS:', xhr1.status, xhr1.statusText);
           }
         };
         xhr1.send();
@@ -53,6 +45,7 @@
         loadCSS('orchid://preloads/pictureinpicture.css');
         loadCSS('orchid://preloads/videoplayer.css');
 
+        loadJavascript('orchid://adblock/adblock.js');
         loadJavascript('orchid://preloads/override.js');
 
         if (/^http:\/\/.*\.localhost:8081\//.test(node.getURL())) {
@@ -63,6 +56,10 @@
           node.setAttribute('nodeintegrationinsubframes', false);
         }
       });
+    } else if (node.tagName === 'IFRAME') {
+      node.webPreferences = {
+        nodeIntegrationInSubFrames: true
+      };
     }
   }
 

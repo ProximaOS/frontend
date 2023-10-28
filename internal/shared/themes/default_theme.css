@@ -1,0 +1,74 @@
+:root {
+  --accent-color-r: 0;
+  --accent-color-g: 97;
+  --accent-color-b: 224;
+
+  --accent-color: rgb(var(--accent-color-r), var(--accent-color-g), var(--accent-color-b));
+  --accent-color-plus: rgba(255, 255, 255, 0.75);
+  --accent-color-minus: rgba(255, 255, 255, 0.5);
+  --accent-color-hover: rgba(255, 255, 255, 0.05);
+  --accent-color-active: rgba(255, 255, 255, 0.1);
+
+  --background: rgb(calc(240 + ((var(--accent-color-r) / 255) * 15)), calc(240 + ((var(--accent-color-g) / 255) * 15)), calc(240 + ((var(--accent-color-b) / 255) * 15)));
+  --background-plus: #ffffff;
+  --background-minus: rgb(calc(224 + ((var(--accent-color-r) / 255) * 31)), calc(224 + ((var(--accent-color-g) / 255) * 31)), calc(224 + ((var(--accent-color-b) / 255) * 31)));
+
+  --acrylic-background: rgba(calc(224 + ((var(--accent-color-r) / 255) * 31)), calc(224 + ((var(--accent-color-g) / 255) * 31)), calc(224 + ((var(--accent-color-b) / 255) * 31)), 0.5);
+  --acrylic-background-plus: rgba(255, 255, 255, 0.75);
+
+  --text-color: #333;
+  --text-color-faded: rgba(51, 51, 51, 0.5);
+
+  --item-plus: rgba(var(--accent-color-r), var(--accent-color-g), var(--accent-color-b), 0.1);
+  --item-hover: rgba(var(--accent-color-r), var(--accent-color-g), var(--accent-color-b), 0.1);
+  --item-hover-plus: rgba(var(--accent-color-r), var(--accent-color-g), var(--accent-color-b), 0.2);
+  --item-active: rgba(var(--accent-color-r), var(--accent-color-g), var(--accent-color-b), 0.2);
+  --item-active-plus: rgba(var(--accent-color-r), var(--accent-color-g), var(--accent-color-b), 0.3);
+
+  --headerbar-r: calc(240 + ((var(--accent-color-r) / 255) * 15));
+  --headerbar-g: calc(240 + ((var(--accent-color-g) / 255) * 15));
+  --headerbar-b: calc(240 + ((var(--accent-color-b) / 255) * 15));
+  --header-background: rgba(var(--headerbar-r), var(--headerbar-g), var(--headerbar-b), 0.75);
+
+  --button-normal: rgba(var(--accent-color-r), var(--accent-color-g), var(--accent-color-b), 0.1);
+  --button-hover: rgba(var(--accent-color-r), var(--accent-color-g), var(--accent-color-b), 0.2);
+  --button-active: rgba(var(--accent-color-r), var(--accent-color-g), var(--accent-color-b), 0.3);
+
+  --switch-normal: rgba(var(--accent-color-r), var(--accent-color-g), var(--accent-color-b), 0.1);
+  --switch-hover: rgba(var(--accent-color-r), var(--accent-color-g), var(--accent-color-b), 0.2);
+  --switch-active: rgba(var(--accent-color-r), var(--accent-color-g), var(--accent-color-b), 0.3);
+
+  --checkbox-normal: rgba(var(--accent-color-r), var(--accent-color-g), var(--accent-color-b), 0.1);
+  --checkbox-hover: rgba(var(--accent-color-r), var(--accent-color-g), var(--accent-color-b), 0.2);
+  --checkbox-active: rgba(var(--accent-color-r), var(--accent-color-g), var(--accent-color-b), 0.3);
+
+  --radio-normal: rgba(var(--accent-color-r), var(--accent-color-g), var(--accent-color-b), 0.1);
+  --radio-hover: rgba(var(--accent-color-r), var(--accent-color-g), var(--accent-color-b), 0.2);
+  --radio-active: rgba(var(--accent-color-r), var(--accent-color-g), var(--accent-color-b), 0.3);
+}
+
+@media screen and (prefers-color-scheme: dark) {
+  :root {
+    --accent-color-r: 128;
+    --accent-color-g: 194;
+    --accent-color-b: 255;
+    --accent-color-plus: rgba(0, 0, 0, 0.75);
+    --accent-color-minus: rgba(0, 0, 0, 0.5);
+    --accent-color-hover: rgba(0, 0, 0, 0.05);
+    --accent-color-active: rgba(0, 0, 0, 0.1);
+
+    --background: rgb(calc(4 + ((var(--accent-color-r) / 255) * 4)), calc(4 + ((var(--accent-color-g) / 255) * 4)), calc(4 + ((var(--accent-color-b) / 255) * 4)));
+    --background-plus: rgba(255, 255, 255, 0.1);
+    --background-minus: rgb(calc(19 + ((var(--accent-color-r) / 255) * 1)), calc(19 + ((var(--accent-color-g) / 255) * 1)), calc(19 + ((var(--accent-color-b) / 255) * 1)));
+
+    --acrylic-background: rgba(calc(16 + ((var(--accent-color-r) / 255) * 32)), calc(16 + ((var(--accent-color-g) / 255) * 32)), calc(16 + ((var(--accent-color-b) / 255) * 32)), 0.5);
+    --acrylic-background-plus: rgba(calc(33 + ((var(--accent-color-r) / 255) * 32)), calc(33 + ((var(--accent-color-g) / 255) * 32)), calc(33 + ((var(--accent-color-b) / 255) * 32)), 0.75);
+
+    --text-color: #e7e7e7;
+    --text-color-faded: rgba(231, 231, 231, 0.5);
+
+    --headerbar-r: calc(4 + ((var(--accent-color-r) / 255) * 4));
+    --headerbar-g: calc(4 + ((var(--accent-color-g) / 255) * 4));
+    --headerbar-b: calc(4 + ((var(--accent-color-b) / 255) * 4));
+  }
+}

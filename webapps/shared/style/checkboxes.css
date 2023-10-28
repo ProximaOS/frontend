@@ -1,34 +1,34 @@
 .pack-checkbox {
-  width: 100%;
   display: inline-flex;
+  width: 100%;
   overflow: hidden;
 }
 
 .pack-checkbox > label {
-  width: 100%;
   display: inline-flex;
+  flex-grow: 1;
   flex-direction: column;
   justify-content: center;
-  flex-grow: 1;
+  width: 100%;
 }
 
 .pack-checkbox > span {
-  flex-shrink: 0;
   display: inline-flex;
+  flex-shrink: 0;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
 }
 
 .pack-checkbox > span input[type="checkbox"] {
-  background-color: var(--checkbox-normal);
+  appearance: none;
+  position: relative;
   width: 2.5rem;
   height: 2.5rem;
-  border-radius: 25%;
   border: none;
-  position: relative;
+  border-radius: 25%;
   outline: none;
-  appearance: none;
+  background-color: var(--checkbox-normal);
   transition: all 0.5s ease;
 }
 
@@ -49,20 +49,20 @@
 }
 
 .pack-checkbox > span input[type="checkbox"]::before {
-  content: '';
+  z-index: 1;
   position: absolute;
-  left: 0.4rem;
   top: 1.125rem;
+  left: 0.4rem;
   width: 0.2rem;
   height: 0rem;
-  background-color: var(--accent-color-plus);
-  border-radius: 0.2rem;
-  transform-origin: 50% 0.1rem;
-  transition: all 0.1s cubic-bezier(0, 0.2, 0, 1) 0.1s;
-  opacity: 0;
   transform: rotate(-45deg);
-  z-index: 1;
+  transform-origin: 50% 0.1rem;
+  border-radius: 0.2rem;
+  background-color: var(--accent-color-plus);
+  content: '';
+  opacity: 0;
   pointer-events: none;
+  transition: all 0.1s cubic-bezier(0, 0.2, 0, 1) 0.1s;
 }
 
 .pack-checkbox.danger > span input[type="checkbox"]::before {
@@ -70,26 +70,26 @@
 }
 
 .pack-checkbox > span input[type="checkbox"]:checked::before {
-  transition: all 0.4s cubic-bezier(0, 0.2, 0, 1);
   height: 1rem;
   opacity: 1;
+  transition: all 0.4s cubic-bezier(0, 0.2, 0, 1);
 }
 
 .pack-checkbox > span input[type="checkbox"]::after {
-  content: '';
+  z-index: 1;
   position: absolute;
-  left: 1rem;
   bottom: 0.6rem;
+  left: 1rem;
   width: 0.2rem;
   height: 0rem;
-  background-color: var(--accent-color-plus);
-  border-radius: 0.2rem;
-  transform-origin: 50% calc(100% - 0.1rem);
-  transition: all 0.1s cubic-bezier(0, 0.2, 0, 1);
-  opacity: 0;
   transform: rotate(45deg);
-  z-index: 1;
+  transform-origin: 50% calc(100% - 0.1rem);
+  border-radius: 0.2rem;
+  background-color: var(--accent-color-plus);
+  content: '';
+  opacity: 0;
   pointer-events: none;
+  transition: all 0.1s cubic-bezier(0, 0.2, 0, 1);
 }
 
 .pack-checkbox.danger > span input[type="checkbox"]::after {
@@ -97,7 +97,7 @@
 }
 
 .pack-checkbox > span input[type="checkbox"]:checked::after {
-  transition: all 0.3s cubic-bezier(0, 0.2, 0, 1) 0.1s;
   height: 1.5rem;
   opacity: 1;
+  transition: all 0.3s cubic-bezier(0, 0.2, 0, 1) 0.1s;
 }

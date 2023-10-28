@@ -1,15 +1,20 @@
+video-container {
+  display: inline-block;
+  position: relative;
+}
+
 video {
 
 }
 
 video::-webkit-media-controls-panel {
-  background-color: rgba(0, 0, 0, 0.5);
   border: none;
+  background-color: rgba(0, 0, 0, 0.5);
 }
 
 video::-webkit-media-controls-play-button {
-  color: #fff;
   background-color: transparent;
+  color: #fff;
   font-size: 20px;
 }
 

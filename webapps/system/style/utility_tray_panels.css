@@ -1,18 +1,18 @@
 #utility-tray-wifi,
 #utility-tray-bluetooth {
+  --background: transparent;
+  visibility: hidden;
   position: absolute;
-  left: 50%;
   top: 50%;
-  translate: -50% -50%;
+  left: 50%;
   width: calc(100% - 2rem);
   max-width: 40rem;
   height: max-content;
   max-height: calc(100% - var(--statusbar-height) - 2.5rem);
-  background-color: var(--acrylic-background-plus);
+  translate: -50% -50%;
   border-radius: 2rem;
-  --background: transparent;
+  background-color: var(--acrylic-background-plus);
   transition: all 0.3s ease;
-  visibility: hidden;
 }
 
 #utility-tray-wifi.visible,
@@ -30,8 +30,8 @@
 #utility-tray-wifi .headerbar,
 #utility-tray-bluetooth .headerbar {
   --statusbar-height: 0.5rem;
-  background-image: none;
   backdrop-filter: none;
+  background-image: none;
 }
 
 #utility-tray-wifi .content,

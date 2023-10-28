@@ -1,15 +1,15 @@
 #lockscreen {
+  visibility: hidden;
   position: absolute;
-  left: 0;
   top: 0;
+  left: 0;
   width: 100%;
   height: 100%;
-  opacity: 0;
-  visibility: hidden;
-  pointer-events: none;
+  overflow: hidden;
   transform: translateY(calc(-100% * (1 - var(--motion-progress, 1))));
   backdrop-filter: blur(calc(20px * var(--motion-progress, 1))) saturate(calc(100% + (80% * var(--motion-progress, 1))));
-  overflow: hidden;
+  opacity: 0;
+  pointer-events: none;
   transition: all 0.3s ease;
 }
 
@@ -27,27 +27,27 @@
 }
 
 #lockscreen.visible {
-  opacity: 1;
   visibility: visible;
+  opacity: 1;
   pointer-events: all;
 }
 
 #lockscreen-background {
-  position: absolute;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  background: #000 url(/resources/wallpapers/default.png) no-repeat center / cover;
-  transform: translateY(calc(100vh * (1 - var(--motion-progress, 1))));
-  opacity: var(--motion-progress, 1);
-  filter: brightness(calc(90% + (10% * (1 - var(--motion-progress, 1))))) blur(calc(20px * (1 - var(--motion-progress, 1))));
-  mask-image: radial-gradient(circle at 50% 100%, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.2) calc(50% - 50vh), white calc(50% + 50vh), white);
-  mask-size: calc(200% + 100vh);
-  mask-position: 0 calc(200vh + 100vh);
   -webkit-mask-image: radial-gradient(circle at 50% 100%, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.2) calc(50% - 50vh), white calc(50% + 50vh), white);
   -webkit-mask-size: 100% calc(200% + 100vh);
   -webkit-mask-position: 0 calc(200vh + 100vh);
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  transform: translateY(calc(100vh * (1 - var(--motion-progress, 1))));
+  background: #000 url(/resources/wallpapers/default.png) no-repeat center / cover;
+  filter: brightness(calc(90% + (10% * (1 - var(--motion-progress, 1))))) blur(calc(20px * (1 - var(--motion-progress, 1))));
+  mask-image: radial-gradient(circle at 50% 100%, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.2) calc(50% - 50vh), white calc(50% + 50vh), white);
+  mask-position: 0 calc(200vh + 100vh);
+  mask-size: calc(200% + 100vh);
+  opacity: var(--motion-progress, 1);
   transition: all 0.3s ease;
 }
 
@@ -61,14 +61,14 @@
 }
 
 #lockscreen.low-power #lockscreen-background {
-  mask-position: 100% 100vh;
   -webkit-mask-position: 0 100vh;
+  mask-position: 100% 100vh;
 }
 
 #lockscreen-container {
   position: absolute;
-  left: 0;
   top: 0;
+  left: 0;
   width: 100%;
   height: 100%;
 }
@@ -80,9 +80,9 @@
 
 #lockscreen.pin-lock #lockscreen-container,
 #lockscreen.pin-lock #lockscreen-toolbar {
+  z-index: 2;
   transform: translateY(calc(-100vh * (1 - var(--motion-progress, 1))));
   opacity: var(--motion-progress, 1);
-  z-index: 2;
 }
 
 #lockscreen.transitioning #lockscreen-container,
@@ -99,8 +99,8 @@
 
 #lockscreen.pin-lock-visible #lockscreen-container,
 #lockscreen.pin-lock-visible #lockscreen-toolbar {
-  opacity: 0;
   visibility: hidden;
+  opacity: 0;
 }
 
 #lockscreen.pin-lock.transitioning #lockscreen-container,
@@ -109,11 +109,11 @@
 }
 
 .lockscreen-row {
-  width: 100%;
   display: flex;
   flex-direction: column;
-  margin: 1.5rem 0;
   align-items: center;
+  width: 100%;
+  margin: 1.5rem 0;
 }
 
 @media screen and (max-width: 767px) and (orientation: landscape) {
@@ -128,9 +128,9 @@
 }
 
 #lockscreen-icon {
-  margin: 7rem auto 0;
   width: 5rem;
   height: 3rem;
+  margin: 7rem auto 0;
   background: url(lockscreen/images/lock_base.png) no-repeat center / 3rem, url(lockscreen/images/lock_head.png) no-repeat center / 3rem;
   background-position-x: calc(1rem + (0.7rem * (10 - (var(--motion-progress, 1) * 10)))), calc(1rem - (0.3rem * (10 - (var(--motion-progress, 1) * 10))));
   transition: all 0.3s ease;
@@ -162,50 +162,50 @@
 }
 
 #lockscreen-clock {
-  font-size: 7.2rem;
-  font-weight: 300;
   color: #fff;
+  font-weight: 300;
+  font-size: 7.2rem;
   line-height: 7.8rem;
   text-shadow: 0 0 0.4rem rgba(0, 0, 0, 0.1);
 }
 
 #lockscreen-date {
-  font-size: 2rem;
-  color: #fff;
   z-index: 2;
+  color: #fff;
+  font-size: 2rem;
   text-shadow: 0 0 0.4rem rgba(0, 0, 0, 0.1);
 }
 
 #lockscreen-toolbar {
-  position: absolute;
-  left: 2rem;
-  bottom: 3rem;
-  width: calc(100% - 4rem);
   display: flex;
-  justify-content: start;
-  gap: 1rem;
-  z-index: 2;
   visibility: visible;
+  z-index: 2;
+  position: absolute;
+  bottom: 3rem;
+  left: 2rem;
+  justify-content: start;
+  width: calc(100% - 4rem);
+  gap: 1rem;
   opacity: 1;
   transition: opacity 0.5s ease, visibility 0.5s ease;
 }
 
 #lockscreen.low-power #lockscreen-toolbar {
-  opacity: 0;
   visibility: hidden;
+  opacity: 0;
 }
 
 #lockscreen-toolbar > button {
   width: 5rem;
   height: 5rem;
-  line-height: 5rem;
-  border-radius: 50%;
-  background-color: rgba(51, 51, 51, 0.3);
-  /* backdrop-filter: blur(20px) saturate(180%); */
-  border: none;
   margin: 0;
   padding: 0 1rem;
+  /* backdrop-filter: blur(20px) saturate(180%); */
+  border: none;
+  border-radius: 50%;
+  background-color: rgba(51, 51, 51, 0.3);
   color: #fff;
+  line-height: 5rem;
   transition: transform 0.3s cubic-bezier(0.2, 0.9, 0.1, 1.2);
 }
 
@@ -223,38 +223,38 @@
 
 #lockscreen-toolbar > button[data-icon]::before {
   position: static;
-  font-size: 2.4rem;
-  text-align: center;
   width: 100%;
   height: 5rem;
+  font-size: 2.4rem;
   line-height: 5rem;
+  text-align: center;
 }
 
 #lockscreen-notifications {
-  position: absolute;
-  left: 1rem;
-  top: 40%;
-  width: calc(100% - 2rem);
-  height: calc(60% - 10rem);
-  overflow-y: auto;
-  border-radius: 2rem;
-  margin: 0;
-  padding: 0;
-  transition: all 0.3s ease;
-  transform: scale(0.25);
-  filter: blur(20px);
-  transform-origin: top;
-  opacity: 0;
   visibility: hidden;
   z-index: 2;
+  position: absolute;
+  top: 40%;
+  left: 1rem;
+  width: calc(100% - 2rem);
+  height: calc(60% - 10rem);
+  margin: 0;
+  padding: 0;
+  overflow-y: auto;
+  transform: scale(0.25);
+  transform-origin: top;
+  border-radius: 2rem;
+  filter: blur(20px);
+  opacity: 0;
+  transition: all 0.3s ease;
 }
 
 #lockscreen #lockscreen-notifications.visible,
 #lockscreen.low-power #lockscreen-notifications {
+  visibility: visible;
   transform: scale(1);
   filter: blur(0px);
   opacity: 1;
-  visibility: visible;
 }
 
 #lockscreen-notifications .notification {
@@ -263,9 +263,9 @@
 }
 
 #lockscreen.low-power #lockscreen-notifications .notification {
-  opacity: 0;
-  transform: translateY(3rem);
   visibility: hidden;
+  transform: translateY(3rem);
+  opacity: 0;
 }
 
 #lockscreen-notifications::-webkit-scrollbar {
@@ -273,36 +273,36 @@
 }
 
 #lockscreen-notifications .notification {
-  margin: 0 0 1rem;
   width: 100%;
+  margin: 0 0 1rem;
   list-style: none;
 }
 
 #lockscreen-notification-badge {
-  position: absolute;
-  left: 50%;
-  translate: -50% 0;
-  top: 40%;
-  padding: 1rem 1.5rem;
   box-sizing: border-box;
+  display: flex;
+  z-index: 2;
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  align-items: center;
+  padding: 1rem 1.5rem;
+  gap: 1rem;
+  transform-origin: top;
+  translate: -50% 0;
   border-radius: 3rem;
   background-color: var(--background-plus);
   color: var(--text-color);
-  font-size: 1.6rem;
   font-weight: bold;
-  display: flex;
-  align-items: center;
-  gap: 1rem;
+  font-size: 1.6rem;
   transition: all 0.3s ease;
-  transform-origin: top;
-  z-index: 2;
 }
 
 #lockscreen:not(.low-power) #lockscreen-notification-badge.hidden {
+  visibility: hidden;
   transform: scale(1.5);
   filter: blur(20px);
   opacity: 0;
-  visibility: hidden;
 }
 
 #lockscreen.low-power #lockscreen-notification-badge {

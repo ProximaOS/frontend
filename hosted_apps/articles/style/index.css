@@ -1,0 +1,88 @@
+.panel-safezone {
+  width: 100%;
+  max-width: 120rem;
+  margin: 0 auto;
+  height: 100%;
+  position: relative;
+}
+
+.panel-safezone [role="panel"] {
+  position: absolute;
+  left: 30rem;
+  width: calc(100% - 60rem);
+}
+
+[role="panel"] > .content > *:not(.scroll-content),
+[role="panel"] > .content > .scroll-content > * {
+  transform: none;
+  opacity: 1;
+  visibility: visible;
+}
+
+#root,
+#trending {
+  position: absolute;
+  top: 0;
+  width: 30rem;
+  height: 100%;
+  transform: none;
+  opacity: 1;
+  visibility: visible;
+}
+
+#root {
+  left: 0;
+}
+
+#trending {
+  left: unset;
+  right: 0;
+}
+
+#home {
+  transform: none;
+  opacity: 1;
+  visibility: visible;
+}
+
+#post {
+  z-index: 10;
+  transform: none;
+  opacity: 1;
+  background-color: transparent;
+  transition: all 0.5s ease;
+}
+
+#post.visible {
+  background-color: var(--background);
+}
+
+#post > [role="header"] {
+  transition: all 0.3s ease;
+  transform: scale(0.9);
+  opacity: 0;
+}
+
+#post.visible > [role="header"] {
+  transform: scale(1);
+  opacity: 1;
+}
+
+#post > .content > *:not(.scroll-content),
+#post > .content > .scroll-content > * {
+  transition: opacity 0.5s ease;
+  opacity: 0;
+  visibility: unset;
+}
+
+#post.visible > .content > *:not(.scroll-content),
+#post.visible > .content > .scroll-content > * {
+  transition: none;
+  opacity: 1;
+  visibility: visible;
+}
+
+#post-button {
+  margin: 0 1.5rem;
+  width: calc(100% - 3rem);
+}

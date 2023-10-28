@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" media="(prefers-color-scheme: light)" content="#f0f6ff" />
+  <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#000000" />
+  <title data-l10n-id="title"></title>
+  <link rel="stylesheet" type="text/css" href="default_theme/style/index.css" />
+  <link rel="stylesheet" type="text/css" href="shared/style/layout.css" />
+  <link rel="stylesheet" type="text/css" href="shared/style/icons/icons.css" />
+  <link rel="stylesheet" type="text/css" href="shared/rolee/panels.css" />
+  <link rel="stylesheet" type="text/css" href="shared/style/headers.css" />
+  <link rel="stylesheet" type="text/css" href="shared/style/activity_bars.css" />
+  <link rel="stylesheet" type="text/css" href="shared/style/buttons.css" />
+  <link rel="stylesheet" type="text/css" href="shared/style/lists.css" />
+  <link rel="stylesheet" type="text/css" href="shared/style/transitions.css" />
+  <link rel="stylesheet" type="text/css" href="style/index.css" />
+  <link rel="stylesheet" type="text/css" href="style/posts.css" />
+  <link rel="stylesheet" type="text/css" href="style/create_post.css" />
+  <script type="module" src="shared/services/orchid_services.js"></script>
+  <script defer type="text/javascript" src="shared/js/smooth-scrollbar.js"></script>
+  <script defer type="text/javascript" src="shared/js/plugins/overscroll.js"></script>
+  <script defer type="text/javascript" src="shared/js/common/page_controller.js"></script>
+  <script defer type="text/javascript" src="shared/js/panels.js"></script>
+  <script defer type="text/javascript" src="shared/js/transitions.js"></script>
+  <script defer type="text/javascript" src="js/posts.js"></script>
+  <script defer type="text/javascript" src="js/create_post.js"></script>
+
+  <script type="text/javascript" src="shared/js/l10n.js"></script>
+  <meta name="defaultLanguage" content="en-US" />
+  <meta name="availableLanguages"
+    content="af, ar, az, be, bg, bn, ca, cs, cy, da, de, el, eo, et, en-US, es, eu, fa, fi, fr, ga, gu, gl, he, hi, hr, ht, hu, id, is, it, ja, kn, ko, ku, lt, lv, mk, ms, nl, no, pl, pt, ro, ru, sq, sk, sl, sr, sw, ta, te, th, tl, tr, uk, ur, vi, yi, zh, fr-psaccent, ar-psbidi" />
+  <link rel="localization" href="/locales/main.{locale}.properties" />
+</head>
+
+<body>
+  <main id="app" role="app">
+    <div class="panel-safezone">
+      <section id="root" role="panel">
+        <header class="compact" role="header">
+          <div class="safezone">
+            <h1>Articles</h1>
+          </div>
+        </header>
+        <div class="content">
+          <nav id="sidebar" class="lists">
+            <ul>
+              <li class="hbox">
+                <img src="" alt="" id="account-avatar" />
+                <div class="vbox">
+                  <p id="account-username">MortCodesWeb</p>
+                  <p id="account-status">Working from home!</p>
+                </div>
+              </li>
+            </ul>
+
+            <ul>
+              <li data-icon="home"><a href="#">Home</a></li>
+              <li data-icon="bell"><a href="#">Notifications</a></li>
+              <li data-icon="settings"><a href="#">Settings</a></li>
+            </ul>
+
+            <button id="post-button" class="recommend">Post</button>
+          </nav>
+        </div>
+      </section>
+
+      <section id="home" class="visible" role="panel">
+        <header class="compact" role="header">
+          <div class="safezone">
+            <a href="#" data-icon="menu"></a>
+            <h1>Home</h1>
+          </div>
+        </header>
+        <div class="content">
+          <div id="home-posts" class="posts"></div>
+        </div>
+      </section>
+
+      <section id="post" role="panel">
+        <header class="compact" role="header">
+          <div class="safezone">
+            <a href="#" id="post-back-button" data-icon="arrow-back"></a>
+            <h1>Post</h1>
+          </div>
+        </header>
+        <div class="content">
+          <div class="posts">
+            <div class="post">
+              <div class="header">
+                <div class="icon-holder">
+                  <img src="" alt="" id="post-avatar">
+                </div>
+                <div class="text-holder">
+                  <div id="post-username" class="username"></div>
+                  <div class="stats">
+                    <div id="post-date" class="date"></div>
+                    <div class="separator"></div>
+                    <div id="post-views" class="views"></div>
+                  </div>
+                </div>
+              </div>
+              <div class="content">
+                <div class="text">
+                  <p id="post-text"></p>
+                </div>
+                <div id="post-images" class="images"></div>
+              </div>
+              <menu class="options">
+                <button class="like-button" data-icon="like"></button>
+                <button class="dislike-button" data-icon="dislike"></button>
+                <button class="repost-button" data-icon="repost"></button>
+                <button class="share-button" data-icon="share"></button>
+                <button class="options-button" data-icon="options"></button>
+              </menu>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="trending" role="panel">
+        <header class="compact" role="header">
+          <div class="safezone">
+            <h1>Trending</h1>
+          </div>
+        </header>
+        <div class="content lists">
+          <ul>
+            <li><a href="#">List Item 1</a></li>
+            <li><a href="#">List Item 2</a></li>
+            <li><a href="#">List Item 3</a></li>
+            <li><a href="#">List Item 4</a></li>
+            <li><a href="#">List Item 5</a></li>
+          </ul>
+        </div>
+      </section>
+    </div>
+
+    <form action="" id="create-post">
+      <div class="container">
+        <section>
+          <div class="header">
+            <button id="create-post-close-button" data-icon="close"></button>
+            <select name="" id="create-post-audience">
+              <option value="public">Public</option>
+            </select>
+          </div>
+          <textarea name="" id="create-post-input" rows="5" placeholder="Write your post..."></textarea>
+        </section>
+        <menu>
+          <button id="create-post-submit-button">Post</button>
+        </menu>
+      </div>
+    </form>
+  </main>
+</body>
+
+</html>

@@ -1,0 +1,81 @@
+#create-post {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(51, 51, 51, 0.3);
+  /* backdrop-filter: blur(5px) saturate(180%); */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+  transition: all 0.3s ease;
+  opacity: 0;
+  visibility: hidden;
+}
+
+#create-post.visible {
+  opacity: 1;
+  visibility: visible;
+}
+
+#create-post .container {
+  width: 100%;
+  max-width: 40rem;
+  background-color: var(--background);
+  border-radius: 2rem;
+  transition: all 0.3s ease;
+  transform: scale(0.9);
+}
+
+#create-post.visible .container {
+  transform: scale(1);
+}
+
+#create-post .container section {
+  width: 100%;
+  padding: 1rem 1.5rem 0;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+}
+
+#create-post .container section > .header {
+  width: 100%;
+  display: flex;
+  gap: 1rem;
+}
+
+#create-post .container section > .header button {
+  width: 4rem;
+  padding: 0 1rem;
+  flex-shrink: 0;
+}
+
+#create-post .container section > .header button[data-icon]::before {
+  position: static;
+}
+
+#create-post .container menu {
+  margin: 0;
+  padding: 1.5rem;
+  box-sizing: border-box;
+  height: 7rem;
+}
+
+#create-post-type {
+  width: max-content;
+}
+
+#create-post-input {
+  width: 100%;
+  background-color: transparent;
+  border: none;
+  color: var(--text-color);
+  font-size: 1.6rem;
+  font-weight: normal;
+  font-family: 'Jali Arabic', system-ui, sans-serif;
+  outline: none;
+  resize: none;
+}

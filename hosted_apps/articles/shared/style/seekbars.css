@@ -1,0 +1,28 @@
+input[type="range"] {
+  background-color: var(--item-plus);
+  border-radius: 1.2rem;
+  height: 2.4rem;
+  width: 100%;
+  margin: 0 0 1rem;
+  overflow: hidden;
+  outline: none;
+  appearance: none;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  appearance: none;
+  background: var(--accent-color) linear-gradient(0deg, var(--accent-color-plus), var(--accent-color-plus));
+  border-radius: 1.2rem;
+  height: 2.4rem;
+  width: 2.4rem;
+  border: 0.4rem solid var(--accent-color);
+  box-shadow: -51.2rem 0 0 50rem var(--accent-color);
+  appearance: none;
+}
+html[dir="rtl"] input[type="range"]::-webkit-slider-thumb {
+  box-shadow: 51.2rem 0 0 50rem var(--accent-color);
+}
+
+.lists ul li input[type="range"] {
+  margin: 0.2rem 0 0;
+}

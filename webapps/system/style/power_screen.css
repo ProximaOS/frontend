@@ -1,30 +1,30 @@
 #power-screen {
+  visibility: hidden;
   position: absolute;
-  left: 0;
   top: 0;
+  left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.75);
-  backdrop-filter: blur(20px) saturate(180%);
-  transition: all 0.3s ease;
   transform: scale(1.1);
+  backdrop-filter: blur(20px) saturate(180%);
+  background-color: rgba(0, 0, 0, 0.75);
   opacity: 0;
-  visibility: hidden;
+  transition: all 0.3s ease;
 }
 
 #power-screen.visible {
+  visibility: visible;
   transform: scale(1);
   opacity: 1;
-  visibility: visible;
 }
 
 #power-screen .buttons {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  translate: -50% -50%;
   display: flex;
+  position: absolute;
+  top: 50%;
+  left: 50%;
   gap: 1rem;
+  translate: -50% -50%;
 }
 
 #power-screen .buttons button {
@@ -33,27 +33,27 @@
   align-items: center;
   width: 7rem;
   height: 7rem;
-  line-height: 1.5rem;
-  color: #fff;
-  font-size: 1.4rem;
-  font-weight: normal;
-  text-align: center;
-  background-color: transparent;
-  border-radius: 0;
   padding: 0;
+  border-radius: 0;
+  background-color: transparent;
+  color: #fff;
+  font-weight: normal;
+  font-size: 1.4rem;
+  line-height: 1.5rem;
+  text-align: center;
 }
 
 #power-screen .buttons button[data-icon]::before {
   position: static;
   width: 5rem;
   height: 5rem;
-  line-height: 5rem;
-  text-align: center;
+  margin: 0 1rem 0.5rem;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.2);
   color: #fff;
   font-size: 2.4rem;
-  background-color: rgba(255, 255, 255, 0.2);
-  border-radius: 50%;
-  margin: 0 1rem 0.5rem;
+  line-height: 5rem;
+  text-align: center;
 }
 
 #power-screen .buttons button[data-icon]:hover::before {
@@ -65,38 +65,38 @@
 }
 
 #power-screen .toolbar {
+  box-sizing: border-box;
   position: absolute;
-  left: 0;
   bottom: 10rem;
+  left: 0;
   width: 100%;
   height: 7rem;
   padding: 1.5rem;
-  box-sizing: border-box;
 }
 
 #power-screen .toolbar button {
-  width: max-content;
-  padding: 0 3rem;
   box-sizing: border-box;
-  margin: 0 auto;
   display: block;
+  width: max-content;
+  margin: 0 auto;
+  padding: 0 3rem;
 }
 
 #power-screen .notice {
-  position: absolute;
-  left: 0;
-  bottom: 4rem;
-  width: 100%;
-  text-align: center;
-  padding: 0 1.5rem;
   box-sizing: border-box;
+  position: absolute;
+  bottom: 4rem;
+  left: 0;
+  width: 100%;
+  padding: 0 1.5rem;
+  text-align: center;
 }
 
 #power-screen .notice div {
   width: 100%;
-  line-height: 2.2rem;
   color: #fff;
-  font-size: 1.6rem;
   font-weight: normal;
+  font-size: 1.6rem;
+  line-height: 2.2rem;
   opacity: 0.5;
 }
