@@ -26,7 +26,7 @@
 
       const button = document.createElement('button');
       button.classList.add('openorchid-pip-button');
-      button.addEventListener('click', function () {
+      button.addEventListener('click', () => {
         button.classList.toggle('enabled');
         if (button.classList.contains('enabled')) {
           this.requestPictureInPicture(mediaElement);

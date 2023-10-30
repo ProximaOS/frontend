@@ -19,10 +19,12 @@
         this.password = value;
       });
 
-      this.keypadButtons.forEach(button => {
+      for (let index = 0; index < this.keypadButtons.length; index++) {
+        const button = this.keypadButtons[index];
+
         DirectionalScale.init(button);
         button.addEventListener('click', this.handleButtonClick.bind(this));
-      });
+      }
     },
 
     handleButtonClick: function (event) {

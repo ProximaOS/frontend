@@ -3,60 +3,6 @@ video-container {
   position: relative;
 }
 
-video {
-
-}
-
-video::-webkit-media-controls-panel {
-  border: none;
-  background-color: rgba(0, 0, 0, 0.5);
-}
-
-video::-webkit-media-controls-play-button {
-  background-color: transparent;
-  color: #fff;
-  font-size: 20px;
-}
-
-video::-webkit-media-controls-timeline {
-  background-color: #333;
-}
-
-video::-webkit-media-controls-current-time-display {
-  color: #fff;
-  font-size: 16px;
-}
-
-video::-webkit-media-controls-time-remaining-display {
-  color: #fff;
-  font-size: 16px;
-}
-
-video::-webkit-media-controls-mute-button {
-  color: #fff;
-  font-size: 16px;
-}
-
-video::-webkit-media-controls-volume-slider {
-  background-color: #333;
-}
-
-video::-webkit-media-controls-fullscreen-button {
-  color: #fff;
-  font-size: 18px;
-}
-
-video::-webkit-media-controls-rewind-button {
-  color: #fff;
-  font-size: 18px;
-}
-
-video::-webkit-media-controls-return-to-realtime-button {
-  color: #fff;
-  font-size: 18px;
-}
-
-video::-webkit-media-controls-toggle-closed-captions-button {
-  color: #fff;
-  font-size: 18px;
+video-container video {
+  background-color: #a6a6a6;
 }

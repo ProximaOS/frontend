@@ -10,41 +10,41 @@
 }
 
 .bookmark:hover {
-  transition: none;
   background-color: var(--item-hover);
+  transition: none;
 }
 
 .bookmark:active {
-  transition: none;
   background-color: var(--item-active);
+  transition: none;
 }
 
 .bookmark .icon-holder {
+  box-sizing: border-box;
   width: 100%;
   padding: 1rem 0 0;
-  box-sizing: border-box;
 }
 
 .bookmark .icon-holder > img {
+  display: block;
   width: 5rem;
   height: 5rem;
-  background-color: var(--item-plus);
-  border-radius: 50%;
-  object-fit: cover;
-  display: block;
   margin: 0 auto;
+  object-fit: cover;
+  border-radius: 50%;
+  background-color: var(--item-plus);
 }
 
 .bookmark .name {
-  width: 100%;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-  overflow: hidden;
-  padding: 0.2rem 0 0;
   box-sizing: border-box;
+  width: 100%;
   margin: 0 0 0.5rem;
+  padding: 0.2rem 0 0;
+  overflow: hidden;
   color: var(--text-color);
-  font-size: 1.3rem;
   font-weight: normal;
+  font-size: 1.3rem;
   text-align: center;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }

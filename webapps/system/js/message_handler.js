@@ -10,6 +10,7 @@
 
     handleIPCMessage: function (event) {
       const data = event.detail;
+      console.log(data);
 
       switch (data.type) {
         case 'alert':
@@ -53,13 +54,15 @@
       }
 
       const webviews = document.querySelectorAll('webview');
-      webviews.forEach((webview) => {
+      for (let index = 0; index < webviews.length; index++) {
+        const webview = webviews[index];
+
         try {
           webview.send('message', data);
         } catch (error) {
-          console.error(error);
+          // console.error(error);
         }
-      });
+      }
     },
 
     handleAlert: function (data) {

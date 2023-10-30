@@ -88,7 +88,8 @@ app.whenReady().then(() => {
       }
     }
 
-    callback({ path: filePath });
+    const object = { path: filePath };
+    callback(object);
   });
   protocol.handle('orchidreader', (uri) => {
     const filePath = path.join(__dirname, '..', 'internal', 'readermode.html');

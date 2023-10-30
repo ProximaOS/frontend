@@ -7,6 +7,7 @@
     constructor(title, options) {
       this.title = title;
       this.options = options;
+      this.permission = 'granted';
     }
 
     requestPermission() {
@@ -32,5 +33,5 @@
     }
   }
 
-  exports.OrchidNotification = OrchidNotification;
+  module.exports = OrchidNotification;
 })();

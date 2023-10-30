@@ -46,6 +46,8 @@
   registerEvent('rotate', 'rotate');
   registerEvent('mediaplay', 'mediaplay');
   registerEvent('mediapause', 'mediapause');
+  registerEvent('mediadevicechange', 'mediadevicechange');
+  registerEvent('screencapturechange', 'screencapturechange');
   registerEvent('webdrag', 'webdrag');
   registerEvent('webdrop', 'webdrop');
   registerEvent('downloadrequest', 'downloadrequest');
@@ -102,15 +104,6 @@
     SmsManager: null,
     TasksManager: null
   };
-
-  // TODO: B2G Backward Compatibility
-  contextBridge.exposeInMainWorld('apiDaemon', {
-    requestPermission: async (permission) => {
-      const result = await manifests.checkPermission(permission);
-      return result;
-    },
-    ...api
-  });
 
   function verifyAccess(permission, mapName, value) {
     manifests.checkPermission(permission).then((result) => {
@@ -214,11 +207,12 @@
   });
 
   document.addEventListener('DOMContentLoaded', function () {
-    require('./modules/stylesheet_ensurer');
     require('./modules/keyboard');
     require('./modules/media_playback');
     require('./modules/narrator');
+    require('./modules/privacy_indicators');
     require('./modules/settings_handler');
+    require('./modules/stylesheet_ensurer');
     require('./modules/videoplayer');
     require('./modules/picture_in_picture');
     require('./modules/webview_handler');

@@ -199,7 +199,9 @@
             }
           }
 
-          this.statusbar.addEventListener('dblclick', this.handleStatusbarDoubleClick.bind(this));
+          if (this.statusbar) {
+            this.statusbar.addEventListener('dblclick', this.handleStatusbarDoubleClick.bind(this));
+          }
 
           this.tablistHolder().addEventListener('contextmenu', this.handleTablistHolderContextMenu.bind(this));
           this.sideTabsButton().addEventListener('click', this.handleSideTabsButton.bind(this));
@@ -477,19 +479,22 @@
 
       const focus = () => {
         const tabs = this.chrome().querySelectorAll('.tablist li');
-        tabs.forEach(function (tab) {
+        for (let index = 0; index < tabs.length; index++) {
+          const tab = tabs[index];
           tab.classList.remove('active');
-        });
+        }
 
         const gridTabs = this.chrome().querySelectorAll('.tabs-view .grid .tab');
-        gridTabs.forEach(function (gridTab) {
+        for (let index = 0; index < gridTabs.length; index++) {
+          const gridTab = gridTabs[index];
           gridTab.classList.remove('active');
-        });
+        }
 
         const browserViews = this.chrome().querySelectorAll('.browser-container .browser-view');
-        browserViews.forEach(function (browserView) {
+        for (let index = 0; index < browserViews.length; index++) {
+          const browserView = browserViews[index];
           browserView.classList.remove('active');
-        });
+        }
 
         tab.classList.add('active');
         gridTab.classList.add('active');
@@ -546,7 +551,9 @@
       fetch(this.suggestUrl.replace('{searchTerms}', encodeURI(inputText))).then((suggestionData) => {
         suggestionData.json().then((data) => {
           this.suggestions().innerHTML = '';
-          data[1].forEach((item) => {
+          for (let index = 0; index < data[1].length; index++) {
+            const item = data[1][index];
+
             const suggestion = document.createElement('div');
             suggestion.classList.add('suggestion');
             suggestion.addEventListener('click', () => {
@@ -569,7 +576,7 @@
             notice.classList.add('notice');
             notice.textContent = 'Search this with Google';
             label.appendChild(notice);
-          });
+          }
         });
       });
     },
@@ -948,6 +955,10 @@
           progress = Math.min(1, progress);
           webview.style.setProperty('--scroll-progress', progress);
 
+          if (!this.chrome().classList.contains('chrome-visible')) {
+            return;
+          }
+
           this.currentScroll = event.args[0].top;
           if (this.currentScroll > this.lastScroll + 50) {
             this.chrome().classList.remove('visible');
@@ -1125,11 +1136,12 @@
       ];
 
       if (event.params.spellcheckEnabled) {
-        event.params.dictionarySuggestions.foreach((suggestion) => {
+        for (let index = 0; index < event.params.dictionarySuggestions.length; index++) {
+          const suggestion = event.params.dictionarySuggestions[index];
           suggestions.push({
             name: `"${suggestion}"`
           });
-        });
+        }
       }
 
       ContextMenu.show(event.params.x, event.params.y, [...itemsBefore, ...suggestions, ...itemsAfter]);
@@ -1174,7 +1186,6 @@
         webview.dataset.themeColor = (color + 'C0').toLowerCase();
         this.chrome().parentElement.dataset.themeColor = color.substring(0, 7);
         this.chrome().parentElement.style.setProperty('--theme-color', color);
-        this.toolbar().style.setProperty('--theme-color', (color + 'C0').toLowerCase());
 
         // Calculate the luminance of the color
         const luminance = this.calculateLuminance(color);
@@ -1312,15 +1323,18 @@
       };
 
       const pageButtons = this.ftuDialog().querySelectorAll('[data-page-id]');
-      pageButtons.forEach((button) => {
+      for (let index = 0; index < pageButtons.length; index++) {
+        const button = pageButtons[index];
         button.addEventListener('click', () => this.handlePageButtonClick(button));
-      });
+      }
 
       const panels = this.ftuDialog().querySelectorAll('.page');
-      panels.forEach((panel, index) => {
+      for (let index = 0; index < panels.length; index++) {
+        const panel = panels[index];
+
         panel.dataset.index = index;
         panel.classList.add('next');
-      });
+      }
 
       const doneButton = this.ftuDialog().querySelector('.done-button');
       doneButton.onclick = () => {

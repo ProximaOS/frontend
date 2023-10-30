@@ -22,6 +22,8 @@ build_stage/
 logs/
 *.log
 
+/webapps/TearsOfMother
+
 *.orcbin
 *.orclib
 *.orchidapp

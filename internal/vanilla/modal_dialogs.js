@@ -34,5 +34,5 @@
     }
   };
 
-  exports.ModalDialogs = ModalDialogs;
+  module.exports = ModalDialogs;
 })();

@@ -5,20 +5,17 @@
   width: 100%;
   height: 100%;
   transition: transform 0.5s ease;
-  will-change: transform;
 }
 
 #screen.close-reach #windows {
   height: 60%;
   transform: translateY(40vh);
   transition: all 0.5s ease;
-  will-change: height, transform;
 }
 
 #screen.keyboard-visible #windows {
   height: 60%;
   transition: all 0.5s cubic-bezier(0.2, 0.9, 0.1, 1), transform 0.5s ease;
-  will-change: height, transform;
 }
 
 .appframe {
@@ -71,13 +68,11 @@
 
 .appframe.transitioning {
   transition: all 0.5s cubic-bezier(0.2, 0.9, 0.1, 1);
-  will-change: top, left, width, height, border-radius;
 }
 
 .appframe.expand {
   border-radius: var(--screen-radius);
   animation: expand 0.3s ease forwards;
-  will-change: transform, opacity;
 }
 
 @keyframes expand {
@@ -94,7 +89,6 @@
 .appframe.shrink {
   border-radius: var(--screen-radius);
   animation: shrink 0.3s ease forwards;
-  will-change: transform, opacity;
 }
 
 @keyframes shrink {
@@ -112,7 +106,6 @@
   z-index: 10;
   border-radius: var(--screen-radius);
   animation: shrink-to-homescreen 0.5s ease forwards;
-  will-change: transform, opacity;
 }
 
 @keyframes shrink-to-homescreen {
@@ -274,7 +267,7 @@
 
 .appframe.window {
   transform: translateY(0);
-  border-radius: 2.5rem !important;
+  border-radius: 2rem !important;
   box-shadow: 0 0.4rem 0.8rem rgba(0, 0, 0, 0.1);
 }
 
@@ -331,8 +324,13 @@
   height: calc(100% - var(--statusbar-height) - var(--software-buttons-height));
 }
 
-#screen .appframe.window .chrome .browser-container > .browser-view {
+.appframe.window .chrome .browser-container > .browser-view {
   height: calc(100% - var(--statusbar-height));
+}
+
+.appframe.window.chrome-visible .chrome .browser-container > .browser-view {
+  top: calc(var(--chrome-tablist-height) + (var(--chrome-toolbar-gap) * 2));
+  height: calc(100% - (var(--chrome-tablist-height) + (var(--chrome-toolbar-gap) * 2)));
 }
 
 #screen .appframe.window.fullscreen .chrome .browser-container > .browser-view,
@@ -414,7 +412,6 @@
   mask-position: 0 0;
   mask-size: 300%;
   transition: all 0.3s ease;
-  will-change: mask, visibility;
 }
 
 .appframe:not(.shrink-to-homescreen) .splashscreen.hidden {

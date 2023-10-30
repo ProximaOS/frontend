@@ -13,15 +13,15 @@
     SETTINGS_WALLPAPER_IMAGE: 3,
 
     init: function () {
-      Settings.getValue(this.SETTINGS_LANGUAGE).then(this.handleLanguage.bind(this));
-      Settings.getValue(this.SETTINGS_WALLPAPER_IMAGE).then(this.handleWallpaperAccent.bind(this));
-      Settings.getValue(this.SETTINGS_ACCENT_COLOR).then(this.handleAccentColor.bind(this));
-      Settings.getValue(this.SETTINGS_SOFTWARE_BUTTONS).then(this.handleSoftwareButtons.bind(this));
+      Settings.getValue(this.settings[this.SETTINGS_LANGUAGE]).then(this.handleLanguage.bind(this));
+      Settings.getValue(this.settings[this.SETTINGS_WALLPAPER_IMAGE]).then(this.handleWallpaperAccent.bind(this));
+      Settings.getValue(this.settings[this.SETTINGS_ACCENT_COLOR]).then(this.handleAccentColor.bind(this));
+      Settings.getValue(this.settings[this.SETTINGS_SOFTWARE_BUTTONS]).then(this.handleSoftwareButtons.bind(this));
 
-      Settings.addObserver(this.SETTINGS_LANGUAGE, this.handleLanguage.bind(this));
-      Settings.addObserver(this.SETTINGS_WALLPAPER_IMAGE, this.handleWallpaperAccent.bind(this));
-      Settings.addObserver(this.SETTINGS_ACCENT_COLOR, this.handleAccentColor.bind(this));
-      Settings.addObserver(this.SETTINGS_SOFTWARE_BUTTONS, this.handleSoftwareButtons.bind(this));
+      Settings.addObserver(this.settings[this.SETTINGS_LANGUAGE], this.handleLanguage.bind(this));
+      Settings.addObserver(this.settings[this.SETTINGS_WALLPAPER_IMAGE], this.handleWallpaperAccent.bind(this));
+      Settings.addObserver(this.settings[this.SETTINGS_ACCENT_COLOR], this.handleAccentColor.bind(this));
+      Settings.addObserver(this.settings[this.SETTINGS_SOFTWARE_BUTTONS], this.handleSoftwareButtons.bind(this));
     },
 
     getImageDominantColor: function (url, options = {}) {
@@ -97,9 +97,9 @@
 
         if (luminance < 0.3 && window.matchMedia('(prefers-color-scheme: dark)').matches) {
           // Brighten the color
-          r = Math.round((r + 128) / 2);
-          g = Math.round((g + 128) / 2);
-          b = Math.round((b + 128) / 2);
+          r = r * 2;
+          g = g * 2;
+          b = b * 2;
 
           // Ensure color values are within the valid range (0 - 255)
           r = Math.max(0, Math.min(255, r));

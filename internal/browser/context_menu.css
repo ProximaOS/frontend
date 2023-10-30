@@ -1,69 +1,78 @@
-/*!*****************************************************************************************************************!*\
-  !*** css ./node_modules/css-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js!./scss/context_menu.scss ***!
-  \*****************************************************************************************************************/
-/*
- * Context menu
- */
- #context-menu {
+#context-menu {
+  visibility: hidden;
+  z-index: 2147483647 !important;
   position: absolute;
-  left: 0;
   top: 0;
+  left: 0;
   min-width: 290px;
   max-width: 512px;
   max-height: 100%;
-  pointer-events: none;
+  margin: 10px;
   overflow: hidden;
-  border-radius: 0;
-  z-index: 2147483647 !important;
+  border: solid 1px var(--acrylic-background-plus);
+  border-radius: 14px;
+  box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.5);
+  pointer-events: none;
 }
+
+#context-menu.visible {
+  visibility: visible;
+}
+
 #context-menu #context-menu-content {
-  margin: 0;
+  box-sizing: border-box;
+  visibility: hidden;
   position: relative;
   width: 100%;
   height: 100%;
-  background: var(--acrylic-background-plus, #fff);
-  border: solid 1px rgba(0, 0, 0, 0.4);
-  box-sizing: border-box;
-  transform-origin: top;
-  pointer-events: all;
-  border-radius: 0;
-  backdrop-filter: blur(20px) saturate(180%);
-  transition: transform 0.5s cubic-bezier(0.2, 0.9, 0.1, 1), visibility 0.3s;
+  margin: 0;
   transform: translateY(-100%);
-  visibility: hidden;
+  transform-origin: top;
+  border: solid 1px var(--acrylic-background);
+  border-radius: 12px;
+  backdrop-filter: blur(20px) saturate(180%);
+  background: var(--acrylic-background-plus, #fff) content-box;
+  pointer-events: all;
+  transition: transform 0.5s cubic-bezier(0.2, 0.9, 0.1, 1), visibility 0.3s;
 }
-#context-menu #context-menu-content li:not(.separator) {
+
+#context-menu #context-menu-content li:not(.separator):not(.nav) {
+  box-sizing: border-box;
+  position: relative;
   width: 100%;
   height: 3.2rem;
-  line-height: 3.2rem;
-  border-radius: 0;
   margin: 0;
   padding: 0 1rem;
-  box-sizing: border-box;
-  list-style: none;
-  color: var(--text-color, #333);
-  font-size: 1.4rem;
-  font-weight: normal;
-  white-space: nowrap;
-  text-overflow: ellipsis;
   overflow: hidden;
-  position: relative;
+  border-radius: 0;
+  color: var(--text-color, #333);
+  font-weight: normal;
+  font-size: 1.4rem;
+  line-height: 3.2rem;
+  list-style: none;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
-#context-menu #context-menu-content li:not(.separator):hover {
+
+#context-menu #context-menu-content li:not(.separator):not(.nav):hover {
   background: var(--item-hover, rgba(0, 0, 0, 0.05));
 }
-#context-menu #context-menu-content li:not(.separator):active {
+
+#context-menu #context-menu-content li:not(.separator):not(.nav):active {
   background: var(--item-active, rgba(0, 0, 0, 0.1));
 }
-#context-menu #context-menu-content li[disabled]:not(.separator) {
+
+#context-menu #context-menu-content li[disabled]:not(.separator):not(.nav) {
   opacity: 0.4;
   pointer-events: none;
 }
-#context-menu #context-menu-content li[data-icon]:not(.separator) {
+
+#context-menu #context-menu-content li[data-icon]:not(.separator):not(.nav) {
   -moz-padding-start: 4rem;
   padding-inline-start: 4rem;
 }
-#context-menu #context-menu-content li[data-icon]:not(.separator):before {
+
+#context-menu #context-menu-content li[data-icon]:not(.separator):not(.nav):before {
   position: absolute;
   top: 0;
   width: 2rem;
@@ -71,31 +80,78 @@
   font-size: 1.6rem;
   text-align: center;
 }
+
+#context-menu #context-menu-content #context-menu-content-items {
+  box-sizing: border-box;
+  padding: 0.6rem 0.2rem;
+}
+
+#context-menu.bottom #context-menu-content {
+  transform: translateY(100%);
+}
+
+#context-menu.visible #context-menu-content {
+  visibility: visible;
+  transform: translateY(0) !important;
+}
+
+html[dir='ltr'] #context-menu-content li[data-icon]:not(.separator):not(.nav):before {
+  left: 1rem;
+}
+html[dir='rtl'] #context-menu-content li[data-icon]:not(.separator):not(.nav):before {
+  right: 1rem;
+}
+
 #context-menu #context-menu-content .separator {
-  list-style: none;
   width: 100%;
   height: 1px;
   margin: 0.5rem 0;
   background-color: var(--item-plus);
+  list-style: none;
 }
-#context-menu #context-menu-content #context-menu-content-items {
-  padding: 0.6rem 0.2rem;
+
+#context-menu-content .nav {
+  width: 100%;
+  height: 3.2rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+#context-menu-content .nav > ul {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+#context-menu-content .nav > ul li {
+  flex-grow: 1;
+  width: 100%;
+  height: 3.2rem;
+  margin: 0;
+  padding: 0 1rem !important;
+  line-height: 3.2rem;
+  list-style: none;
+  text-align: center;
+}
+
+#context-menu-content .nav > ul li[data-icon] {
+  font-size: 0 !important;
+}
+
+#context-menu-content .nav > ul li[data-icon]::before {
+  position: static !important;
+}
+
+#context-menu-content .nav > ul li::after {
+  display: none;
+}
+
+#context-menu-content-items {
   box-sizing: border-box;
-}
-#context-menu.bottom #context-menu-content {
-  transform: translateY(100%);
-}
-#context-menu.visible #context-menu-content {
-  transform: translateY(0) !important;
-  visibility: visible;
-}
-
-html[dir=ltr] #context-menu-content li[data-icon]:not(.separator):before {
-  left: 1rem;
-}
-
-html[dir=rtl] #context-menu-content li[data-icon]:not(.separator):before {
-  right: 1rem;
+  padding: 0.5rem;
 }
 
 @media screen and (max-width: 599px) {

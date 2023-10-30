@@ -144,7 +144,9 @@
         if (media && media.length > 0) {
           mediaElement.innerHTML = '';
           this.mediaElement.innerHTML = '';
-          media.forEach(function (src) {
+          for (let index = 0; index < media.length; index++) {
+            const src = media[index];
+
             const persistentImgElement = document.createElement('img');
             persistentImgElement.src = src;
             mediaElement.appendChild(persistentImgElement);
@@ -152,7 +154,7 @@
             const imgElement = document.createElement('img');
             imgElement.src = src;
             this.mediaElement.appendChild(imgElement);
-          }, this);
+          }
           mediaElement.style.display = 'block';
           this.mediaElement.style.display = 'block';
         } else {
@@ -164,7 +166,9 @@
         if (actions && actions.length > 0) {
           actionsElement.innerHTML = '';
           this.actionsElement.innerHTML = '';
-          actions.forEach(function (button) {
+          for (let index = 0; index < actions.length; index++) {
+            const button = actions[index];
+
             const persistentButtonElement = document.createElement('button');
             persistentButtonElement.textContent = button.label;
             persistentButtonElement.addEventListener('click', button.onclick);
@@ -180,7 +184,7 @@
               buttonElement.classList.add('recommend');
             }
             this.actionsElement.appendChild(buttonElement);
-          }, this);
+          }
           actionsElement.style.display = 'block';
           this.actionsElement.style.display = 'block';
         } else {

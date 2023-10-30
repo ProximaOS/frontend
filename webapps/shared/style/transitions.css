@@ -8,12 +8,12 @@
   animation: to-scale 0.5s cubic-bezier(0.5, 0.8, 0, 1);
 }
 
-.from-scale.bounce {
+.from-scale.bouncy {
   transform-origin: top left;
   animation: from-scale 0.5s cubic-bezier(0.2, 0.9, 0.1, 1.1);
 }
 
-.to-scale.bounce {
+.to-scale.bouncy {
   transform-origin: top left;
   animation: to-scale 0.5s cubic-bezier(0.2, 0.9, 0.1, 1.1);
 }

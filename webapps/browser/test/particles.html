@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Scattering and Falling Particles</title>
+<style>
+  body, html { height: 100%; margin: 0; overflow: hidden; }
+  canvas { display: block; }
+</style>
+</head>
+<body>
+  <button onclick="throwParticles(event)">Throw Particles</button>
+  <canvas id="canvas"></canvas>
+<script>
+  const images = [
+    'particle_1.svg',
+    'particle_2.svg',
+    'particle_3.svg',
+    'particle_4.svg'
+  ]; // Add your image paths here
+
+  const particles = [];
+
+  const canvas = document.getElementById('canvas');
+  const ctx = canvas.getContext('2d');
+
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+
+  function createParticles(x, y) {
+    for (let i = 0; i < 50; i++) {
+      const angle = Math.random() * Math.PI * 2;
+      const img = new Image();
+      img.src = images[i % images.length];
+      const velX = Math.cos(angle) * (Math.random() * 5 + 2);
+      const velY = Math.sin(angle) * (Math.random() * 5 + 2);
+
+      particles.push({ x, y, img, velX, velY, alpha: 1 });
+    }
+  }
+
+  function animate() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    for (let i = 0; i < particles.length; i++) {
+      const p = particles[i];
+      if (p.alpha <= 0) {
+        particles.splice(i, 1);
+        // i--;
+      } else {
+        p.velY += 0.05; // Adjusted gravity effect
+        p.x += p.velX;
+        p.y += p.velY;
+        p.alpha -= 0.005; // Smoother fading
+        ctx.globalAlpha = p.alpha;
+        ctx.drawImage(p.img, p.x, p.y);
+      }
+    }
+
+    ctx.globalAlpha = 1;
+    requestAnimationFrame(animate);
+  }
+
+  function throwParticles(event) {
+    const button = event.target;
+    const rect = button.getBoundingClientRect();
+    const x = rect.left + rect.width / 2;
+    const y = rect.top + rect.height / 2;
+    createParticles(x, y);
+    animate();
+  }
+</script>
+</body>
+</html>

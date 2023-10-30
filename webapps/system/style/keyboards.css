@@ -12,9 +12,14 @@
   transition: all 0.5s cubic-bezier(0.8, 0.1, 0.9, 0);
 }
 
-#screen.software-buttons-enabled #keyboards {
+#screen:not(.desktop).software-buttons-enabled #keyboards {
   height: calc(40% + var(--software-buttons-height));
   padding-bottom: var(--software-buttons-height);
+}
+
+#screen.desktop #keyboards {
+  height: calc(40% + var(--software-buttons-height) + 2rem);
+  padding-bottom: calc(var(--software-buttons-height) + 2rem);
 }
 
 #keyboards.visible {

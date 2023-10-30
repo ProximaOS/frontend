@@ -13,8 +13,8 @@
 .chrome .toolbar {
   box-sizing: border-box;
   display: flex;
-  /* backdrop-filter: blur(20px) saturate(180%); */
   visibility: hidden;
+  /* backdrop-filter: blur(20px) saturate(180%); */
   z-index: 10;
   position: absolute;
   top: 0;
@@ -22,7 +22,6 @@
   flex-direction: column;
   width: 100%;
   padding: var(--statusbar-height, var(--chrome-toolbar-gap)) 0 var(--chrome-toolbar-gap);
-  gap: var(--chrome-toolbar-gap);
   background-color: var(--theme-color, var(--header-background));
   opacity: 0;
   transition: all 0.5s cubic-bezier(0.2, 0.9, 0.1, 1);
@@ -36,7 +35,23 @@
   --text-color: rgba(255,255,255,0.75);
 }
 
-.chrome.bottom .toolbar {
+.appframe:not(.chrome-visible) .chrome .toolbar,
+.appframe:not(.window).chrome-visible .chrome:not(.visible) .toolbar {
+  padding: 0;
+  gap: 0;
+  background-color: transparent;
+  pointer-events: none;
+}
+
+.appframe.chrome-visible .chrome .toolbar,
+.appframe.window:not(.chrome-visible) .chrome .toolbar {
+  /* Setting it to 'visible' shows them even if tablist-holder is hidden
+     Which is why we set it to 'unset' */
+  visibility: unset;
+  opacity: 1;
+}
+
+.appframe.chrome-visible .chrome.bottom .toolbar {
   top: unset;
   bottom: 0;
   padding: var(--chrome-toolbar-gap) 0 2.5rem;
@@ -53,7 +68,7 @@
 }
 
 .appframe:not(.fullscreen) .chrome.visible .toolbar {
-  visibility: visible;
+  gap: var(--chrome-toolbar-gap);
   opacity: 1;
 }
 
@@ -76,20 +91,30 @@
   --background-plus: rgba(51,51,51,0.75);
 }
 
+.chrome .tablist-holder > button {
+  visibility: hidden;
+  margin: 0 -2rem;
+  opacity: 0;
+  transition: margin 0.5s cubic-bezier(0.5, 0.8, 0, 1), opacity 0.5s ease, visibility 0.5s ease;
+  will-change: margin;
+}
+
+.chrome.visible .tablist-holder > button {
+  /* Setting it to 'visible' shows them even if tablist-holder is hidden
+     Which is why we set it to 'unset' */
+  visibility: unset;
+  margin: 0;
+  opacity: 1;
+}
+
 .chrome .tablist {
   display: flex;
   max-width: 100%;
-  height: 0;
+  height: var(--chrome-tablist-height);
   margin: 0;
   padding: 0;
   overflow: hidden;
   gap: var(--chrome-toolbar-gap);
-  transition: height 0.5s cubic-bezier(0.2, 0.9, 0.1, 1);
-  will-change: height;
-}
-
-.chrome.visible .tablist {
-  height: var(--chrome-tablist-height);
 }
 
 .chrome .tablist li {
@@ -97,7 +122,7 @@
   display: flex;
   align-items: center;
   width: 24rem;
-  height: 0;
+  height: var(--chrome-tablist-height);
   margin: 0;
   padding: 0 1rem;
   padding-inline-end: 0.5rem;
@@ -105,13 +130,16 @@
   gap: var(--chrome-toolbar-gap);
   border-radius: 2rem;
   list-style: none;
-  transition: height 0.5s cubic-bezier(0.2, 0.9, 0.1, 1);
-  will-change: height;
+  transition: width 0.5s cubic-bezier(0.5, 0.8, 0, 1), padding 0.5s cubic-bezier(0.5, 0.8, 0, 1), opacity 0.5s ease;
 }
 
-.chrome.visible .tablist li,
-.chrome.side-tabs .tablist li {
-  height: var(--chrome-tablist-height);
+.appframe:not(.chrome-visible) .chrome .tablist li {
+  flex-grow: 0;
+  width: 0;
+  padding: 0;
+  border-radius: 0;
+  background-color: transparent;
+  opacity: 0;
 }
 
 .chrome .tablist li:hover {
@@ -124,6 +152,18 @@
 
 .chrome .tablist li.active {
   background-color: var(--background-plus);
+}
+
+.appframe:not(.chrome-visible) .chrome .tablist li.active {
+  flex-grow: 1;
+  width: 100%;
+  background-color: transparent;
+  opacity: 1;
+}
+
+.appframe:not(.window).chrome-visible .chrome:not(.visible) .tablist li {
+  visibility: hidden;
+  opacity: 0;
 }
 
 .chrome .tablist li.private {
@@ -258,6 +298,13 @@
   color: var(--text-color);
   line-height: 3.2rem;
   text-align: center;
+  transition: opacity 0.5s ease, visibility 0.5s ease;
+}
+
+.appframe:not(.chrome-visible) .chrome .tablist li > .mute-button,
+.appframe:not(.chrome-visible) .chrome .tablist li > .close-button {
+  visibility: hidden;
+  opacity: 0;
 }
 
 .chrome .tablist li > .mute-button:hover,
@@ -286,11 +333,21 @@
 .chrome .navbar {
   box-sizing: border-box;
   display: flex;
+  visibility: hidden;
   flex-shrink: 0;
   width: 100%;
-  height: var(--chrome-navbar-height);
+  height: 0;
   padding: 0 0.5rem;
   gap: var(--chrome-toolbar-gap);
+  opacity: 0;
+  transition: height 0.5s cubic-bezier(0.5, 0.8, 0, 1), opacity 0.5s ease, visibility 0.5s ease;
+  will-change: height;
+}
+
+.chrome.visible .navbar {
+  visibility: visible;
+  height: var(--chrome-navbar-height);
+  opacity: 1;
 }
 
 .chrome .tablist-holder > button,
@@ -299,8 +356,7 @@
   flex-shrink: 0;
   width: max-content;
   min-width: 4rem;
-  height: 0;
-  margin: 0;
+  height: var(--chrome-navbar-height);
   padding: 0 1rem;
   border: none;
   border-radius: 0.6rem;
@@ -309,8 +365,6 @@
   font-size: 1.6rem;
   line-height: var(--chrome-navbar-height);
   text-align: center;
-  transition: height 0.5s cubic-bezier(0.2, 0.9, 0.1, 1);
-  will-change: height;
 }
 
 .appframe.active .chrome .tablist-holder > button,
@@ -318,8 +372,13 @@
   color: var(--text-color);
 }
 
-.chrome.visible .tablist-holder > button,
-.chrome.side-tabs .tablist-holder > button,
+.chrome .navbar button {
+  height: 0;
+  margin: 0;
+  transition: height 0.5s cubic-bezier(0.5, 0.8, 0, 1);
+  will-change: height;
+}
+
 .chrome.visible .navbar button {
   height: var(--chrome-navbar-height);
 }
@@ -402,8 +461,8 @@
   overflow: hidden;
   border-radius: 2rem;
   background-color: var(--item-hover);
-  transition: height 0.5s cubic-bezier(0.2, 0.9, 0.1, 1), background-color 0.2s ease 0.5s;
-  will-change: height, background-color;
+  transition: height 0.5s cubic-bezier(0.5, 0.8, 0, 1), background-color 0.2s ease 0.5s;
+  will-change: height;
 }
 
 .chrome.visible .navbar .urlbar {
@@ -414,7 +473,7 @@
   height: 28.5rem;
   background-color: var(--background-plus);
   box-shadow: 0 2rem 4rem rgba(0, 0, 0, 0.25);
-  transition: height 0.5s cubic-bezier(0.2, 0.9, 0.1, 1);
+  transition: height 0.5s cubic-bezier(0.5, 0.8, 0, 1);
   will-change: height;
 }
 
@@ -561,7 +620,7 @@
   top: calc(var(--chrome-tablist-height) + var(--chrome-navbar-height) + (var(--chrome-toolbar-gap) * 3));
   width: 100%;
   height: calc(100% - var(--chrome-tablist-height) + var(--chrome-navbar-height) + (var(--chrome-toolbar-gap) * 3));
-  transition: transform 0.5s cubic-bezier(0.2, 0.9, 0.1, 1);
+  transition: transform 0.5s cubic-bezier(0.5, 0.8, 0, 1), top 0.5s cubic-bezier(0.5, 0.8, 0, 1);
 }
 
 .chrome .browser-container > .browser-view.active {

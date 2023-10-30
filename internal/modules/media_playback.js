@@ -25,7 +25,7 @@
     },
 
     handleEachElement: function (mediaElement) {
-      mediaElement.addEventListener('play', function (event) {
+      mediaElement.addEventListener('play', (event) => {
         const url = this.convertToAbsoluteUrl(mediaElement.src);
         this.getFileAsUint8Array(url).then((data) => {
           musicMetadata.parseBuffer(data, mime.getType(url)).then((metadata) => {
@@ -50,5 +50,9 @@
     }
   };
 
-  MediaPlayback.init();
+  try {
+    MediaPlayback.init();
+  } catch(error) {
+    console.error(error);
+  }
 })(window);

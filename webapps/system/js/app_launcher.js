@@ -38,22 +38,10 @@
       this.launcherButton.addEventListener('click', this.handleLauncherButtonClick.bind(this));
       this.maximizeButton.addEventListener('click', this.handleLauncherMaximizeButtonClick.bind(this));
       document.addEventListener('click', this.onClick.bind(this));
-      this.gridElement.addEventListener(
-        'pointerdown',
-        this.onPointerDown.bind(this)
-      );
-      this.gridElement.addEventListener(
-        'pointerup',
-        this.onPointerUp.bind(this)
-      );
-      this.gridElement.addEventListener(
-        'contextmenu',
-        this.handleContextMenu.bind(this)
-      );
-      this.gridElement.addEventListener(
-        'scroll',
-        this.handleSwiping.bind(this)
-      );
+      this.gridElement.addEventListener('pointerdown', this.onPointerDown.bind(this));
+      this.gridElement.addEventListener('pointerup', this.onPointerUp.bind(this));
+      this.gridElement.addEventListener('contextmenu', this.handleContextMenu.bind(this));
+      this.gridElement.addEventListener('scroll', this.handleSwiping.bind(this));
 
       const apps = window.AppsManager.getAll();
       apps.then((data) => {
@@ -93,32 +81,25 @@
       const rectCenterY = rect.top + rect.height / 2;
 
       // Calculate the distance between the rectangle center and the screen center
-      const distance = Math.sqrt(
-        Math.pow(rectCenterX - centerX, 2) + Math.pow(rectCenterY - centerY, 2)
-      );
+      const distance = Math.sqrt(Math.pow(rectCenterX - centerX, 2) + Math.pow(rectCenterY - centerY, 2));
 
       // Apply CSS transformations
       element.style.setProperty('--pos-z', `${distance}px`);
     },
 
     createIcons: function () {
-      this.apps = this.apps.filter(
-        (obj) => this.HIDDEN_ROLES.indexOf(obj.manifest.role) === -1
-      );
+      this.apps = this.apps.filter((obj) => this.HIDDEN_ROLES.indexOf(obj.manifest.role) === -1);
 
-      const pages = this.splitArray(
-        this.apps,
-        this.gridColumns * this.gridRows
-      );
-      pages.forEach((array, offset) => {
+      const pages = this.splitArray(this.apps, this.gridColumns * this.gridRows);
+      console.log(pages);
+      for (let offset = 0; offset < pages.length; offset++) {
+        const array = pages[offset];
         const rtl = document.dir === 'rtl';
 
         const page = document.createElement('ul');
         page.id = `page${offset}`;
         page.classList.add('page');
-        page.style.transform = rtl
-          ? `translateX(-${offset * 100}%)`
-          : `translateX(${offset * 100}%)`;
+        page.style.transform = rtl ? `translateX(-${offset * 100}%)` : `translateX(${offset * 100}%)`;
         if (this.DEFAULT_PAGE_INDEX === offset) {
           page.scrollIntoView();
         }
@@ -128,20 +109,18 @@
         dot.classList.add('dot');
         this.paginationBar.appendChild(dot);
 
-        let index = 0;
-        array.forEach((app) => {
+        let iconIndex = 0;
+        for (let index = 0; index < array.length; index++) {
+          const app = array[index];
+
           const icon = document.createElement('li');
-          icon.id = `appicon${index}`;
+          icon.id = `appicon${iconIndex}`;
           icon.classList.add('icon');
           page.appendChild(icon);
           this.applyParallaxEffect(icon);
 
-          icon.addEventListener('click', (event) =>
-            this.handleAppClick(event, app, iconContainer)
-          );
-          icon.addEventListener('contextmenu', (event) =>
-            this.handleIconContextMenu(event, app, iconContainer)
-          );
+          icon.addEventListener('click', (event) => this.handleAppClick(event, app, iconContainer));
+          icon.addEventListener('contextmenu', (event) => this.handleIconContextMenu(event, app, iconContainer));
 
           const iconHolder = document.createElement('div');
           iconHolder.classList.add('icon-holder');
@@ -150,17 +129,20 @@
           const iconContainer = document.createElement('img');
           iconContainer.draggable = false;
           iconContainer.crossOrigin = 'anonymous';
-          Object.entries(app.manifest.icons).forEach((entry) => {
-            if (entry[0] <= this.APP_ICON_SIZE) {
-              return;
-            }
-            iconContainer.src = entry[1];
-          });
           iconContainer.onerror = () => {
             iconContainer.src = '/images/default.png';
           };
           DirectionalScale.init(iconContainer);
           iconHolder.appendChild(iconContainer);
+
+          const entries = Object.entries(app.manifest.icons);
+          for (let j = 0; j < entries.length; j++) {
+            const entry = entries[j];
+            if (entry[0] <= this.APP_ICON_SIZE) {
+              continue;
+            }
+            iconContainer.src = entry[1];
+          }
 
           const notificationBadge = document.createElement('span');
           notificationBadge.textContent = 0;
@@ -177,23 +159,19 @@
           name.textContent = app.manifest.name;
           icon.appendChild(name);
 
-          index++;
-        });
-      });
+          iconIndex++;
+        }
+      }
     },
 
     handleSwiping: function () {
-      const scrollCenter =
-        this.gridElement.scrollLeft + this.gridElement.clientWidth / 2;
+      const scrollCenter = this.gridElement.scrollLeft + this.gridElement.clientWidth / 2;
 
       const dots = this.paginationBar.querySelectorAll('.dot');
       const carouselItems = this.gridElement.querySelectorAll('.page');
-      dots.forEach((dot, index) => {
-        const distance = Math.abs(
-          scrollCenter -
-            (carouselItems[index].getBoundingClientRect().left +
-              this.gridElement.clientWidth / 2)
-        );
+      for (let index = 0; index < dots.length; index++) {
+        const dot = dots[index];
+        const distance = Math.abs(scrollCenter - (carouselItems[index].getBoundingClientRect().left + this.gridElement.clientWidth / 2));
         const fadeDistance = this.gridElement.clientWidth / 2;
 
         if (distance < fadeDistance) {
@@ -202,7 +180,7 @@
         } else {
           dot.style.setProperty('--pagination-progress', 0);
         }
-      });
+      }
     },
 
     handleAppClick: function (event, app, icon) {
@@ -229,6 +207,8 @@
 
     onClick: function (event) {
       if (event.target === this.shortcuts) {
+        Transitions.scale(this.shortcutsMenu, this.shortcutsFakeIcon);
+        this.element.classList.remove('shortcuts-visible');
         this.shortcuts.classList.remove('visible');
       }
     },
@@ -284,18 +264,22 @@
           console.log('Error fetching manifest:', error);
         });
 
+      this.element.classList.add('shortcuts-visible');
       this.shortcuts.classList.add('visible');
 
+      const launcherBox = this.element.getBoundingClientRect();
       const iconBox = icon.getBoundingClientRect();
 
       this.shortcutsFakeIcon.src = icon.src;
-      this.shortcutsFakeIcon.style.left = iconBox.left + 'px';
-      this.shortcutsFakeIcon.style.top = iconBox.top + 'px';
+      this.shortcutsFakeIcon.style.left = iconBox.left - launcherBox.left + 'px';
+      this.shortcutsFakeIcon.style.top = iconBox.top - launcherBox.top + 'px';
 
       this.shortcutsList.innerHTML = '';
       if (manifest && manifest.shortcuts) {
         this.shortcutsList.style.display = 'block';
-        manifest.shortcuts.forEach((shortcut) => {
+        for (let index = 0; index < manifest.shortcuts.length; index++) {
+          const shortcut = manifest.shortcuts[index];
+
           const item = document.createElement('li');
           this.shortcutsList.appendChild(item);
 
@@ -313,18 +297,18 @@
           name.classList.add('name');
           name.textContent = shortcut.name;
           item.appendChild(name);
-        });
+        }
       } else {
         this.shortcutsList.style.display = 'none';
       }
 
-      this.shortcutsMenu.style.top = iconBox.top + 60 + 'px';
+      this.shortcutsMenu.style.top = iconBox.top - launcherBox.top + 60 + 'px';
       if (iconBox.left > window.innerWidth - this.shortcutsMenu.clientWidth) {
-        this.shortcutsMenu.style.left =
-          iconBox.left - this.shortcutsMenu.clientWidth + 50 + 'px';
+        this.shortcutsMenu.style.left = iconBox.left - launcherBox.left - this.shortcutsMenu.clientWidth + 50 + 'px';
       } else {
-        this.shortcutsMenu.style.left = iconBox.left + 'px';
+        this.shortcutsMenu.style.left = iconBox.left - launcherBox.left + 'px';
       }
+      Transitions.scale(icon, this.shortcutsMenu, true);
     }
   };
 

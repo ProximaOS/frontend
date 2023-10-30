@@ -10,8 +10,8 @@
         return;
       }
 
-      Settings.getValue(this.SETTINGS_HOMESCREEN_MANIFEST_URL).then(this.handleHomescreen.bind(this));
-      Settings.addObserver(this.SETTINGS_HOMESCREEN_MANIFEST_URL, this.handleHomescreenChange.bind(this));
+      Settings.getValue(this.settings[this.SETTINGS_HOMESCREEN_MANIFEST_URL]).then(this.handleHomescreen.bind(this));
+      Settings.addObserver(this.settings[this.SETTINGS_HOMESCREEN_MANIFEST_URL], this.handleHomescreenChange.bind(this));
     },
 
     handleHomescreen: function (value) {

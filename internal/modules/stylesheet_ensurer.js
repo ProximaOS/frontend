@@ -6,11 +6,11 @@
 
   const StylesheetEnsurer = {
     init: function () {
-      console.log(url.pathToFileURL(path.join(__dirname, '..', 'preload', 'html.css')).href);
-      this.loadCSS(url.pathToFileURL(path.join(__dirname, '..', 'preload', 'html.css')).href);
-      this.loadCSS(url.pathToFileURL(path.join(__dirname, '..', 'preload', 'fontfamilies.css')).href);
-      this.loadCSS(url.pathToFileURL(path.join(__dirname, '..', 'preload', 'pictureinpicture.css')).href);
-      this.loadCSS(url.pathToFileURL(path.join(__dirname, '..', 'preload', 'videoplayer.css')).href);
+      console.log(url.pathToFileURL(path.join(__dirname, '..', 'preloads', 'html.css')).href);
+      this.loadCSS(url.pathToFileURL(path.join(__dirname, '..', 'preloads', 'html.css')).href);
+      this.loadCSS(url.pathToFileURL(path.join(__dirname, '..', 'preloads', 'fontfamilies.css')).href);
+      this.loadCSS(url.pathToFileURL(path.join(__dirname, '..', 'preloads', 'pictureinpicture.css')).href);
+      this.loadCSS(url.pathToFileURL(path.join(__dirname, '..', 'preloads', 'videoplayer.css')).href);
     },
 
     injectCSSIntoIframe: function (iframe, cssCode) {

@@ -10,7 +10,7 @@
   overflow: hidden;
   transform: translateY(-1.5rem);
   border-radius: 1.5rem;
-  box-shadow: 0 1rem 3rem rgba(0, 0, 0, 0.2);
+  box-shadow: 0 1.5rem 3rem rgba(0, 0, 0, 0.2);
   opacity: 0;
   transition: transform 0.5s cubic-bezier(0.2, 0.9, 0.1, 1), opacity 0.5s cubic-bezier(0.2, 0.9, 0.1, 1), visibility 0.5s ease;
 }
@@ -54,11 +54,12 @@
   white-space: nowrap;
 }
 
-#context-menu-content li:not(.separator):not(.nav):hover {
+#context-menu:not(.dragging) #context-menu-content li:not(.separator):not(.nav):hover {
   background: var(--item-hover);
 }
 
-#context-menu-content li:not(.separator):not(.nav):active {
+#context-menu:not(.dragging) #context-menu-content li:not(.separator):not(.nav):active,
+#context-menu-content li:not(.separator):not(.nav).active {
   background: var(--item-active);
 }
 
@@ -74,10 +75,12 @@
   pointer-events: none;
 }
 
-#context-menu-content li:not(.separator):not(.nav):hover::after,
-#context-menu-content li:not(.separator):not(.nav):active::after,
-#context-menu-content li:not(.separator):not(.nav):hover + li::after,
-#context-menu-content li:not(.separator):not(.nav):active + li::after,
+#context-menu:not(.dragging) #context-menu-content li:not(.separator):not(.nav):hover::after,
+#context-menu:not(.dragging) #context-menu-content li:not(.separator):not(.nav):active::after,
+#context-menu-content li:not(.separator):not(.nav).active::after,
+#context-menu:not(.dragging) #context-menu-content li:not(.separator):not(.nav):hover + li::after,
+#context-menu:not(.dragging) #context-menu-content li:not(.separator):not(.nav):active + li::after,
+#context-menu-content li:not(.separator):not(.nav).active + li::after,
 #context-menu-content li:not(.separator):not(.nav):first-child::after,
 #context-menu-content .separator + li::after {
   border-top: none !important;
@@ -140,6 +143,10 @@ html[dir='rtl'] #context-menu-content li[data-icon]:not(.separator):not(.nav):be
   line-height: 4rem;
   list-style: none;
   text-align: center;
+}
+
+#context-menu-content .nav > ul li[data-icon] {
+  font-size: 0 !important;
 }
 
 #context-menu-content .nav > ul li[data-icon]::before {

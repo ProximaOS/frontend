@@ -16,10 +16,7 @@
 
     init: function () {
       this.element.addEventListener('click', this.hide.bind(this));
-      this.toggleButton.addEventListener(
-        'click',
-        this.handleToggleButton.bind(this)
-      );
+      this.toggleButton.addEventListener('click', this.handleToggleButton.bind(this));
 
       this.cardsContainer.addEventListener('scroll', this.handleScroll.bind(this));
     },
@@ -32,21 +29,13 @@
 
       const focusedWindow = AppWindow.focusedWindow;
       focusedWindow.classList.add('to-cards-view');
-      focusedWindow.addEventListener('animationend', () =>
-        focusedWindow.classList.remove('to-cards-view')
-      );
+      focusedWindow.addEventListener('animationend', () => focusedWindow.classList.remove('to-cards-view'));
 
-      const windows = this.windowContainer.querySelectorAll(
-        '.appframe:not(#homescreen)'
-      );
-      windows.forEach((appWindow, index) => {
-        this.createCard(
-          index,
-          appWindow.dataset.manifestUrl,
-          appWindow,
-          appWindow.querySelector('.browser.active')
-        );
-      });
+      const windows = this.windowContainer.querySelectorAll('.appframe:not(#homescreen)');
+      for (let index = 0; index < windows.length; index++) {
+        const appWindow = windows[index];
+        this.createCard(index, appWindow.dataset.manifestUrl, appWindow, appWindow.querySelector('.browser.active'));
+      }
     },
 
     hide: function () {
@@ -59,9 +48,7 @@
 
       const focusedWindow = AppWindow.focusedWindow;
       focusedWindow.classList.add('from-cards-view');
-      focusedWindow.addEventListener('animationend', () =>
-        focusedWindow.classList.remove('from-cards-view')
-      );
+      focusedWindow.addEventListener('animationend', () => focusedWindow.classList.remove('from-cards-view'));
     },
 
     createCard: async function (index, manifestUrl, appWindow, webview) {
@@ -86,12 +73,8 @@
         AppWindow.focus(appWindow.id);
         this.hide();
       });
-      card.addEventListener('mousedown', (event) =>
-        this.onPointerDown(event, card, appWindow.id)
-      );
-      card.addEventListener('touchstart', (event) =>
-        this.onPointerDown(event, card, appWindow.id)
-      );
+      card.addEventListener('mousedown', (event) => this.onPointerDown(event, card, appWindow.id));
+      card.addEventListener('touchstart', (event) => this.onPointerDown(event, card, appWindow.id));
       cardArea.appendChild(card);
 
       let manifest;
@@ -118,17 +101,21 @@
 
       const icon = document.createElement('img');
       icon.crossOrigin = 'anonymous';
-      Object.entries(manifest.icons).forEach((entry) => {
+      icon.onerror = () => {
+        icon.src = '/style/images/default.png';
+      };
+      titlebar.appendChild(icon);
+
+      const entries = Object.entries(manifest.icons);
+      for (let index = 0; index < entries.length; index++) {
+        const entry = entries[index];
+
         if (entry[0] >= this.APP_ICON_SIZE) {
           return;
         }
         const url = new URL(manifestUrl);
         icon.src = url.origin + '/' + entry[1];
-      });
-      icon.onerror = () => {
-        icon.src = '/style/images/default.png';
-      };
-      titlebar.appendChild(icon);
+      }
 
       const titles = document.createElement('div');
       titles.classList.add('titles');
@@ -152,7 +139,9 @@
       const deltaMovement = this.cardsContainer.scrollLeft - this.scrollMovement;
 
       const cards = this.cardsContainer.querySelectorAll('.card-area');
-      cards.forEach((card, index) => {
+      for (let index = 0; index < cards.length; index++) {
+        const card = cards[index];
+
         const viewportWidth = window.innerWidth;
         const elementRect = card.getBoundingClientRect();
         const distanceFromCenter = Math.abs(elementRect.left);
@@ -162,9 +151,9 @@
 
         console.log(viewportWidth, distanceFromCenter, translationFactor, translationAmount);
 
-        const rtl = (document.dir === 'rtl');
+        const rtl = document.dir === 'rtl';
         card.style.setProperty('--scroll-gap', (rtl ? -translationAmount : translationAmount) + 'px');
-      });
+      }
 
       this.scrollMovement = Math.abs(this.cardsContainer.scrollLeft);
     },
@@ -190,7 +179,7 @@
       this.startY = event.pageY || event.touches[0].pageY;
 
       // Function to handle dragging
-      function dragWindow (event) {
+      function dragWindow(event) {
         event.preventDefault();
         const y = event.pageY || event.touches[0].pageY;
 
@@ -200,19 +189,17 @@
         // Set the new position of the window
         const progress = newWindowY / window.innerHeight;
         card.style.opacity = 1 - progress;
-        card.style.transform = `translateY(${25 * progress}%) scale(${0.65 - (0.25 * progress)}) rotate3d(1, 0, 0, -${90 * progress}deg)`;
+        card.style.transform = `translateY(${25 * progress}%) scale(${0.65 - 0.25 * progress}) rotate3d(1, 0, 0, -${90 * progress}deg)`;
       }
 
       // Function to stop dragging
-      function stopDrag (event) {
+      function stopDrag(event) {
         event.preventDefault();
         const currentYPosition = event.pageY || event.touches[0].pageY;
         const distanceY = currentYPosition - this.startY;
 
         card.classList.add('transitioning');
-        card.addEventListener('transitionend', () =>
-          card.classList.remove('transitioning')
-        );
+        card.addEventListener('transitionend', () => card.classList.remove('transitioning'));
         card.classList.remove('dragging');
 
         if (distanceY <= 100) {

@@ -22,6 +22,10 @@
       document.addEventListener('mouseup', this.handlePointerUp.bind(this));
       document.addEventListener('touchmove', this.handlePointerMove.bind(this));
       document.addEventListener('mousemove', this.handlePointerMove.bind(this));
+
+      document.addEventListener('click', () => {
+        this.screen.classList.remove('close-reach');
+      });
     },
 
     handleBottomPanel: function (event) {

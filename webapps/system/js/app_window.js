@@ -21,6 +21,13 @@
     CLOSE_TO_HOMESCREEN_ANIMATION: 'shrink-to-homescreen',
     DOCK_ICON_SIZE: 40,
     SPLASH_ICON_SIZE: 60,
+    UNDRAGGABLE_ELEMENTS: [
+      'A',
+      'BUTTON',
+      'INPUT',
+      'LI',
+      'WEBVIEW'
+    ],
 
     timeoutID: null,
     isDragging: false,
@@ -35,8 +42,45 @@
      * The function that initiates windows and adds the event listeners.
      */
     init: function () {
+      this.containerElement.addEventListener('contextmenu', this.handleDesktopContextMenu.bind(this));
+
       this.softwareBackButton.addEventListener('click', this.onButtonClick.bind(this));
       this.softwareHomeButton.addEventListener('click', this.onButtonClick.bind(this));
+    },
+
+    handleDesktopContextMenu: function (event) {
+      event.preventDefault();
+
+      const x = event.clientX;
+      const y = event.clientY;
+
+      const menu = [
+        {
+          name: 'Widgets',
+          l10nId: 'desktopMenu-widgets',
+          icon: 'groups',
+          onclick: () => {}
+        },
+        {
+          name: 'Open Folder',
+          l10nId: 'desktopMenu-openFolder',
+          icon: 'folder',
+          onclick: () => {}
+        },
+        { type: 'separator' },
+        {
+          name: 'Settings',
+          l10nId: 'desktopMenu-settings',
+          icon: 'settings',
+          onclick: () => {}
+        }
+      ];
+
+      // Delaying the context menu opening so it won't fire the same time click
+      // does and instantly hide as soon as it opens
+      setTimeout(() => {
+        ContextMenu.show(x, y, menu);
+      }, 16);
     },
 
     /**
@@ -71,6 +115,7 @@
       // Create and initialize the window container
       const windowDiv = this.createWindowContainer(manifest, windowId, options.animationVariables);
       windowDiv.dataset.manifestUrl = manifestUrl;
+      windowDiv.addEventListener('contextmenu', (event) => this.handleWindowContextMenu(event, windowDiv));
 
       // Create dock icon
       if (!this.HIDDEN_ROLES.includes(manifest.role)) {
@@ -87,7 +132,58 @@
       // Create chrome container and initialize the browser
       const chromeContainer = this.createChromeContainer(windowDiv);
       const url = new URL(manifestUrl);
-      this.initializeBrowser(chromeContainer, url.origin + manifest.launch_path || manifest.start_url, manifest.chrome?.navigation || false);
+      this.initializeBrowser(windowId, chromeContainer, url.origin + manifest.launch_path || manifest.start_url, manifest.chrome?.navigation || false);
+    },
+
+    handleWindowContextMenu: function (event, windowDiv) {
+      event.preventDefault();
+      event.stopPropagation();
+
+      const appId = windowDiv.id;
+
+      const x = event.clientX;
+      const y = event.clientY;
+
+      const menu = [
+        {
+          name: 'Close',
+          l10nId: 'windowMenu-close',
+          icon: 'windowmanager-close',
+          onclick: () => this.close(appId)
+        },
+        {
+          name: 'Maximize',
+          l10nId: 'windowMenu-maximize',
+          icon: 'windowmanager-maximize',
+          onclick: () => this.maximize(appId)
+        },
+        {
+          name: 'Minimize',
+          l10nId: 'windowMenu-minimize',
+          icon: 'windowmanager-minimize',
+          onclick: () => this.minimize(appId)
+        },
+        { type: 'separator' },
+        {
+          name: 'Shade',
+          l10nId: 'windowMenu-shade',
+          icon: 'shade',
+          onclick: () => this.shade(appId, true)
+        },
+        { type: 'separator' },
+        {
+          name: 'Close Forcefully',
+          l10nId: 'windowMenu-closeForcefully',
+          icon: 'forbidden',
+          onclick: () => this.close(appId, true)
+        }
+      ];
+
+      // Delaying the context menu opening so it won't fire the same time click
+      // does and instantly hide as soon as it opens
+      setTimeout(() => {
+        ContextMenu.show(x, y, menu);
+      }, 16);
     },
 
     fetchManifest: async function (manifestUrl) {
@@ -119,7 +215,7 @@
       this.dock.appendChild(icon);
 
       // Add icon image
-      this.addIconImage(icon, icons, manifestUrl);
+      this.addIconImage(icon, icons, this.DOCK_ICON_SIZE, manifestUrl);
 
       // Add animation class
       this.addAnimationClass(icon, this.OPEN_ANIMATION);
@@ -163,7 +259,7 @@
       const splashScreenIcon = document.createElement('img');
       splashScreenIcon.classList.add('icon');
       splashScreen.appendChild(splashScreenIcon);
-      this.addIconImage(splashScreenIcon, icons, manifestUrl);
+      this.addIconImage(splashScreenIcon, icons, this.SPLASH_ICON_SIZE, manifestUrl);
     },
 
     createWindowedWindow: function (windowDiv, manifest, windowId, options) {
@@ -245,10 +341,12 @@
       resizeHandlers[7].classList.add('se-resize');
 
       // Attach event listeners to each resize handler
-      resizeHandlers.forEach((resizeHandler, index) => {
+      for (let index = 0; index < resizeHandlers.length; index++) {
+        const resizeHandler = resizeHandlers[index];
+
         resizeHandler.addEventListener('mousedown', (event) => this.startResize(event, windowDiv, index));
         resizeHandler.addEventListener('touchstart', (event) => this.startResize(event, windowDiv, index));
-      });
+      }
     },
 
     createChromeContainer: function (windowDiv) {
@@ -258,25 +356,32 @@
       return chromeContainer;
     },
 
-    initializeBrowser: function (chromeContainer, startUrl, isChromeEnabled) {
+    initializeBrowser: function (windowId, chromeContainer, startUrl, isChromeEnabled) {
       Browser.init(chromeContainer, startUrl, isChromeEnabled);
+
+      chromeContainer.addEventListener('mousedown', this.startDrag.bind(this, windowId));
+      chromeContainer.addEventListener('touchstart', this.startDrag.bind(this, windowId));
     },
 
     // Utility methods for adding an icon image and an animation class
-    addIconImage: function (element, icons, manifestUrl) {
+    addIconImage: function (element, icons, iconSize, manifestUrl) {
       const iconImage = document.createElement('img');
       iconImage.crossOrigin = 'anonymous';
-      Object.entries(icons).forEach((entry) => {
-        if (entry[0] <= this.DOCK_ICON_SIZE) {
-          return;
-        }
-        const url = new URL(manifestUrl);
-        iconImage.src = url.origin + '/' + entry[1];
-      });
       iconImage.onerror = () => {
         iconImage.src = '/style/images/default.png';
       };
       element.appendChild(iconImage);
+
+      const entries = Object.entries(icons);
+      for (let index = 0; index < entries.length; index++) {
+        const entry = entries[index];
+
+        if (entry[0] <= iconSize) {
+          continue;
+        }
+        const url = new URL(manifestUrl);
+        iconImage.src = url.origin + '/' + entry[1];
+      }
     },
 
     addAnimationClass: function (element, animationClass) {
@@ -324,12 +429,17 @@
         this.softwareButtons.classList.remove('hidden');
       }
 
-      this.containerElement.querySelectorAll('.appframe').forEach((element) => {
+      const appWindows = this.containerElement.querySelectorAll('.appframe');
+      for (let index = 0; index < appWindows.length; index++) {
+        const element = appWindows[index];
         element.classList.remove('active');
-      });
-      this.dock.querySelectorAll('.icon').forEach((element) => {
+      }
+
+      const dockIcons = this.dock.querySelectorAll('.icon');
+      for (let index = 0; index < dockIcons.length; index++) {
+        const element = dockIcons[index];
         element.classList.remove('active');
-      });
+      }
 
       windowDiv.classList.add('active');
       if (dockIcon) {
@@ -554,6 +664,10 @@
 
     // Attach event listeners for mouse/touch events to handle dragging
     startDrag: function (windowId, event) {
+      if (this.UNDRAGGABLE_ELEMENTS.indexOf(event.target.nodeName) !== -1) {
+        return;
+      }
+
       event.preventDefault();
       AppWindow.containerElement.classList.add('dragging');
       const windowDiv = document.getElementById(windowId);
@@ -623,10 +737,10 @@
       this.startWidth = this.resizingWindow.offsetWidth;
       this.startHeight = this.resizingWindow.offsetHeight;
 
-      document.addEventListener('mousemove', (event1) => this.resize(event1, event.target));
-      document.addEventListener('touchmove', (event1) => this.resize(event1, event.target));
-      document.addEventListener('mouseup', (event1) => this.stopResize(event1, event.target));
-      document.addEventListener('touchend', (event1) => this.stopResize(event1, event.target));
+      document.addEventListener('mousemove', this.resize.bind(this, event.target));
+      document.addEventListener('touchmove', this.resize.bind(this, event.target));
+      document.addEventListener('mouseup', this.stopResize.bind(this, event.target));
+      document.addEventListener('touchend', this.stopResize.bind(this, event.target));
     },
 
     resize: function (event, gripper) {
@@ -643,37 +757,37 @@
       let top = this.resizingWindow.offsetTop;
 
       // Calculate the new dimensions based on the resize handler
-      if (gripper.classList.contains('resize-nw')) {
+      if (gripper.classList.contains('nw-resize')) {
         // Top Left
         width = this.startWidth + (this.startX - currentX);
         height = this.startHeight + (this.startY - currentY);
         left = this.resizingWindow.offsetLeft - (this.startX - currentX);
         top = this.resizingWindow.offsetTop - (this.startY - currentY);
-      } else if (gripper.classList.contains('resize-n')) {
+      } else if (gripper.classList.contains('n-resize')) {
         // Top
         height = this.startHeight + (this.startY - currentY);
         top = this.resizingWindow.offsetTop - (this.startY - currentY);
-      } else if (gripper.classList.contains('resize-ne')) {
+      } else if (gripper.classList.contains('ne-resize')) {
         // Top Right
         width = this.startWidth + (currentX - this.startX);
         height = this.startHeight + (this.startY - currentY);
         top = this.resizingWindow.offsetTop - (this.startY - currentY);
-      } else if (gripper.classList.contains('resize-w')) {
+      } else if (gripper.classList.contains('w-resize')) {
         // Left
         width = this.startWidth + (this.startX - currentX);
         left = this.resizingWindow.offsetLeft - (this.startX - currentX);
-      } else if (gripper.classList.contains('resize-e')) {
+      } else if (gripper.classList.contains('e-resize')) {
         // Right
         width = this.startWidth + (currentX - this.startX);
-      } else if (gripper.classList.contains('resize-sw')) {
+      } else if (gripper.classList.contains('sw-resize')) {
         // Bottom Left
         width = this.startWidth + (this.startX - currentX);
         height = this.startHeight + (currentY - this.startY);
         left = this.resizingWindow.offsetLeft - (this.startX - currentX);
-      } else if (gripper.classList.contains('resize-s')) {
+      } else if (gripper.classList.contains('s-resize')) {
         // Bottom
         height = this.startHeight + (currentY - this.startY);
-      } else if (gripper.classList.contains('resize-se')) {
+      } else if (gripper.classList.contains('se-resize')) {
         // Bottom Right
         width = this.startWidth + (currentX - this.startX);
         height = this.startHeight + (currentY - this.startY);

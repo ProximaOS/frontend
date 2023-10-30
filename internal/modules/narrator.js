@@ -1,3 +1,5 @@
+const Settings = require('../../src/settings');
+
 !(function (exports) {
   'use strict';
 

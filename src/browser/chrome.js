@@ -4,7 +4,7 @@
   const { BrowserWindow } = require('electron');
   const path = require('path');
   const registerEvents = require('./events');
-  const settings = require('../settings');
+  const Settings = require('../settings');
 
   require('dotenv').config();
   require('./default_presets');
@@ -28,8 +28,12 @@
         nodeIntegration: true,
         nodeIntegrationInSubFrames: true,
         webviewTag: true,
-        scrollBounce: true,
-        preload: path.join(__dirname, '..', 'preload.js')
+        defaultFontSize: 16,
+        defaultMonospaceFontSize: 14,
+        defaultFontFamily: 'Jali Arabic',
+        disableDialogs: true,
+        preload: path.join(__dirname, '..', '..', 'internal', 'preload.js'),
+        enableBlinkFeatures: 'OverlayScrollbar'
       }
     });
 
@@ -37,7 +41,7 @@
 
     fs.mkdirSync(path.join(process.env.ORCHID_APP_PROFILE), { recursive: true });
 
-    settings.getValue('video.dark_mode.enabled').then((result) => {
+    Settings.getValue('video.dark_mode.enabled').then((result) => {
       nativeTheme.themeSource = result ? 'dark' : 'light';
     });
 

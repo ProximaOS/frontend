@@ -140,35 +140,44 @@ html[dir="rtl"] .statusbar-icons > .right {
   font-size: 1.8rem;
 }
 
-#statusbar-camera::before {
-  font-size: 1.8rem;
+#statusbar-camera,
+#statusbar-microphone,
+#statusbar-video {
+  box-sizing: border-box;
+  height: 2.4rem;
+  padding: 0.2rem 1.5rem;
+  border-radius: 3rem;
 }
 
-#statusbar-microphone::before {
-  font-size: 1.8rem;
+#statusbar-camera.hidden,
+#statusbar-microphone.hidden,
+#statusbar-video.hidden {
+  margin: 0 -2.4rem;
 }
 
+#statusbar-camera {
+  background-color: #ffc000;
+  color: rgba(0, 0, 0, 0.75);
+}
+
+#statusbar-microphone {
+  background-color: #40a060;
+  color: rgba(255, 255, 255, 0.75);
+}
+
+#statusbar-video {
+  background-color: #ff6040;
+  color: rgba(0, 0, 0, 0.75);
+}
+
+#statusbar-camera::before,
+#statusbar-microphone::before,
 #statusbar-video::before {
   font-size: 1.8rem;
 }
 
 #statusbar-time {
   transition: all 0.3s cubic-bezier(0.2, 0.9, 0.1, 1), opacity 0.3s ease, transform 0.3s ease, visibility 0.3s ease, margin 0.3s cubic-bezier(0.2, 0.9, 0.1, 1) 0.3s;
-}
-
-#statusbar-time.indicator {
-  display: flex;
-  align-items: center;
-  padding: 0.3rem 0.75rem;
-  gap: 0.5rem;
-  border-radius: 2rem;
-  background-color: var(--accent-color);
-  color: var(--accent-color-plus) !important;
-}
-
-#statusbar-time.indicator.screen-capture {
-  background-color: #c00040;
-  color: rgba(255,255,255,0.75) !important;
 }
 
 #statusbar-date {

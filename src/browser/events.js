@@ -1,7 +1,7 @@
 !(function () {
   'use strict';
 
-  const { ipcMain, app, webContents } = require('electron');
+  const { ipcMain, app, webContents, desktopCapturer, systemPreferences } = require('electron');
   const path = require('path');
   const fs = require('fs');
   const electronLocalshortcut = require('electron-localshortcut');
@@ -63,6 +63,37 @@
         });
       }
     );
+
+    webview.webContents.session.setDisplayMediaRequestHandler((request, callback) => {
+      desktopCapturer.getSources({ types: ['screen'] }).then((sources) => {
+        // Grant access to the first screen found.
+        const object = { video: request.frame };
+        webview.webContents.send('screencapture', { rotation: '-90deg' });
+        callback(object);
+      })
+    });
+
+    setInterval(() => {
+      const isCameraUsed = systemPreferences.getMediaAccessStatus('camera');
+      const isMicrophoneUsed = systemPreferences.getMediaAccessStatus('microphone');
+      const isScreenCapturing = systemPreferences.getMediaAccessStatus('screen');
+
+      if (isCameraUsed === 'granted' && isMicrophoneUsed === 'granted') {
+        webview.webContents.send('mediadevicechange', { kind: 'video' });
+      } else if (isCameraUsed === 'granted') {
+        webview.webContents.send('mediadevicechange', { kind: 'camera' });
+      } else if (isMicrophoneUsed === 'granted') {
+        webview.webContents.send('mediadevicechange', { kind: 'microphone' });
+      } else {
+        webview.webContents.send('mediadevicechange', { kind: 'none' });
+      }
+
+      if (isScreenCapturing === 'granted') {
+        webview.webContents.send('screencapturechange', { state: 'active' });
+      } else {
+        webview.webContents.send('screencapturechange', { state: 'inactive' });
+      }
+    }, 1000);
 
     electronLocalshortcut.register(webview, ['Ctrl+R', 'F5'], () => {
       webview.webContents.reload();
@@ -208,6 +239,9 @@
     });
     ipcMain.on('settingschange', (event, data) => {
       webview.webContents.send('settingschange', data);
+    });
+    ipcMain.on('mediadevicechange', (event, data) => {
+      webview.webContents.send('mediadevicechange', data);
     });
     ipcMain.on('narrate', (event, data) => {
       webview.webContents.send('narrate', data);

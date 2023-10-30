@@ -164,6 +164,7 @@ const Settings = require('../settings');
         defaultFontFamily: 'Jali Arabic',
         disableDialogs: true,
         preload: path.join(__dirname, '..', '..', 'internal', 'preload.js'),
+        enableBlinkFeatures: 'OverlayScrollbar',
         devTools: isDev
       }
     });
@@ -194,7 +195,6 @@ const Settings = require('../settings');
         userAgent
       }
     );
-    console.log(await Settings.getValue('system.main.url', 'internal.json'));
 
     // Load JavaScript and CSS files
     webview.webContents.on('dom-ready', () => {

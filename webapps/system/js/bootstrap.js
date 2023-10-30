@@ -20,18 +20,18 @@
     SETTINGS_VIDEO_WARM_COLORS: 5,
 
     init: function () {
-      Settings.getValue(this.SETTINGS_GENERAL_SOFTWARE_BUTTONS).then(this.handleSoftwareButtons.bind(this));
-      Settings.getValue(this.SETTINGS_VIDEO_WARM_COLORS).then(this.handleWarmColors.bind(this));
-      Settings.getValue(this.SETTINGS_VIDEO_READER_MODE).then(this.handleReaderMode.bind(this));
+      Settings.getValue(this.settings[this.SETTINGS_GENERAL_SOFTWARE_BUTTONS]).then(this.handleSoftwareButtons.bind(this));
+      Settings.getValue(this.settings[this.SETTINGS_VIDEO_WARM_COLORS]).then(this.handleWarmColors.bind(this));
+      Settings.getValue(this.settings[this.SETTINGS_VIDEO_READER_MODE]).then(this.handleReaderMode.bind(this));
 
-      Settings.addObserver(this.SETTINGS_GENERAL_LANG_CODE, this.handleLanguageChange.bind(this));
-      Settings.addObserver(this.SETTINGS_VIDEO_DARK_MODE, this.handleColorScheme.bind(this));
-      Settings.addObserver(this.SETTINGS_GENERAL_SOFTWARE_BUTTONS, this.handleSoftwareButtons.bind(this));
-      Settings.addObserver(this.SETTINGS_VIDEO_WARM_COLORS, this.handleWarmColors.bind(this));
-      Settings.addObserver(this.SETTINGS_VIDEO_READER_MODE, this.handleReaderMode.bind(this));
+      Settings.addObserver(this.settings[this.SETTINGS_GENERAL_LANG_CODE], this.handleLanguageChange.bind(this));
+      Settings.addObserver(this.settings[this.SETTINGS_VIDEO_DARK_MODE], this.handleColorScheme.bind(this));
+      Settings.addObserver(this.settings[this.SETTINGS_GENERAL_SOFTWARE_BUTTONS], this.handleSoftwareButtons.bind(this));
+      Settings.addObserver(this.settings[this.SETTINGS_VIDEO_WARM_COLORS], this.handleWarmColors.bind(this));
+      Settings.addObserver(this.settings[this.SETTINGS_VIDEO_READER_MODE], this.handleReaderMode.bind(this));
 
       AppsManager.getAll().then(() => {
-        Settings.getValue(this.SETTINGS_FTU_ENABLED).then(this.handleFirstLaunch.bind(this));
+        Settings.getValue(this.settings[this.SETTINGS_FTU_ENABLED]).then(this.handleFirstLaunch.bind(this));
         Splashscreen.hide();
       });
     },
