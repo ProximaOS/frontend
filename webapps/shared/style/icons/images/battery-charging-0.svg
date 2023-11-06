@@ -8,4 +8,15 @@
 <rect width="16" height="16" fill="white"/>
 </clipPath>
 </defs>
+<style>
+  .battery-fill {
+    animation: battery-fill 1s cubic-bezier(0.2, 0.9, 0.1, 1) infinite;
+  }
+
+  @keyframes battery-fill {
+    from {
+      width: 0;
+    }
+  }
+</style>
 </svg>

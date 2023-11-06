@@ -6,15 +6,15 @@
       const matchingFiles = [];
 
       async function findMatchingFiles (currentDir) {
-        const files = await window.SDCardManager.list(currentDir);
+        const files = await SDCardManager.list(currentDir);
         for (const file of files) {
           const filePath = `${currentDir}/${file}`;
 
-          const stats = await window.SDCardManager.getFileStats(filePath);
-          if (stats.isDirectory()) {
+          const stats = SDCardManager.getFileStats(filePath);
+          if (stats.is_directory) {
             await findMatchingFiles(filePath);
           } else {
-            const fileMimeType = window.SDCardManager.getMime(filePath);
+            const fileMimeType = SDCardManager.getMime(filePath);
             if (fileMimeType && fileMimeType.startsWith(mimeType)) {
               matchingFiles.push(filePath);
             }
@@ -24,7 +24,9 @@
 
       try {
         findMatchingFiles(directory).then(() => {
-          resolve(matchingFiles);
+          setTimeout(() => {
+            resolve(matchingFiles);
+          }, 500);
         });
       } catch (error) {
         reject(error);

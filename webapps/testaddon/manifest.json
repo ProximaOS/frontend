@@ -1,0 +1,22 @@
+{
+  "version": "1.0",
+  "name": "Test Add-On",
+  "description": "",
+  "role": "addon",
+  "dropdown": {
+    "enabled": true,
+    "launch_path": "/dropdown.html",
+    "icons": {
+      "64": "/icon.svg"
+    }
+  },
+  "context_menu": [
+    {
+      "label": "Test Item"
+    }
+  ],
+  "preload": {
+    "stylesheets": [],
+    "javascript": []
+  }
+}

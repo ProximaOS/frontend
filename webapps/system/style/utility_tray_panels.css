@@ -3,16 +3,36 @@
   --background: transparent;
   visibility: hidden;
   position: absolute;
-  top: 50%;
+  bottom: 2.5rem;
   left: 50%;
-  width: calc(100% - 2rem);
+  width: calc(100% - 3rem);
   max-width: 40rem;
   height: max-content;
   max-height: calc(100% - var(--statusbar-height) - 2.5rem);
-  translate: -50% -50%;
+  translate: -50% 0;
   border-radius: 2rem;
   background-color: var(--acrylic-background-plus);
   transition: all 0.3s ease;
+}
+
+#screen.software-buttons-enabled #utility-tray-wifi,
+#screen.software-buttons-enabled #utility-tray-bluetooth {
+  bottom: var(--software-buttons-height);
+}
+
+#screen.desktop #utility-tray-wifi,
+#screen.desktop #utility-tray-bluetooth {
+  bottom: calc(var(--software-buttons-height) + 2rem);
+  width: calc(100% - 8rem);
+}
+html[dir="ltr"] #screen.desktop #utility-tray-wifi,
+html[dir="ltr"] #screen.desktop #utility-tray-bluetooth {
+  right: calc(50% - 2.5rem);
+  left: unset;
+}
+html[dir="rtl"] #screen.desktop #utility-tray-wifi,
+html[dir="rtl"] #screen.desktop #utility-tray-bluetooth {
+  left: calc(50% - 2.5rem);
 }
 
 #utility-tray-wifi.visible,
@@ -27,14 +47,45 @@
   );
 }
 
-#utility-tray-wifi .headerbar,
-#utility-tray-bluetooth .headerbar {
-  --statusbar-height: 0.5rem;
-  backdrop-filter: none;
-  background-image: none;
+#utility-tray-wifi .header,
+#utility-tray-bluetooth .header {
+  box-sizing: border-box;
+  display: flex;
+  width: 100%;
+  height: 6.5rem;
+  padding: 0 1.5rem;
 }
 
-#utility-tray-wifi .content,
-#utility-tray-bluetooth .content {
-  --software-buttons-height: 0rem;
+#utility-tray-wifi .header h1,
+#utility-tray-bluetooth .header h1 {
+  flex-grow: 1;
+  width: 100%;
+  height: 4rem;
+  margin: 0;
+  color: var(--text-color);
+  font-weight: normal;
+  font-size: 1.6rem;
+  line-height: 4rem;
+}
+
+#utility-tray-wifi .header a,
+#utility-tray-bluetooth .header a {
+  display: inline-block;
+  width: 4rem;
+  height: 4rem;
+  margin: 0;
+  padding: 0;
+  border: none;
+  border-radius: 0;
+  background-color: transparent;
+  color: var(--text-color);
+  line-height: 4rem;
+}
+
+#utility-tray-wifi .header a[data-icon]::before,
+#utility-tray-bluetooth .header a[data-icon]::before {
+  position: static;
+  height: 4rem;
+  font-size: 2rem;
+  line-height: 4rem;
 }

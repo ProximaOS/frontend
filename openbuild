@@ -10,7 +10,7 @@ case $1 in
   build)
     node ./build/build.js
     npm run build-linux-$TARGET_ARCH
-    ./scripts/build-linux.sh
+    ./bin/build-linux.sh
     ;;
   build-linux)
     node ./build/build.js
@@ -18,7 +18,7 @@ case $1 in
     npm run build-linux-arm64
     npm run build-linux-ia32
     npm run build-linux-x64
-    ./scripts/build-linux.sh
+    ./bin/build-linux.sh
     ;;
   build-simulator)
     node ./build/build.js
@@ -43,7 +43,7 @@ case $1 in
     npm run build-win-x64
     npm run build-mac-arm64
     npm run build-mac-x64
-    ./scripts/build-linux.sh
+    ./bin/build-linux.sh
     ;;
   dev)
     node ./build/build.js

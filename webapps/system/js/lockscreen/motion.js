@@ -13,20 +13,26 @@
     startY: 0,
     currentY: 0,
     isDragging: false,
-    threshold: 0.75, // Adjust the threshold as desired (0.0 to 1.0)
 
-    lockSound: new Audio('/resources/sounds/lock.wav'),
-    unlockSound: new Audio('/resources/sounds/unlock.wav'),
+    settings: [
+      'lockscreen.type'
+    ],
+
+    SWIPE_THRESHOLD: 0.75,
+    SOUND_LOCK: new Audio('/resources/sounds/lock.wav'),
+    SOUND_UNLOCK: new Audio('/resources/sounds/unlock.wav'),
+
+    SETTINGS_LOCKSCREEN_TYPE: 0,
 
     init: function () {
-      Settings.getValue('lockscreen.type').then((value) => {
+      Settings.getValue(this.settings[this.SETTINGS_LOCKSCREEN_TYPE]).then((value) => {
         if (value === 'pin') {
           this.isPINLocked = true;
         } else {
           this.isPINLocked = false;
         }
       });
-      Settings.addObserver('lockscreen.type', (value) => {
+      Settings.addObserver(this.settings[this.SETTINGS_LOCKSCREEN_TYPE], (value) => {
         if (value === 'pin') {
           this.isPINLocked = true;
         } else {
@@ -135,7 +141,7 @@
         this.motionElement.classList.remove('transitioning');
       }, 500);
 
-      if (progress >= this.threshold) {
+      if (progress >= this.SWIPE_THRESHOLD) {
         this.motionElement.style.setProperty('--motion-progress', 1);
         this.lockscreenIcon.classList.add('fail-unlock');
         this.lockscreenIcon.onanimationend = () => {
@@ -157,15 +163,15 @@
       const motionProgress = 1 - progress;
       this.motionElement.style.setProperty('--motion-progress', motionProgress);
 
-      if (motionProgress >= this.threshold) {
+      if (motionProgress >= this.SWIPE_THRESHOLD) {
         this.showMotionElement();
       }
     },
 
     hideMotionElement: function () {
       if (this.isDragging) {
-        this.unlockSound.currentTime = 0;
-        this.unlockSound.play();
+        this.SOUND_UNLOCK.currentTime = 0;
+        this.SOUND_UNLOCK.play();
       }
 
       this.motionElement.classList.add('transitioning');
@@ -199,8 +205,8 @@
     showMotionElement: function () {
       if (!this.isDragging) {
         if (!this.motionElement.classList.contains('visible')) {
-          this.lockSound.currentTime = 0;
-          this.lockSound.play();
+          this.SOUND_LOCK.currentTime = 0;
+          this.SOUND_LOCK.play();
         }
       }
       this.notifications.classList.remove('visible');

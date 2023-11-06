@@ -4,102 +4,71 @@
   const fs = require('fs');
   const path = require('path');
   const mime = require('mime');
+  const manifests = require('../api/manifest_permissions');
 
   require('dotenv').config();
 
   const SDCardManager = {
-    audioAccess: false,
-    booksAccess: false,
-    downloadsAccess: false,
-    moviesAccess: false,
-    musicAccess: false,
-    othersAccess: false,
-    photosAccess: false,
-    homeAccess: false,
-
     bufferFrom: Buffer.from,
+
+    setStorageAccess: function (permission, property, value) {
+      manifests.checkPermission(permission).then((result) => {
+        if (result) {
+          SDCardManager[property] = value;
+        }
+      });
+    },
 
     meetsPermissions: function (filePath) {
       if (!SDCardManager.homeAccess) {
         return true;
       }
-      if (
-        !SDCardManager.audioAccess &&
-        (filePath.startsWith('audio') || filePath.startsWith('/audio'))
-      ) {
-        return true;
-      }
-      if (
-        !SDCardManager.booksAccess &&
-        (filePath.startsWith('books') || filePath.startsWith('/books'))
-      ) {
-        return true;
-      }
-      if (
-        !SDCardManager.downloadsAccess &&
-        (filePath.startsWith('downloads') || filePath.startsWith('/downloads'))
-      ) {
-        return true;
-      }
-      if (
-        !SDCardManager.moviesAccess &&
-        (filePath.startsWith('movies') || filePath.startsWith('/movies'))
-      ) {
-        return true;
-      }
-      if (
-        !SDCardManager.musicAccess &&
-        (filePath.startsWith('music') || filePath.startsWith('/music'))
-      ) {
-        return true;
-      }
-      if (
-        !SDCardManager.othersAccess &&
-        (filePath.startsWith('others') || filePath.startsWith('/others'))
-      ) {
-        return true;
-      }
-      if (
-        !SDCardManager.photosAccess &&
-        (filePath.startsWith('photos') || filePath.startsWith('/photos'))
-      ) {
-        return true;
+
+      const accessMap = {
+        audio: manifests.checkPermission('device-storage:audio'),
+        books: manifests.checkPermission('device-storage:books'),
+        downloads: manifests.checkPermission('device-storage:downloads'),
+        movies: manifests.checkPermission('device-storage:movies'),
+        music: manifests.checkPermission('device-storage:music'),
+        others: manifests.checkPermission('device-storage:others'),
+        photos: manifests.checkPermission('device-storage:photoso')
+      };
+
+      for (const category in accessMap) {
+        if (!accessMap[category] && (filePath.startsWith(category) || filePath.startsWith(`/${category}`))) {
+          return true;
+        }
       }
 
       return false;
     },
+
     read: function (filePath, options = { encoding: 'utf8' }) {
       return new Promise((resolve, reject) => {
         if (!SDCardManager.meetsPermissions(filePath)) {
           return;
         }
 
-        fs.readFile(
-          path.join(process.env.OPENORCHID_STORAGE, filePath),
-          options,
-          (error, result) => {
-            if (error) {
-              reject(error);
-              console.log(error);
-              return;
-            }
-            resolve(result);
+        fs.readFile(path.join(process.env.OPENORCHID_STORAGE, filePath), options, (error, result) => {
+          if (error) {
+            reject(error);
+            console.log(error);
+            return;
           }
-        );
+          resolve(result);
+        });
       });
     },
+
     write: async (filePath, content) => {
       if (!SDCardManager.meetsPermissions(filePath)) {
         return;
       }
 
-      const fileData = await fs.writeFileSync(
-        path.join(process.env.OPENORCHID_STORAGE, filePath),
-        content,
-        'utf8'
-      );
+      const fileData = await fs.writeFileSync(path.join(process.env.OPENORCHID_STORAGE, filePath), content, 'utf8');
       console.log('File content:', fileData);
     },
+
     delete: function (filePath) {
       if (!SDCardManager.meetsPermissions(filePath)) {
         return;
@@ -108,63 +77,56 @@
       const { deleteAsync } = require('del');
       deleteAsync(path.join(process.env.OPENORCHID_STORAGE, input));
     },
+
     copy: function (fromPath, toPath) {
-      if (
-        !SDCardManager.meetsPermissions(fromPath) ||
-        !SDCardManager.meetsPermissions(toPath)
-      ) {
+      if (!SDCardManager.meetsPermissions(fromPath) || !SDCardManager.meetsPermissions(toPath)) {
         return;
       }
 
-      copy(
-        path.join(process.env.OPENORCHID_STORAGE, fromPath),
-        path.join(process.env.OPENORCHID_STORAGE, toPath)
-      );
+      copy(path.join(process.env.OPENORCHID_STORAGE, fromPath), path.join(process.env.OPENORCHID_STORAGE, toPath));
     },
+
     move: function (fromPath, toPath) {
-      if (
-        !SDCardManager.meetsPermissions(fromPath) ||
-        !SDCardManager.meetsPermissions(toPath)
-      ) {
+      if (!SDCardManager.meetsPermissions(fromPath) || !SDCardManager.meetsPermissions(toPath)) {
         return;
       }
 
-      mv(
-        path.join(process.env.OPENORCHID_STORAGE, fromPath),
-        path.join(process.env.OPENORCHID_STORAGE, toPath)
-      );
+      mv(path.join(process.env.OPENORCHID_STORAGE, fromPath), path.join(process.env.OPENORCHID_STORAGE, toPath));
     },
+
     list: function (dirPath) {
       return new Promise((resolve, reject) => {
-        // if (!SDCardManager.meetsPermissions(dirPath)) {
-        //   return;
-        // }
-
-        fs.readdir(
-          path.join(process.env.OPENORCHID_STORAGE, dirPath),
-          (error, files) => {
-            if (error) {
-              reject(error);
-              console.log(error);
-              return;
-            }
-            resolve(files);
-          }
-        );
-      });
-    },
-    getFileStats: function (filePath) {
-      return new Promise((resolve, reject) => {
-        if (!SDCardManager.meetsPermissions(filePath)) {
+        if (!SDCardManager.meetsPermissions(dirPath)) {
           return;
         }
 
-        const stats = fs.statSync(
-          path.join(process.env.OPENORCHID_STORAGE, filePath)
-        );
-        resolve(stats);
+        fs.readdir(path.join(process.env.OPENORCHID_STORAGE, dirPath), (error, files) => {
+          if (error) {
+            reject(error);
+            console.log(error);
+            return;
+          }
+          resolve(files);
+        });
       });
     },
+
+    getFileStats: function (filePath) {
+      if (!SDCardManager.meetsPermissions(filePath)) {
+        return;
+      }
+
+      let stats = fs.statSync(path.join(process.env.OPENORCHID_STORAGE, filePath));
+      stats = Object.assign(stats, {
+        is_directory: stats.isDirectory(),
+        is_block_device: stats.isBlockDevice(),
+        is_char_device: stats.isCharacterDevice(),
+        is_symlink: stats.isSymbolicLink(),
+        is_socket: stats.isSocket()
+      });
+      return stats;
+    },
+
     getMime: function (filePath) {
       if (!SDCardManager.meetsPermissions(filePath)) {
         return;
@@ -173,9 +135,11 @@
       const mimeType = mime.getType(filePath);
       return mimeType;
     },
+
     exists: function (filePath) {
       return fs.existsSync(path.join(process.env.OPENORCHID_STORAGE, filePath));
     },
+
     mkdir: function (path, options = {}) {
       fs.mkdirSync(path.join(process.env.OPENORCHID_STORAGE, path), options);
     }

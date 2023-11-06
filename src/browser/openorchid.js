@@ -57,7 +57,7 @@ const Settings = require('../settings');
       case 'mobile':
         systemConfig = {
           id: 'mobile',
-          width: 1024,
+          width: 320,
           height: 640,
           type: 'Mobile'
         };

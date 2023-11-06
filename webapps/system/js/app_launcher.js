@@ -21,7 +21,7 @@
     timePassed: 0,
 
     DEFAULT_PAGE_INDEX: 0,
-    HIDDEN_ROLES: ['homescreen', 'keyboard', 'system', 'theme'],
+    HIDDEN_ROLES: ['homescreen', 'keyboard', 'system', 'theme', 'addon'],
     APP_ICON_SIZE: 45,
 
     DEFAULT_DOCK_ICONS: [
@@ -165,14 +165,14 @@
     },
 
     handleSwiping: function () {
-      const scrollCenter = this.gridElement.scrollLeft + this.gridElement.clientWidth / 2;
+      const scrollCenter = this.gridElement.scrollLeft + this.gridElement.getBoundingClientRect().width / 2;
 
       const dots = this.paginationBar.querySelectorAll('.dot');
       const carouselItems = this.gridElement.querySelectorAll('.page');
       for (let index = 0; index < dots.length; index++) {
         const dot = dots[index];
-        const distance = Math.abs(scrollCenter - (carouselItems[index].getBoundingClientRect().left + this.gridElement.clientWidth / 2));
-        const fadeDistance = this.gridElement.clientWidth / 2;
+        const distance = Math.abs(scrollCenter - (carouselItems[index].getBoundingClientRect().left + this.gridElement.getBoundingClientRect().width / 2));
+        const fadeDistance = this.gridElement.getBoundingClientRect().width / 2;
 
         if (distance < fadeDistance) {
           const progress = 1 - distance / fadeDistance;

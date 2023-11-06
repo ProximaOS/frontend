@@ -9,7 +9,21 @@
 
   const Webapps = {
     webapps: document.getElementById('webapps'),
+
     webappPanel: document.getElementById('webapp'),
+    webappBanner: document.getElementById('webapp-banner'),
+    webappIcon: document.getElementById('webapp-icon'),
+    webappHeaderIcon: document.getElementById('webapp-header-icon'),
+    webappName: document.getElementById('webapp-name'),
+    webappHeaderName: document.getElementById('webapp-header-name'),
+    webappAuthors: document.getElementById('webapp-authors'),
+    webappCategories: document.getElementById('webapp-categories'),
+    webappDescription: document.getElementById('webapp-description'),
+    webappLicense: document.getElementById('webapp-license'),
+    webappGitRepo: document.getElementById('webapp-git-repo'),
+    webappDownloads: document.getElementById('webapp-downloads'),
+    webappIncludesAds: document.getElementById('webapp-includes-ads'),
+    webappIncludedTracking: document.getElementById('webapp-included-tracking'),
 
     initializeCategory: function (categoryId) {
       const categoryExists = document.getElementById(`category-${categoryId}`);
@@ -49,10 +63,12 @@
     populate: function (data) {
       const webapp = document.createElement('li');
       webapp.classList.add('webapp');
+      webapp.dataset.pageId = 'webapp';
       webapp.addEventListener('click', () =>
         this.openPanel(webapp, data)
       );
       this.initializeCategory(data.categories[0]).appendChild(webapp);
+      PageController.init();
 
       const iconHolder = document.createElement('div');
       iconHolder.classList.add('icon-holder');
@@ -91,8 +107,41 @@
       stats.appendChild(ageRating);
     },
 
-    openPanel: function (element, app) {
+    openPanel: function (element, data) {
+      console.log(data);
       Transitions.scale(element, this.webappPanel);
+
+      this.webappBanner.src = data.banner;
+      this.webappIcon.src = data.icon;
+      this.webappHeaderIcon.src = data.icon;
+      this.webappName.textContent = data.name;
+      this.webappHeaderName.textContent = data.name;
+
+      this.webappAuthors.innerHTML = '';
+      for (let index = 0; index < data.developers.length; index++) {
+        const element = data.developers[index];
+
+        const author = document.createElement('a');
+        author.href = '#';
+        author.textContent = element;
+        this.webappAuthors.appendChild(author);
+      }
+
+      this.webappCategories.innerHTML = '';
+      for (let index = 0; index < data.categories.length; index++) {
+        const element = data.categories[index];
+
+        const category = document.createElement('a');
+        category.href = '#';
+        category.textContent = element;
+        this.webappCategories.appendChild(category);
+      }
+
+      this.webappDescription.innerText = data.description;
+      this.webappLicense.textContent = data.license;
+      this.webappGitRepo.textContent = data.gitRepo || navigator.mozL10n.get('none');
+      this.webappDownloads.textContent = data.downloads.length;
+      this.webappIncludesAds.textContent = data.includesAds ? navigator.mozL10n.get('yes') : navigator.mozL10n.get('no');
     }
   };
 })(window);

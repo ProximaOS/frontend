@@ -1,0 +1,122 @@
+#player {
+  --text-color: var(--accent-color-plus);
+  z-index: 50;
+  background-color: var(--accent-color);
+}
+
+#player > [role="header"] {
+  backdrop-filter: none;
+  background-image: none;
+}
+
+#player > [role="header"]::before,
+#player > [role="header"]::after {
+  display: none;
+}
+
+.player-cols {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  gap: 1rem;
+}
+
+.player-artwork {
+  display: flex;
+  flex-grow: 1;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
+
+#player-artwork-image {
+  width: 24rem;
+  height: 24rem;
+  border-radius: 1.5rem;
+  box-shadow: 0 1.2rem 2.4rem rgba(0, 0, 0, 0.1);
+}
+
+.player-footer {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 1.5rem;
+  gap: 1rem;
+}
+
+.player-footer .track {
+  box-sizing: border-box;
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  width: 100%;
+  padding: 0 1.5rem;
+  gap: 1rem;
+  color: var(--accent-color-plus);
+  font-size: 1.6rem;
+}
+
+.player-footer .track > #player-track-slider {
+  margin: 0;
+  background-color: var(--accent-color-hover);
+}
+
+.player-footer .track > #player-track-slider::-webkit-slider-thumb {
+  background-color: var(--accent-color-plus);
+}
+
+.player-footer .track > #player-track-slider:not([value="0"])::-webkit-slider-thumb {
+  border: 0.4rem solid var(--accent-color-plus);
+  background: var(--accent-color);
+  box-shadow: -51.2rem 0 0 50rem var(--accent-color-plus);
+}
+html[dir="rtl"] .player-footer .track > #player-track-slider:not([value="0"])::-webkit-slider-thumb {
+  box-shadow: 51.2rem 0 0 50rem var(--accent-color-plus);
+}
+
+.player-footer .controls {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+
+.player-footer .controls > button {
+  flex-shrink: 0;
+  width: 5rem;
+  height: 5rem;
+  margin: 1rem 0.75rem;
+  padding: 0 1.3rem;
+  border-radius: 50%;
+  background-color: var(--accent-color-hover);
+  color: var(--accent-color-plus);
+  line-height: 5rem;
+}
+
+.player-footer .controls > button::before {
+  position: static;
+  width: 2.4rem;
+  height: 5rem;
+  font-size: 2.4rem;
+  line-height: 5rem;
+}
+
+.player-footer .controls > button.small {
+  margin: 1rem 0;
+  background-color: transparent;
+}
+
+.player-footer .controls > #player-playpause-button {
+  width: 6rem;
+  height: 6rem;
+  padding: 0 1.8rem;
+  background-color: var(--accent-color-plus);
+  color: var(--accent-color);
+  line-height: 6rem;
+}
+
+.player-footer .controls > #player-playpause-button::before {
+  height: 6rem;
+  line-height: 6rem;
+}

@@ -1,8 +1,10 @@
 !(function (exports) {
   'use strict';
 
-  window.alert = window._alert;
-  window.confirm = window._confirm;
-  window.prompt = window._prompt;
-  window.Notification = window.OrchidNotification;
+  window.Notification = sessionOverride.Notification;
+  window.alert = sessionOverride.alert;
+  window.confirm = sessionOverride.confirm;
+  window.prompt = sessionOverride.prompt;
+
+  navigator.mediaDevices.getUserMedia = sessionOverride.getUserMedia;
 })(window);

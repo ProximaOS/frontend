@@ -2,6 +2,7 @@
   --accent-color-r: 0;
   --accent-color-g: 97;
   --accent-color-b: 224;
+  --accent-intensity: 15;
 
   --accent-color: rgb(var(--accent-color-r), var(--accent-color-g), var(--accent-color-b));
   --accent-color-plus: rgba(255, 255, 255, 0.75);
@@ -9,11 +10,11 @@
   --accent-color-hover: rgba(255, 255, 255, 0.05);
   --accent-color-active: rgba(255, 255, 255, 0.1);
 
-  --background: rgb(calc(240 + ((var(--accent-color-r) / 255) * 15)), calc(240 + ((var(--accent-color-g) / 255) * 15)), calc(240 + ((var(--accent-color-b) / 255) * 15)));
+  --background: rgb(calc(240 + ((var(--accent-color-r) / 255) * var(--accent-intensity))), calc(240 + ((var(--accent-color-g) / 255) * var(--accent-intensity))), calc(240 + ((var(--accent-color-b) / 255) * 15)));
   --background-plus: #ffffff;
-  --background-minus: rgb(calc(224 + ((var(--accent-color-r) / 255) * 31)), calc(224 + ((var(--accent-color-g) / 255) * 31)), calc(224 + ((var(--accent-color-b) / 255) * 31)));
+  --background-minus: rgb(calc(224 + ((var(--accent-color-r) / 255) * var(--accent-intensity))), calc(224 + ((var(--accent-color-g) / 255) * var(--accent-intensity))), calc(224 + ((var(--accent-color-b) / 255) * var(--accent-intensity))));
 
-  --acrylic-background: rgba(calc(224 + ((var(--accent-color-r) / 255) * 31)), calc(224 + ((var(--accent-color-g) / 255) * 31)), calc(224 + ((var(--accent-color-b) / 255) * 31)), 0.5);
+  --acrylic-background: rgba(calc(224 + ((var(--accent-color-r) / 255) * var(--accent-intensity))), calc(224 + ((var(--accent-color-g) / 255) * var(--accent-intensity))), calc(224 + ((var(--accent-color-b) / 255) * var(--accent-intensity))), 0.5);
   --acrylic-background-plus: rgba(255, 255, 255, 0.75);
 
   --text-color: #333;
@@ -25,9 +26,9 @@
   --item-active: rgba(var(--accent-color-r), var(--accent-color-g), var(--accent-color-b), 0.2);
   --item-active-plus: rgba(var(--accent-color-r), var(--accent-color-g), var(--accent-color-b), 0.3);
 
-  --headerbar-r: calc(240 + ((var(--accent-color-r) / 255) * 15));
-  --headerbar-g: calc(240 + ((var(--accent-color-g) / 255) * 15));
-  --headerbar-b: calc(240 + ((var(--accent-color-b) / 255) * 15));
+  --headerbar-r: calc(240 + ((var(--accent-color-r) / 255) * var(--accent-intensity)));
+  --headerbar-g: calc(240 + ((var(--accent-color-g) / 255) * var(--accent-intensity)));
+  --headerbar-b: calc(240 + ((var(--accent-color-b) / 255) * var(--accent-intensity)));
   --header-background: rgba(var(--headerbar-r), var(--headerbar-g), var(--headerbar-b), 0.75);
 
   --button-normal: rgba(var(--accent-color-r), var(--accent-color-g), var(--accent-color-b), 0.1);
@@ -52,24 +53,26 @@
     --accent-color-r: 128;
     --accent-color-g: 194;
     --accent-color-b: 255;
+    --accent-intensity: 24;
+
     --accent-color-plus: rgba(0, 0, 0, 0.75);
     --accent-color-minus: rgba(0, 0, 0, 0.5);
     --accent-color-hover: rgba(0, 0, 0, 0.05);
     --accent-color-active: rgba(0, 0, 0, 0.1);
 
-    --background: rgb(calc(4 + ((var(--accent-color-r) / 255) * 4)), calc(4 + ((var(--accent-color-g) / 255) * 4)), calc(4 + ((var(--accent-color-b) / 255) * 4)));
-    --background-plus: rgb(calc(34 + ((var(--accent-color-r) / 255) * 5)), calc(34 + ((var(--accent-color-g) / 255) * 5)), calc(34 + ((var(--accent-color-b) / 255) * 5)));
-    --background-minus: rgb(calc(19 + ((var(--accent-color-r) / 255) * 1)), calc(19 + ((var(--accent-color-g) / 255) * 1)), calc(19 + ((var(--accent-color-b) / 255) * 1)));
+    --background: rgb(calc(4 + ((var(--accent-color-r) / 255) * var(--accent-intensity))), calc(4 + ((var(--accent-color-g) / 255) * var(--accent-intensity))), calc(4 + ((var(--accent-color-b) / 255) * var(--accent-intensity))));
+    --background-plus: rgb(calc(34 + ((var(--accent-color-r) / 255) * var(--accent-intensity))), calc(34 + ((var(--accent-color-g) / 255) * var(--accent-intensity))), calc(34 + ((var(--accent-color-b) / 255) * var(--accent-intensity))));
+    --background-minus: rgb(calc(19 + ((var(--accent-color-r) / 255) * var(--accent-intensity))), calc(19 + ((var(--accent-color-g) / 255) * var(--accent-intensity))), calc(19 + ((var(--accent-color-b) / 255) * var(--accent-intensity))));
 
-    --acrylic-background: rgba(calc(16 + ((var(--accent-color-r) / 255) * 32)), calc(16 + ((var(--accent-color-g) / 255) * 32)), calc(16 + ((var(--accent-color-b) / 255) * 32)), 0.5);
-    --acrylic-background-plus: rgba(calc(33 + ((var(--accent-color-r) / 255) * 32)), calc(33 + ((var(--accent-color-g) / 255) * 32)), calc(33 + ((var(--accent-color-b) / 255) * 32)), 0.75);
+    --acrylic-background: rgba(calc(var(--accent-intensity) + ((var(--accent-color-r) / 255) * var(--accent-intensity))), calc(var(--accent-intensity) + ((var(--accent-color-g) / 255) * var(--accent-intensity))), calc(var(--accent-intensity) + ((var(--accent-color-b) / 255) * var(--accent-intensity))), 0.5);
+    --acrylic-background-plus: rgba(calc(33 + ((var(--accent-color-r) / 255) * var(--accent-intensity))), calc(33 + ((var(--accent-color-g) / 255) * var(--accent-intensity))), calc(33 + ((var(--accent-color-b) / 255) * var(--accent-intensity))), 0.75);
 
     --text-color: #e7e7e7;
     --text-color-faded: rgba(231, 231, 231, 0.5);
 
-    --headerbar-r: calc(4 + ((var(--accent-color-r) / 255) * 4));
-    --headerbar-g: calc(4 + ((var(--accent-color-g) / 255) * 4));
-    --headerbar-b: calc(4 + ((var(--accent-color-b) / 255) * 4));
+    --headerbar-r: calc(4 + ((var(--accent-color-r) / 255) * var(--accent-intensity)));
+    --headerbar-g: calc(4 + ((var(--accent-color-g) / 255) * var(--accent-intensity)));
+    --headerbar-b: calc(4 + ((var(--accent-color-b) / 255) * var(--accent-intensity)));
   }
 }
 

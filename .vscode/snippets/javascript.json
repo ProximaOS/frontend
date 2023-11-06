@@ -1,0 +1,18 @@
+{
+  "OrchidOS Settings: Get Value": {
+    "prefix": "sget",
+    "body": [
+      "Settings.getValue(\"${1:myapp.setting.property}\", \"${2:mysettings.json}\").then((value) => {",
+      "$3",
+      "});"
+    ],
+    "description": "Get a JSON setting property from OrchidOS"
+  },
+  "OrchidOS Settings: Set Value": {
+    "prefix": "sset",
+    "body": [
+      "Settings.setValue(\"${1:myapp.setting.property}\", ${2:myValue}, \"${3:mysettings.json}\");"
+    ],
+    "description": "Set JSON setting property to specified value in OrchidOS"
+  }
+}

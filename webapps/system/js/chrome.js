@@ -20,6 +20,8 @@
     lastScroll: 0,
     currentScroll: 0,
 
+    ADDON_ICON_SIZE: 20 * window.devicePixelRatio,
+
     toolbar: function () {
       return this.chrome().querySelector('.toolbar');
     },
@@ -100,6 +102,10 @@
       return this.chrome().querySelector('.suggestions');
     },
 
+    addonsButtons: function () {
+      return this.chrome().querySelector('.addons-buttons');
+    },
+
     browserContainer: function () {
       return this.chrome().querySelector('.browser-container');
     },
@@ -128,7 +134,43 @@
       return this.chrome().querySelector('.ftu-dialog');
     },
 
-    init: function (chromeElement, url, isChromeEnabled = true) {
+    tablistPreview: function () {
+      return this.chrome().querySelector('.tablist-preview');
+    },
+
+    tablistPreviewImage: function () {
+      return this.chrome().querySelector('.tablist-preview .preview-image');
+    },
+
+    tablistPreviewTitle: function () {
+      return this.chrome().querySelector('.tablist-preview .title');
+    },
+
+    tablistPreviewIcon: function () {
+      return this.chrome().querySelector('.tablist-preview .icon');
+    },
+
+    tablistPreviewOrigin: function () {
+      return this.chrome().querySelector('.tablist-preview .origin');
+    },
+
+    tablistPreviewMediaNotice: function () {
+      return this.chrome().querySelector('.tablist-preview .media-notice');
+    },
+
+    tablistPreviewHibernationNotice: function () {
+      return this.chrome().querySelector('.tablist-preview .hibernation-notice');
+    },
+
+    addonDropdown: function () {
+      return this.chrome().querySelector('.addon-dropdown');
+    },
+
+    addonDropdownBrowser: function () {
+      return this.chrome().querySelector('.addon-dropdown .browser');
+    },
+
+    init: async function (chromeElement, url, isChromeEnabled = true) {
       this.chrome = function () {
         if (chromeElement) {
           return chromeElement;
@@ -139,88 +181,142 @@
         }
       };
 
-      fetch('http://system.localhost:8081/elements/chrome_interface.html').then((response) => {
-        response.text().then(async (htmlContent) => {
-          this.chrome().innerHTML = htmlContent;
+      const response = await fetch('http://system.localhost:8081/elements/chrome_interface.html');
+      const htmlContent = await response.text();
 
-          if (isChromeEnabled) {
-            this.chrome().classList.add('visible');
-            this.chrome().parentElement.classList.add('chrome-visible');
+      this.chrome().innerHTML = htmlContent;
 
-            Settings.getValue('ftu.browser.enabled').then((value) => {
-              if (value) {
-                this.openFtuDialog();
-              }
-            });
+      if (isChromeEnabled) {
+        this.chrome().classList.add('visible');
+        this.chrome().parentElement.classList.add('chrome-visible');
+
+        Settings.getValue('ftu.browser.enabled').then((value) => {
+          if (value) {
+            this.openFtuDialog();
           }
-
-          Settings.getValue('general.chrome.position').then((data) => {
-            this.chrome().classList.add(data);
-          });
-          Settings.addObserver('general.chrome.position', (data) => {
-            this.chrome().classList.remove('top');
-            this.chrome().classList.remove('bottom');
-            this.chrome().classList.add(data);
-          });
-
-          if (this.statusbar) {
-            this.statusbar.classList.remove('light');
-            this.statusbar.classList.remove('dark');
-          }
-          if (this.softwareButtons) {
-            this.softwareButtons.classList.remove('light');
-            this.softwareButtons.classList.remove('dark');
-          }
-          if (this.bottomPanel) {
-            this.bottomPanel.classList.remove('light');
-            this.bottomPanel.classList.remove('dark');
-          }
-
-          if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-            this.chrome().classList.add('dark');
-            this.chrome().parentElement.classList.add('dark');
-          } else {
-            this.chrome().classList.add('light');
-            this.chrome().parentElement.classList.add('light');
-          }
-
-          this.chrome().dataset.id = 0;
-          this.DEFAULT_URL = url;
-          CardPanel.init();
-          this.openNewTab(false, url);
-
-          const avatarImage = this.profileButton().querySelector('.avatar');
-          if ('OrchidServices' in window) {
-            if (await OrchidServices.isUserLoggedIn()) {
-              this.profileButton().classList.add('logged-in');
-              OrchidServices.getWithUpdate(`profile/${await OrchidServices.userId()}`, function (data) {
-                avatarImage.src = data.profilePicture;
-              });
-            }
-          }
-
-          if (this.statusbar) {
-            this.statusbar.addEventListener('dblclick', this.handleStatusbarDoubleClick.bind(this));
-          }
-
-          this.tablistHolder().addEventListener('contextmenu', this.handleTablistHolderContextMenu.bind(this));
-          this.sideTabsButton().addEventListener('click', this.handleSideTabsButton.bind(this));
-          this.addButton().addEventListener('click', this.openNewTab.bind(this, false));
-          this.urlbarInput().addEventListener('keydown', this.handleUrlbarInputKeydown.bind(this));
-          this.navbarBackButton().addEventListener('click', this.handleNavbarBackButton.bind(this));
-          this.navbarForwardButton().addEventListener('click', this.handleNavbarForwardButton.bind(this));
-          this.navbarReloadButton().addEventListener('click', this.handleNavbarReloadButton.bind(this));
-          this.navbarHomeButton().addEventListener('click', this.handleNavbarHomeButton.bind(this));
-          this.navbarTabsButton().addEventListener('click', this.handleNavbarTabsButton.bind(this));
-          this.navbarDownloadsButton().addEventListener('click', this.handleNavbarDownloadsButton.bind(this));
-          this.navbarLibraryButton().addEventListener('click', this.handleNavbarLibraryButton.bind(this));
-          this.navbarAddonsButton().addEventListener('click', this.handleNavbarAddonsButton.bind(this));
-          this.navbarOptionsButton().addEventListener('click', this.handleNavbarOptionsButton.bind(this));
-          this.urlbarSSLButton().addEventListener('click', this.handleUrlbarSSLButton.bind(this));
-          this.tabsViewCloseButton().addEventListener('click', this.handleTabsViewCloseButton.bind(this));
-          this.tabsViewAddButton().addEventListener('click', this.openNewTab.bind(this));
         });
+      }
+
+      Settings.getValue('general.chrome.position').then((data) => {
+        this.chrome().classList.add(data);
       });
+      Settings.addObserver('general.chrome.position', (data) => {
+        this.chrome().classList.remove('top');
+        this.chrome().classList.remove('bottom');
+        this.chrome().classList.add(data);
+      });
+
+      if (this.statusbar) {
+        this.statusbar.classList.remove('light');
+        this.statusbar.classList.remove('dark');
+      }
+      if (this.softwareButtons) {
+        this.softwareButtons.classList.remove('light');
+        this.softwareButtons.classList.remove('dark');
+      }
+      if (this.bottomPanel) {
+        this.bottomPanel.classList.remove('light');
+        this.bottomPanel.classList.remove('dark');
+      }
+
+      if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        this.chrome().classList.add('dark');
+        this.chrome().parentElement.classList.add('dark');
+      } else {
+        this.chrome().classList.add('light');
+        this.chrome().parentElement.classList.add('light');
+      }
+
+      this.chrome().dataset.id = 0;
+      this.DEFAULT_URL = url;
+      CardPanel.init();
+      this.openNewTab(false, url);
+
+      const avatarImage = this.profileButton().querySelector('.avatar');
+      if ('OrchidServices' in window) {
+        if (await OrchidServices.isUserLoggedIn()) {
+          this.profileButton().classList.add('logged-in');
+          OrchidServices.getWithUpdate(`profile/${await OrchidServices.userId()}`, function (data) {
+            avatarImage.src = data.profilePicture;
+          });
+        }
+      }
+
+      if (this.statusbar) {
+        this.statusbar.addEventListener('dblclick', this.handleStatusbarDoubleClick.bind(this));
+      }
+
+      this.tablistHolder().addEventListener('contextmenu', this.handleTablistHolderContextMenu.bind(this));
+      this.sideTabsButton().addEventListener('click', this.handleSideTabsButton.bind(this));
+      this.addButton().addEventListener('click', this.openNewTab.bind(this, false));
+      this.urlbarInput().addEventListener('keydown', this.handleUrlbarInputKeydown.bind(this));
+      this.navbarBackButton().addEventListener('click', this.handleNavbarBackButton.bind(this));
+      this.navbarForwardButton().addEventListener('click', this.handleNavbarForwardButton.bind(this));
+      this.navbarReloadButton().addEventListener('click', this.handleNavbarReloadButton.bind(this));
+      this.navbarHomeButton().addEventListener('click', this.handleNavbarHomeButton.bind(this));
+      this.navbarTabsButton().addEventListener('click', this.handleNavbarTabsButton.bind(this));
+      this.navbarDownloadsButton().addEventListener('click', this.handleNavbarDownloadsButton.bind(this));
+      this.navbarLibraryButton().addEventListener('click', this.handleNavbarLibraryButton.bind(this));
+      this.navbarAddonsButton().addEventListener('click', this.handleNavbarAddonsButton.bind(this));
+      this.navbarOptionsButton().addEventListener('click', this.handleNavbarOptionsButton.bind(this));
+      this.urlbarSSLButton().addEventListener('click', this.handleUrlbarSSLButton.bind(this));
+      this.tabsViewCloseButton().addEventListener('click', this.handleTabsViewCloseButton.bind(this));
+      this.tabsViewAddButton().addEventListener('click', this.openNewTab.bind(this));
+
+      document.onclick = () => {
+        this.addonDropdown().classList.remove('visible');
+      };
+
+      this.addonDropdownBrowser().addEventListener('dom-ready', () => {
+        const webContents = webview.getWebContents();
+        const scrollHeight = webContents.executeJavaScript('document.body.scrollHeight');
+        this.addonDropdown().style.height = scrollHeight + 'px';
+      });
+
+      const apps = await AppsManager.getAll();
+      const addons = apps.filter(app => app.manifest.role === 'addon');
+      for (let index = 0; index < addons.length; index++) {
+        const addon = addons[index];
+
+        const addonButton = document.createElement('button');
+        addonButton.title = addon.manifest.name;
+        this.addonsButtons().appendChild(addonButton);
+
+        addonButton.onclick = () => {
+          const chromeBox = this.chrome().getBoundingClientRect();
+          const addonDropdownBox = this.addonDropdown().getBoundingClientRect();
+          const addonButtonBox = addonButton.getBoundingClientRect();
+          let x = addonButtonBox.left - chromeBox.left;
+          const y = (addonButtonBox.top + addonButtonBox.height) - chromeBox.top;
+
+          if (x > (window.innerWidth / 2)) {
+            x = (addonButtonBox.left - addonDropdownBox.width - chromeBox.left) + addonButtonBox.width;
+          }
+
+          this.addonDropdown().style.left = x + 'px';
+          this.addonDropdown().style.top = y + 'px';
+          setTimeout(() => {
+            this.addonDropdown().classList.add('visible');
+          }, 16);
+
+          const url = new URL(addon.manifestUrl['en-US']);
+          this.addonDropdownBrowser().src = url.origin + addon.dropdown.launch_url;
+        };
+
+        const addonIcon = document.createElement('img');
+        addonButton.appendChild(addonIcon);
+
+        const entries = Object.entries(addon.manifest.dropdown.icons);
+        for (let index = 0; index < entries.length; index++) {
+          const entry = entries[index];
+
+          if (entry[0] <= this.ADDON_ICON_SIZE) {
+            continue;
+          }
+          const url = new URL(addon.manifestUrl['en-US']);
+          addonIcon.src = url.origin + '/' + entry[1];
+        }
+      }
     },
 
     handleStatusbarDoubleClick: function () {
@@ -543,6 +639,29 @@
         });
         browserView.remove();
       });
+
+      tab.addEventListener('mouseover', () => {
+        const chromeBox = this.chrome().getBoundingClientRect();
+        const tabBox = tab.getBoundingClientRect();
+        const x = tabBox.left - chromeBox.left;
+        const y = (tabBox.top + tabBox.height + 5) - chromeBox.top;
+
+        this.tablistPreview().style.left = x + 'px';
+        this.tablistPreview().style.top = y + 'px';
+
+        this.tablistPreview().classList.add('visible');
+        DisplayManager.screenshot(webview.getWebContentsId()).then((data) => {
+          this.tablistPreviewImage().src = data;
+        });
+        this.tablistPreviewTitle().textContent = webview.getTitle();
+        this.tablistPreviewIcon().src = favicon.src;
+        const url = new URL(webview.getURL());
+        this.tablistPreviewOrigin().textContent = url.origin;
+      });
+
+      tab.addEventListener('mouseleave', () => {
+        this.tablistPreview().classList.remove('visible');
+      });
     },
 
     updateSuggestions: function () {
@@ -691,7 +810,7 @@
             },
             {
               l10nId: 'contextMenu-bookmark',
-              icon: (await Settings.getValue('bookmarks', 'bookmarks.json')).some((item) => item.url === webview.getURL()) ? 'bookmarked' : 'bookmark',
+              icon: (await Settings.getValue('bookmarks', 'bookmarks.json')).filter((item) => item.url === webview.getURL()) ? 'bookmarked' : 'bookmark',
               onclick: this.requestBookmark.bind(this)
             }
           ]
@@ -863,7 +982,7 @@
       // Delaying the context menu opening so it won't fire the same time click
       // does and instantly hide as soon as it opens
       setTimeout(() => {
-        ContextMenu.show(x, y, menu);
+        ContextMenu.show(x, y, menu, this.navbarOptionsButton());
       }, 16);
     },
 
@@ -935,7 +1054,7 @@
       // Delaying the context menu opening so it won't fire the same time click
       // does and instantly hide as soon as it opens
       setTimeout(() => {
-        ContextMenu.show(x, y, menu);
+        ContextMenu.show(x, y, menu, this.urlbarSSLButton());
       }, 16);
     },
 

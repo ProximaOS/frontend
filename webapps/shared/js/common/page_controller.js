@@ -28,7 +28,7 @@
       }
 
       const id = button.dataset.pageId;
-      const selectedButton = document.querySelector('.page.selected');
+      const selectedButton = document.querySelector('.selected');
       const selectedPanel = document.querySelector('[role="panel"].visible');
 
       if (selectedButton) {

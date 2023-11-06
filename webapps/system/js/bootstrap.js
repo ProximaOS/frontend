@@ -42,6 +42,7 @@
         LoadingScreen.element.textContent = navigator.mozL10n.get('changingLanguage');
         LoadingScreen.element.addEventListener('transitionend', () => {
           navigator.mozL10n.language.code = value;
+          LoadingScreen.element.textContent = navigator.mozL10n.get('changingLanguage');
           LoadingScreen.hide();
         });
       }

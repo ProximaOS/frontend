@@ -14,6 +14,8 @@
 
 html[dir="rtl"] [data-icon="arrow-back"]::before,
 html[dir="rtl"] [data-icon="arrow-forward"]::before,
+html[dir="rtl"] [data-icon="chevron-back"]::before,
+html[dir="rtl"] [data-icon="chevron-forward"]::before,
 html[dir="rtl"] [data-icon="send"]::before {
   transform: scaleX(-1);
 }
@@ -264,6 +266,10 @@ html[dir="rtl"] [data-icon="send"]::before {
   -webkit-mask-image: url('images/bell.svg');
   mask-image: url('images/bell.svg');
 }
+[data-icon="bike-mode"]::before {
+  -webkit-mask-image: url('images/bike-mode.svg');
+  mask-image: url('images/bike-mode.svg');
+}
 [data-icon="bluetooth-off"]::before {
   -webkit-mask-image: url('images/bluetooth-off.svg');
   mask-image: url('images/bluetooth-off.svg');
@@ -275,6 +281,10 @@ html[dir="rtl"] [data-icon="send"]::before {
 [data-icon="bluetooth"]::before {
   -webkit-mask-image: url('images/bluetooth.svg');
   mask-image: url('images/bluetooth.svg');
+}
+[data-icon="book-mode"]::before {
+  -webkit-mask-image: url('images/book-mode.svg');
+  mask-image: url('images/book-mode.svg');
 }
 [data-icon="bookmark"]::before {
   -webkit-mask-image: url('images/bookmark.svg');
@@ -348,11 +358,13 @@ html[dir="rtl"] [data-icon="send"]::before {
   -webkit-mask-image: url('images/chevron-down.svg');
   mask-image: url('images/chevron-down.svg');
 }
-[data-icon="chevron-left"]::before {
+[data-icon="chevron-left"]::before,
+[data-icon="chevron-back"]::before {
   -webkit-mask-image: url('images/chevron-left.svg');
   mask-image: url('images/chevron-left.svg');
 }
-[data-icon="chevron-right"]::before {
+[data-icon="chevron-right"]::before,
+[data-icon="chevron-forward"]::before {
   -webkit-mask-image: url('images/chevron-right.svg');
   mask-image: url('images/chevron-right.svg');
 }
@@ -404,6 +416,14 @@ html[dir="rtl"] [data-icon="send"]::before {
   -webkit-mask-image: url('images/delete.svg');
   mask-image: url('images/delete.svg');
 }
+[data-icon="devices"]::before {
+  -webkit-mask-image: url('images/devices.svg');
+  mask-image: url('images/devices.svg');
+}
+[data-icon="direction"]::before {
+  -webkit-mask-image: url('images/direction.svg');
+  mask-image: url('images/direction.svg');
+}
 [data-icon="dislike"]::before {
   -webkit-mask-image: url('images/dislike.svg');
   mask-image: url('images/dislike.svg');
@@ -440,6 +460,30 @@ html[dir="rtl"] [data-icon="send"]::before {
   -webkit-mask-image: url('images/exitfullscreen.svg');
   mask-image: url('images/exitfullscreen.svg');
 }
+[data-icon="eye"]::before {
+  -webkit-mask-image: url('images/eye.svg');
+  mask-image: url('images/eye.svg');
+}
+[data-icon="feedback-bad"]::before {
+  -webkit-mask-image: url('images/feedback-bad.svg');
+  mask-image: url('images/feedback-bad.svg');
+}
+[data-icon="feedback-cursed"]::before {
+  -webkit-mask-image: url('images/feedback-cursed.svg');
+  mask-image: url('images/feedback-cursed.svg');
+}
+[data-icon="feedback-good"]::before {
+  -webkit-mask-image: url('images/feedback-good.svg');
+  mask-image: url('images/feedback-good.svg');
+}
+[data-icon="feedback-unsure"]::before {
+  -webkit-mask-image: url('images/feedback-unsure.svg');
+  mask-image: url('images/feedback-unsure.svg');
+}
+[data-icon="feedback"]::before {
+  -webkit-mask-image: url('images/feedback.svg');
+  mask-image: url('images/feedback.svg');
+}
 [data-icon="filter"]::before {
   -webkit-mask-image: url('images/filter.svg');
   mask-image: url('images/filter.svg');
@@ -463,6 +507,10 @@ html[dir="rtl"] [data-icon="send"]::before {
 [data-icon="folder"]::before {
   -webkit-mask-image: url('images/folder.svg');
   mask-image: url('images/folder.svg');
+}
+[data-icon="forbidden"]::before {
+  -webkit-mask-image: url('images/forbidden.svg');
+  mask-image: url('images/forbidden.svg');
 }
 [data-icon="fullscreen"]::before {
   -webkit-mask-image: url('images/fullscreen.svg');
@@ -491,6 +539,10 @@ html[dir="rtl"] [data-icon="send"]::before {
 [data-icon="keypad"]::before {
   -webkit-mask-image: url('images/keypad.svg');
   mask-image: url('images/keypad.svg');
+}
+[data-icon="languages"]::before {
+  -webkit-mask-image: url('images/languages.svg');
+  mask-image: url('images/languages.svg');
 }
 [data-icon="library"]::before {
   -webkit-mask-image: url('images/library.svg');
@@ -531,6 +583,10 @@ html[dir="rtl"] [data-icon="send"]::before {
 [data-icon="nfc"]::before {
   -webkit-mask-image: url('images/nfc.svg');
   mask-image: url('images/nfc.svg');
+}
+[data-icon="notification"]::before {
+  -webkit-mask-image: url('images/notification.svg');
+  mask-image: url('images/notification.svg');
 }
 [data-icon="options"]::before {
   -webkit-mask-image: url('images/options.svg');
@@ -628,13 +684,13 @@ html[dir="rtl"] [data-icon="send"]::before {
   -webkit-mask-image: url('images/search.svg');
   mask-image: url('images/search.svg');
 }
-[data-icon="seek-backward-alt"]::before {
-  -webkit-mask-image: url('images/seek-backward-alt.svg');
-  mask-image: url('images/seek-backward-alt.svg');
+[data-icon="seek-back-alt"]::before {
+  -webkit-mask-image: url('images/seek-back-alt.svg');
+  mask-image: url('images/seek-back-alt.svg');
 }
-[data-icon="seek-backward"]::before {
-  -webkit-mask-image: url('images/seek-backward.svg');
-  mask-image: url('images/seek-backward.svg');
+[data-icon="seek-back"]::before {
+  -webkit-mask-image: url('images/seek-back.svg');
+  mask-image: url('images/seek-back.svg');
 }
 [data-icon="seek-forward-alt"]::before {
   -webkit-mask-image: url('images/seek-forward-alt.svg');
@@ -708,9 +764,9 @@ html[dir="rtl"] [data-icon="send"]::before {
   -webkit-mask-image: url('images/simcard.svg');
   mask-image: url('images/simcard.svg');
 }
-[data-icon="skip-backward"]::before {
-  -webkit-mask-image: url('images/skip-backward.svg');
-  mask-image: url('images/skip-backward.svg');
+[data-icon="skip-back"]::before {
+  -webkit-mask-image: url('images/skip-back.svg');
+  mask-image: url('images/skip-back.svg');
 }
 [data-icon="skip-forward"]::before {
   -webkit-mask-image: url('images/skip-forward.svg');
@@ -767,6 +823,10 @@ html[dir="rtl"] [data-icon="send"]::before {
 [data-icon="translate"]::before {
   -webkit-mask-image: url('images/translate.svg');
   mask-image: url('images/translate.svg');
+}
+[data-icon="trending"]::before {
+  -webkit-mask-image: url('images/trending.svg');
+  mask-image: url('images/trending.svg');
 }
 [data-icon="unlock"]::before {
   -webkit-mask-image: url('images/unlock.svg');

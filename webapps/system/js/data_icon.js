@@ -2,14 +2,14 @@
   'use strict';
 
   const DataIcon = {
-    iconElement: document.getElementById('statusbar-data'),
+    iconElement: document.getElementById('statusbar-cellular-data'),
 
     init: function () {
       this.update();
     },
 
     update: function () {
-      this.iconElement.classList.remove('visible');
+      this.iconElement.classList.add('hidden');
 
       clearTimeout(this.timer);
       this.timer = setTimeout(this.update, 1000);

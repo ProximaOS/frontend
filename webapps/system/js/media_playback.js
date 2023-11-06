@@ -18,11 +18,11 @@
       this.title.textContent = event.detail.title;
       this.artist.textContent = event.detail.artist;
 
-      this.playPauseButton.dataset.icon = 'media-pause';
+      this.playPauseButton.dataset.icon = 'pause';
     },
 
     handleMediaPause: function (event) {
-      this.playPauseButton.dataset.icon = 'media-play';
+      this.playPauseButton.dataset.icon = 'play';
     }
   };
 

@@ -4,7 +4,7 @@
   const Grid = {
     gridColumns: 4,
     gridRows: 6,
-    HIDDEN_ROLES: ['homescreen', 'keyboard', 'system', 'theme'],
+    HIDDEN_ROLES: ['homescreen', 'keyboard', 'system', 'theme', 'addon'],
     APP_ICON_SIZE: 45,
 
     DEFAULT_DOCK_ICONS: [

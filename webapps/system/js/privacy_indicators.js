@@ -11,31 +11,25 @@
     },
 
     handleDeviceChange: function (event) {
-      const kind = event.detail.kind;
-      switch (kind) {
-        case 'video':
-          this.micIconElement.classList.add('hidden');
-          this.cameraIconElement.classList.add('hidden');
-          this.videoIconElement.classList.remove('hidden');
-          break;
+      const audio = event.detail.audio;
+      const video = event.detail.video;
 
-        case 'microphone':
-          this.micIconElement.classList.remove('hidden');
-          this.cameraIconElement.classList.add('hidden');
-          this.videoIconElement.classList.add('hidden');
-          break;
-
-        case 'camera':
-          this.micIconElement.classList.add('hidden');
-          this.cameraIconElement.classList.remove('hidden');
-          this.videoIconElement.classList.add('hidden');
-          break;
-
-        default:
-          this.micIconElement.classList.add('hidden');
-          this.cameraIconElement.classList.add('hidden');
-          this.videoIconElement.classList.add('hidden');
-          break;
+      if (audio && video) {
+        this.micIconElement.classList.add('hidden');
+        this.cameraIconElement.classList.add('hidden');
+        this.videoIconElement.classList.remove('hidden');
+      } else if (audio) {
+        this.micIconElement.classList.remove('hidden');
+        this.cameraIconElement.classList.add('hidden');
+        this.videoIconElement.classList.add('hidden');
+      } else if (video) {
+        this.micIconElement.classList.add('hidden');
+        this.cameraIconElement.classList.remove('hidden');
+        this.videoIconElement.classList.add('hidden');
+      } else {
+        this.micIconElement.classList.add('hidden');
+        this.cameraIconElement.classList.add('hidden');
+        this.videoIconElement.classList.add('hidden');
       }
     }
   };

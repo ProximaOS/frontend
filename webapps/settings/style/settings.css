@@ -1,38 +1,38 @@
 .profile-banner {
-  margin: 0 auto;
+  position: relative;
   width: calc(100% - 3rem);
   max-width: calc(var(--safezone-width) - 3rem);
+  margin: 0 auto;
   padding-top: 13.5rem;
-  position: relative;
 }
 
 .profile-banner > .banner {
   position: absolute;
-  left: 0;
   top: 0;
+  left: 0;
   width: 100%;
   height: 17.5rem;
-  background-color: #858585;
-  border-radius: 1.5rem;
   object-fit: cover;
+  border-radius: 1.5rem;
+  background-color: #858585;
 }
 
 .profile-banner > .container {
-  position: relative;
-  width: 100%;
-  padding: 0 2rem;
   box-sizing: border-box;
   display: flex;
+  position: relative;
   flex-direction: column;
+  width: 100%;
+  padding: 0 2rem;
   gap: 1rem;
 }
 
 .profile-banner > .container .avatar {
   width: 8rem;
   height: 8rem;
-  background-color: #858585;
   border-radius: 50%;
   outline: solid 0.5rem var(--background);
+  background-color: #858585;
 }
 
 .profile-banner > .container figcaption {
@@ -41,55 +41,55 @@
 }
 
 .profile-banner > .container figcaption .username {
-  width: 100%;
-  height: 2.2rem;
-  line-height: 2.2rem;
-  color: var(--text-color);
-  font-size: 1.6rem;
-  font-weight: normal;
   display: flex;
   align-items: center;
+  width: 100%;
+  height: 2.2rem;
+  color: var(--text-color);
+  font-weight: normal;
+  font-size: 1.6rem;
+  line-height: 2.2rem;
 }
 
 .profile-banner > .container figcaption .username::after {
-  content: '';
-  display: inline-block;
-  margin-inline-start: 0.5rem;
-  mask: no-repeat center / 1em;
   -webkit-mask: no-repeat center / 1em;
-  mask-image: url('images/verified.svg');
   -webkit-mask-image: url('images/verified.svg');
-  background-color: currentColor;
+  display: inline-block;
   width: 1em;
   height: 1em;
+  margin-inline-start: 0.5rem;
+  background-color: currentColor;
+  content: '';
+  mask: no-repeat center / 1em;
+  mask-image: url('images/verified.svg');
 }
 
 .profile-banner > .container figcaption .stats {
-  width: 100%;
-  height: 2rem;
-  line-height: 2rem;
-  color: var(--text-color-faded);
-  font-size: 1.4rem;
-  font-weight: normal;
   display: flex;
   align-items: center;
+  width: 100%;
+  height: 2rem;
+  color: var(--text-color-faded);
+  font-weight: normal;
+  font-size: 1.4rem;
+  line-height: 2rem;
 }
 
 .profile-banner > .container figcaption .stats > .separator {
   width: 0.4rem;
   height: 0.4rem;
+  margin: 0 0.5rem;
   border-radius: 50%;
   background-color: var(--text-color);
-  margin: 0 0.5rem;
 }
 
 .profile-banner > .container figcaption .status {
   width: 100%;
   height: 2rem;
-  line-height: 2rem;
   color: var(--text-color-faded);
-  font-size: 1.4rem;
   font-weight: normal;
+  font-size: 1.4rem;
+  line-height: 2rem;
 }
 
 #available-networks > li.connected {
@@ -111,31 +111,31 @@
 }
 
 #wallpaper {
-  margin: 0 auto;
-  width: calc(100% - 3rem);
-  max-width: calc(var(--safezone-width) - 3rem);
+  box-sizing: border-box;
   display: flex;
   align-items: center;
-  padding: 0.5rem;
-  box-sizing: border-box;
-  background-color: var(--background-plus);
-  border-radius: 1.5rem;
+  width: calc(100% - 3rem);
+  max-width: calc(var(--safezone-width) - 3rem);
   height: 20rem;
+  margin: 0 auto;
+  padding: 0.5rem;
+  border-radius: 1.5rem;
+  background-color: var(--background-plus);
 }
 
 #wallpaper > .wallpaper-image-container {
+  position: relative;
   width: 100%;
   height: 100%;
-  background-color: var(--accent-color);
-  position: relative;
   overflow: hidden;
   border-radius: 1rem;
+  background-color: var(--accent-color);
 }
 
 #wallpaper-image {
   position: absolute;
-  left: 0;
   top: 0;
+  left: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
@@ -153,38 +153,38 @@
 }
 
 #webapps-list li > img {
+  flex-shrink: 0;
   width: 3.6rem;
   height: 3.6rem;
-  background-color: #fff;
   border-radius: 25%;
   outline: solid 0.1rem var(--item-plus);
-  flex-shrink: 0;
+  background-color: #fff;
 }
 
 #webapps-list li > div {
-  width: 100%;
-  flex-grow: 1;
-  padding-inline-start: 1rem;
   display: flex;
+  flex-grow: 1;
   flex-direction: column;
+  width: 100%;
+  padding-inline-start: 1rem;
 }
 
 .webapp-header figure {
-  margin: 0 1.5rem;
-  width: calc(100% - 3rem);
   display: flex;
+  width: calc(100% - 3rem);
+  margin: 0 1.5rem;
   gap: 1rem;
 }
 
 .webapp-header figure > figcaption {
-  width: 100%;
   flex-grow: 1;
+  width: 100%;
 }
 
 #webappInfo-icon {
+  flex-shrink: 0;
   width: 6rem;
   height: 6rem;
-  flex-shrink: 0;
 }
 
 #webappInfo-name {
@@ -206,71 +206,71 @@
 }
 
 .battery-header {
-  padding: 1.5rem;
   box-sizing: border-box;
   width: 100%;
   max-width: 74.8rem;
   margin: 0 auto;
+  padding: 1.5rem;
 }
 
 #battery-percentage {
-  font-size: 4rem;
   color: var(--text-color);
+  font-size: 4rem;
 }
 
 #battery-charge-state {
-  font-size: 1.6rem;
   color: var(--text-color-faded);
+  font-size: 1.6rem;
 }
 
 #storage-used-space-progress {
-  margin: 0 auto 1.5rem;
   width: calc(100% - 3rem);
   max-width: calc(var(--safezone-width) - 3rem);
   height: 2.4rem;
-  background-color: #858585;
+  margin: 0 auto 1.5rem;
   border-radius: 1.2rem;
+  background-color: #858585;
 }
 
 #storage-used-space-progress > .fill {
+  display: inline-block;
   width: calc((100% * var(--progress, 0)) + 1.2rem);
   height: 100%;
-  background-color: hsl(var(--hue), 100%, 75%);
-  border-radius: 1.2rem;
-  box-shadow: 0 0.3rem 0.6rem hsla(var(--hue), 100%, 75%, 0.5);
-  display: inline-block;
   margin-inline-start: -1.2rem;
+  border-radius: 1.2rem;
+  background-color: hsl(var(--hue), 100%, 75%);
+  box-shadow: 0 0.3rem 0.6rem hsla(var(--hue), 100%, 75%, 0.5);
 }
 
 .aboutInfo-header {
-  margin: 1.5rem auto;
   width: max-content;
+  margin: 1.5rem auto;
 }
 
 .aboutInfo-header > .logo {
   width: 24rem;
   height: 24rem;
-  background: url(images/logo-light.png) no-repeat center / contain;
+  background: url(http://shared.localhost:8081/resources/branding/official/wordmark_light.svg) no-repeat center / contain;
 }
 
 @media screen and (prefers-color-scheme: dark) {
   .aboutInfo-header > .logo {
-    background-image: url(images/logo-dark.png);
+    background-image: url(http://shared.localhost:8081/resources/branding/official/wordmark.svg);
   }
 }
 
 @media screen and (min-width: 768px) {
   #root {
+    box-sizing: border-box;
+    visibility: visible;
+    z-index: 1;
     position: absolute;
     top: 0;
     width: 32rem;
     height: 100%;
-    opacity: 1;
-    visibility: visible;
     transform: none;
-    box-sizing: border-box;
-    z-index: 1;
     filter: none;
+    opacity: 1;
   }
   html[dir="ltr"] #root {
     left: 0;
@@ -286,9 +286,9 @@
 
   #root > .content > *:not(.scroll-content),
   #root > .content > .scroll-content > * {
+    visibility: visible;
     transform: translateY(0);
     opacity: 1;
-    visibility: visible;
   }
 
   [role="panel"]:not(#root) {

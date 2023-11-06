@@ -6,11 +6,11 @@
   min-width: 290px;
   max-width: 512px;
   max-height: calc(100% - 2rem);
-  margin: 1rem;
+  margin: 0;
   overflow: hidden;
   transform: translateY(-1.5rem);
   border-radius: 1.5rem;
-  box-shadow: 0 1.5rem 3rem rgba(0, 0, 0, 0.2);
+  box-shadow: 0 1.5rem 3rem rgba(0, 0, 0, 0.1);
   opacity: 0;
   transition: transform 0.5s cubic-bezier(0.2, 0.9, 0.1, 1), opacity 0.5s cubic-bezier(0.2, 0.9, 0.1, 1), visibility 0.5s ease;
 }

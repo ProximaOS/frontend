@@ -1,0 +1,161 @@
+#webapp-banner {
+  -webkit-mask-image: linear-gradient(to bottom, white, transparent);
+  display: block;
+  aspect-ratio: 16 / 9;
+  width: calc(100% - 3rem);
+  max-width: calc(var(--safezone-width) - 3rem);
+  margin: 0 auto;
+  border-radius: 1.5rem 1.5rem 0 0;
+  background-color: var(--background-plus);
+  mask-image: linear-gradient(to bottom, white, transparent);
+}
+
+.webapp-header {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: var(--safezone-width);
+  margin: 0 auto 1.5rem;
+  gap: 1rem;
+}
+
+.webapp-header figure {
+  display: flex;
+  width: calc(100% - 3rem);
+  height: 8rem;
+  margin: 0;
+  padding: 0 1.5rem;
+  gap: 1rem;
+}
+
+.webapp-header figure > img {
+  flex-shrink: 0;
+  width: 8rem;
+  height: 8rem;
+}
+
+.webapp-header figure > figcaption {
+  display: flex;
+  flex-grow: 1;
+  flex-direction: column;
+  justify-content: center;
+  width: 100%;
+  min-height: 8rem;
+}
+
+.webapp-header figure > figcaption > #webapp-name {
+  width: 100%;
+  color: var(--text-color);
+  font-weight: normal;
+  font-size: 2rem;
+  line-height: 2.6rem;
+}
+
+.webapp-header figure > figcaption > #webapp-authors {
+  width: 100%;
+  color: var(--text-color);
+  font-weight: normal;
+  font-size: 1.6rem;
+  line-height: 2.2rem;
+}
+
+.webapp-header figure > figcaption > #webapp-categories {
+  width: 100%;
+  color: var(--text-color);
+  font-weight: normal;
+  font-size: 1.6rem;
+  line-height: 2.2rem;
+}
+
+.webapp-header figure > figcaption > #webapp-authors > a[href],
+.webapp-header figure > figcaption > #webapp-categories > a[href] {
+  display: inline-block;
+  height: 1.8rem;
+  color: var(--accent-color);
+  font-weight: normal;
+  font-size: 1.6rem;
+  line-height: 2.2rem;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.webapp-header figure > figcaption > #webapp-authors > a[href]:hover,
+.webapp-header figure > figcaption > #webapp-categories > a[href]:hover {
+  box-shadow: 0 0.1rem 0 var(--accent-color);
+}
+
+.webapp-header .buttons {
+  height: 4rem;
+  padding: 0 1.5rem;
+}
+
+.webapp-row {
+  display: flex;
+  width: calc(100% - 3rem);
+  max-width: calc(var(--safezone-width) - 3rem);
+  margin: 1rem auto;
+  gap: 1rem;
+}
+
+.webapp-row .item {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.webapp-row .item > span {
+  width: 3rem;
+  height: 3rem;
+  margin: 0 auto 0.5rem;
+  color: var(--text-color);
+  font-size: 3rem;
+}
+
+.webapp-row .item > .text-holder {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.webapp-row .item > .text-holder p {
+  height: 2rem;
+  margin: 0;
+  color: var(--text-color-faded);
+  font-weight: normal;
+  font-size: 1.4rem;
+  line-height: 2rem;
+  text-align: center;
+}
+
+.webapp-row .item > .text-holder p:first-child {
+  color: var(--text-color);
+}
+
+#webapp-description {
+  width: calc(100% - 3rem);
+  max-width: calc(var(--safezone-width) - 3rem);
+  margin: 1rem auto;
+  color: var(--text-color);
+  font-weight: normal;
+  font-size: 1.6rem;
+  line-height: 2.2rem;
+}
+
+@media screen and (min-width: 768px) {
+  .webapp-header {
+    flex-direction: row;
+    align-items: center;
+  }
+
+  .webapp-header figure {
+    flex-grow: 1;
+  }
+
+  .webapp-header .buttons {
+    flex-shrink: 0;
+  }
+
+  .webapp-header .buttons > button {
+    width: max-content;
+  }
+}

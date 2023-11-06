@@ -117,8 +117,13 @@ input[type="timedate"]:focus {
 
 [role="search"] button[data-icon]::before {
   position: static;
-  height: 3rem;
+  height: 4rem;
   font-size: 2rem;
+  line-height: 4rem;
+}
+
+[role="search"] button[type="submit"][data-icon]::before {
+  height: 3rem;
   line-height: 3rem;
 }
 

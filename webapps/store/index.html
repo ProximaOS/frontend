@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -17,9 +18,11 @@
   <link rel="stylesheet" type="text/css" href="http://shared.localhost:8081/style/switches.css" />
   <link rel="stylesheet" type="text/css" href="http://shared.localhost:8081/style/toolbars.css" />
   <link rel="stylesheet" type="text/css" href="http://shared.localhost:8081/style/input_areas.css" />
+  <link rel="stylesheet" type="text/css" href="http://shared.localhost:8081/style/action_buttons.css" />
   <link rel="stylesheet" type="text/css" href="http://shared.localhost:8081/style/transitions.css" />
   <link rel="stylesheet" type="text/css" href="style/index.css" />
   <link rel="stylesheet" type="text/css" href="style/slideshow.css" />
+  <link rel="stylesheet" type="text/css" href="style/webapp.css" />
   <link rel="stylesheet" type="text/css" href="style/webapps.css" />
   <link rel="stylesheet" type="text/css" href="style/search.css" />
   <link rel="stylesheet" type="text/css" href="style/notifications.css" />
@@ -39,12 +42,32 @@
     content="af, ar, az, be, bg, bn, ca, cs, cy, da, de, el, eo, et, en-US, es, eu, fa, fi, fr, ga, gu, gl, he, hi, hr, ht, hu, id, is, it, ja, kn, ko, ku, lt, lv, mk, ms, nl, no, pl, pt, ro, ru, sq, sk, sl, sr, sw, ta, te, th, tl, tr, uk, ur, vi, yi, zh, fr-psaccent, ar-psbidi">
   <link rel="localization" href="/locales/main.{locale}.properties">
 </head>
+
 <body>
   <main id="app" role="app">
-    <section id="root" class="visible" role="panel">
+    <section id="root" role="panel">
+      <header role="header">
+        <h1>Store</h1>
+      </header>
+      <div class="content lists">
+        <ul>
+          <li data-icon="apps" data-page-id="content">
+            <p>All Webapps</p>
+          </li>
+          <li data-icon="trending" data-page-id="trending">
+            <p>Trending</p>
+          </li>
+          <li data-icon="download" data-page-id="installed">
+            <p>Installed</p>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <section id="content" class="visible" role="panel">
       <header class="compact" role="header">
         <div class="safezone">
-          <a href="#" data-icon="menu"></a>
+          <a href="#" data-icon="menu" data-page-id="root"></a>
           <div class="logo"></div>
           <div class="searchbox">
             <div class="placeholder" data-icon="search" data-l10n-id="type-here-to-search" data-page-id="search"></div>
@@ -68,8 +91,8 @@
     <section id="search" role="panel">
       <header class="compact" role="header">
         <div class="safezone">
-          <a href="#" class="back-button" data-icon="browser-back" data-page-id="root"></a>
-          <form action="" class="search" id="searchbox">
+          <a href="#" data-icon="arrow-back" data-page-id="content"></a>
+          <form action="" role="search" id="searchbox">
             <input type="text" name="" id="" data-l10n-id="type-here-to-search">
             <button type="reset" data-icon="close"></button>
             <button type="submit" data-icon="search"></button>
@@ -82,7 +105,7 @@
     <section id="notifications" role="panel">
       <header class="compact" role="header">
         <div class="safezone">
-          <a href="#" class="back-button" data-icon="browser-back" data-page-id="root"></a>
+          <a href="#" data-icon="arrow-back" data-page-id="content"></a>
           <h1 data-l10n-id="notifications"></h1>
         </div>
       </header>
@@ -90,23 +113,105 @@
     </section>
 
     <section id="webapp" role="panel">
-      <header class="compact" role="header">
+      <header class="compact auto-hide" role="header">
         <div class="safezone">
-          <a href="#" class="back-button" data-icon="browser-back" data-page-id="root"></a>
+          <a href="#" data-icon="arrow-back" data-page-id="content"></a>
+          <img src="" alt="" id="webapp-header-icon">
           <h1 id="webapp-header-name"></h1>
+          <menu role="toolbar">
+            <a href="#" data-icon="search" data-page-id="search"></a>
+          </menu>
         </div>
       </header>
       <div class="content lists">
-        <div id="webapp-description"></div>
+        <img src="" alt="" id="webapp-banner">
+
+        <div class="webapp-header">
+          <figure>
+            <img src="" alt="" id="webapp-icon">
+            <figcaption>
+              <div id="webapp-name"></div>
+              <div id="webapp-authors"></div>
+              <div id="webapp-categories"></div>
+            </figcaption>
+          </figure>
+          <div class="buttons">
+            <button class="recommend" data-l10n-id="webappGet"></button>
+            <button data-l10n-id="webappCancel"></button>
+          </div>
+        </div>
 
         <ul>
-          <li>
+          <li class="page">
+            <p data-l10n-id="webappPatchNotes"></p>
+          </li>
+        </ul>
+
+        <div class="webapp-row">
+          <div class="item">
+            <span data-icon="storage"></span>
+            <div class="text-holder">
+              <p>Install Size</p>
+              <p>12.8MB</p>
+            </div>
+          </div>
+          <div class="item">
+            <span data-icon="download"></span>
+            <div class="text-holder">
+              <p data-l10n-id="webappDownloads"></p>
+              <p id="webapp-downloads"></p>
+            </div>
+          </div>
+          <div class="item">
+            <span data-icon="privacy"></span>
+            <div class="text-holder">
+              <p>Privacy Rating</p>
+              <p>8/10</p>
+            </div>
+          </div>
+        </div>
+
+        <ul>
+          <li class="page" data-page-id="description">
+            <p data-l10n-id="webappDescription"></p>
+          </li>
+          <li class="page">
             <p data-l10n-id="webappLicense"></p>
             <p id="webapp-license"></p>
+          </li>
+          <li class="page">
+            <p data-l10n-id="webappGitRepo"></p>
+            <p id="webapp-git-repo"></p>
+          </li>
+          <li class="noclick">
+            <p data-l10n-id="webappIncludesAds"></p>
+            <p id="webapp-includes-ads"></p>
+          </li>
+          <li class="noclick">
+            <p data-l10n-id="webappIncludesTracking"></p>
+            <div id="webapp-included-tracking"></div>
           </li>
         </ul>
       </div>
     </section>
+
+    <section id="description" role="panel">
+      <header class="compact auto-hide" role="header">
+        <div class="safezone">
+          <a href="#" data-icon="arrow-back" data-page-id="webapp"></a>
+          <h1 data-l10n-id="description"></h1>
+        </div>
+      </header>
+      <div class="content">
+        <p id="webapp-description"></p>
+      </div>
+    </section>
+
+    <menu role="actions">
+      <button data-icon="upload"></button>
+      <button class="recommend" data-icon="feedback"></button>
+    </menu>
   </main>
 </body>
+
 </html>

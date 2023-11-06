@@ -77,7 +77,7 @@ html[dir="rtl"] [role="panel"].visible {
   scrollbar-width: none;
 }
 
-[role="panel"] > .content > *:not(.scroll-content),
+[role="panel"] > .content > *:not(.scroll-content, .scrollbar-track),
 [role="panel"] > .content > .scroll-content > * {
   visibility: hidden;
   transform: translateY(3rem);
@@ -85,7 +85,7 @@ html[dir="rtl"] [role="panel"].visible {
   transition: transform 0.5s cubic-bezier(0.2, 0.9, 0.1, 1) 0.5s, opacity 0.5s cubic-bezier(0.2, 0.9, 0.1, 1) 0.5s, visibility 0.5s ease 0.5s;
 }
 
-[role="panel"].visible > .content > *:not(.scroll-content),
+[role="panel"].visible > .content > *:not(.scroll-content, .scrollbar-track),
 [role="panel"].visible > .content > .scroll-content > * {
   visibility: visible;
   transform: translateY(0);
@@ -153,7 +153,7 @@ html[dir="rtl"] [role="panel"].visible {
 }
 
 [role="panel"] > .content .scrollbar-track {
-  margin: 0.25rem;
+  margin: 0.5rem;
   overflow: hidden;
   border-radius: 1rem;
   background-color: transparent;
@@ -161,13 +161,13 @@ html[dir="rtl"] [role="panel"].visible {
 
 [role="panel"] > .content .scrollbar-track-x {
   bottom: var(--software-buttons-height);
-  height: 0.75rem;
+  height: 0.5rem;
 }
 
 [role="panel"] > .content .scrollbar-track-y {
   top: calc(0.5rem + (5rem * var(--progress)));
   right: 0;
-  width: 0.75rem;
+  width: 0.5rem;
   height: calc(100% - 1rem - var(--software-buttons-height) - (5rem * var(--progress)));
 }
 html[dir="rtl"] [role="panel"] > .content .scrollbar-track-y {
@@ -182,8 +182,8 @@ html[dir="rtl"] [role="panel"] > .content .scrollbar-track-y {
 
 [role="panel"] > .content .scrollbar-thumb {
   box-sizing: border-box;
-  width: 0.75rem;
-  height: 0.75rem;
+  width: 0.5rem;
+  height: 0.5rem;
   border-radius: 1rem;
   background-clip: content-box;
   background-color: var(--text-color-faded);

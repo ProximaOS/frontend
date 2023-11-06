@@ -1,0 +1,94 @@
+.panel-safezone {
+  position: relative;
+  width: 100%;
+  max-width: 120rem;
+  height: 100%;
+  margin: 0 auto;
+}
+
+.panel-safezone [role="panel"] {
+  position: absolute;
+  left: 30rem;
+  width: calc(100% - 60rem);
+}
+
+[role="panel"] > .content > *:not(.scroll-content),
+[role="panel"] > .content > .scroll-content > * {
+  visibility: visible;
+  transform: none;
+  opacity: 1;
+}
+
+#root,
+#trending {
+  visibility: visible;
+  position: absolute;
+  top: 0;
+  width: 30rem;
+  height: 100%;
+  transform: none;
+  opacity: 1;
+}
+
+html[dir="ltr"] #root {
+  left: 0;
+}
+html[dir="rtl"] #root {
+  right: 0;
+}
+
+html[dir="ltr"] #trending {
+  right: 0;
+  left: unset;
+}
+html[dir="rtl"] #trending {
+  left: 0;
+}
+
+#home {
+  visibility: visible;
+  transform: none;
+  opacity: 1;
+}
+
+#post {
+  z-index: 10;
+  transform: none;
+  background-color: transparent;
+  opacity: 1;
+  transition: all 0.5s ease;
+}
+
+#post.visible {
+  background-color: var(--background);
+}
+
+#post > [role="header"] {
+  transform: scale(0.9);
+  opacity: 0;
+  transition: all 0.3s ease;
+}
+
+#post.visible > [role="header"] {
+  transform: scale(1);
+  opacity: 1;
+}
+
+#post > .content > *:not(.scroll-content),
+#post > .content > .scroll-content > * {
+  visibility: unset;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+
+#post.visible > .content > *:not(.scroll-content),
+#post.visible > .content > .scroll-content > * {
+  visibility: visible;
+  opacity: 1;
+  transition: none;
+}
+
+#post-button {
+  width: calc(100% - 3rem);
+  margin: 0 1.5rem;
+}

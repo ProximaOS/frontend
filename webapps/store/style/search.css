@@ -1,17 +1,17 @@
 #search {
   transform: translateX(0) !important;
-  opacity: 1;
   background-color: transparent;
+  opacity: 1;
 }
 
-#search [role="header"] {
+#search header[role="header"] {
   background-image: none;
 }
 
 #search form,
 #search .content {
-  transition: opacity 0.3s ease;
   opacity: 0;
+  transition: opacity 0.3s ease;
 }
 
 #search.visible form,
@@ -19,13 +19,13 @@
   opacity: 1;
 }
 
-#search [role="header"] .back-button {
-  transition: transform 0.3s ease, opacity 0.3s ease;
+#search header[role="header"] .back-button {
   transform: translateX(100%);
   opacity: 0;
+  transition: transform 0.3s ease, opacity 0.3s ease;
 }
 
-#search.visible [role="header"] .back-button {
+#search.visible header[role="header"] .back-button {
   transform: translateX(0);
   opacity: 1;
 }

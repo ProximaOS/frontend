@@ -11,15 +11,20 @@ input[type="range"] {
 
 input[type="range"]::-webkit-slider-thumb {
   appearance: none;
-  appearance: none;
   width: 2.4rem;
   height: 2.4rem;
-  border: 0.4rem solid var(--accent-color);
+  border: 0.4rem solid transparent;
   border-radius: 1.2rem;
+  background-clip: content-box;
+  background-color: var(--text-color);
+}
+
+input[type="range"]:not([value="0"])::-webkit-slider-thumb {
+  border: 0.4rem solid var(--accent-color);
   background: var(--accent-color) linear-gradient(0deg, var(--accent-color-plus), var(--accent-color-plus));
   box-shadow: -51.2rem 0 0 50rem var(--accent-color);
 }
-html[dir="rtl"] input[type="range"]::-webkit-slider-thumb {
+html[dir="rtl"] input[type="range"]:not([value="0"])::-webkit-slider-thumb {
   box-shadow: 51.2rem 0 0 50rem var(--accent-color);
 }
 

@@ -15,7 +15,7 @@
     bottomPanel: document.getElementById('bottom-panel'),
     dock: document.getElementById('dock'),
 
-    HIDDEN_ROLES: ['homescreen', 'keyboard', 'system', 'theme'],
+    HIDDEN_ROLES: ['homescreen', 'keyboard', 'system', 'theme', 'addon'],
     OPEN_ANIMATION: 'expand',
     CLOSE_ANIMATION: 'shrink',
     CLOSE_TO_HOMESCREEN_ANIMATION: 'shrink-to-homescreen',
@@ -225,6 +225,10 @@
       const windowDiv = document.createElement('div');
       windowDiv.id = manifest.role === 'homescreen' ? 'homescreen' : windowId;
       windowDiv.classList.add('appframe');
+
+      if (manifest.role === 'homescreen') {
+        this.homescreenElement = windowDiv;
+      }
 
       if (manifest.statusbar && manifest.statusbar !== 'normal') {
         windowDiv.classList.add(manifest.statusbar);
@@ -668,6 +672,10 @@
         return;
       }
 
+      if (platform() !== 'desktop') {
+        return;
+      }
+
       event.preventDefault();
       AppWindow.containerElement.classList.add('dragging');
       const windowDiv = document.getElementById(windowId);
@@ -688,7 +696,7 @@
       const offsetX = initialX - initialWindowX;
       const offsetY = initialY - initialWindowY;
 
-      windowDiv.style.transformOrigin = `${offsetX}px ${offsetY}px`;
+      // windowDiv.style.transformOrigin = `${offsetX}px ${offsetY}px`;
 
       // Attach event listeners for dragging
       document.addEventListener('mousemove', dragWindow);

@@ -17,7 +17,7 @@
       this.bootSound.play();
       this.bootSound.ontimeupdate = () => {
         if (this.isBooting && this.bootSound.currentTime >= 1.65) {
-          this.bootSound.playbackRate = this.bootSound.playbackRate * 0.02;
+          this.bootSound.playbackRate = this.bootSound.playbackRate * 0.2;
         }
       };
     },

@@ -21,7 +21,7 @@
 
   require('dotenv').config();
 
-  function registerEvent(ipcName, windowName) {
+  function registerEvent (ipcName, windowName) {
     ipcRenderer.on(ipcName, (event, data) => {
       const customEvent = new CustomEvent(windowName, {
         detail: data,
@@ -105,21 +105,12 @@
     TasksManager: null
   };
 
-  function verifyAccess(permission, mapName, value) {
-    manifests.checkPermission(permission).then((result) => {
-      if (result) {
-        api[mapName] = value;
-        contextBridge.exposeInMainWorld(mapName, value);
-      }
-    });
-  }
-
-  function setAccess(permission, mapName, property, value) {
-    manifests.checkPermission(permission).then((result) => {
-      if (result) {
-        api[mapName][property] = value;
-      }
-    });
+  function verifyAccess (permission, mapName, value) {
+    const result = manifests.checkPermission(permission);
+    if (result) {
+      api[mapName] = value;
+      contextBridge.exposeInMainWorld(mapName, value);
+    }
   }
 
   verifyAccess('environment', 'Environment', Environment);
@@ -140,22 +131,28 @@
   verifyAccess('display', 'DisplayManager', DisplayManager);
   verifyAccess('sms', 'SmsManager', SmsManager);
 
-  setAccess('device-storage:audio', 'SDCardManager', 'audioAccess', true);
-  setAccess('device-storage:books', 'SDCardManager', 'booksAccess', true);
-  setAccess('device-storage:downloads', 'SDCardManager', 'downloadsAccess', true);
-  setAccess('device-storage:movies', 'SDCardManager', 'moviesAccess', true);
-  setAccess('device-storage:music', 'SDCardManager', 'musicAccess', true);
-  setAccess('device-storage:others', 'SDCardManager', 'othersAccess', true);
-  setAccess('device-storage:photos', 'SDCardManager', 'photosAccess', true);
-  setAccess('device-storage:home', 'SDCardManager', 'homeAccess', true);
+  ipcRenderer.send('mediadevicechange', {});
 
   // contextBridge.exposeInMainWorld('_open', require('./v8js/open'));
-  contextBridge.exposeInMainWorld('OrchidNotification', require('./vanilla/notifications'));
-  contextBridge.exposeInMainWorld('_alert', require('./vanilla/modal_dialogs').alert);
-  contextBridge.exposeInMainWorld('_confirm', require('./vanilla/modal_dialogs').confirm);
-  contextBridge.exposeInMainWorld('_prompt', require('./vanilla/modal_dialogs').prompt);
+  const getUserMedia = navigator.mediaDevices.getUserMedia.bind(navigator.mediaDevices);
+  contextBridge.exposeInMainWorld('sessionOverride', {
+    Notification: require('./vanilla/notifications'),
+    alert: require('./vanilla/modal_dialogs').alert,
+    confirm: require('./vanilla/modal_dialogs').confirm,
+    prompt: require('./vanilla/modal_dialogs').prompt,
+    getUserMedia: async function (constraints) {
+      ipcRenderer.send('mediadevicechange', constraints);
+      const stream = await getUserMedia(constraints);
 
-  function playStereoAudio(audioFilePath, xPosition) {
+      stream.addEventListener('inactive', () => {
+        ipcRenderer.send('mediadevicechange', {});
+      });
+
+      return stream;
+    }
+  });
+
+  function playStereoAudio (audioFilePath, xPosition) {
     const audioContext = new (window.AudioContext || window.webkitAudioContext)();
     const stereoPanner = audioContext.createStereoPanner();
 
@@ -211,6 +208,7 @@
     require('./modules/media_playback');
     require('./modules/narrator');
     require('./modules/privacy_indicators');
+    require('./modules/seekbars_and_switches');
     require('./modules/settings_handler');
     require('./modules/stylesheet_ensurer');
     require('./modules/videoplayer');

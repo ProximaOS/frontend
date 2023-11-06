@@ -18,30 +18,23 @@
     yPosThreshold: window.innerHeight / 2,
     lastProgress: 0,
     currentProgress: 0,
+    isVisible: false,
 
     init: function () {
-      this.topPanel.addEventListener(
-        'mousedown',
-        this.onPointerDown.bind(this)
-      );
-      this.topPanel.addEventListener(
-        'touchstart',
-        this.onPointerDown.bind(this)
-      );
-      this.motionElement.addEventListener(
-        'mousedown',
-        this.onPointerDown.bind(this)
-      );
-      this.motionElement.addEventListener(
-        'touchstart',
-        this.onPointerDown.bind(this)
-      );
+      this.topPanel.addEventListener('mousedown', this.onPointerDown.bind(this));
+      this.topPanel.addEventListener('touchstart', this.onPointerDown.bind(this));
+      this.motionElement.addEventListener('mousedown', this.onPointerDown.bind(this));
+      this.motionElement.addEventListener('touchstart', this.onPointerDown.bind(this));
       document.addEventListener('mousemove', this.onPointerMove.bind(this));
       document.addEventListener('touchmove', this.onPointerMove.bind(this));
       document.addEventListener('mouseup', this.onPointerUp.bind(this));
       document.addEventListener('touchend', this.onPointerUp.bind(this));
-      document.addEventListener('mouseleave', this.onPointerUp.bind(this));
-      document.addEventListener('touchcancel', this.onPointerUp.bind(this));
+      document.addEventListener('mouseleave', this.onPointerCancel.bind(this));
+      document.addEventListener('touchcancel', this.onPointerCancel.bind(this));
+
+      if (platform() === 'desktop') {
+        this.statusbar.addEventListener('click', this.handleStatusbarClick.bind(this));
+      }
     },
 
     onPointerDown: function (event) {
@@ -50,41 +43,41 @@
       this.isDragging = true;
       this.screen.classList.add('utility-tray-visible');
       this.statusbar.classList.add('tray-open');
+
+      this.rowElements = this.controlCenter.querySelectorAll('.control-center-row');
+      for (let index = 0; index < this.rowElements.length; index++) {
+        const element = this.rowElements[index];
+        element.style.transitionDelay = index * 50 + 'ms';
+      }
     },
 
     onPointerMove: function (event) {
-      if (
-        event.target.nodeName === 'A' ||
-        event.target.nodeName === 'BUTTON' ||
-        event.target.nodeName === 'INPUT'
-      ) {
+      if (event.target.nodeName === 'A' || event.target.nodeName === 'BUTTON' || event.target.nodeName === 'INPUT') {
+        return;
+      }
+      if (!this.isDragging) {
+        return;
+      }
+      if (platform() === 'desktop') {
         return;
       }
 
-      if (this.isDragging) {
-        if (
-          event.target === this.topPanel &&
-          this.motionElement.classList.contains('visible')
-        ) {
-          if (
-            (event.clientX || event.touches[0].clientX) >=
-            window.innerWidth / 2
-          ) {
-            this.controlCenter.classList.add('hidden');
-            this.notifications.classList.remove('hidden');
-          } else {
-            this.controlCenter.classList.remove('hidden');
-            this.notifications.classList.add('hidden');
-          }
+      if (event.target === this.topPanel) {
+        if ((event.clientX || event.touches[0].clientX) >= window.innerWidth / 2) {
+          this.controlCenter.classList.add('hidden');
+          this.notifications.classList.remove('hidden');
+        } else {
+          this.controlCenter.classList.remove('hidden');
+          this.notifications.classList.add('hidden');
         }
-
-        this.currentY = event.clientY || event.touches[0].clientY;
-        const offsetY = this.startY - this.currentY;
-        const maxHeight = this.yPosThreshold;
-        const progress = (offsetY / maxHeight) * -1;
-
-        this.updateMotionProgress(progress); // Update motion element opacity
       }
+
+      this.currentY = event.clientY || event.touches[0].clientY;
+      const offsetY = this.startY - this.currentY;
+      const maxHeight = this.yPosThreshold;
+      const progress = (offsetY / maxHeight) * -1;
+
+      this.updateMotionProgress(progress); // Update motion element opacity
     },
 
     onPointerUp: function (event) {
@@ -93,7 +86,6 @@
       const maxHeight = this.yPosThreshold;
       let progress = ((offsetY / maxHeight) * -1) / 2;
       progress = this.lastProgress + progress;
-      console.log(progress);
 
       progress = Math.min(1, progress); // Limit progress between 0 and 1
 
@@ -138,8 +130,19 @@
     },
 
     onPointerCancel: function () {
+      if (!this.isDragging) {
+        return;
+      }
       this.resetMotionElement();
       this.isDragging = false;
+    },
+
+    handleStatusbarClick: function () {
+      if (!this.isVisible) {
+        this.showMotionElement();
+      } else {
+        this.hideMotionElement();
+      }
     },
 
     updateMotionProgress: function (progress) {
@@ -151,10 +154,7 @@
       this.statusbar.style.setProperty('--overscroll-progress', overflowProgress);
       this.titlebar.style.setProperty('--overscroll-progress', overflowProgress);
       this.motionElement.style.setProperty('--motion-progress', motionProgress);
-      this.motionElement.style.setProperty(
-        '--overscroll-progress',
-        overflowProgress
-      );
+      this.motionElement.style.setProperty('--overscroll-progress', overflowProgress);
 
       if (motionProgress <= this.threshold) {
         this.motionElement.classList.add('fade-out');
@@ -168,6 +168,7 @@
 
     hideMotionElement: function () {
       this.lastProgress = 0;
+      this.isVisible = false;
       this.screen.classList.remove('utility-tray-visible');
       this.statusbar.classList.remove('tray-open');
       this.motionElement.classList.remove('visible');
@@ -179,9 +180,20 @@
     },
 
     showMotionElement: function () {
+      this.lastProgress = 1;
+      this.isVisible = true;
       this.screen.classList.add('utility-tray-visible');
       this.statusbar.classList.add('tray-open');
       this.motionElement.classList.add('visible');
+
+      if (this.isDragging) {
+        return;
+      }
+      this.statusbar.style.setProperty('--motion-progress', 1);
+      this.statusbar.style.setProperty('--overscroll-progress', 0);
+      this.titlebar.style.setProperty('--overscroll-progress', 0);
+      this.motionElement.style.setProperty('--motion-progress', 1);
+      this.motionElement.style.setProperty('--overscroll-progress', 0);
     },
 
     resetMotionElement: function () {

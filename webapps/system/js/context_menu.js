@@ -6,7 +6,11 @@
     overlay: document.getElementById('context-menu'),
     containerElement: document.getElementById('context-menu-content-items'),
 
-    show: function (x, y, array) {
+    activeButton: null,
+
+    SOUND_CLICK: new Audio('/resources/sounds/menu_click.wav'),
+
+    show: function (x, y, array, button = null) {
       if (this.screen) {
         this.screen.classList.add('context-menu-visible');
       } else {
@@ -19,9 +23,18 @@
       this.overlay.addEventListener('click', this.onMenuClick.bind(this));
 
       this.createList(array, this.containerElement, x, y);
+
+      if (button) {
+        button.classList.add('active');
+        this.activeButton = button;
+      } else {
+        this.activeButton = null;
+      }
     },
 
     createList: function (array, parentElement, x, y) {
+      const fragment = document.createDocumentFragment();
+
       for (let index = 0; index < array.length; index++) {
         const item = array[index];
 
@@ -29,8 +42,12 @@
           continue;
         }
         const element = document.createElement('li');
-        parentElement.appendChild(element);
+        element.addEventListener('pointerdown', this.onPointerDown.bind(this));
+        element.addEventListener('pointerup', this.onPointerUp.bind(this));
+        element.addEventListener('pointerenter', (event) => this.onPointerEnter(event, element));
+        element.addEventListener('pointerleave', (event) => this.onPointerLeave(event, element));
         element.focus();
+        fragment.appendChild(element);
 
         switch (item.type) {
           case 'separator':
@@ -68,28 +85,63 @@
         }
       }
 
-      if (x >= window.innerWidth - this.overlay.offsetWidth) {
-        this.overlay.style.left = x - this.overlay.offsetWidth + 15 + 'px';
+      parentElement.appendChild(fragment);
+
+      if (x >= window.innerWidth / 2) {
+        if (this.activeButton) {
+          this.overlay.style.left = x - this.overlay.offsetWidth + this.activeButton.getBoundingClientRect().width + 'px';
+        } else {
+          this.overlay.style.left = x - this.overlay.offsetWidth + 'px';
+        }
+
         if (this.overlay.offsetLeft <= 0) {
           this.overlay.style.left = 0;
         }
       } else {
-        this.overlay.style.left = x - 10 + 'px';
+        this.overlay.style.left = x + 'px';
       }
-      if (y >= window.innerHeight - this.overlay.getBoundingClientRect().height - 10) {
-        this.overlay.style.top = y - this.overlay.getBoundingClientRect().height - 10 + 'px';
+      if (y >= window.innerHeight - this.overlay.getBoundingClientRect().height) {
+        this.overlay.style.top = y - this.overlay.getBoundingClientRect().height + 'px';
         this.overlay.classList.add('bottom');
         if (this.overlay.offsetTop <= 0) {
           this.overlay.style.top = 0;
         }
       } else {
-        this.overlay.style.top = y - 10 + 'px';
+        this.overlay.style.top = y + 'px';
         this.overlay.classList.remove('bottom');
       }
     },
 
     onClick: function (event) {
       this.hide();
+    },
+
+    onPointerDown: function (event) {
+      this.isDragging = true;
+      this.overlay.classList.add('dragging');
+    },
+
+    onPointerUp: function (event) {
+      this.isDragging = false;
+      this.overlay.classList.remove('dragging');
+    },
+
+    onPointerEnter: function (event, element) {
+      if (!this.isDragging) {
+        return;
+      }
+      element.classList.add('active');
+
+      this.SOUND_CLICK = new Audio('/resources/sounds/menu_click.wav');
+      this.SOUND_CLICK.currentTime = 0;
+      this.SOUND_CLICK.play();
+    },
+
+    onPointerLeave: function (event, element) {
+      if (!this.isDragging) {
+        return;
+      }
+      element.classList.remove('active');
     },
 
     onMenuClick: function (event) {
@@ -103,6 +155,10 @@
         document.body.classList.remove('context-menu-visible');
       }
       this.overlay.classList.remove('visible');
+
+      if (this.activeButton) {
+        this.activeButton.classList.remove('active');
+      }
     }
   };
 

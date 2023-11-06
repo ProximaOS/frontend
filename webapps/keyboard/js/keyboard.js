@@ -8,8 +8,8 @@
 
     currentLanguage: 'en',
 
-    keySound: new Audio('/resources/sounds/key.wav'),
-    keySpecialSound: new Audio('/resources/sounds/special.wav'),
+    SOUND_KEY: new Audio('/resources/sounds/key.wav'),
+    SOUND_KEY_SPECIAL: new Audio('/resources/sounds/special.wav'),
 
     init: function () {
       this.keys = document.getElementById('keys');
@@ -82,9 +82,7 @@
           }
 
           if (isCapsLock) {
-            keyButton.innerHTML = displayValue.startsWith('&')
-              ? displayValue
-              : displayValue.toUpperCase();
+            keyButton.innerHTML = displayValue.startsWith('&') ? displayValue : displayValue.toUpperCase();
           } else {
             keyButton.innerHTML = displayValue;
           }
@@ -94,16 +92,16 @@
 
           keyButton.addEventListener('pointerdown', () => {
             if (
-              (key.keyCode === KeyEvent.DOM_VK_CAPS_LOCKkey.keyCode) ===
-                KeyEvent.DOM_VK_ALT ||
+              key.keyCode === KeyEvent.DOM_VK_CAPS_LOCK ||
+              key.keyCode === KeyEvent.DOM_VK_ALT ||
               key.keyCode === KeyEvent.DOM_VK_BACK_SPACE ||
               key.keyCode === KeyEvent.DOM_VK_RETURN
             ) {
-              this.keySpecialSound.currentTime = 0;
-              this.keySpecialSound.play();
+              this.SOUND_KEY_SPECIAL.currentTime = 0;
+              this.SOUND_KEY_SPECIAL.play();
             } else {
-              this.keySound.currentTime = 0;
-              this.keySound.play();
+              this.SOUND_KEY.currentTime = 0;
+              this.SOUND_KEY.play();
             }
           });
 

@@ -33,5 +33,7 @@
     }
   }
 
+  OrchidNotification.prototype.permission = 'granted';
+
   module.exports = OrchidNotification;
 })();

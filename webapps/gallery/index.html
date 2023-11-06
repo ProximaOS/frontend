@@ -21,6 +21,7 @@
   <link rel="stylesheet" type="text/css" href="style/memories.css" />
   <script defer type="text/javascript" src="http://shared.localhost:8081/js/panels.js"></script>
   <script defer type="text/javascript" src="http://shared.localhost:8081/js/file_indexer.js"></script>
+  <script defer type="text/javascript" src="http://shared.localhost:8081/js/common/page_controller.js"></script>
   <script type="text/javascript" src="js/bootstrap.js"></script>
   <script defer type="text/javascript" src="js/views.js"></script>
   <script defer type="text/javascript" src="js/views/library.js"></script>
@@ -39,19 +40,19 @@
   <main id="app" role="app">
     <nav role="tablist">
       <ul>
-        <li><a href="#library" id="tab-library" data-icon="library" data-l10n-id="library" class="selected"></a></li>
-        <li><a href="#folders" id="tab-folders" data-icon="folder" data-l10n-id="folders"></a></li>
-        <li><a href="#memories" id="tab-memories" data-icon="memories" data-l10n-id="memories"></a></li>
+        <li><a href="#library" class="selected" data-icon="library" data-l10n-id="library" data-page-id="library"></a></li>
+        <li><a href="#folders" data-icon="folder" data-l10n-id="folders" data-page-id="folders"></a></li>
+        <li><a href="#memories" data-icon="memories" data-l10n-id="memories" data-page-id="memories"></a></li>
       </ul>
     </nav>
 
     <div id="views">
       <section id="library" class="visible" role="panel">
-        <header class="header">
+        <header role="header">
           <div class="safezone">
             <h1 data-l10n-id="title"></h1>
             <menu role="toolbar">
-              <a href="#" data-icon="more"></a>
+              <a href="#" data-icon="options"></a>
             </menu>
           </div>
         </header>
@@ -65,7 +66,7 @@
           <div class="safezone">
             <h1 data-l10n-id="folders"></h1>
             <menu role="toolbar">
-              <a href="#" data-icon="more"></a>
+              <a href="#" data-icon="options"></a>
             </menu>
           </div>
         </header>
@@ -77,7 +78,7 @@
           <div class="safezone">
             <h1 data-l10n-id="memories"></h1>
             <menu role="toolbar">
-              <a href="#" data-icon="more"></a>
+              <a href="#" data-icon="options"></a>
             </menu>
           </div>
         </header>

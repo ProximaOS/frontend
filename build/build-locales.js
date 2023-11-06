@@ -1,10 +1,10 @@
 const fs = require('fs');
 const path = require('path');
 const { promisify } = require('util');
-const translate = require('translate');
+const translate = require('google-translate-api');
 const { glob } = require('glob');
 
-module.exports = function (sourcePath, lang) {
+function translateFiles (sourcePath, lang) {
   const readFileAsync = promisify(fs.readFile);
   const writeFileAsync = promisify(fs.writeFile);
 
@@ -26,23 +26,17 @@ module.exports = function (sourcePath, lang) {
       for (const line of localeLines) {
         if (line.includes('=') && !line.startsWith('#')) {
           const [key, value] = line.split('=').map((str) => str.trim());
-          try {
-            const translation = await translate(value, {
-              from: 'en',
-              to: lang,
-              engine: 'google',
-              key: 'AIzaSyBJHGk4_lPVNEyL6-n_VkbfmOGuC2bd8dQ' // Replace with your Google Translate API key
+          translate(value, { from: 'en', to: lang })
+            .then((res) => {
+              console.log(res.text);
+              translatedLines.push(`${key} = ${res.text}`);
+            })
+            .catch((err) => {
+              console.error(err);
+              translatedLines.push(`${key} = ${text}`);
             });
-            translatedLines.push(`${key} = ${translation}`);
-          } catch (e) {
-            console.error('[translator] Failed to translate:', e);
-            // You can choose to return the original text or throw an error here
-            translatedLines.push(`${key} = ${text}`);
-          }
 
-          console.log(
-            `[translator, ${key}] Translated "${value}" successfully to "${translation}"...`
-          );
+          console.log(`[translator, ${key}] Translated "${value}" successfully to "${translation}"...`);
         } else {
           translatedLines.push(line);
         }
@@ -51,4 +45,16 @@ module.exports = function (sourcePath, lang) {
       await writeFileAsync(filepath, translatedLines.join('\n'), 'utf8');
     }
   });
-};
+}
+
+module.exports = translateFiles;
+
+const sourcePath = process.argv[2]; // Assuming sourcePath is the first argument
+const lang = process.argv[3]; // Assuming lang is the second argument
+
+if (!sourcePath || !lang) {
+  console.error('Usage: node translate-script.js <sourcePath> <lang>');
+  process.exit(1);
+}
+
+translate(sourcePath, lang);

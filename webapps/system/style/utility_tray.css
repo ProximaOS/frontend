@@ -170,8 +170,10 @@
   padding-bottom: var(--software-buttons-height);
 }
 
-#screen:not(.desktop) #control-center.hidden,
-#screen:not(.desktop) #notifications.hidden {
+#control-center.hidden,
+#notifications.hidden,
+#utility-tray.panel-open #control-center,
+#utility-tray.panel-open #notifications {
   visibility: hidden;
   opacity: 0;
 }
@@ -184,7 +186,6 @@
   padding: 0 1.5rem;
   gap: 1rem;
   transform: scale(calc(0.9 + (0.1 * var(--motion-progress, 0))));
-  filter: blur(calc(20px * (1 - var(--motion-progress, 0))));
   opacity: var(--motion-progress, 0);
   transition: transform 0.3s ease, opacity 0.3s ease;
 }

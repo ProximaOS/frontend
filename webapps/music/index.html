@@ -13,20 +13,25 @@
   <link rel="stylesheet" type="text/css" href="http://shared.localhost:8081/style/headers.css" />
   <link rel="stylesheet" type="text/css" href="http://shared.localhost:8081/style/tablists.css" />
   <link rel="stylesheet" type="text/css" href="http://shared.localhost:8081/style/buttons.css" />
+  <link rel="stylesheet" type="text/css" href="http://shared.localhost:8081/style/seekbars.css" />
   <link rel="stylesheet" type="text/css" href="style/music.css" />
   <link rel="stylesheet" type="text/css" href="style/grid.css" />
   <link rel="stylesheet" type="text/css" href="style/playlists.css" />
   <link rel="stylesheet" type="text/css" href="style/artists.css" />
   <link rel="stylesheet" type="text/css" href="style/albums.css" />
+  <link rel="stylesheet" type="text/css" href="style/player.css" />
   <script type="text/javascript" src="http://shared.localhost:8081/js/jsmediatags.js"></script>
   <script defer type="text/javascript" src="http://shared.localhost:8081/js/panels.js"></script>
   <script defer type="text/javascript" src="http://shared.localhost:8081/js/file_indexer.js"></script>
+  <script defer type="text/javascript" src="http://shared.localhost:8081/js/lazy_loader.js"></script>
+  <script defer type="text/javascript" src="http://shared.localhost:8081/js/common/page_controller.js"></script>
   <script type="text/javascript" src="js/bootstrap.js"></script>
   <script defer type="text/javascript" src="js/views.js"></script>
   <script defer type="text/javascript" src="js/views/grid.js"></script>
   <script defer type="text/javascript" src="js/views/playlists.js"></script>
   <script defer type="text/javascript" src="js/views/artists.js"></script>
   <script defer type="text/javascript" src="js/views/albums.js"></script>
+  <script defer type="text/javascript" src="js/player.js"></script>
 
   <script type="text/javascript" src="http://shared.localhost:8081/js/l10n.js"></script>
   <meta name="defaultLanguage" content="en-US">
@@ -35,57 +40,92 @@
   <link rel="localization" href="/locales/main.{locale}.properties">
 </head>
 <body>
-  <div id="app" class="app">
-    <div class="tablist">
+  <main id="app" role="app">
+    <div role="tablist">
       <ul>
-        <li><a href="#grid" id="tab-grid" data-icon="music-gridview" data-l10n-id="grid" class="selected"></a></li>
-        <li><a href="#playlists" id="tab-playlists" data-icon="music-playlist" data-l10n-id="playlists"></a></li>
-        <li><a href="#artists" id="tab-artists" data-icon="music-artist" data-l10n-id="artists"></a></li>
-        <li><a href="#albums" id="tab-albums" data-icon="music-album" data-l10n-id="albums"></a></li>
+        <li><a href="#grid" class="selected" data-icon="music-gridview" data-l10n-id="grid" data-page-id="grid"></a></li>
+        <li><a href="#playlists" data-icon="music-playlist" data-l10n-id="playlists" data-page-id="playlists"></a></li>
+        <li><a href="#artists" data-icon="music-artist" data-l10n-id="artists" data-page-id="artists"></a></li>
+        <li><a href="#albums" data-icon="music-album" data-l10n-id="albums" data-page-id="albums"></a></li>
       </ul>
     </div>
 
     <div id="views">
-      <div id="grid" class="panel visible">
-        <div class="headerbar">
+      <section id="grid" class="visible" role="panel">
+        <header role="header">
           <h1 data-l10n-id="title"></h1>
-          <menu type="toolbar">
-            <a href="#" data-icon="more"></a>
+          <menu role="toolbar">
+            <a href="#" data-icon="options"></a>
           </menu>
-        </div>
+        </header>
         <div id="grid-container" class="content"></div>
-      </div>
+      </section>
 
-      <div id="playlists" class="panel">
-        <div class="headerbar">
+      <section id="playlists" role="panel">
+        <header role="header">
           <h1 data-l10n-id="playlists"></h1>
-          <menu type="toolbar">
-            <a href="#" data-icon="more"></a>
+          <menu role="toolbar">
+            <a href="#" data-icon="options"></a>
           </menu>
-        </div>
+        </header>
         <div class="content"></div>
-      </div>
+      </section>
 
-      <div id="artists" class="panel">
-        <div class="headerbar">
+      <section id="artists" role="panel">
+        <header role="header">
           <h1 data-l10n-id="artists"></h1>
-          <menu type="toolbar">
-            <a href="#" data-icon="more"></a>
+          <menu role="toolbar">
+            <a href="#" data-icon="options"></a>
           </menu>
-        </div>
+        </header>
         <div class="content"></div>
-      </div>
+      </section>
 
-      <div id="albums" class="panel">
-        <div class="headerbar">
+      <section id="albums" role="panel">
+        <header role="header">
           <h1 data-l10n-id="albums"></h1>
-          <menu type="toolbar">
-            <a href="#" data-icon="more"></a>
+          <menu role="toolbar">
+            <a href="#" data-icon="options"></a>
           </menu>
-        </div>
+        </header>
         <div class="content"></div>
-      </div>
+      </section>
     </div>
-  </div>
+
+    <section id="player" role="panel">
+      <header class="compact" role="header">
+        <a href="#" id="player-back-button" data-icon="arrow-back"></a>
+      </header>
+      <div class="content">
+        <div class="player-cols">
+          <div class="player-artwork">
+            <img src="" alt="" id="player-artwork-image">
+          </div>
+
+          <div class="player-footer">
+            <!-- <form action="" class="star-rating">
+              <input type="radio" name="" id="" value="1">
+              <input type="radio" name="" id="" value="2">
+              <input type="radio" name="" id="" value="3">
+              <input type="radio" name="" id="" value="4">
+              <input type="radio" name="" id="" value="5">
+            </form> -->
+            <div class="track">
+              <div id="player-track-current-time">00:00</div>
+              <input type="range" name="" id="player-track-slider">
+              <div id="player-track-duration">00:00</div>
+            </div>
+            <div class="controls">
+              <button id="player-lyrics-button" class="small" data-icon="reader-mode"></button>
+              <button id="player-skip-back-button" data-icon="skip-back"></button>
+              <button id="player-playpause-button" data-icon="play"></button>
+              <button id="player-skip-forward-button" data-icon="skip-forward"></button>
+              <button id="player-fine-tune-button" class="small" data-icon="settings"></button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
 </body>
 </html>

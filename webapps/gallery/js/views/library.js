@@ -62,9 +62,8 @@
           image.src = imageSrc;
           item.appendChild(image);
 
-          window.SDCardManager.getFileStats(path).then((stats) => {
-            this.setCategory(stats.birthtime).appendChild(item);
-          });
+          const stats = window.SDCardManager.getFileStats(path);
+          this.setCategory(stats.birthtime).appendChild(item);
         });
     },
 

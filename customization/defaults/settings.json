@@ -51,12 +51,12 @@
   "orchidaccount.username": "",
   "ftu.enabled": false,
   "files.quick-access": [
-    { "name": "home", "icon": "home_folder", "path": "/" },
-    { "name": "audio", "icon": "audio_folder", "path": "/audio" },
-    { "name": "books", "icon": "books_folder", "path": "/books" },
-    { "name": "downloads", "icon": "downloads_folder", "path": "/downloads" },
-    { "name": "movies", "icon": "movies_folder", "path": "/movies" },
-    { "name": "photos", "icon": "photos_folder", "path": "/photos" },
-    { "name": "others", "icon": "others_folder", "path": "/others" }
+    { "name": "home", "class_name": "home_folder", "path": "/" },
+    { "name": "audio", "class_name": "audio_folder", "path": "/audio" },
+    { "name": "books", "class_name": "books_folder", "path": "/books" },
+    { "name": "downloads", "class_name": "downloads_folder", "path": "/downloads" },
+    { "name": "movies", "class_name": "movies_folder", "path": "/movies" },
+    { "name": "photos", "class_name": "photos_folder", "path": "/photos" },
+    { "name": "others", "class_name": "others_folder", "path": "/others" }
   ]
 }

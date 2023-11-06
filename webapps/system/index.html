@@ -18,6 +18,7 @@
   <link rel="stylesheet" type="text/css" href="http://shared.localhost:8081/style/card_panels.css" />
   <link rel="stylesheet" type="text/css" href="http://shared.localhost:8081/style/transitions.css" />
   <link rel="stylesheet" type="text/css" href="http://shared.localhost:8081/style/counters.css" />
+  <link rel="stylesheet" type="text/css" href="http://shared.localhost:8081/style/achievements.css" />
 
   <!-- Stylesheets -->
   <link rel="stylesheet" type="text/css" href="dist/main.bundle.css">
@@ -129,6 +130,7 @@
   <script defer type="text/javascript" src="js/login_ui.js"></script>
   <script defer type="text/javascript" src="js/privacy_indicators.js"></script>
   <script defer type="text/javascript" src="js/app_launcher.js"></script>
+  <script defer type="text/javascript" src="js/achievements.js"></script>
   <script defer type="text/javascript" src="js/lockscreen/motion.js"></script>
   <script defer type="text/javascript" src="js/lockscreen/clock.js"></script>
   <script defer type="text/javascript" src="js/lockscreen/date.js"></script>
@@ -151,14 +153,14 @@
       <video src="" id="splashscreen-video"></video>
     </div>
 
+    <div id="loading-screen" data-z-index-layer="loading-screen"></div>
+
     <div id="wallpapers">
       <img src="" alt="" id="wallpaper-image"></img>
       <video src="" id="wallpaper-video"></video>
 
       <div class="blur-overlay"></div>
     </div>
-
-    <div id="loading-screen" data-z-index-layer="loading-screen"></div>
 
     <div id="statusbar" data-z-index-layer="statusbar">
       <div class="statusbar-icons">
@@ -246,11 +248,11 @@
                 <div id="media-playback-title"></div>
                 <div id="media-playback-artist"></div>
                 <div class="buttons">
-                  <button id="media-playback-previous" data-icon="media-skipbackward"
+                  <button id="media-playback-previous" data-icon="skip-back"
                     data-l10n-id="mediaPlayback-skipBackward"></button>
-                  <button id="media-playback-playpause" data-icon="media-play"
+                  <button id="media-playback-playpause" data-icon="play"
                     data-l10n-id="mediaPlayback-play"></button>
-                  <button id="media-playback-next" data-icon="media-skipforward"
+                  <button id="media-playback-next" data-icon="skip-forward"
                     data-l10n-id="mediaPlayback-skipForward"></button>
                 </div>
               </div>
@@ -339,16 +341,16 @@
         </div>
 
         <div id="utility-tray-wifi" class="panel">
-          <div class="headerbar compact">
-            <a href="#" id="utility-tray-wifi-back-button" data-icon="back"></a>
+          <div class="header">
+            <a href="#" id="utility-tray-wifi-back-button" data-icon="chevron-back"></a>
             <h1 data-l10n-id="wifi"></h1>
           </div>
           <div class="content"></div>
           <div class="buttons"><button data-l10n-id="settings"></button></div>
         </div>
         <div id="utility-tray-bluetooth" class="panel">
-          <div class="headerbar compact">
-            <a href="#" id="utility-tray-bluetooth-back-button" data-icon="back"></a>
+          <div class="header">
+            <a href="#" id="utility-tray-bluetooth-back-button" data-icon="chevron-back"></a>
             <h1 data-l10n-id="bluetooth"></h1>
           </div>
           <div class="content"></div>
@@ -373,6 +375,17 @@
       </div>
       <div id="notification-media" class="media"></div>
       <div id="notification-actions" class="actions"></div>
+    </div>
+
+    <div id="achievement-toaster" class="achievement">
+      <div class="content">
+        <img src="" alt="" id="achievement-toaster-keyart" class="keyart">
+        <div class="text-holder">
+          <div id="achievement-toaster-title" class="title">Achievement Gained</div>
+          <div id="achievement-toaster-detail" class="name">Unlawful Intersection</div>
+          <div id="achievement-toaster-points" class="points">30</div>
+        </div>
+      </div>
     </div>
 
     <div id="cards-view" data-z-index-layer="cards-view">
@@ -523,7 +536,7 @@
       </div>
     </div>
 
-    <div id="dashboard">
+    <div id="dashboard" data-z-index-layer="dashboard">
       <webview id="dashboard-browser"></webview>
     </div>
 

@@ -23,9 +23,9 @@
     brightnessSlider: document.getElementById('brightness-slider'),
 
     AUDIO_PROFILES: [
-      'ringing',
-      'vibrate',
-      'muted'
+      { id: 'ringing', icon: 'bell' },
+      { id: 'vibrate', icon: 'vibrate' },
+      { id: 'muted', icon: 'bell-off' }
     ],
 
     audioIndex: 0,
@@ -67,13 +67,13 @@
 
     handleWifiButtonHold: function () {
       Transitions.scale(this.wifiButton.parentElement, this.wifiPanel);
-      this.controlCenter.classList.add('hidden');
+      this.element.classList.add('panel-open');
       this.wifiPanel.classList.add('visible');
     },
 
     handleWifiBackButton: function () {
       Transitions.scale(this.wifiPanel, this.wifiButton.parentElement);
-      this.controlCenter.classList.remove('hidden');
+      this.element.classList.remove('panel-open');
       this.wifiPanel.classList.remove('visible');
     },
 
@@ -103,8 +103,8 @@
 
     handleAudioButton: function () {
       this.audioIndex = (this.audioIndex - 1 + this.AUDIO_PROFILES.length) % this.AUDIO_PROFILES.length;
-      this.audioButton.className = this.AUDIO_PROFILES[this.audioIndex];
-      if (this.AUDIO_PROFILES[this.audioIndex] !== 'muted') {
+      this.audioButton.children[0].dataset.icon = this.AUDIO_PROFILES[this.audioIndex].icon;
+      if (this.AUDIO_PROFILES[this.audioIndex].id !== 'muted') {
         this.audioButton.parentElement.classList.add('enabled');
       } else {
         this.audioButton.parentElement.classList.remove('enabled');

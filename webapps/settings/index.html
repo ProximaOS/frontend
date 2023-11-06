@@ -81,10 +81,10 @@
               <p id="account-button-contact"></p>
             </div>
           </li>
-          <li id="login-button" class="page" data-icon="user">
+          <li id="login-button" class="page" data-icon="orchid">
             <p data-l10n-id="accountLogin"></p>
           </li>
-          <li id="devices-button" class="page" data-icon="desktop">
+          <li id="devices-button" class="page" data-icon="devices">
             <p data-l10n-id="accountDevices"></p>
           </li>
           <li id="sync-button" class="page" data-icon="sync">
@@ -351,7 +351,7 @@
           <li class="page" data-icon="languages" data-page-id="languages">
             <p data-l10n-id="languages"></p>
           </li>
-          <li id="general-languages-button" class="page" data-icon="languages" data-page-id="languages">
+          <li id="general-languages-button" class="page" data-icon="direction" data-page-id="languages">
             <p data-l10n-id="changeLanguageDirection"></p>
           </li>
         </ul>
@@ -444,7 +444,7 @@
               </span>
             </div>
           </li>
-          <li data-icon="notifications">
+          <li data-icon="notification">
             <div class="pack-slider">
               <label for="audio-notifications-slider">
                 <p data-l10n-id="audio-notifications"></p>
@@ -464,7 +464,17 @@
               </span>
             </div>
           </li>
-          <li>
+          <li data-icon="music">
+            <div class="pack-slider">
+              <label for="audio-music-slider">
+                <p data-l10n-id="audio-music"></p>
+              </label>
+              <span>
+                <input type="range" name="audio-music-slider" id="audio-music-slider" />
+              </span>
+            </div>
+          </li>
+          <li id="bike-mode">
             <div class="pack-checkbox">
               <label for="audio-bikeMode-checkbox">
                 <p data-l10n-id="enableBikeMode"></p>
@@ -481,7 +491,7 @@
           <li class="page" data-icon="call">
             <p data-l10n-id="changeRingtone"></p>
           </li>
-          <li class="page" data-icon="notifications">
+          <li class="page" data-icon="notification">
             <p data-l10n-id="changeNotificationSound"></p>
           </li>
           <li data-icon="vibrate">
@@ -507,23 +517,8 @@
       </header>
 
       <div class="content lists">
-        <form action="" class="layout-form color-schemes">
-          <label for="ssg-light" class="light">
-            <input type="radio" name="ssg" id="ssg-light">
-            <span data-l10n-id="colorScheme-light"></span>
-          </label>
-          <label for="ssg-auto" class="auto">
-            <input type="radio" name="ssg" id="ssg-auto">
-            <span data-l10n-id="colorScheme-auto"></span>
-          </label>
-          <label for="ssg-dark" class="dark">
-            <input type="radio" name="ssg" id="ssg-dark">
-            <span data-l10n-id="colorScheme-dark"></span>
-          </label>
-        </form>
-
         <ul>
-          <li data-icon="settings-brightness">
+          <li data-icon="brightness">
             <div class="pack-slider">
               <label for="display-brightness-slider">
                 <p data-l10n-id="display-brightness"></p>
@@ -547,14 +542,14 @@
 
         <header data-l10n-id="display-interface"></header>
         <ul>
-          <li data-icon="web">
+          <li data-icon="browser-moveup">
             <p data-l10n-id="chromePosition"></p>
             <select name="" id="display-chromePosition">
               <option value="top">Top</option>
               <option value="bottom">Bottom</option>
             </select>
           </li>
-          <li data-icon="moon">
+          <li data-icon="dark-mode">
             <div class="pack-switch">
               <label for="display-darkMode-switch">
                 <p data-l10n-id="enableDarkMode"></p>
@@ -564,7 +559,7 @@
               </span>
             </div>
           </li>
-          <li data-icon="accessibility">
+          <li data-icon="book-mode">
             <div class="pack-switch">
               <label for="display-eBook-switch">
                 <p data-l10n-id="enableEBook"></p>
@@ -574,7 +569,7 @@
               </span>
             </div>
           </li>
-          <li data-icon="brightness">
+          <li data-icon="eye">
             <div class="pack-switch">
               <label for="display-warmColors-switch">
                 <p data-l10n-id="enableWarmColors"></p>
@@ -624,7 +619,7 @@
           <li class="page" data-icon="home" data-page-id="homescreen-change">
             <p data-l10n-id="changeHomescreen"></p>
           </li>
-          <li data-icon="paintbrush">
+          <li data-icon="paint">
             <div class="pack-checkbox">
               <label for="homescreen-accented-checkbox">
                 <p data-l10n-id="enableAccentedIcons"></p>
@@ -761,7 +756,7 @@
 
       <div class="content lists">
         <ul>
-          <li data-icon="web">
+          <li data-icon="private">
             <div class="pack-switch">
               <label for="privacy-privateBrowsing-switch">
                 <p data-l10n-id="privateBrowsing"></p>
@@ -772,7 +767,7 @@
               </span>
             </div>
           </li>
-          <li class="page" data-icon="permissions" data-page-id="permissions">
+          <li class="page" data-icon="permissions" data-page-id="settings">
             <p data-l10n-id="privacy-permissions"></p>
           </li>
         </ul>
@@ -809,7 +804,7 @@
           <div id="battery-charge-state"></div>
         </div>
         <ul>
-          <li data-icon="battery-70">
+          <li data-icon="power-saver">
             <div class="pack-switch">
               <label for="power-saver-switch">
                 <p data-l10n-id="enablePowerSaver"></p>
@@ -819,7 +814,7 @@
               </span>
             </div>
           </li>
-          <li data-icon="battery-30">
+          <li data-icon="power-saver-ultra">
             <div class="pack-switch">
               <label for="power-ultraSaver-switch">
                 <p data-l10n-id="enableUltraPowerSaver"></p>
@@ -864,7 +859,7 @@
 
       <div class="content lists">
         <ul>
-          <li data-icon="audio">
+          <li data-icon="speech">
             <div class="pack-switch">
               <label for="accessibility-narrator-switch">
                 <p data-l10n-id="enableNarrator"></p>

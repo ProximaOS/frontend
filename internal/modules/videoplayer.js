@@ -3,7 +3,6 @@
 
   const VideoPlayer = {
     mediaElements: null,
-    frameElements: null,
 
     init: function () {
       this.mediaElements = document.querySelectorAll(':not(video-container) > video');
