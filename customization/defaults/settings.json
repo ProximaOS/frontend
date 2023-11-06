@@ -22,7 +22,7 @@
   "audio.profile_name": "ringing",
   "audio.vibrate.enabled": true,
   "audio.touch_sound.enabled": false,
-  "video.wallpaper.url": "http://default_theme.localhost:8081/wallpapers/default-light.png",
+  "video.wallpaper.url": "http://default_theme.localhost:8081/wallpapers/default.png",
   "video.brightness": 50,
   "video.brightness.auto": true,
   "video.dark_mode.enabled": false,
