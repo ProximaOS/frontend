@@ -14,6 +14,7 @@
   <link rel="stylesheet" href="orchid://settings/style/index.css">
   <script defer src="orchid://shared/js/common/page_controller.js"></script>
   <script defer src="orchid://settings/js/main.js"></script>
+  <script defer src="orchid://settings/js/about.js"></script>
 
   <script type="text/javascript" src="orchid://shared/js/l10n.js"></script>
   <meta name="defaultLanguage" content="en-US">
@@ -25,7 +26,9 @@
   <div id="app" role="app">
     <section id="root" class="visible" role="panel">
       <header role="header">
-        <h1>Settings</h1>
+        <div class="safezone">
+          <h1>Settings</h1>
+        </div>
       </header>
       <section class="content lists">
         <ul>
@@ -51,20 +54,38 @@
 
     <section id="about" role="panel">
       <header role="header">
-        <a href="#" data-icon="arrow-back" data-page-id="root"></a>
-        <h1>About Orchid Browser</h1>
+        <div class="safezone">
+          <a href="#" data-icon="arrow-back" data-page-id="root"></a>
+          <h1>About Orchid Browser</h1>
+        </div>
       </header>
       <div class="content lists">
         <ul>
           <li>
             <p>Version</p>
-            <p>117.0.1-b50</p>
+            <p id="about-version"></p>
+          </li>
+          <li>
+            <p>Engine Version</p>
+            <p id="about-engine-version"></p>
           </li>
           <li>
             <p>Release Branch</p>
-            <p>Developer</p>
+            <p id="about-branch"></p>
+          </li>
+          <li>
+            <p>Execution Path</p>
+            <p id="about-exec-path"></p>
+          </li>
+          <li>
+            <p>Command Line</p>
+            <p id="about-argv"></p>
           </li>
         </ul>
+
+        <nav>
+          <a href="orchid://about/">See More In Detail</a>
+        </nav>
       </div>
     </section>
   </div>

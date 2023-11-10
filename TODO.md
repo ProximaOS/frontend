@@ -1,8 +1,7 @@
 # To Do
 
 ## Services
-
-- Orchid Store (OpenOrchid Remake)
+- Orchid Store (OpenOrchid Remake of Orchid Webstore)
 - Orchid Game Center
 - Orchid Weather (OpenOrchid Remake)
 - Orchid Newspaper (OpenOrchid Remake)

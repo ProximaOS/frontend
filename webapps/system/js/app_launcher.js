@@ -43,10 +43,11 @@
       this.gridElement.addEventListener('contextmenu', this.handleContextMenu.bind(this));
       this.gridElement.addEventListener('scroll', this.handleSwiping.bind(this));
 
-      const apps = window.AppsManager.getAll();
+      const apps = AppsManager.getAll();
       apps.then((data) => {
         this.apps = data;
         this.createIcons();
+        this.handleSwiping();
       });
     },
 
@@ -165,21 +166,23 @@
     },
 
     handleSwiping: function () {
-      const scrollCenter = this.gridElement.scrollLeft + this.gridElement.getBoundingClientRect().width / 2;
-
       const dots = this.paginationBar.querySelectorAll('.dot');
       const carouselItems = this.gridElement.querySelectorAll('.page');
-      for (let index = 0; index < dots.length; index++) {
-        const dot = dots[index];
-        const distance = Math.abs(scrollCenter - (carouselItems[index].getBoundingClientRect().left + this.gridElement.getBoundingClientRect().width / 2));
-        const fadeDistance = this.gridElement.getBoundingClientRect().width / 2;
+      let activeIndex = -1;
 
-        if (distance < fadeDistance) {
-          const progress = 1 - distance / fadeDistance;
-          dot.style.setProperty('--pagination-progress', progress);
-        } else {
-          dot.style.setProperty('--pagination-progress', 0);
+      for (let index = 0; index < carouselItems.length; index++) {
+        const item = carouselItems[index];
+        const pageX = item.getBoundingClientRect().left;
+        const progress = Math.max(0, Math.min(1, 1 - (pageX / item.offsetWidth)));
+        dots[index].style.setProperty('--pagination-progress', progress);
+
+        if (progress > 0.5 && activeIndex === -1) {
+          activeIndex = index;
         }
+      }
+
+      for (let i = 0; i < dots.length; i++) {
+        dots[i].style.setProperty('--pagination-progress', i === activeIndex ? 1 : 0);
       }
     },
 

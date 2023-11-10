@@ -1,15 +1,15 @@
 #grid {
+  display: flex;
   position: absolute;
-  left: 0;
   top: 0;
+  left: 0;
   width: 100%;
   height: 100%;
   overflow-x: scroll;
   overflow-y: hidden;
+  transform: translateY(calc(3rem * (var(--motion-progress, 0) + (var(--overscroll-progress, 0)))));
   scroll-snap-type: x mandatory;
   scrollbar-width: none;
-  display: flex;
-  transform: translateY(calc(3rem * (var(--motion-progress, 0) + (var(--overscroll-progress, 0)))));
   transition: all 0.3s ease;
 }
 
@@ -18,21 +18,21 @@
 }
 
 .page {
-  position: absolute;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  padding: var(--statusbar-height) 1rem calc(var(--software-buttons-height) + 10.5rem);
   box-sizing: border-box;
   display: grid;
-  grid-template-columns: repeat(var(--grid-columns), 1fr);
+  position: absolute;
+  top: 0;
+  left: 0;
   grid-template-rows: repeat(var(--grid-rows), 1fr);
-  perspective: 100vw;
-  overflow: hidden;
-  scroll-snap-align: start;
+  grid-template-columns: repeat(var(--grid-columns), 1fr);
   flex-shrink: 0;
+  width: 100%;
+  height: 100%;
   margin: 0;
+  padding: var(--statusbar-height) 1rem calc(var(--software-buttons-height) + 10.5rem);
+  overflow: hidden;
+  perspective: 100vw;
+  scroll-snap-align: start;
 }
 
 #grid::-webkit-scrollbar {
@@ -49,10 +49,10 @@
 }
 
 #app.hidden #grid .icon {
-  transition: all 0.5s ease;
+  visibility: hidden;
   transform: translateZ(var(--pos-z));
   opacity: 0;
-  visibility: hidden;
+  transition: all 0.5s ease;
 }
 
 .icon.dragging {
@@ -60,17 +60,17 @@
 }
 
 .icon .icon-holder {
+  position: relative;
   width: 4.8rem;
   margin: 0 auto;
   padding-top: 0.4rem;
-  position: relative;
 }
 
 .icon .icon-holder > * {
+  display: block;
   width: 4.8rem;
   height: 4.8rem;
   border-radius: 25%;
-  display: block;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
@@ -112,75 +112,74 @@
 }
 
 .icon .icon-holder > .notification-badge {
+  box-sizing: border-box;
+  visibility: hidden;
   position: absolute;
-  left: -0.5rem;
   top: 0;
+  left: -0.5rem;
   min-width: 2.4rem;
   height: 2.4rem;
-  line-height: 2.4rem;
   margin: 0;
   padding: 0 0.5rem;
-  box-sizing: border-box;
-  background-color: #c00040;
-  border-radius: 2.4rem;
-  color: rgba(255, 255, 255, 0.75);
-  font-size: 1.4rem;
-  font-weight: normal;
-  text-align: center;
-  transition: all 0.3s ease;
   transform: scale(0);
+  border-radius: 2.4rem;
+  background-color: #c00040;
+  color: rgba(255, 255, 255, 0.75);
+  font-weight: normal;
+  font-size: 1.4rem;
+  line-height: 2.4rem;
+  text-align: center;
   opacity: 0;
-  visibility: hidden;
+  transition: all 0.3s ease;
 }
 
 .icon .icon-holder > .uninstall-button {
+  visibility: hidden;
   position: absolute;
-  right: -0.5rem;
   top: 0;
+  right: -0.5rem;
   width: 3rem;
   height: 3rem;
-  line-height: 3rem;
   margin: 0;
   padding: 0 0.7rem;
-  background-color: var(--acrylic-background);
-  backdrop-filter: blur(20px) saturate(180%);
-  border-radius: 50%;
-  color: var(--text-color);
-  border: none;
-  transition: all 0.3s ease;
   transform: scale(0);
+  border: none;
+  border-radius: 50%;
+  background-color: #c00040;
+  color: rgba(255, 255, 255, 0.75);
+  line-height: 3rem;
   opacity: 0;
-  visibility: hidden;
+  transition: all 0.3s ease;
 }
 
 [data-edit-mode="true"] .icon .icon-holder > .uninstall-button {
+  visibility: visible;
   transform: scale(1);
   opacity: 1;
-  visibility: visible;
 }
 
 .icon .icon-holder > .uninstall-button[data-icon]::before {
-  font-size: 1.6rem;
   height: 3rem;
+  font-size: 1.6rem;
   line-height: 4rem;
 }
 
 .icon .name {
   width: 100%;
   margin: 0.4rem 0 1rem;
-  text-align: center;
-  font-size: 1.2rem;
-  color: #fff;
-  text-shadow: 0 0 3px rgba(0, 0, 0, 0.3), 0 0 6px rgba(0, 0, 0, 0.2);
   overflow: hidden;
-  white-space: nowrap;
+  color: #fff;
+  font-size: 1.2rem;
+  text-align: center;
   text-overflow: ellipsis;
+  text-shadow: 0 0 3px rgba(0, 0, 0, 0.3), 0 0 6px rgba(0, 0, 0, 0.2);
+  white-space: nowrap;
   transition: all 0.3s ease;
 }
 
-#app.light .icon .name {
+.light .icon .name {
   color: rgba(0, 0, 0, 0.75);
-  font-weight: bold;
+  font-weight: 500;
   text-shadow: none;
 }
 
@@ -203,8 +202,8 @@
 
 @media screen and (orientation: landscape) and (max-width: 767px) {
   .page {
-    grid-template-columns: repeat(var(--grid-rows), 1fr);
     grid-template-rows: repeat(var(--grid-columns), 1fr);
+    grid-template-columns: repeat(var(--grid-rows), 1fr);
     padding: var(--statusbar-height) 1rem 4rem;
     padding-right: 9rem;
   }
@@ -212,7 +211,7 @@
 
 @media screen and (min-width: 768px) {
   .page {
-    grid-template-columns: repeat(var(--grid-rows), 1fr);
     grid-template-rows: repeat(var(--grid-columns), 1fr);
+    grid-template-columns: repeat(var(--grid-rows), 1fr);
   }
 }

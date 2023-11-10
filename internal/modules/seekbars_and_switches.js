@@ -25,6 +25,10 @@
         });
       } else {
         inputElement.addEventListener('pointerdown', (event) => this.onPointerDown(event, inputElement));
+        inputElement.addEventListener('input', (event) => this.onInput(inputElement));
+        inputElement.addEventListener('change', (event) => this.onInput(inputElement));
+
+        this.onInput(inputElement);
       }
     },
 
@@ -68,6 +72,19 @@
         this.lastProgress = 1;
       } else if (deltaX < 0) {
         this.activeSwitch.checked = false; // Swiped to the left, uncheck the checkbox
+        this.activeSwitch.style.setProperty('--switch-movement-progress', 0);
+        this.lastProgress = 0;
+      }
+    },
+
+    onInput: function (inputElement) {
+      if (!this.activeSwitch) {
+        return;
+      }
+      if (inputElement.checked) {
+        this.activeSwitch.style.setProperty('--switch-movement-progress', 1);
+        this.lastProgress = 1;
+      } else {
         this.activeSwitch.style.setProperty('--switch-movement-progress', 0);
         this.lastProgress = 0;
       }

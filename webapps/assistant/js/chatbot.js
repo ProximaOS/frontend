@@ -107,15 +107,37 @@
     },
 
     searchOnline: async function (query) {
+      if (query.toLowerCase().startsWith('what is a ')) {
+        query = query.substring('what is a '.length);
+      }
+      if (query.toLowerCase().startsWith('what\'s a ')) {
+        query = query.substring('what\'s a '.length);
+      }
+      if (query.toLowerCase().startsWith('whats a ')) {
+        query = query.substring('whats a '.length);
+      }
+      if (query.toLowerCase().startsWith('what is ')) {
+        query = query.substring('what is '.length);
+      }
+      if (query.toLowerCase().startsWith('what\'s ')) {
+        query = query.substring('what\'s '.length);
+      }
+      if (query.toLowerCase().startsWith('whats ')) {
+        query = query.substring('whats '.length);
+      }
+
       const url = `https://api.duckduckgo.com/?q=${encodeURIComponent(query)}&format=json`;
       const response = await fetch(url);
       const data = await response.json();
 
       let reply;
       const images = [];
+      console.log(data);
       if (data.Answer) {
         reply = `Well. The answer to your question is ${data.Answer.result}`;
-      } else {
+      } else if (data.AbstractText) {
+        reply = data.AbstractText;
+      } else if (data.RelatedTopics && data.Heading) {
         reply = `Heres what i found about "${data.Heading}"\n`;
         data.RelatedTopics.forEach((topic) => {
           if (!topic.Text) {
@@ -124,9 +146,13 @@
 
           reply += `- [${topic.Text}](${topic.FirstURL})\n`;
           if (topic.Icon && topic.Icon.URL) {
-            images.push(encodeURI(data.AbstractURL + topic.Icon.URL));
+            // Create an absolute full path for the image
+            const absoluteImagePath = new URL(topic.Icon.URL, 'https://www.duckduckgo.com').href;
+            images.push(encodeURI(absoluteImagePath));
           }
         });
+      } else {
+        reply = 'Sorry but this is not in my training or programming so I don\'t understand.';
       }
       return { reply, images };
     },
@@ -161,7 +187,6 @@
                 });
               }
               resolve({ reply, images });
-              return;
             }
           });
         }

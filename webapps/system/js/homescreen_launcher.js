@@ -2,16 +2,22 @@
   'use strict';
 
   const HomescreenLauncher = {
-    settings: ['homescreen.manifest_url'],
-    SETTINGS_HOMESCREEN_MANIFEST_URL: 0,
+    settings: ['homescreen.manifest_url.mobile', 'homescreen.manifest_url.smart_tv'],
+    SETTINGS_HOMESCREEN_MANIFEST_URL_MOBILE: 0,
+    SETTINGS_HOMESCREEN_MANIFEST_URL_SMART_TV: 1,
 
     init: function () {
       if (platform() === 'desktop') {
         return;
       }
 
-      Settings.getValue(this.settings[this.SETTINGS_HOMESCREEN_MANIFEST_URL]).then(this.handleHomescreen.bind(this));
-      Settings.addObserver(this.settings[this.SETTINGS_HOMESCREEN_MANIFEST_URL], this.handleHomescreenChange.bind(this));
+      if (platform() === 'smart-tv') {
+        Settings.getValue(this.settings[this.SETTINGS_HOMESCREEN_MANIFEST_URL_SMART_TV]).then(this.handleHomescreen.bind(this));
+        Settings.addObserver(this.settings[this.SETTINGS_HOMESCREEN_MANIFEST_URL_SMART_TV], this.handleHomescreenChange.bind(this));
+      } else {
+        Settings.getValue(this.settings[this.SETTINGS_HOMESCREEN_MANIFEST_URL_MOBILE]).then(this.handleHomescreen.bind(this));
+        Settings.addObserver(this.settings[this.SETTINGS_HOMESCREEN_MANIFEST_URL_MOBILE], this.handleHomescreenChange.bind(this));
+      }
     },
 
     handleHomescreen: function (value) {

@@ -5,9 +5,6 @@
     usedSpaceProgress: document.getElementById('storage-used-space-progress'),
 
     init: async function () {
-      // Add event listener to the Wi-Fi checkbox
-      this.usedSpaceProgress;
-
       const sizes = await this.calculateSizes('/');
       Object.entries(sizes).forEach((category, index) => {
         const fill = document.createElement('div');
@@ -25,14 +22,12 @@
         audio: ['mp3', 'wav', 'ogg']
       };
 
-      const files = await window.SDCardManager.list(directoryPath);
-      const statsPromises = files.map(async (file) => {
+      const files = await SDCardManager.list(directoryPath);
+      const fileStats = files.map((file) => {
         const filePath = directoryPath + '/' + file;
-        const stat = await window.SDCardManager.getFileStats(filePath);
+        const stat = SDCardManager.getFileStats(filePath);
         return { name: file, size: stat.size };
       });
-
-      const fileStats = await Promise.all(statsPromises);
 
       const categorizedFiles = {
         pictures: [],

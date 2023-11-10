@@ -16,6 +16,7 @@
       apps.then((data) => {
         data.forEach((app) => {
           const element = document.createElement('li');
+          element.classList.add('page');
           element.dataset.pageId = 'webappInfo';
           element.addEventListener('click', (event) =>
             this.handleWebappInfo(app, element)

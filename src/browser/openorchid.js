@@ -1,16 +1,7 @@
-const { l18n, initializeLocale } = require('../locales/locale_reader');
-const Settings = require('../settings');
-
 !(function () {
   'use strict';
 
-  const {
-    BrowserWindow,
-    nativeTheme,
-    Menu,
-    ipcMain,
-    BrowserView
-  } = require('electron');
+  const { BrowserWindow, nativeTheme, Menu, ipcMain, BrowserView, app } = require('electron');
   const settings = require('../settings');
   const os = require('os');
   const path = require('path');
@@ -21,6 +12,8 @@ const Settings = require('../settings');
   const update = require('../update/auto_updater');
   const RPC = require('discord-rpc');
   const appConfig = require('../../package.json');
+  const { l18n, initializeLocale } = require('../locales/locale_reader');
+  const Settings = require('../settings');
 
   require('dotenv').config();
   require('dotenv').config({ path: '.env.secret' });
@@ -44,10 +37,7 @@ const Settings = require('../settings');
 
   module.exports = async function () {
     let systemConfig;
-    let defaultEdition = await Settings.getValue(
-      'system.edition',
-      'internal.json'
-    );
+    let defaultEdition = await Settings.getValue('system.edition', 'internal.json');
 
     if (options.type) {
       defaultEdition = options.type;
@@ -123,31 +113,18 @@ const Settings = require('../settings');
 
     // Create the browser window.
     const mainWindow = new BrowserWindow({
-      icon: path.join(
-        __dirname,
-        '..',
-        '..',
-        'internal',
-        'branding',
-        'icon.png'
-      ),
-      title: `OrchidOS ${appConfig.version} ${systemConfig.type} - Orchid Simulator`,
-      width:
-        process.platform !== 'win32'
-          ? systemConfig.width + 50
-          : systemConfig.width + 50 + 14,
-      height:
-        process.platform !== 'win32'
-          ? systemConfig.height
-          : systemConfig.height + 37,
-      // show: false,
-      // fullscreenable: false,
+      icon: path.join(__dirname, '..', '..', 'internal', 'branding', 'icon.png'),
+      title: `OrchidOS ${app.getVersion()} ${systemConfig.type} - Orchid Simulator`,
+      width: process.platform !== 'win32' ? systemConfig.width + (isDev ? 50 : 0) : systemConfig.width + (isDev ? 50 : 0) + 14,
+      height: process.platform !== 'win32' ? systemConfig.height : systemConfig.height + 37,
+      show: false,
+      fullscreenable: false,
       disableAutoHideCursor: true,
       autoHideMenuBar: true,
       center: true,
       backgroundColor: '#000000',
       tabbingIdentifier: 'openorchid',
-      // kiosk: true
+      kiosk: !isDev
     });
 
     const menu = Menu.buildFromTemplate(require('./dropmenu')(mainWindow));
@@ -169,84 +146,51 @@ const Settings = require('../settings');
       }
     });
     const { width, height } = mainWindow.getContentBounds();
-    webview.setBounds({ x: 0, y: 0, width: width - 50, height });
+    if (isDev) {
+      webview.setBounds({ x: 0, y: 0, width: width - 50, height });
+    } else {
+      webview.setBounds({ x: 0, y: 0, width, height });
+    }
     webview.setAutoResize({
       width: true,
       height: true
     });
     mainWindow.addBrowserView(webview);
 
-    const userAgent = `Mozilla/5.0 (OpenOrchid ${appConfig.version} ${
-      systemConfig.type
-    }; Linux ${os.arch()}; ${appConfig.manufacturer} ${
+    const userAgent = `Mozilla/5.0 (OpenOrchid ${app.getVersion()} ${systemConfig.type}; Linux ${os.arch()}; ${appConfig.manufacturer} ${
       appConfig.deviceModelName
-    }; ${
-      appConfig.servicePackName
-    }) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/${
-      process.versions.chrome
-    } OrchidBrowser/${appConfig.version}${
+    }; ${appConfig.servicePackName}) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/${process.versions.chrome} OrchidBrowser/${app.getVersion()}${
       systemConfig.type === 'Mobile' ? ' ' + systemConfig.type : ''
     } Safari/537.36`;
 
     // and load the index.html of the app.
-    webview.webContents.loadURL(
-      await Settings.getValue('system.main.url', 'internal.json'),
-      {
-        userAgent
-      }
-    );
+    webview.webContents.loadURL(await Settings.getValue('system.main.url', 'internal.json'), {
+      userAgent
+    });
 
     // Load JavaScript and CSS files
     webview.webContents.on('dom-ready', () => {
-      const webviewScriptPath = path.join(
-        __dirname,
-        '..',
-        '..',
-        'internal',
-        'webview',
-        'webview.js'
-      );
-      webview.webContents.executeJavaScript(
-        fs.readFileSync(webviewScriptPath, 'utf8')
-      );
+      const webviewScriptPath = path.join(__dirname, '..', '..', 'internal', 'webview', 'webview.js');
+      webview.webContents.executeJavaScript(fs.readFileSync(webviewScriptPath, 'utf8'));
 
-      fs.readdir(
-        path.join(__dirname, '..', '..', 'internal', 'preloads'),
-        (error, files) => {
-          if (error) {
-            console.error(error);
-            return;
+      fs.readdir(path.join(__dirname, '..', '..', 'internal', 'preloads'), (error, files) => {
+        if (error) {
+          console.error(error);
+          return;
+        }
+
+        files.forEach((file) => {
+          if (file.endsWith('.js')) {
+            const scriptPath = path.join(__dirname, '..', '..', 'internal', 'preloads', file);
+            webview.webContents.executeJavaScript(fs.readFileSync(scriptPath, 'utf8'));
           }
 
-          files.forEach((file) => {
-            if (file.endsWith('.js')) {
-              const scriptPath = path.join(
-                __dirname,
-                '..',
-                '..',
-                'internal',
-                'preloads',
-                file
-              );
-              webview.webContents.executeJavaScript(
-                fs.readFileSync(scriptPath, 'utf8')
-              );
-            }
-
-            if (file.endsWith('.css')) {
-              const cssPath = path.join(
-                __dirname,
-                '..',
-                '..',
-                'internal',
-                'preloads',
-                file
-              );
-              webview.webContents.insertCSS(fs.readFileSync(cssPath, 'utf8'));
-            }
-          });
-        }
-      );
+          if (file.endsWith('.css')) {
+            const cssPath = path.join(__dirname, '..', '..', 'internal', 'preloads', file);
+            webview.webContents.insertCSS(fs.readFileSync(cssPath, 'utf8'));
+          }
+        });
+      });
     });
 
     // Open the DevTools.
@@ -255,7 +199,7 @@ const Settings = require('../settings');
     }
 
     // Initialize updater
-    // update.init(mainWindow);
+    update.init(mainWindow);
 
     // Prepare profile
     fs.mkdirSync(path.join(process.env.ORCHID_APP_PROFILE), {
@@ -282,27 +226,19 @@ const Settings = require('../settings');
       setActivity(await l18n('idle-minimized'));
     });
     mainWindow.on('show', async () => {
-      setActivity(
-        isDev ? await l18n('activeState-dev') : await l18n('activeState-prod')
-      );
+      setActivity(isDev ? await l18n('activeState-dev') : await l18n('activeState-prod'));
     });
     mainWindow.on('focus', async () => {
-      setActivity(
-        isDev ? await l18n('activeState-dev') : await l18n('activeState-prod')
-      );
+      setActivity(isDev ? await l18n('activeState-dev') : await l18n('activeState-prod'));
     });
     mainWindow.on('restore', async () => {
-      setActivity(
-        isDev ? await l18n('activeState-dev') : await l18n('activeState-prod')
-      );
+      setActivity(isDev ? await l18n('activeState-dev') : await l18n('activeState-prod'));
     });
     mainWindow.on('unresponsive', async () => {
       setActivity(await l18n('activeState-hang'));
     });
     mainWindow.on('responsive', async () => {
-      setActivity(
-        isDev ? await l18n('activeState-dev') : await l18n('activeState-prod')
-      );
+      setActivity(isDev ? await l18n('activeState-dev') : await l18n('activeState-prod'));
     });
 
     registerEvents(mainWindow, webview);

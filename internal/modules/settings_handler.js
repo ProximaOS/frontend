@@ -1,7 +1,7 @@
 !(function (exports) {
   'use strict';
 
-  const Settings = require('../../src/settings');
+  const _Settings = require('../../src/settings');
 
   const SettingsHandler = {
     appElement: document.querySelector('[role="app"]'),
@@ -13,15 +13,15 @@
     SETTINGS_WALLPAPER_IMAGE: 3,
 
     init: function () {
-      Settings.getValue(this.settings[this.SETTINGS_LANGUAGE]).then(this.handleLanguage.bind(this));
-      Settings.getValue(this.settings[this.SETTINGS_WALLPAPER_IMAGE]).then(this.handleWallpaperAccent.bind(this));
-      Settings.getValue(this.settings[this.SETTINGS_ACCENT_COLOR]).then(this.handleAccentColor.bind(this));
-      Settings.getValue(this.settings[this.SETTINGS_SOFTWARE_BUTTONS]).then(this.handleSoftwareButtons.bind(this));
+      _Settings.getValue(this.settings[this.SETTINGS_LANGUAGE]).then(this.handleLanguage.bind(this));
+      _Settings.getValue(this.settings[this.SETTINGS_WALLPAPER_IMAGE]).then(this.handleWallpaperAccent.bind(this));
+      _Settings.getValue(this.settings[this.SETTINGS_ACCENT_COLOR]).then(this.handleAccentColor.bind(this));
+      _Settings.getValue(this.settings[this.SETTINGS_SOFTWARE_BUTTONS]).then(this.handleSoftwareButtons.bind(this));
 
-      Settings.addObserver(this.settings[this.SETTINGS_LANGUAGE], this.handleLanguage.bind(this));
-      Settings.addObserver(this.settings[this.SETTINGS_WALLPAPER_IMAGE], this.handleWallpaperAccent.bind(this));
-      Settings.addObserver(this.settings[this.SETTINGS_ACCENT_COLOR], this.handleAccentColor.bind(this));
-      Settings.addObserver(this.settings[this.SETTINGS_SOFTWARE_BUTTONS], this.handleSoftwareButtons.bind(this));
+      _Settings.addObserver(this.settings[this.SETTINGS_LANGUAGE], this.handleLanguage.bind(this));
+      _Settings.addObserver(this.settings[this.SETTINGS_WALLPAPER_IMAGE], this.handleWallpaperAccent.bind(this));
+      _Settings.addObserver(this.settings[this.SETTINGS_ACCENT_COLOR], this.handleAccentColor.bind(this));
+      _Settings.addObserver(this.settings[this.SETTINGS_SOFTWARE_BUTTONS], this.handleSoftwareButtons.bind(this));
     },
 
     getImageDominantColor: function (url, options = {}) {
@@ -61,10 +61,10 @@
           image.src = imageUrl;
 
           image.onload = () => {
-            element.width = image.width;
-            element.height = image.height;
+            element.width = options.colors || 1;
+            element.height = options.colors || 1;
 
-            element.getContext('2d').drawImage(image, 0, 0, image.width, image.height);
+            element.getContext('2d').drawImage(image, 0, 0, options.colors || 1, options.colors || 1);
 
             resolve();
           };
@@ -80,7 +80,14 @@
       }
     },
 
-    handleWallpaperAccent: function (value) {
+    handleWallpaperAccent: async function (value) {
+      if (!this.appElement) {
+        return;
+      }
+      if (await _Settings.getValue(this.settings[this.SETTINGS_ACCENT_COLOR])) {
+        return;
+      }
+
       this.getImageDominantColor(value, { colors: 3, brightness: 1 }).then((color) => {
         // Convert the color to RGB values
         let r = color[1].r;
@@ -121,44 +128,61 @@
         document.scrollingElement.style.setProperty('--accent-color-g', g);
         document.scrollingElement.style.setProperty('--accent-color-b', b);
 
+        _Settings.setValue(this.settings[this.SETTINGS_ACCENT_COLOR], { r, g, b });
+
         // Calculate relative luminance
         const accentLuminance = (0.2126 * originalR + 0.7152 * originalG + 0.0722 * originalB) / 255;
 
         if (accentLuminance > 0.5) {
+          this.appElement.classList.remove('dark');
+          this.appElement.classList.add('light');
           document.scrollingElement.style.setProperty('--accent-color-plus', 'rgba(0,0,0,0.75)');
         } else {
+          this.appElement.classList.add('dark');
+          this.appElement.classList.remove('light');
           document.scrollingElement.style.setProperty('--accent-color-plus', 'rgba(255,255,255,0.75)');
         }
       });
     },
 
     handleAccentColor: function (value) {
-      if (value && this.appElement) {
-        document.scrollingElement.style.setProperty('--accent-color-r', value.r);
-        document.scrollingElement.style.setProperty('--accent-color-g', value.g);
-        document.scrollingElement.style.setProperty('--accent-color-b', value.b);
+      if (!value || !this.appElement) {
+        return;
       }
 
+      document.scrollingElement.style.setProperty('--accent-color-r', value.r);
+      document.scrollingElement.style.setProperty('--accent-color-g', value.g);
+      document.scrollingElement.style.setProperty('--accent-color-b', value.b);
+
       // Convert the color to RGB values
-      const r = parseInt(value.r, 16);
-      const g = parseInt(value.g, 16);
-      const b = parseInt(value.b, 16);
+      const r = value.r;
+      const g = value.g;
+      const b = value.b;
 
       // Calculate relative luminance
       const luminance = (0.2126 * r + 0.7152 * g + 0.0722 * b) / 255;
+      console.log(r, g, b, luminance);
 
       if (luminance > 0.5) {
+        this.appElement.classList.remove('dark');
+        this.appElement.classList.add('light');
         document.scrollingElement.style.setProperty('--accent-color-plus', 'rgba(0,0,0,0.75)');
       } else {
+        this.appElement.classList.add('dark');
+        this.appElement.classList.remove('light');
         document.scrollingElement.style.setProperty('--accent-color-plus', 'rgba(255,255,255,0.75)');
       }
     },
 
     handleSoftwareButtons: function (value) {
+      if (!this.appElement) {
+        return;
+      }
+
       if (navigator.userAgent.includes('Desktop') || value) {
         this.appElement.style.setProperty('--software-buttons-height', '4rem');
       } else {
-        if (location.origin.includes('homescreen.localhost:8081')) {
+        if (location.origin.includes(`homescreen.localhost:${location.port}`)) {
           this.appElement.style.setProperty('--software-buttons-height', '1rem');
         } else {
           this.appElement.style.setProperty('--software-buttons-height', '2.5rem');

@@ -109,9 +109,8 @@
       });
 
       app.on('will-quit', () => {
-        console.log('Closing...');
         localServer.close(() => {
-          console.log('Ending webapp runtime server...');
+          console.log(`Ending webapp runtime server for ${subdomain}...`);
         });
       });
     });

@@ -1,8 +1,8 @@
 {
   "version": "1.0",
   "role": "system",
-  "name": "Logo Easter Egg",
-  "description": "",
+  "name": "Top Secret App",
+  "description": "Double-tap OrchidOS logo in your Settings > About page and watch.",
   "launch_path": "/index.html",
   "icons": {},
   "developer": {
@@ -14,5 +14,11 @@
   "background_color": "#f0f6ff",
   "theme_color": "#0061e0",
   "permissions": {},
-  "display": "fullscreen"
+  "display": "fullscreen",
+  "window_bounds": {
+    "left": "3.6rem",
+    "top": "2.4rem",
+    "width": "320px",
+    "height": "480px"
+  }
 }

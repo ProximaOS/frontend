@@ -36,8 +36,8 @@
       document.addEventListener('touchmove', this.onPointerMove.bind(this));
       document.addEventListener('mouseup', this.onPointerUp.bind(this));
       document.addEventListener('touchend', this.onPointerUp.bind(this));
-      document.addEventListener('mouseleave', this.onPointerUp.bind(this));
-      document.addEventListener('touchcancel', this.onPointerUp.bind(this));
+      document.addEventListener('mouseleave', this.onPointerCancel.bind(this));
+      document.addEventListener('touchcancel', this.onPointerCancel.bind(this));
     },
 
     onPointerDown: function (event) {
@@ -79,7 +79,7 @@
       this.app.classList.remove('search-visible');
       if (progress >= this.threshold) {
         this.currentProgress = 1;
-        if (Homescreen.isLight) {
+        if (document.body.classList.contains('light')) {
           if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
             this.themeColorMeta.setAttribute(
               'content',
@@ -111,7 +111,7 @@
         }, 500);
       } else {
         this.currentProgress = 0;
-        if (Homescreen.isLight) {
+        if (document.body.classList.contains('light')) {
           if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
             this.themeColorMeta.setAttribute(
               'content',
@@ -155,9 +155,8 @@
     updateMotionProgress: function (progress) {
       progress = this.lastProgress + progress;
       const motionProgress = Math.max(0, Math.min(1, progress)); // Limit progress between 0 and 1;
-      const overflowProgress = Math.max(1, progress) - 1;
       this.currentProgress = motionProgress;
-      if (Homescreen.isLight) {
+      if (document.body.classList.contains('light')) {
         if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
           this.themeColorMeta.setAttribute(
             'content',
@@ -211,7 +210,7 @@
 
       if (progress >= this.threshold) {
         this.currentProgress = 0;
-        if (Homescreen.isLight) {
+        if (document.body.classList.contains('light')) {
           if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
             this.themeColorMeta.setAttribute(
               'content',

@@ -9,8 +9,8 @@
 
     init: function () {
       FileIndexer(this.MUSIC_DIR, this.MUSIC_MIME).then((array) => {
-        array.forEach((item) => {
-          this.addAudio(item);
+        array.forEach((item, index) => {
+          this.addAudio(item, index);
         });
       });
     },
@@ -52,7 +52,7 @@
       return new Blob([byteArray], { type: contentType });
     },
 
-    addAudio: function (path) {
+    addAudio: function (path, index) {
       SDCardManager.read(path).then((data) => {
         const mime = SDCardManager.getMime(path);
         const blob = new Blob([data], { type: mime });
@@ -69,7 +69,7 @@
         const artwork = document.createElement('img');
         artwork.src = '';
         artwork.onerror = () => {
-          artwork.src = '/images/default_keyart.png';
+          artwork.src = `/images/default_keyart_${1 + (index % 4)}.png`;
         };
         item.appendChild(artwork);
 

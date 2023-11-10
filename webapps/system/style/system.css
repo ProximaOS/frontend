@@ -69,7 +69,7 @@ html, body {
   width: 100%;
   height: 40vh;
   transform: translateY(-100%);
-  background: rgba(51, 51, 51, 0.5) url(images/close_reach_chevron.png) no-repeat center bottom 1rem / 6rem 3.2rem;
+  background: rgba(51, 51, 51, 0.5) url(images/close_reach_chevron.svg) no-repeat center bottom 1rem / 6rem 3.2rem;
   content: '';
   transition: transform 0.5s ease, visibility 0.5s ease;
 }
@@ -81,7 +81,7 @@ html, body {
 }
 
 #screen.close-reach:active::before {
-  background-image: url(images/close_reach_chevron_active.png);
+  background-image: url(images/close_reach_chevron_active.svg);
   background-color: rgba(255, 255, 255, 0.5);
 }
 

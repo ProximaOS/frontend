@@ -3,13 +3,25 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#000000">
-  <title>Homescreen</title>
+  <meta name="theme-color" content="#333">
+  <title>Smart Home</title>
+  <link rel="stylesheet" type="text/css" href="http://default_theme.localhost:8081/style/index.css" />
+  <link rel="stylesheet" type="text/css" href="http://shared.localhost:8081/style/layout.css" />
+  <link rel="stylesheet" type="text/css" href="http://shared.localhost:8081/style/icons/icons.css" />
+  <link rel="stylesheet" type="text/css" href="http://shared.localhost:8081/rolee/panels.css" />
   <link rel="stylesheet" type="text/css" href="style/icons/icons.css">
   <link rel="stylesheet" type="text/css" href="style/home.css">
   <link rel="stylesheet" type="text/css" href="style/visuals.css">
+  <script type="module" src="http://shared.localhost:8081/services/orchid_services.js"></script>
+  <script defer type="text/javascript" src="http://shared.localhost:8081/js/smooth-scrollbar.js"></script>
+  <script defer type="text/javascript" src="http://shared.localhost:8081/js/plugins/overscroll.js"></script>
+  <script defer type="text/javascript" src="http://shared.localhost:8081/js/panels.js"></script>
+  <script defer type="text/javascript" src="http://shared.localhost:8081/js/common/page_controller.js"></script>
+  <script defer type="text/javascript" src="http://shared.localhost:8081/js/spatial_navigation.js"></script>
   <script defer type="text/javascript" src="js/lib/three.js"></script>
+  <script type="text/javascript" src="js/bootstrap.js"></script>
   <script defer type="text/javascript" src="js/visuals.js"></script>
+  <script defer type="text/javascript" src="js/time_icon.js"></script>
   <script defer type="text/javascript" src="js/webapps.js"></script>
   <script defer type="text/javascript" src="js/search.js"></script>
 
@@ -26,24 +38,26 @@
 
     <header id="statusbar">
       <div class="left">
-        <div class="tabs">
-          <div class="tab active" id="webapps-tab">Webapps</div>
-          <div class="tab" id="media-tab">Media</div>
-        </div>
+        <ul class="tabs">
+          <li class="tab selected" data-page-id="webapps">Webapps</li>
+          <li class="tab" data-page-id="media">Media</li>
+        </ul>
       </div>
 
       <div class="right">
-        <div class="time">10:36 AM</div>
+        <div class="time" id="statusbar-time"></div>
         <div class="searchbox" data-icon="search">Search...</div>
         <div class="toolbar">
           <button data-icon="settings"></button>
           <button data-icon="bell"></button>
-          <button class="account"></button>
+          <button class="account-button">
+            <img src="style/images/defaultuser.svg" alt="">
+          </button>
         </div>
       </div>
     </header>
 
-    <div class="panel">
+    <div id="webapps" class="visible" role="panel">
       <div id="content" class="panel">
         <div class="content">
           <div class="content-row">
@@ -71,6 +85,21 @@
               </nav>
             </div>
           </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="media" role="panel">
+      <div id="content" class="panel">
+        <div class="content">
+          <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Expedita neque, magni ducimus ipsam tempore quia enim, optio vitae distinctio illo quibusdam, corporis sed hic ipsum aspernatur. Doloremque corrupti iure ducimus!</p>
+          <p>Veniam fuga doloremque nisi vitae, sunt ut ullam suscipit tempore ratione neque molestias voluptas deleniti dolores recusandae ipsam. Deleniti iure, fugit alias sit veniam exercitationem vel quod quae magnam iste!</p>
+          <p>Modi soluta eius necessitatibus quos. Delectus qui nesciunt exercitationem sunt, corrupti enim voluptatem voluptate ea accusantium. Quasi ea labore dicta exercitationem libero. Debitis maxime nihil sit quam autem voluptate modi.</p>
+          <p>Numquam at earum ut vitae? Vel animi quae quam officiis tempora, illo sint voluptate necessitatibus tempore quisquam vero molestias consequatur eligendi. Deleniti perspiciatis corporis temporibus. Quam rerum corporis sed dignissimos.</p>
+          <p>Cupiditate qui fuga praesentium, dicta ducimus sed aperiam? Illo dolor eaque repellendus aperiam excepturi! Quas autem expedita, sed aliquid ipsum veniam inventore doloremque voluptates, porro facilis eligendi impedit vitae dolor.</p>
+          <p>Earum repellendus atque voluptatibus voluptatem consequatur blanditiis tempora rem perspiciatis? Commodi voluptate a quisquam possimus provident voluptatibus at dolorem molestias aliquam. Laborum excepturi placeat nemo commodi nobis aspernatur quam nesciunt?</p>
+          <p>Cumque sequi sapiente quasi nobis beatae laudantium ipsa molestias maxime nisi hic odio deleniti quibusdam provident aperiam suscipit, ducimus recusandae rem. Consequuntur ea soluta eius sequi nesciunt dignissimos, laboriosam nemo.</p>
+          <p>Velit minus placeat cupiditate assumenda delectus repudiandae culpa nesciunt minima voluptate fuga ex dolores deserunt, modi earum dolore ipsam nam sint totam molestiae voluptates? Eum quas omnis itaque impedit tempore.</p>
         </div>
       </div>
     </div>

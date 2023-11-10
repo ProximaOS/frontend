@@ -17,10 +17,11 @@
   <link rel="stylesheet" href="style/colors.css">
   <link rel="stylesheet" href="style/index.css">
   <script type="module" src="http://shared.localhost:8081/services/orchid_services.js"></script>
-  <!-- <script defer type="text/javascript" src="http://shared.localhost:8081/js/smooth-scrollbar.js"></script> -->
-  <!-- <script defer type="text/javascript" src="http://shared.localhost:8081/js/plugins/overscroll.js"></script> -->
+  <script defer type="text/javascript" src="http://shared.localhost:8081/js/smooth-scrollbar.js"></script>
+  <script defer type="text/javascript" src="http://shared.localhost:8081/js/plugins/overscroll.js"></script>
   <script defer type="text/javascript" src="http://shared.localhost:8081/js/panels.js"></script>
   <script defer type="text/javascript" src="http://shared.localhost:8081/js/spatial_navigation.js"></script>
+  <script defer type="text/javascript" src="http://shared.localhost:8081/js/common/page_controller.js"></script>
   <script defer type="text/javascript" src="http://shared.localhost:8081/js/sticky_scroll.js"></script>
   <script defer type="text/javascript" src="http://shared.localhost:8081/js/markdown-it.js"></script>
   <script defer type="text/javascript" src="js/account.js"></script>
@@ -36,7 +37,7 @@
       </header>
       <div class="content lists">
         <ul>
-          <li data-icon="add">
+          <li data-icon="add" data-page-id="chat">
             <p>New Chat</p>
           </li>
         </ul>
@@ -52,9 +53,9 @@
     </section>
 
     <section id="chat" class="visible" role="panel">
-      <header class="compact" role="header">
+      <header role="header">
         <div class="safezone">
-          <a href="#" data-icon="menu"></a>
+          <a href="#" data-icon="menu" data-page-id="root"></a>
           <h1>New Chat</h1>
         </div>
       </header>

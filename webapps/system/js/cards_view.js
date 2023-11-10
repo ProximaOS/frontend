@@ -18,7 +18,7 @@
       this.element.addEventListener('click', this.hide.bind(this));
       this.toggleButton.addEventListener('click', this.handleToggleButton.bind(this));
 
-      this.cardsContainer.addEventListener('scroll', this.handleScroll.bind(this));
+      StickyScroll.init(this.element, '.card-area');
     },
 
     show: function () {
@@ -34,7 +34,7 @@
       const windows = this.windowContainer.querySelectorAll('.appframe:not(#homescreen)');
       for (let index = 0; index < windows.length; index++) {
         const appWindow = windows[index];
-        this.createCard(index, appWindow.dataset.manifestUrl, appWindow, appWindow.querySelector('.browser.active'));
+        this.createCard(index, appWindow.dataset.manifestUrl, appWindow, appWindow.querySelector('.browser-view.active .browser'));
       }
     },
 
@@ -111,7 +111,7 @@
         const entry = entries[index];
 
         if (entry[0] >= this.APP_ICON_SIZE) {
-          return;
+          continue;
         }
         const url = new URL(manifestUrl);
         icon.src = url.origin + '/' + entry[1];
@@ -135,80 +135,57 @@
       }
     },
 
-    handleScroll: function (event) {
-      const deltaMovement = this.cardsContainer.scrollLeft - this.scrollMovement;
-
-      const cards = this.cardsContainer.querySelectorAll('.card-area');
-      for (let index = 0; index < cards.length; index++) {
-        const card = cards[index];
-
-        const viewportWidth = window.innerWidth;
-        const elementRect = card.getBoundingClientRect();
-        const distanceFromCenter = Math.abs(elementRect.left);
-
-        const translationFactor = Math.min(1, Math.abs(deltaMovement) / window.innerWidth) * 0.1; // Adjust this factor to control the translation speed
-        const translationAmount = distanceFromCenter * translationFactor;
-
-        console.log(viewportWidth, distanceFromCenter, translationFactor, translationAmount);
-
-        const rtl = document.dir === 'rtl';
-        card.style.setProperty('--scroll-gap', (rtl ? -translationAmount : translationAmount) + 'px');
-      }
-
-      this.scrollMovement = Math.abs(this.cardsContainer.scrollLeft);
-    },
-
     // Attach event listeners for mouse/touch events to handle dragging
     onPointerDown: function (event, card, windowId) {
       event.preventDefault();
-      // Get initial position
-      const initialY = event.pageY || event.touches[0].pageY;
+      event.stopPropagation();
+      this.startY = event.clientY || event.touches[0].clientY;
 
       // Get initial window position
       const initialWindowY = card.offsetTop;
 
       // Calculate the offset between the initial position and the window position
-      const offsetY = initialY - initialWindowY;
-
-      // Attach event listeners for dragging
-      document.addEventListener('mousemove', dragWindow);
-      document.addEventListener('touchmove', dragWindow);
-      document.addEventListener('mouseup', stopDrag);
-      document.addEventListener('touchend', stopDrag);
-
-      this.startY = event.pageY || event.touches[0].pageY;
+      const offsetY = this.startY - initialWindowY;
 
       // Function to handle dragging
-      function dragWindow(event) {
+      const dragWindow = (event) => {
         event.preventDefault();
-        const y = event.pageY || event.touches[0].pageY;
+        const y = event.clientY || event.touches[0].clientY;
 
         // Calculate the new position of the window
         const newWindowY = y - offsetY;
 
         // Set the new position of the window
         const progress = newWindowY / window.innerHeight;
-        card.style.opacity = 1 - progress;
-        card.style.transform = `translateY(${25 * progress}%) scale(${0.65 - 0.25 * progress}) rotate3d(1, 0, 0, -${90 * progress}deg)`;
+        card.style.opacity = 1 - (progress * -1);
+        card.style.transform = `translateY(${100 * progress}%) scale(0.65)`;
       }
 
       // Function to stop dragging
-      function stopDrag(event) {
+      const stopDrag = (event) => {
         event.preventDefault();
-        const currentYPosition = event.pageY || event.touches[0].pageY;
+        const currentYPosition = event.clientY || event.touches[0].clientY;
         const distanceY = currentYPosition - this.startY;
 
         card.classList.add('transitioning');
         card.addEventListener('transitionend', () => card.classList.remove('transitioning'));
         card.classList.remove('dragging');
 
-        if (distanceY <= 100) {
+        if (distanceY <= -100) {
           if (windowId === 'homescreen') {
             card.style.transform = '';
           } else {
             AppWindow.close(windowId, true);
-            card.remove();
-            card.parentElement.remove();
+            card.style.opacity = 0;
+            card.style.transform = 'translateY(-100%) scale(0.65)';
+            card.addEventListener('transitionend', () => {
+              card.parentElement.remove();
+
+              if (this.cardsContainer.childNodes.length < 1) {
+                this.hide();
+                AppWindow.focus(AppWindow.homescreenElement.id);
+              }
+            });
           }
         }
 
@@ -217,6 +194,12 @@
         document.removeEventListener('mouseup', stopDrag);
         document.removeEventListener('touchend', stopDrag);
       }
+
+      // Attach event listeners for dragging
+      document.addEventListener('mousemove', dragWindow);
+      document.addEventListener('touchmove', dragWindow);
+      document.addEventListener('mouseup', stopDrag);
+      document.addEventListener('touchend', stopDrag);
     }
   };
 

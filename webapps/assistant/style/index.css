@@ -1,24 +1,30 @@
 #chat {
-  --safezone-width: 100%;
+  --safezone-width: 102.4rem;
 }
 
 .messages {
+  box-sizing: border-box;
   display: flex;
   flex-direction: column;
   flex-wrap: wrap;
-  padding-bottom: calc(5rem + var(--software-buttons-height)) !important;
   padding: 0 1.5rem;
-  box-sizing: border-box;
+  padding-bottom: calc(5rem + var(--software-buttons-height, 1rem)) !important;
+}
+
+.chat-messages {
+  width: 100%;
+  max-width: calc(var(--safezone-width) - 3rem);
+  margin: 0 auto;
 }
 
 .message {
-  width: 100%;
-  flex-shrink: 0;
-  border-radius: 1.5rem;
-  display: flex;
-  padding: 0 1rem;
   box-sizing: border-box;
+  display: flex;
+  flex-shrink: 0;
+  width: 100%;
+  padding: 0 1rem;
   gap: 1rem;
+  border-radius: 1.5rem;
 }
 
 .message.bot {
@@ -26,29 +32,33 @@
 }
 
 .message > .avatar {
+  flex-shrink: 0;
   width: 4rem;
   height: 4rem;
-  border-radius: 50%;
-  background: #858585 url(icons/assistant_128.png) no-repeat center / cover;
-  flex-shrink: 0;
   margin: 1rem 0;
+  border-radius: 50%;
+  background: #858585 url(images/defaultuser.svg) no-repeat center / cover;
+}
+
+.message.bot > .avatar {
+  background: #858585 url(icons/assistant.svg) no-repeat center / cover;
 }
 
 .message .text-holder {
-  width: 100%;
-  flex-grow: 1;
-  padding: 1rem 0;
   box-sizing: border-box;
   display: flex;
+  flex-grow: 1;
   flex-direction: column;
+  width: 100%;
+  padding: 1rem 0;
 }
 
 .message .text-holder .message-text {
   width: 100%;
-  color: var(--text-color);
-  font-size: 1.6rem;
-  font-weight: normal;
   margin: 0;
+  color: var(--text-color);
+  font-weight: normal;
+  font-size: 1.6rem;
 }
 
 .message .text-holder .message-text h1,
@@ -83,16 +93,16 @@
 }
 
 .message .text-holder .message-text a {
-  font-size: 1.6rem;
+  color: var(--text-color);
   font-weight: normal;
+  font-size: 1.6rem;
   line-height: 2.2rem;
   text-decoration: underline dotted var(--item-active);
-  color: var(--text-color);
 }
 
 .message .text-holder .message-text a:hover {
-  text-decoration: underline;
   color: var(--accent-color);
+  text-decoration: underline;
 }
 
 .message .text-holder .message-text ul {
@@ -101,22 +111,26 @@
 }
 
 .message .text-holder .images {
-  width: 100%;
   display: flex;
+  width: 100%;
   gap: 1rem;
 }
 
 .message .text-holder .images > .image {
+  max-width: 12rem;
   height: 10rem;
+  margin: 1rem 0 0;
+  object-fit: contain;
+  border-radius: 1rem;
 }
 
 .messagebox-container {
-  height: calc(4.6rem + var(--software-buttons-height));
-  padding: 0 1.5rem var(--software-buttons-height);
   box-sizing: border-box;
-  margin-top: calc(-4.6rem - var(--software-buttons-height));
-  background-image: linear-gradient(to bottom, transparent 2.3rem, var(--background) 4.6rem);
   z-index: 5;
+  height: calc(4.6rem + var(--software-buttons-height, 1rem));
+  margin-top: calc(-4.6rem - var(--software-buttons-height, 1rem));
+  padding: 0 1.5rem var(--software-buttons-height, 1rem);
+  background-image: linear-gradient(to bottom, transparent 2.3rem, var(--background) 4.6rem);
 }
 
 .messagebox-container .messagebox {
@@ -126,16 +140,16 @@
 
 @media screen and (min-width: 768px) {
   #root {
+    box-sizing: border-box;
+    visibility: visible;
+    z-index: 1;
     position: absolute;
     top: 0;
     width: 32rem;
     height: 100%;
-    opacity: 1;
-    visibility: visible;
     transform: none;
-    box-sizing: border-box;
-    z-index: 1;
     filter: none;
+    opacity: 1;
   }
   html[dir="ltr"] #root {
     left: 0;
@@ -151,9 +165,9 @@
 
   #root > .content > *:not(.scroll-content),
   #root > .content > .scroll-content > * {
+    visibility: visible;
     transform: translateY(0);
     opacity: 1;
-    visibility: visible;
   }
 
   [role="panel"]:not(#root) {

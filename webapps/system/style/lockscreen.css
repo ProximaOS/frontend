@@ -128,12 +128,19 @@
 }
 
 #lockscreen-icon {
+  mask-position-x: calc(1rem + (0.7rem * (10 - (var(--motion-progress, 1) * 10)))), calc(1rem - (0.3rem * (10 - (var(--motion-progress, 1) * 10))));
+  -webkit-mask-position-x: calc(1rem + (0.7rem * (10 - (var(--motion-progress, 1) * 10)))), calc(1rem - (0.3rem * (10 - (var(--motion-progress, 1) * 10))));
+  -webkit-mask: url(lockscreen/images/lock_base.png) no-repeat center / 3rem, url(lockscreen/images/lock_head.png) no-repeat center / 3rem;
   width: 5rem;
   height: 3rem;
   margin: 7rem auto 0;
-  background: url(lockscreen/images/lock_base.png) no-repeat center / 3rem, url(lockscreen/images/lock_head.png) no-repeat center / 3rem;
-  background-position-x: calc(1rem + (0.7rem * (10 - (var(--motion-progress, 1) * 10)))), calc(1rem - (0.3rem * (10 - (var(--motion-progress, 1) * 10))));
+  background-color: #fff;
+  mask: url(lockscreen/images/lock_base.png) no-repeat center / 3rem, url(lockscreen/images/lock_head.png) no-repeat center / 3rem;
   transition: all 0.3s ease;
+}
+
+.light #lockscreen:not(.low-power) #lockscreen-icon {
+  background-color: rgba(0, 0, 0, 0.75);
 }
 
 #lockscreen-icon.fail-unlock {
@@ -163,10 +170,15 @@
 
 #lockscreen-clock {
   color: #fff;
-  font-weight: 300;
+  font-weight: 600;
   font-size: 7.2rem;
   line-height: 7.8rem;
   text-shadow: 0 0 0.4rem rgba(0, 0, 0, 0.1);
+}
+
+.light #lockscreen:not(.low-power) #lockscreen-clock {
+  color: rgb(calc(var(--accent-color-r) * 0.25), calc(var(--accent-color-g) * 0.25), calc(var(--accent-color-b) * 0.25));
+  text-shadow: none;
 }
 
 #lockscreen-date {
@@ -174,6 +186,11 @@
   color: #fff;
   font-size: 2rem;
   text-shadow: 0 0 0.4rem rgba(0, 0, 0, 0.1);
+}
+
+.light #lockscreen:not(.low-power) #lockscreen-date {
+  color: rgba(0, 0, 0, 0.75);
+  text-shadow: none;
 }
 
 #lockscreen-toolbar {

@@ -13,22 +13,25 @@
   <link rel="stylesheet" href="http://shared.localhost:8081/style/headers.css">
   <link rel="stylesheet" href="http://shared.localhost:8081/style/lists.css">
   <link rel="stylesheet" href="http://shared.localhost:8081/style/buttons.css">
-  <link rel="stylesheet" href="http://shared.localhost:8081/style/toolbars_advanced.css">
+  <link rel="stylesheet" href="http://shared.localhost:8081/style/toolbars2.css">
   <link rel="stylesheet" href="style/index.css">
   <link rel="stylesheet" href="style/editor.css">
   <script defer type="text/javascript" src="http://shared.localhost:8081/js/smooth-scrollbar.js"></script>
   <script defer type="text/javascript" src="http://shared.localhost:8081/js/plugins/overscroll.js"></script>
   <script defer type="text/javascript" src="http://shared.localhost:8081/js/panels.js"></script>
   <script defer type="text/javascript" src="http://shared.localhost:8081/js/spatial_navigation.js"></script>
+  <script defer src="ace/ace.js"></script>
+  <script defer src="ace/keybinding-vscode.js"></script>
+  <script defer src="ace/ext-language_tools.js"></script>
   <script defer src="js/pages.js"></script>
   <script defer src="js/editor.js"></script>
   <script defer src="js/webapps.js"></script>
 </head>
 
 <body>
-  <div id="app" class="app">
-    <div id="root" class="panel">
-      <div class="headerbar">
+  <main id="app" role="app">
+    <section id="root" role="panel">
+      <header role="header">
         <div class="safezone">
           <a href="#" data-icon="menu"></a>
           <h1 id="root-title">My Project</h1>
@@ -36,24 +39,21 @@
             <a href="#" data-icon="settings"></a>
           </menu>
         </div>
-      </div>
+      </header>
       <div class="content"></div>
-    </div>
-    <div id="editor" class="panel visible">
-      <div class="headerbar compact">
+    </section>
+    <section id="editor" class="visible" role="panel">
+      <header class="compact" role="header">
         <h1 id="root-title">File.txt</h1>
         <menu role="toolbar">
           <a href="#" data-icon="play"></a>
           <a href="#" data-icon="bug"></a>
         </menu>
-      </div>
+      </header>
       <div class="content">
-        <div id="editor-container">
-          <div id="line-numbers"></div>
-          <div id="editor-area" contenteditable="true" spellcheck="false"></div>
-        </div>
+        <div id="editor-container"></div>
       </div>
-      <div class="toolbar-advanced">
+      <footer role="toolbar2">
         <select name="" id="editor-format">
           <option value="">UTF-8</option>
         </select>
@@ -61,10 +61,10 @@
         <menu role="toolbar">
           <a href="#" data-icon="bell"></a>
         </menu>
-      </div>
-    </div>
-    <div id="webapps" class="panel">
-      <div class="headerbar">
+      </footer>
+    </section>
+    <section id="webapps" role="panel">
+      <header role="header">
         <div class="safezone">
           <a href="#" data-icon="back"></a>
           <h1 id="root-title">Installed Webapps</h1>
@@ -72,12 +72,12 @@
             <a href="#" data-icon="add"></a>
           </menu>
         </div>
-      </div>
+      </header>
       <div class="content lists">
         <ul id="webapps-list"></ul>
       </div>
-    </div>
-  </div>
+    </section>
+  </main>
 </body>
 
 </html>

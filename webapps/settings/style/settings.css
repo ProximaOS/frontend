@@ -158,7 +158,6 @@
   height: 3.6rem;
   border-radius: 25%;
   outline: solid 0.1rem var(--item-plus);
-  background-color: #fff;
 }
 
 #webapps-list li > div {
@@ -251,6 +250,59 @@
   width: 24rem;
   height: 24rem;
   background: url(http://shared.localhost:8081/resources/branding/official/wordmark_light.svg) no-repeat center / contain;
+}
+
+.aboutInfo-header > .logo.activate {
+  transform-origin: bottom;
+  animation: logo-activate 0.5s cubic-bezier(0.5, 0.8, 0, 1) forwards;
+}
+
+@keyframes logo-activate {
+  0% {
+    transform: scale(1, 1);
+  }
+  25% {
+    transform: scale(1.1, 0.9);
+  }
+  50% {
+    transform: scale(0.9, 1.1);
+  }
+  100% {
+    transform: scale(1, 1);
+  }
+}
+
+#font-settings .content {
+  position: relative;
+}
+
+#font-settings .scroll-content {
+  min-height: 100%;
+}
+
+.font-settings-preview-holder {
+  display: flex;
+  position: absolute;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: calc(100% - 10rem);
+}
+
+#font-settings-preview-text {
+  color: var(--text-color);
+  font-weight: normal;
+  font-size: 2.4rem;
+  text-align: center;
+}
+
+.font-settings-sliders {
+  box-sizing: border-box;
+  position: absolute;
+  bottom: var(--software-buttons-height);
+  left: 0;
+  width: 100%;
+  padding: 1rem 1.5rem;
 }
 
 @media screen and (prefers-color-scheme: dark) {

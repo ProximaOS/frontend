@@ -4,7 +4,7 @@
   "manufacturer": "Orchid",
   "deviceModelName": "OROS-DEV2",
   "servicePackName": "OSCore/5.1",
-  "version": "117.0.0-b50",
+  "version": "4.0.0-b2023-11-08T15:20:53.802Z",
   "description": "Open source Orchid web OS and browser",
   "main": "src/main.js",
   "scripts": {

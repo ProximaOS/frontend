@@ -1,60 +1,93 @@
 html, body {
   margin: 0;
   padding: 0;
+  background-color: var(--accent-color);
   font-size: 10px;
   font-family: 'Jali Arabic', system-ui, sans-serif;
 }
 
+:focus {
+  outline: none;
+}
+
 #app {
   position: absolute;
-  left: 0;
   top: 0;
+  left: 0;
   width: 100%;
   height: 100%;
-  background-image: linear-gradient(to bottom, #333, #545454);
+  background: #333 linear-gradient(to bottom, #333, #545454);
+}
+
+[role="panel"] {
+  position: absolute;
+  top: 8rem;
+  left: 0;
+  width: 100%;
+  height: calc(100% - 8rem);
+  background-color: transparent;
+}
+
+html[dir="ltr"] [role="panel"].previous {
+  transform: translateX(-25%);
+}
+html[dir="rtl"] [role="panel"].previous {
+  transform: translateX(25%);
+}
+
+html[dir="ltr"] [role="panel"].next {
+  transform: translateX(25%);
+}
+html[dir="rtl"] [role="panel"].next {
+  transform: translateX(-25%);
+}
+
+html[dir="ltr"] [role="panel"].visible,
+html[dir="rtl"] [role="panel"].visible {
+  transform: translateX(0);
 }
 
 #background,
 #foreground {
   position: absolute;
-  left: 0;
   top: 0;
+  left: 0;
   width: 100%;
   height: 100%;
 }
 
 #foreground {
   z-index: 1;
-  pointer-events: none;
   filter: blur(10px);
+  pointer-events: none;
 }
 
 #content {
   position: absolute;
-  left: 0;
   top: 0;
+  left: 0;
   width: 100%;
   height: 100%;
 }
 
 #statusbar {
-  margin: 0;
-  padding: 0 5vw;
   box-sizing: border-box;
+  display: flex;
+  z-index: 10;
+  position: absolute;
+  align-items: center;
   width: 100%;
   height: 8rem;
-  display: flex;
-  align-items: center;
-  position: absolute;
-  z-index: 10;
+  margin: 0;
+  padding: 0 5vw;
 }
 
 #statusbar > div {
   display: flex;
-  align-items: center;
-  gap: 1.5rem;
-  width: 100%;
   flex-grow: 1;
+  align-items: center;
+  width: 100%;
+  gap: 1.5rem;
 }
 
 #statusbar > .right {
@@ -68,163 +101,200 @@ html, body {
 }
 
 #statusbar button {
+  box-sizing: border-box;
   width: 4rem;
   height: 4rem;
-  line-height: 4rem;
   padding: 0 0.8rem;
-  box-sizing: border-box;
-  background-color: rgba(255,255,255,0.1);
-  border-radius: 4rem;
-  color: #fff;
-  font-size: 2rem;
-  font-weight: normal;
   border: none;
+  border-radius: 4rem;
   backdrop-filter: blur(20px) saturate(180%);
+  background-color: rgba(255,255,255,0.1);
+  color: #fff;
+  font-weight: normal;
+  font-size: 2rem;
+  line-height: 4rem;
   transition: transform 0.3s cubic-bezier(0.2, 0.9, 0.1, 1);
 }
 
-#statusbar button:hover {
-  background-color: rgba(255,255,255,0.2);
+#statusbar button:hover,
+#statusbar button:focus {
   transform: scale(1.1);
+  background-color: rgba(255,255,255,0.2);
 }
 
 #statusbar button:active {
-  background-color: rgba(255,255,255,0.3);
   transform: scale(0.9);
+  background-color: rgba(255,255,255,0.3);
 }
 
 #statusbar button[data-icon]::before {
+  height: 4rem;
   font-size: 2.4rem;
+  line-height: 4rem;
 }
 
 #statusbar .searchbox {
+  box-sizing: border-box;
+  display: inline-flex;
+  justify-content: center;
   width: 15rem;
   height: 4rem;
-  line-height: 4rem;
   padding: 0 0.8rem;
-  box-sizing: border-box;
-  background-color: rgba(255,255,255,0.1);
-  border-radius: 4rem;
-  color: rgba(255,255,255,0.5);
-  font-size: 1.8rem;
-  font-weight: normal;
-  border: none;
-  backdrop-filter: blur(20px) saturate(180%);
-  display: inline-flex;
   gap: 1rem;
-  justify-content: center;
+  border: none;
+  border-radius: 4rem;
+  backdrop-filter: blur(20px) saturate(180%);
+  background-color: rgba(255,255,255,0.1);
+  color: rgba(255,255,255,0.5);
+  font-weight: normal;
+  font-size: 1.8rem;
+  line-height: 4rem;
 }
 
-.searchbox:hover {
+.searchbox:hover,
+.searchbox:focus {
   background-color: rgba(255,255,255,0.2);
 }
 
 #statusbar .searchbox[data-icon]::before {
+  height: 4rem;
   font-size: 2rem;
+  line-height: 4rem;
 }
 
 .tabs {
   display: flex;
   height: 4rem;
+  margin: 0;
+  padding: 0;
   gap: 1.5rem;
 }
 
 .tabs > .tab {
-  height: 4rem;
-  line-height: 4rem;
-  padding: 0 2rem;
   box-sizing: border-box;
-  background-color: rgba(255,255,255,0.1);
+  height: 4rem;
+  margin: 0;
+  padding: 0 2rem;
   border-radius: 4rem;
-  color: #fff;
-  font-size: 2rem;
-  font-weight: normal;
   backdrop-filter: blur(20px) saturate(180%);
+  background-color: rgba(255,255,255,0.1);
+  color: #fff;
+  font-weight: normal;
+  font-size: 2rem;
+  line-height: 4rem;
+  list-style: none;
   transition: transform 0.3s cubic-bezier(0.2, 0.9, 0.1, 1);
 }
 
-.tabs > .tab:hover {
-  background-color: rgba(255,255,255,0.2);
+.tabs > .tab:hover,
+.tabs > .tab:focus {
   transform: scale(1.1);
+  background-color: rgba(255,255,255,0.2);
 }
 
 .tabs > .tab:active {
-  background-color: rgba(255,255,255,0.3);
   transform: scale(0.9);
+  background-color: rgba(255,255,255,0.3);
 }
 
-.tabs > .tab.active {
+.tabs > .tab.selected {
   background-color: #fff;
   color: #333;
 }
 
 #statusbar .time {
   color: #fff;
-  font-size: 2.4rem;
   font-weight: normal;
+  font-size: 2.4rem;
 }
 
-.panel {
-  padding-top: 8rem;
-  box-sizing: border-box;
+.account-button {
+  position: relative;
+  overflow: hidden;
+}
+
+.account-button > img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
 }
 
 .content-row {
+  box-sizing: border-box;
   display: flex;
   flex-direction: column;
   margin-bottom: 1.5rem;
   padding: 0 5vw;
-  box-sizing: border-box;
 }
 
 .content-row > header {
-  color: #fff;
-  font-size: 2.4rem;
-  font-weight: normal;
-  height: 4rem;
-  line-height: 4rem;
-  padding: 0 1rem;
   box-sizing: border-box;
+  height: 4rem;
+  padding: 0 1rem;
+  color: #fff;
+  font-weight: normal;
+  font-size: 2.4rem;
+  line-height: 4rem;
 }
 
 #webapps {
+  display: flex;
   margin: 0;
   padding: 0;
-  display: flex;
   overflow-x: auto;
   overflow-y: hidden;
   gap: 1.5rem;
 }
 
 #webapps > .webapp {
-  height: 30vh;
-  aspect-ratio: 4 / 3;
-  background-color: rgba(255,255,255,0.1);
-  backdrop-filter: blur(20px) saturate(180%);
-  border-radius: 2rem;
+  position: relative;
   flex-shrink: 0;
+  aspect-ratio: 4 / 3;
+  height: 30vh;
+  border-radius: 2rem;
+  backdrop-filter: blur(20px) saturate(180%);
+  background-color: rgba(255,255,255,0.1);
+}
+
+#webapps > .webapp > .banner {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+#webapps > .webapp {
+  flex-shrink: 0;
+  aspect-ratio: 4 / 3;
+  height: 30vh;
+  border-radius: 2rem;
+  backdrop-filter: blur(20px) saturate(180%);
+  background-color: rgba(255,255,255,0.1);
 }
 
 .selected-card-panel {
-  width: 100%;
-  height: 50vh;
   display: flex;
   flex-direction: column;
   justify-content: center;
+  width: 100%;
+  height: 50vh;
 }
 
 .selected-card-panel h1 {
-  color: #fff;
-  font-size: 5rem;
-  font-weight: normal;
   margin: 0;
+  color: #fff;
+  font-weight: normal;
+  font-size: 5rem;
 }
 
 .selected-card-panel p {
-  color: rgba(255,255,255,0.5);
-  font-size: 2rem;
-  font-weight: normal;
   margin: 0;
+  color: rgba(255,255,255,0.5);
+  font-weight: normal;
+  font-size: 2rem;
 }
 
 .selected-card-panel nav {
@@ -234,27 +304,28 @@ html, body {
 }
 
 .selected-card-panel nav > a {
+  box-sizing: border-box;
   display: inline-block;
   height: 4rem;
-  line-height: 4rem;
   padding: 0 2rem;
-  box-sizing: border-box;
-  background-color: rgba(255,255,255,0.1);
   border-radius: 4rem;
-  color: #fff;
-  font-size: 2rem;
-  font-weight: normal;
   backdrop-filter: blur(20px) saturate(180%);
+  background-color: rgba(255,255,255,0.1);
+  color: #fff;
+  font-weight: normal;
+  font-size: 2rem;
+  line-height: 4rem;
   text-decoration: none;
   transition: transform 0.3s cubic-bezier(0.2, 0.9, 0.1, 1);
 }
 
-.selected-card-panel nav > a:hover {
-  background-color: rgba(255,255,255,0.2);
+.selected-card-panel nav > a:hover,
+.selected-card-panel nav > a:focus {
   transform: scale(1.1);
+  background-color: rgba(255,255,255,0.2);
 }
 
 .selected-card-panel nav > a:active {
-  background-color: rgba(255,255,255,0.3);
   transform: scale(0.9);
+  background-color: rgba(255,255,255,0.3);
 }

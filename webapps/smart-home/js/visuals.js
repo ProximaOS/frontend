@@ -30,13 +30,13 @@
       this.x = x;
       this.y = y;
       this.radius = Math.random() * 2 + 1;
-      this.vx = Math.random() * 1 - 0.5;
-      this.vy = Math.random() * 1 - 0.5;
+      this.vx = Math.random() * 1 - (Math.random() * 20);
+      this.vy = Math.random() * 1 - (Math.random() * 20);
       this.opacity = Math.random() * 0.5 + 0.3;
     },
 
     createParticles: function (particlesArray) {
-      for (let i = 0; i < 100; i++) {
+      for (let i = 0; i < 256; i++) {
         const x = Math.random() * this.backgroundCanvas.width;
         const y = Math.random() * this.backgroundCanvas.height;
         particlesArray.push(new this.Particle(x, y));

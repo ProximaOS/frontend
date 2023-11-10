@@ -37,19 +37,22 @@
     },
 
     handleLanguageChange: function (value) {
-      if (navigator.mozL10n.language.code !== value) {
-        LoadingScreen.show();
-        LoadingScreen.element.textContent = navigator.mozL10n.get('changingLanguage');
-        LoadingScreen.element.addEventListener('transitionend', () => {
-          navigator.mozL10n.language.code = value;
-          LoadingScreen.element.textContent = navigator.mozL10n.get('changingLanguage');
-          LoadingScreen.hide();
-        });
+      if (navigator.mozL10n.language.code === value) {
+        return;
       }
+
+      LoadingScreen.show();
+      LoadingScreen.element.textContent = navigator.mozL10n.get('changingLanguage');
+      LoadingScreen.element.addEventListener('transitionend', () => {
+        navigator.mozL10n.language.code = value;
+        LoadingScreen.element.textContent = navigator.mozL10n.get('changingLanguage');
+        LoadingScreen.hide();
+      });
     },
 
     handleColorScheme: function (value) {
-      IPC.send('change-theme', value ? 'dark' : 'light');
+      const targetTheme = value ? 'dark' : 'light';
+      IPC.send('change-theme', targetTheme);
     },
 
     handleSoftwareButtons: function (value) {

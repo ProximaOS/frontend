@@ -37,29 +37,18 @@
       this.gridElement.style.setProperty('--grid-rows', this.gridRows);
 
       document.addEventListener('click', this.onClick.bind(this));
-      this.gridElement.addEventListener(
-        'pointerdown',
-        this.onPointerDown.bind(this)
-      );
-      this.gridElement.addEventListener(
-        'pointerup',
-        this.onPointerUp.bind(this)
-      );
-      this.gridElement.addEventListener(
-        'contextmenu',
-        this.handleContextMenu.bind(this)
-      );
+      this.gridElement.addEventListener('pointerdown', this.onPointerDown.bind(this));
+      this.gridElement.addEventListener('pointerup', this.onPointerUp.bind(this));
+      this.gridElement.addEventListener('contextmenu', this.handleContextMenu.bind(this));
       window.addEventListener('ipc-message', this.handleIPCMessage.bind(this));
 
-      this.gridElement.addEventListener(
-        'scroll',
-        this.handleSwiping.bind(this)
-      );
+      this.gridElement.addEventListener('scroll', this.handleSwiping.bind(this));
 
-      const apps = window.AppsManager.getAll();
+      const apps = AppsManager.getAll();
       apps.then((data) => {
         this.apps = data;
         this.createIcons();
+        this.handleSwiping();
       });
     },
 
@@ -86,32 +75,23 @@
       const rectCenterY = rect.top + rect.height / 2;
 
       // Calculate the distance between the rectangle center and the screen center
-      const distance = Math.sqrt(
-        Math.pow(rectCenterX - centerX, 2) + Math.pow(rectCenterY - centerY, 2)
-      );
+      const distance = Math.sqrt(Math.pow(rectCenterX - centerX, 2) + Math.pow(rectCenterY - centerY, 2));
 
       // Apply CSS transformations
       element.style.setProperty('--pos-z', `${distance}px`);
     },
 
     createIcons: function () {
-      this.apps = this.apps.filter(
-        (obj) => this.HIDDEN_ROLES.indexOf(obj.manifest.role) === -1
-      );
+      this.apps = this.apps.filter((obj) => this.HIDDEN_ROLES.indexOf(obj.manifest.role) === -1);
 
-      const pages = this.splitArray(
-        this.apps,
-        this.gridColumns * this.gridRows
-      );
+      const pages = this.splitArray(this.apps, this.gridColumns * this.gridRows);
       pages.forEach((array, offset) => {
         const rtl = document.dir === 'rtl';
 
         const page = document.createElement('ul');
         page.id = `page${offset}`;
         page.classList.add('page');
-        page.style.transform = rtl
-          ? `translateX(-${offset * 100}%)`
-          : `translateX(${offset * 100}%)`;
+        page.style.transform = rtl ? `translateX(-${offset * 100}%)` : `translateX(${offset * 100}%)`;
         if (this.DEFAULT_PAGE_INDEX === offset) {
           page.scrollIntoView();
         }
@@ -126,9 +106,7 @@
           const icon = document.createElement('li');
           icon.id = `appicon${index}`;
           icon.classList.add('icon');
-          const manifestIndex = this.DEFAULT_DOCK_ICONS.indexOf(
-            app.manifestUrl['en-US']
-          );
+          const manifestIndex = this.DEFAULT_DOCK_ICONS.indexOf(app.manifestUrl['en-US']);
           if (manifestIndex !== -1) {
             setTimeout(() => {
               this.dockElement.appendChild(icon);
@@ -138,12 +116,8 @@
             page.appendChild(icon);
             this.applyParallaxEffect(icon);
           }
-          icon.addEventListener('click', (event) =>
-            this.handleAppClick(event, app, iconContainer)
-          );
-          icon.addEventListener('contextmenu', (event) =>
-            this.handleIconContextMenu(event, app, iconContainer)
-          );
+          icon.addEventListener('click', (event) => this.handleAppClick(event, app, iconContainer));
+          icon.addEventListener('contextmenu', (event) => this.handleIconContextMenu(event, app, iconContainer));
 
           const iconHolder = document.createElement('div');
           iconHolder.classList.add('icon-holder');
@@ -185,26 +159,24 @@
     },
 
     handleSwiping: function () {
-      const scrollCenter =
-        this.gridElement.scrollLeft + this.gridElement.clientWidth / 2;
-
       const dots = this.paginationBarDots.querySelectorAll('.dot');
       const carouselItems = this.gridElement.querySelectorAll('.page');
-      dots.forEach((dot, index) => {
-        const distance = Math.abs(
-          scrollCenter -
-            (carouselItems[index].getBoundingClientRect().left +
-              this.gridElement.clientWidth / 2)
-        );
-        const fadeDistance = this.gridElement.clientWidth / 2;
+      let activeIndex = -1;
 
-        if (distance < fadeDistance) {
-          const progress = 1 - distance / fadeDistance;
-          dot.style.setProperty('--pagination-progress', progress);
-        } else {
-          dot.style.setProperty('--pagination-progress', 0);
+      for (let index = 0; index < carouselItems.length; index++) {
+        const item = carouselItems[index];
+        const pageX = item.getBoundingClientRect().left;
+        const progress = Math.max(0, Math.min(1, 1 - (pageX / item.offsetWidth)));
+        dots[index].style.setProperty('--pagination-progress', progress);
+
+        if (progress > 0.5 && activeIndex === -1) {
+          activeIndex = index;
         }
-      });
+      }
+
+      for (let i = 0; i < dots.length; i++) {
+        dots[i].style.setProperty('--pagination-progress', i === activeIndex ? 1 : 0);
+      }
     },
 
     handleAppClick: function (event, app, icon) {
@@ -212,7 +184,7 @@
       try {
         langCode = navigator.mozL10n.language.code || 'en-US';
       } catch (error) {
-        // If an error occurs, set a default value for langCode
+        // If an error occurs, set a default value for langCodes
         langCode = 'en-US';
       }
 
@@ -342,8 +314,7 @@
 
       this.shortcutsMenu.style.top = iconBox.top + 60 + 'px';
       if (iconBox.left > window.innerWidth - this.shortcutsMenu.clientWidth) {
-        this.shortcutsMenu.style.left =
-          iconBox.left - this.shortcutsMenu.clientWidth + 50 + 'px';
+        this.shortcutsMenu.style.left = iconBox.left - this.shortcutsMenu.clientWidth + 50 + 'px';
       } else {
         this.shortcutsMenu.style.left = iconBox.left + 'px';
       }

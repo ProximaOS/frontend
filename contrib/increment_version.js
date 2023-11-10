@@ -8,7 +8,7 @@ const preReleaseTag = currentVersion.split('-')[1]; // Extract pre-release tag
 
 // Increment the pre-release tag number
 const tagNumber = parseInt(preReleaseTag.substring(1)); // Remove the 'b' prefix and convert to number
-const newTagNumber = tagNumber + 1;
+const newTagNumber = new Date().toISOString();
 
 const newVersion = currentVersion.replace(preReleaseTag, `b${newTagNumber}`);
 packageJson.version = newVersion;

@@ -37,9 +37,6 @@ html, body {
   transition: all 1s cubic-bezier(0.2, 0.9, 0.1, 1), opacity 0.3s cubic-bezier(0.2, 0.9, 0.1, 1);
 }
 
-[role="panel"].previous {
-  /* filter: brightness(50%); */
-}
 html[dir="ltr"] [role="panel"].previous {
   transform: translateX(-3rem);
 }
@@ -47,9 +44,6 @@ html[dir="rtl"] [role="panel"].previous {
   transform: translateX(3rem);
 }
 
-[role="panel"].next {
-  /* filter: brightness(100%); */
-}
 html[dir="ltr"] [role="panel"].next {
   transform: translateX(3rem);
 }
@@ -61,9 +55,13 @@ html[dir="ltr"] [role="panel"].visible,
 html[dir="rtl"] [role="panel"].visible {
   visibility: visible;
   transform: translateX(0);
-  filter: brightness(100%);
   opacity: 1;
   transition: all 1s cubic-bezier(0.2, 0.9, 0.1, 1), opacity 0.7s cubic-bezier(0.2, 0.9, 0.1, 1) 0.3s;
+}
+
+html[dir="ltr"] [role="panel"].will-be-visible,
+html[dir="rtl"] [role="panel"].will-be-visible {
+  transition: all 0.3s ease;
 }
 
 [role="panel"] > .content {
@@ -77,6 +75,11 @@ html[dir="rtl"] [role="panel"].visible {
   scrollbar-width: none;
 }
 
+[role="panel"] > .content > .scroll-content {
+  width: 100%;
+  min-height: 100%;
+}
+
 [role="panel"] > .content > *:not(.scroll-content, .scrollbar-track),
 [role="panel"] > .content > .scroll-content > * {
   visibility: hidden;
@@ -86,7 +89,9 @@ html[dir="rtl"] [role="panel"].visible {
 }
 
 [role="panel"].visible > .content > *:not(.scroll-content, .scrollbar-track),
-[role="panel"].visible > .content > .scroll-content > * {
+[role="panel"].will-be-visible > .content > *:not(.scroll-content, .scrollbar-track),
+[role="panel"].visible > .content > .scroll-content > *,
+[role="panel"].will-be-visible > .content > .scroll-content > * {
   visibility: visible;
   transform: translateY(0);
   opacity: 1;

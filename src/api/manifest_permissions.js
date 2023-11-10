@@ -4,8 +4,7 @@
   module.exports = {
     checkPermission: function (name) {
       if ((process && !navigator.userAgent.includes('OpenOrchid')) || location.protocol === 'orchid:') {
-        resolve({});
-        return;
+        return {};
       }
 
       // Code to read and parse the /manifest.json file

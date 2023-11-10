@@ -18,10 +18,11 @@
   const DisplayManager = require('../src/display');
   const SmsManager = require('../src/sms');
   const DeviceInformation = require('../src/device/device_info');
+  const appConfig = require('../package.json');
 
   require('dotenv').config();
 
-  function registerEvent (ipcName, windowName) {
+  function registerEvent(ipcName, windowName) {
     ipcRenderer.on(ipcName, (event, data) => {
       const customEvent = new CustomEvent(windowName, {
         detail: data,
@@ -65,7 +66,15 @@
     type: process.env.ORCHID_ENVIRONMENT,
     debugPort: process.debugPort,
     currentDir: process.cwd(),
-    dirName: () => __dirname
+    dirName: () => __dirname,
+    version: appConfig.version,
+    engineVersion: process.versions.chrome,
+    argv: process.argv,
+    argv0: process.argv0,
+    platform: process.platform,
+    arch: process.arch,
+    execArgv: process.execArgv,
+    execPath: process.execPath
   };
 
   const IPCRenderManager = {
@@ -105,7 +114,7 @@
     TasksManager: null
   };
 
-  function verifyAccess (permission, mapName, value) {
+  function verifyAccess(permission, mapName, value) {
     const result = manifests.checkPermission(permission);
     if (result) {
       api[mapName] = value;
@@ -152,35 +161,44 @@
     }
   });
 
-  function playStereoAudio (audioFilePath, xPosition) {
+  function playSpatializedAudio(x, y, z, filePath) {
     const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-    const stereoPanner = audioContext.createStereoPanner();
 
-    const audioElement = new Audio();
-    audioElement.crossOrigin = 'anonymous'; // Set crossOrigin attribute
+    fetch(filePath)
+      .then((response) => response.arrayBuffer())
+      .then((data) => audioContext.decodeAudioData(data))
+      .then((audioBuffer) => {
+        const source = audioContext.createBufferSource();
+        source.buffer = audioBuffer;
 
-    audioElement.addEventListener('canplaythrough', () => {
-      const source = audioContext.createMediaElementSource(audioElement);
+        const panner = audioContext.createPanner();
+        panner.panningModel = 'HRTF';
+        panner.distanceModel = 'inverse';
+        panner.refDistance = 1;
+        panner.maxDistance = 10000;
+        panner.rolloffFactor = 1;
+        panner.coneInnerAngle = 360;
+        panner.coneOuterAngle = 0;
+        panner.coneOuterGain = 0;
 
-      // Set the pan value based on the x position
-      const panValue = (xPosition / window.innerWidth) * 2 - 1; // -1 to 1 range
-      stereoPanner.pan.value = panValue;
+        panner.setPosition(x, y, z);
 
-      source.connect(stereoPanner);
-      stereoPanner.connect(audioContext.destination);
+        source.connect(panner);
+        panner.connect(audioContext.destination);
 
-      audioElement.play();
-    });
-
-    audioElement.src = audioFilePath;
+        source.start();
+      })
+      .catch((error) => console.error('Error loading audio:', error));
   }
 
   document.addEventListener('click', (event) => {
     if (['A', 'BUTTON', 'LI', 'INPUT'].indexOf(event.target.nodeName) === -1) {
       return;
     }
+    const x = (event.clientX / window.innerWidth) - 0.5;
+    const y = ((event.clientY / window.innerHeight) - 0.5) * -1;
 
-    playStereoAudio(`http://shared.localhost:${location.port}/resources/sounds/click.wav`, event.clientX);
+    playSpatializedAudio(x, y, 0.1, `http://shared.localhost:${location.port}/resources/sounds/click.wav`);
   });
 
   document.addEventListener('dragstart', function (event) {
@@ -204,6 +222,7 @@
   });
 
   document.addEventListener('DOMContentLoaded', function () {
+    require('./modules/image_handler');
     require('./modules/keyboard');
     require('./modules/media_playback');
     require('./modules/narrator');

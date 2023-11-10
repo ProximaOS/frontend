@@ -1,4 +1,12 @@
-/*  */
+nav {
+  width: calc(100% - 3rem);
+  max-width: calc(var(--safezone-width) - 3rem);
+  margin: 0 auto;
+}
+
+nav > a {
+  font-size: 1.6rem;
+}
 
 @media screen and (min-width: 768px) {
   #root {

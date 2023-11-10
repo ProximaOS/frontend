@@ -70,11 +70,21 @@
     },
 
     handleConfirm: function (data) {
-      ModalDialog.showConfirm(data.title || data.origin, data.text);
+      ModalDialog.showConfirm(data.title || data.origin, data.text, (value) => {
+        IPC.send('message', {
+          type: 'confirm-reply',
+          value
+        });
+      });
     },
 
     handlePrompt: function (data) {
-      ModalDialog.showPrompt(data.title || data.origin, data.text, data.input);
+      ModalDialog.showPrompt(data.title || data.origin, data.text, data.input, (value) => {
+        IPC.send('message', {
+          type: 'prompt-reply',
+          value
+        });
+      });
     },
 
     handleNotification: function (data) {

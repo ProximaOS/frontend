@@ -10,10 +10,10 @@
     targetElement: null,
     lastMovementX: 0,
     lastMovementY: 0,
+    easing: 0.02,
 
     smoothMovement: function (newValue, lastValue) {
-      const easing = 0.1;
-      return lastValue + (newValue - lastValue) * easing;
+      return lastValue + (newValue - lastValue) * this.easing;
     },
 
     handleMouseDown: function (event) {
@@ -65,25 +65,25 @@
           if (walkWithFrictionX > 0) {
             translateX =
               cardOffsetX > x
-                ? diffX * (Math.abs(this.lastMovementX / 50) * 0.5)
-                : -diffX * Math.abs(this.lastMovementX / 50);
+                ? diffX * (Math.abs(this.lastMovementX / 30) * 0.5)
+                : -diffX * Math.abs(this.lastMovementX / 30);
           } else {
             translateX =
               cardOffsetX > x
-                ? diffX * Math.abs(this.lastMovementX / 50)
-                : -diffX * (Math.abs(this.lastMovementX / 50) * 0.5);
+                ? diffX * Math.abs(this.lastMovementX / 30)
+                : -diffX * (Math.abs(this.lastMovementX / 30) * 0.5);
           }
 
           if (walkWithFrictionY > 0) {
             translateY =
               cardOffsetY > y
-                ? diffY * (Math.abs(this.lastMovementY / 50) * 0.5)
-                : -diffY * Math.abs(this.lastMovementY / 50);
+                ? diffY * (Math.abs(this.lastMovementY / 30) * 0.5)
+                : -diffY * Math.abs(this.lastMovementY / 30);
           } else {
             translateY =
               cardOffsetY > y
-                ? diffY * Math.abs(this.lastMovementY / 50)
-                : -diffY * (Math.abs(this.lastMovementY / 50) * 0.5);
+                ? diffY * Math.abs(this.lastMovementY / 30)
+                : -diffY * (Math.abs(this.lastMovementY / 30) * 0.5);
           }
 
           card.style.transition = 'none';

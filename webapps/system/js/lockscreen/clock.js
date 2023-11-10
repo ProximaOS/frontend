@@ -2,6 +2,7 @@
   'use strict';
 
   const LockscreenClock = {
+    motionElement: document.getElementById('lockscreen'),
     clockElement: document.getElementById('lockscreen-clock'),
 
     timeoutID: null,
@@ -15,7 +16,7 @@
       clearTimeout(this.timeoutID);
       this.timeoutID = setTimeout(this.update.bind(this), 1000);
 
-      if (!LockscreenMotion.motionElement.classList.contains('visible')) {
+      if (!this.motionElement.classList.contains('visible')) {
         return;
       }
 

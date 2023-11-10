@@ -40,6 +40,7 @@
   <script defer type="text/javascript" src="js/pages/webapps/main.js"></script>
   <script defer type="text/javascript" src="js/pages/languages/main.js"></script>
   <script defer type="text/javascript" src="js/pages/display/main.js"></script>
+  <script defer type="text/javascript" src="js/pages/display/font_settings.js"></script>
   <script defer type="text/javascript" src="js/pages/homescreen/main.js"></script>
   <script defer type="text/javascript" src="js/pages/battery/main.js"></script>
   <script defer type="text/javascript" src="js/pages/storage/main.js"></script>
@@ -50,7 +51,8 @@
   <meta name="defaultLanguage" content="en-US">
   <meta name="availableLanguages"
     content="af, ar, az, be, bg, bn, ca, cs, cy, da, de, el, eo, et, en-US, es, eu, fa, fi, fr, ga, gu, gl, he, hi, hr, ht, hu, id, is, it, ja, kn, ko, ku, lt, lv, mk, ms, nl, no, pl, pt, ro, ru, sq, sk, sl, sr, sw, ta, te, th, tl, tr, uk, ur, vi, yi, zh, fr-psaccent, ar-psbidi">
-  <link rel="localization" href="/locales/main.{locale}.properties">
+    <link rel="localization" href="http://shared.localhost:8081/locales/branding/branding.{locale}.properties">
+    <link rel="localization" href="/locales/main.{locale}.properties">
 </head>
 
 <body>
@@ -178,7 +180,7 @@
       </div>
     </section>
 
-    <section id="account" role="panel">
+    <section id="account" role="panel" data-previous-page-id="root">
       <header role="header">
         <div class="safezone">
           <a href="#" data-icon="arrow-back" data-page-id="root"></a>
@@ -232,7 +234,7 @@
       </div>
     </section>
 
-    <section id="wifi" role="panel">
+    <section id="wifi" role="panel" data-previous-page-id="root">
       <header role="header">
         <div class="safezone">
           <a href="#" data-icon="arrow-back" data-page-id="root"></a>
@@ -273,7 +275,7 @@
       </div>
     </section>
 
-    <section id="bluetooth" role="panel">
+    <section id="bluetooth" role="panel" data-previous-page-id="root">
       <header role="header">
         <div class="safezone">
           <a href="#" data-icon="arrow-back" data-page-id="root"></a>
@@ -313,7 +315,7 @@
       </div>
     </section>
 
-    <section id="general" role="panel">
+    <section id="general" role="panel" data-previous-page-id="root">
       <header role="header">
         <div class="safezone">
           <a href="#" data-icon="arrow-back" data-page-id="root"></a>
@@ -358,7 +360,7 @@
       </div>
     </section>
 
-    <section id="webapps" role="panel">
+    <section id="webapps" role="panel" data-previous-page-id="general">
       <header role="header">
         <div class="safezone">
           <a href="#" data-icon="arrow-back" data-page-id="general"></a>
@@ -384,7 +386,7 @@
       </div>
     </section>
 
-    <section id="webappInfo" role="panel">
+    <section id="webappInfo" role="panel" data-previous-page-id="webapps">
       <header class=" compact" role="header">
         <div class="safezone">
           <a href="#" data-icon="arrow-back" data-page-id="webapps"></a>
@@ -411,7 +413,7 @@
       </div>
     </section>
 
-    <section id="languages" role="panel">
+    <section id="languages" role="panel" data-previous-page-id="general">
       <header role="header">
         <div class="safezone">
           <a href="#" data-icon="arrow-back" data-page-id="general"></a>
@@ -424,7 +426,7 @@
       </div>
     </section>
 
-    <section id="audio" role="panel">
+    <section id="audio" role="panel" data-previous-page-id="root">
       <header role="header">
         <div class="safezone">
           <a href="#" data-icon="arrow-back" data-page-id="root"></a>
@@ -508,7 +510,7 @@
       </div>
     </section>
 
-    <section id="display" role="panel">
+    <section id="display" role="panel" data-previous-page-id="root">
       <header role="header">
         <div class="safezone">
           <a href="#" data-icon="arrow-back" data-page-id="root"></a>
@@ -592,14 +594,36 @@
           <li class="page" data-icon="reader-mode">
             <p data-l10n-id="changeFontFamily"></p>
           </li>
-          <li class="page" data-icon="edit">
+          <li class="page" data-icon="edit" data-page-id="font-settings">
             <p data-l10n-id="changeFontSettings"></p>
           </li>
         </ul>
       </div>
     </section>
 
-    <section id="homescreen" role="panel">
+    <section id="font-settings" role="panel" data-previous-page-id="display">
+      <header role="header">
+        <div class="safezone">
+          <a href="#" data-icon="arrow-back" data-page-id="display"></a>
+          <h1 data-l10n-id="fontSettings"></h1>
+        </div>
+      </header>
+
+      <div class="content lists">
+        <div class="font-settings-preview-holder">
+          <div id="font-settings-preview-text">
+            لمّا كان الاعتراف بالكرامة المتأصلة في جميع
+          </div>
+        </div>
+
+        <div class="font-settings-sliders">
+          <input type="range" name="" id="font-settings-size-slider">
+          <input type="range" name="" id="font-settings-weight-slider">
+        </div>
+      </div>
+    </section>
+
+    <section id="homescreen" role="panel" data-previous-page-id="root">
       <header role="header">
         <div class="safezone">
           <a href="#" data-icon="arrow-back" data-page-id="root"></a>
@@ -639,7 +663,7 @@
       </div>
     </section>
 
-    <section id="lockScreen" role="panel">
+    <section id="lockScreen" role="panel" data-previous-page-id="root">
       <header role="header">
         <div class="safezone">
           <a href="#" data-icon="arrow-back" data-page-id="root"></a>
@@ -672,7 +696,7 @@
       </div>
     </section>
 
-    <section id="lockScreen-mode" role="panel">
+    <section id="lockScreen-mode" role="panel" data-previous-page-id="lockScreen">
       <header role="header">
         <div class="safezone">
           <a href="#" data-icon="arrow-back" data-page-id="lockScreen"></a>
@@ -692,7 +716,7 @@
       </div>
     </section>
 
-    <section id="lockScreen-mode-pinLock" role="panel">
+    <section id="lockScreen-mode-pinLock" role="panel" data-previous-page-id="lockScreen-mode">
       <header role="header">
         <div class="safezone">
           <a href="#" data-icon="arrow-back" data-page-id="lockScreen-mode"></a>
@@ -714,7 +738,7 @@
       </div>
     </section>
 
-    <section id="dateAndTime" role="panel">
+    <section id="dateAndTime" role="panel" data-previous-page-id="root">
       <header role="header">
         <div class="safezone">
           <a href="#" data-icon="arrow-back" data-page-id="root"></a>
@@ -746,7 +770,7 @@
       </div>
     </section>
 
-    <section id="privacy" role="panel">
+    <section id="privacy" role="panel" data-previous-page-id="root">
       <header role="header">
         <div class="safezone">
           <a href="#" data-icon="arrow-back" data-page-id="root"></a>
@@ -790,7 +814,7 @@
       </div>
     </section>
 
-    <section id="battery" role="panel">
+    <section id="battery" role="panel" data-previous-page-id="root">
       <header role="header">
         <div class="safezone">
           <a href="#" data-icon="arrow-back" data-page-id="root"></a>
@@ -829,7 +853,7 @@
       </div>
     </section>
 
-    <section id="storage" role="panel">
+    <section id="storage" role="panel" data-previous-page-id="root">
       <header role="header">
         <div class="safezone">
           <a href="#" data-icon="arrow-back" data-page-id="root"></a>
@@ -849,7 +873,7 @@
       </div>
     </section>
 
-    <section id="accessibility" role="panel">
+    <section id="accessibility" role="panel" data-previous-page-id="root">
       <header role="header">
         <div class="safezone">
           <a href="#" data-icon="arrow-back" data-page-id="root"></a>
@@ -873,7 +897,7 @@
       </div>
     </section>
 
-    <section id="system" role="panel">
+    <section id="system" role="panel" data-previous-page-id="root">
       <header role="header">
         <div class="safezone">
           <a href="#" data-icon="arrow-back" data-page-id="root"></a>
@@ -895,7 +919,7 @@
       </div>
     </section>
 
-    <section id="devOptions" role="panel">
+    <section id="devOptions" role="panel" data-previous-page-id="system">
       <header role="header">
         <div class="safezone">
           <a href="#" data-icon="arrow-back" data-page-id="system"></a>
@@ -963,7 +987,7 @@
       </div>
     </section>
 
-    <section id="aboutInfo" role="panel">
+    <section id="aboutInfo" role="panel" data-previous-page-id="root">
       <header role="header">
         <div class="safezone">
           <a href="#" data-icon="arrow-back" data-page-id="root"></a>
@@ -973,7 +997,7 @@
 
       <div class="content lists">
         <div class="aboutInfo-header">
-          <div class="logo"></div>
+          <div id="aboutInfo-logo" class="logo"></div>
         </div>
         <ul>
           <li class="noclick">
@@ -1008,7 +1032,7 @@
           </li>
         </ul>
       </div>
-    </div>
+    </section>
   </div>
 </body>
 
