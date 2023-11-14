@@ -12,7 +12,7 @@
       this.iconElement.classList.add('hidden');
 
       clearTimeout(this.timer);
-      this.timer = setTimeout(this.update, 1000);
+      this.timer = setTimeout(this.update.bind(this), 1000);
     }
   };
 

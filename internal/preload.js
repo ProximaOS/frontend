@@ -229,7 +229,7 @@
     require('./modules/privacy_indicators');
     require('./modules/seekbars_and_switches');
     require('./modules/settings_handler');
-    require('./modules/stylesheet_ensurer');
+    // require('./modules/stylesheet_ensurer');
     require('./modules/videoplayer');
     require('./modules/picture_in_picture');
     require('./modules/webview_handler');

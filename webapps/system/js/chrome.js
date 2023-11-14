@@ -237,7 +237,7 @@
         if (await OrchidServices.isUserLoggedIn()) {
           this.profileButton().classList.add('logged-in');
           OrchidServices.getWithUpdate(`profile/${await OrchidServices.userId()}`, function (data) {
-            avatarImage.src = data.profilePicture;
+            avatarImage.src = data.profile_picture;
           });
         }
       }
@@ -1268,14 +1268,14 @@
 
     handlePageFaviconUpdated: function (event) {
       const favicon = this.tablist().querySelector('li.active .favicon');
-      const gridFavicon = this.tabsViewList().querySelector('li.active .favicon');
+      const gridFavicon = this.tabsViewList().querySelector('.active .favicon');
       favicon.src = event.favicons[0];
       gridFavicon.src = event.favicons[0];
     },
 
     handlePageTitleUpdated: function (event) {
       const title = this.tablist().querySelector('li.active .title');
-      const gridTitle = this.tabsViewList().querySelector('li.active .title');
+      const gridTitle = this.tabsViewList().querySelector('.active .title');
       title.textContent = event.title;
       gridTitle.textContent = event.title;
     },

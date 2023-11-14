@@ -24,10 +24,10 @@
               icon.src = entry[1];
             });
           } else {
-            icon.src = '/images/default.png';
+            icon.src = '/images/default.svg';
           }
           icon.onerror = () => {
-            icon.src = '/images/default.png';
+            icon.src = '/images/default.svg';
           };
           element.appendChild(icon);
 

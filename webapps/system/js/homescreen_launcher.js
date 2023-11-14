@@ -21,12 +21,10 @@
     },
 
     handleHomescreen: function (value) {
-      console.log(value);
       AppWindow.create(value, {});
     },
 
     handleHomescreenChange: function (value) {
-      console.log(value);
       AppWindow.close('homescreen');
       AppWindow.create(value, {});
     }

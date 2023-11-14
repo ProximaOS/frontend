@@ -1,6 +1,6 @@
 {
   "version": "1.0",
-  "role": "webapp",
+  "role": "system",
   "name": "FTU",
   "description": "First time use",
   "launch_path": "/index.html",

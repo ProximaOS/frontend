@@ -1,7 +1,7 @@
 !(function () {
   'use strict';
 
-  const { ipcMain, app, webContents, desktopCapturer, systemPreferences } = require('electron');
+  const { ipcMain, app, webContents } = require('electron');
   const path = require('path');
   const fs = require('fs');
   const electronLocalshortcut = require('electron-localshortcut');
@@ -64,10 +64,10 @@
       }
     );
 
-    webview.webContents.session.setDisplayMediaRequestHandler((request, callback) => {
-      const object = { video: request.frame };
-      callback(object);
-    });
+    // webview.webContents.session.setDisplayMediaRequestHandler((request, callback) => {
+    //   const object = { video: request.frame };
+    //   callback(object);
+    // });
 
     electronLocalshortcut.register(webview, ['Ctrl+R', 'F5'], () => {
       webview.webContents.reload();

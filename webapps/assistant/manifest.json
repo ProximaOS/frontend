@@ -2,7 +2,7 @@
   "version": "1.0",
   "name": "Assistant",
   "long_name": "Orchid Assistant",
-  "description": "Browse the web.",
+  "description": "Assists you every step in the way.",
   "launch_path": "/index.html",
   "icons": {
     "16": "/style/icons/assistant_16.png",

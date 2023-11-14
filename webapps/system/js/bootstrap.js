@@ -37,14 +37,14 @@
     },
 
     handleLanguageChange: function (value) {
-      if (navigator.mozL10n.language.code === value) {
+      if (OrchidL10n.currentLanguage === value) {
         return;
       }
 
       LoadingScreen.show();
       LoadingScreen.element.textContent = navigator.mozL10n.get('changingLanguage');
       LoadingScreen.element.addEventListener('transitionend', () => {
-        navigator.mozL10n.language.code = value;
+        OrchidL10n.currentLanguage = value;
         LoadingScreen.element.textContent = navigator.mozL10n.get('changingLanguage');
         LoadingScreen.hide();
       });

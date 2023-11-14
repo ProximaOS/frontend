@@ -40,6 +40,7 @@
   <script defer type="text/javascript" src="js/pages/webapps/main.js"></script>
   <script defer type="text/javascript" src="js/pages/languages/main.js"></script>
   <script defer type="text/javascript" src="js/pages/display/main.js"></script>
+  <script defer type="text/javascript" src="js/pages/display/accent_color.js"></script>
   <script defer type="text/javascript" src="js/pages/display/font_settings.js"></script>
   <script defer type="text/javascript" src="js/pages/homescreen/main.js"></script>
   <script defer type="text/javascript" src="js/pages/battery/main.js"></script>
@@ -51,8 +52,8 @@
   <meta name="defaultLanguage" content="en-US">
   <meta name="availableLanguages"
     content="af, ar, az, be, bg, bn, ca, cs, cy, da, de, el, eo, et, en-US, es, eu, fa, fi, fr, ga, gu, gl, he, hi, hr, ht, hu, id, is, it, ja, kn, ko, ku, lt, lv, mk, ms, nl, no, pl, pt, ro, ru, sq, sk, sl, sr, sw, ta, te, th, tl, tr, uk, ur, vi, yi, zh, fr-psaccent, ar-psbidi">
-    <link rel="localization" href="http://shared.localhost:8081/locales/branding/branding.{locale}.properties">
-    <link rel="localization" href="/locales/main.{locale}.properties">
+  <link rel="localization" href="http://shared.localhost:8081/locales/branding/branding.{locale}.properties">
+  <link rel="localization" href="/locales/main.{locale}.properties">
 </head>
 
 <body>
@@ -588,7 +589,7 @@
           <li class="page" data-icon="themes">
             <p data-l10n-id="changeTheme"></p>
           </li>
-          <li class="page" data-icon="paint">
+          <li class="page" data-icon="paint" data-page-id="accent-color">
             <p data-l10n-id="changeAccentColor"></p>
           </li>
           <li class="page" data-icon="reader-mode">
@@ -598,6 +599,42 @@
             <p data-l10n-id="changeFontSettings"></p>
           </li>
         </ul>
+      </div>
+    </section>
+
+    <section id="accent-color" role="panel" data-previous-page-id="display">
+      <header role="header">
+        <div class="safezone">
+          <a href="#" data-icon="arrow-back" data-page-id="display"></a>
+          <h1 data-l10n-id="accentColor"></h1>
+        </div>
+      </header>
+
+      <div class="content lists">
+        <div class="accent-color-preview-holder">
+          <div id="accent-color-preview-content lists">
+            <header data-l10n-id="accentColor-testHeader"></header>
+            <ul>
+              <li>
+                <p data-l10n-id="accentColor-testItem"></p>
+              </li>
+              <li>
+                <p data-l10n-id="accentColor-testItemRow1"></p>
+                <p data-l10n-id="accentColor-testItemRow2"></p>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="accent-color-selector">
+          <div class="accent-color-row">
+            <div id="accent-color-wallpaper-accent" class="color wallpaper"></div>
+            <div id="accent-color-recents" class="colors"></div>
+          </div>
+          <div class="accent-color-row">
+            <div id="accent-color-colorways" class="colors"></div>
+          </div>
+        </div>
       </div>
     </section>
 

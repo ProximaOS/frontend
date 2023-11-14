@@ -13,15 +13,18 @@
     SETTINGS_WALLPAPER_IMAGE: 3,
 
     init: function () {
-      _Settings.getValue(this.settings[this.SETTINGS_LANGUAGE]).then(this.handleLanguage.bind(this));
       _Settings.getValue(this.settings[this.SETTINGS_WALLPAPER_IMAGE]).then(this.handleWallpaperAccent.bind(this));
       _Settings.getValue(this.settings[this.SETTINGS_ACCENT_COLOR]).then(this.handleAccentColor.bind(this));
       _Settings.getValue(this.settings[this.SETTINGS_SOFTWARE_BUTTONS]).then(this.handleSoftwareButtons.bind(this));
 
-      _Settings.addObserver(this.settings[this.SETTINGS_LANGUAGE], this.handleLanguage.bind(this));
       _Settings.addObserver(this.settings[this.SETTINGS_WALLPAPER_IMAGE], this.handleWallpaperAccent.bind(this));
       _Settings.addObserver(this.settings[this.SETTINGS_ACCENT_COLOR], this.handleAccentColor.bind(this));
       _Settings.addObserver(this.settings[this.SETTINGS_SOFTWARE_BUTTONS], this.handleSoftwareButtons.bind(this));
+
+      window.addEventListener('localized', () => {
+        _Settings.getValue(this.settings[this.SETTINGS_LANGUAGE]).then(this.handleLanguage.bind(this));
+        _Settings.addObserver(this.settings[this.SETTINGS_LANGUAGE], this.handleLanguage.bind(this));
+      });
     },
 
     getImageDominantColor: function (url, options = {}) {
@@ -88,52 +91,90 @@
         return;
       }
 
-      this.getImageDominantColor(value, { colors: 3, brightness: 1 }).then((color) => {
+      this.getImageDominantColor(value, { colors: 2, brightness: 1 }).then((color) => {
         // Convert the color to RGB values
-        let r = color[1].r;
-        let g = color[1].g;
-        let b = color[1].b;
+        let r1 = color[0].r;
+        let g1 = color[0].g;
+        let b1 = color[0].b;
+        let r2 = color[1].r;
+        let g2 = color[1].g;
+        let b2 = color[1].b;
 
         // Calculate relative luminance
-        const luminance = (0.2126 * r + 0.7152 * g + 0.0722 * b) / 255;
+        const luminance1 = (0.2126 * r1 + 0.7152 * g1 + 0.0722 * b1) / 255;
+        const luminance2 = (0.2126 * r2 + 0.7152 * g2 + 0.0722 * b2) / 255;
 
         // Store original values
-        const originalR = r;
-        const originalG = g;
-        const originalB = b;
+        const originalR1 = r1;
+        const originalG1 = g1;
+        const originalB1 = b1;
+        const originalR2 = r2;
+        const originalG2 = g2;
+        const originalB2 = b2;
 
-        if (luminance < 0.3 && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        if (luminance1 < 0.3 && window.matchMedia('(prefers-color-scheme: dark)').matches) {
           // Brighten the color
-          r = r * 2;
-          g = g * 2;
-          b = b * 2;
+          r1 = r1 * 2;
+          g1 = g1 * 2;
+          b1 = b1 * 2;
 
           // Ensure color values are within the valid range (0 - 255)
-          r = Math.max(0, Math.min(255, r));
-          g = Math.max(0, Math.min(255, g));
-          b = Math.max(0, Math.min(255, b));
+          r1 = Math.max(0, Math.min(255, r1));
+          g1 = Math.max(0, Math.min(255, g1));
+          b1 = Math.max(0, Math.min(255, b1));
         }
 
         // Check if the resulting color is too bright, and if so, darken it
-        if (luminance > 0.8 && window.matchMedia('(prefers-color-scheme: light)').matches) {
-          const maxColorValue = Math.max(r, g, b);
+        if (luminance1 > 0.8 && window.matchMedia('(prefers-color-scheme: light)').matches) {
+          const maxColorValue = Math.max(r1, g1, b1);
           if (maxColorValue > 200) {
-            r = Math.round(originalR * 0.8);
-            g = Math.round(originalG * 0.8);
-            b = Math.round(originalB * 0.8);
+            r1 = Math.round(originalR1 * 0.8);
+            g1 = Math.round(originalG1 * 0.8);
+            b1 = Math.round(originalB1 * 0.8);
           }
         }
 
-        document.scrollingElement.style.setProperty('--accent-color-r', r);
-        document.scrollingElement.style.setProperty('--accent-color-g', g);
-        document.scrollingElement.style.setProperty('--accent-color-b', b);
+        if (luminance2 < 0.3 && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+          // Brighten the color
+          r2 = r2 * 2;
+          g2 = g2 * 2;
+          b2 = b2 * 2;
 
-        _Settings.setValue(this.settings[this.SETTINGS_ACCENT_COLOR], { r, g, b });
+          // Ensure color values are within the valid range (0 - 255)
+          r2 = Math.max(0, Math.min(255, r2));
+          g2 = Math.max(0, Math.min(255, g2));
+          b2 = Math.max(0, Math.min(255, b2));
+        }
+
+        // Check if the resulting color is too bright, and if so, darken it
+        if (luminance2 > 0.8 && window.matchMedia('(prefers-color-scheme: light)').matches) {
+          const maxColorValue = Math.max(r2, g2, b2);
+          if (maxColorValue > 200) {
+            r2 = Math.round(originalR2 * 0.8);
+            g2 = Math.round(originalG2 * 0.8);
+            b2 = Math.round(originalB2 * 0.8);
+          }
+        }
+
+        document.scrollingElement.style.setProperty('--accent-color-r', r1);
+        document.scrollingElement.style.setProperty('--accent-color-g', g1);
+        document.scrollingElement.style.setProperty('--accent-color-b', b1);
+        document.scrollingElement.style.setProperty('--accent-color-primary-r', r1);
+        document.scrollingElement.style.setProperty('--accent-color-primary-g', g1);
+        document.scrollingElement.style.setProperty('--accent-color-primary-b', b1);
+        document.scrollingElement.style.setProperty('--accent-color-secondary-r', r2);
+        document.scrollingElement.style.setProperty('--accent-color-secondary-g', g2);
+        document.scrollingElement.style.setProperty('--accent-color-secondary-b', b2);
+
+        _Settings.setValue(this.settings[this.SETTINGS_ACCENT_COLOR], {
+          primary: { r1, g1, b1 },
+          secondary: { r2, g2, b2 }
+        });
 
         // Calculate relative luminance
-        const accentLuminance = (0.2126 * originalR + 0.7152 * originalG + 0.0722 * originalB) / 255;
+        const accentLuminance1 = (0.2126 * originalR1 + 0.7152 * originalG1 + 0.0722 * originalB1) / 255;
 
-        if (accentLuminance > 0.5) {
+        if (accentLuminance1 > 0.5) {
           this.appElement.classList.remove('dark');
           this.appElement.classList.add('light');
           document.scrollingElement.style.setProperty('--accent-color-plus', 'rgba(0,0,0,0.75)');
@@ -178,6 +219,7 @@
       if (!this.appElement) {
         return;
       }
+      this.appElement.style.setProperty('--statusbar-height', '4rem');
 
       if (navigator.userAgent.includes('Desktop') || value) {
         this.appElement.style.setProperty('--software-buttons-height', '4rem');

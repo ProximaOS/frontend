@@ -8,7 +8,7 @@ html, body {
 }
 
 :root {
-  --statusbar-height: 4rem;
+  --statusbar-height: env(safe-area-inset-top, 0rem);
   --software-buttons-height: 0rem;
   --safezone-width: 75rem;
 }
@@ -69,7 +69,6 @@ html[dir="rtl"] [role="panel"].will-be-visible {
   flex-grow: 1;
   width: 100%;
   height: 100%;
-  margin-top: calc((-9rem - var(--statusbar-height)) * var(--progress, 0));
   padding-bottom: var(--software-buttons-height);
   overflow-y: auto;
   scrollbar-width: none;

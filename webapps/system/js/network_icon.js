@@ -18,16 +18,9 @@
         // Convert signal strength to percentage
         const signalStrengthPercentage = signalStrength;
 
-        console.log(
-          'Signal Strength:',
-          signalStrengthPercentage.toFixed(2) + '%'
-        );
-
         this.iconElement.classList.remove('hidden');
 
-        this.iconElement.dataset.icon = `wifi-${Math.round(
-          signalStrengthPercentage / 25
-        )}`;
+        this.iconElement.dataset.icon = `wifi-${Math.round(signalStrengthPercentage / 25)}`;
       });
 
       clearTimeout(this.timer);

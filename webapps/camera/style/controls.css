@@ -1,45 +1,45 @@
 #controls {
-  position: absolute;
-  left: 0;
-  bottom: 0;
-  width: 100%;
-  height: 7rem;
-  padding: 1rem 1.5rem;
   box-sizing: border-box;
   display: flex;
-  justify-content: space-around;
-  overflow: hidden;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  justify-content: space-between;
+  width: 100%;
+  height: 7rem;
   margin-bottom: calc(var(--software-buttons-height) + 1rem);
+  padding: 1rem 1.5rem;
+  overflow: hidden;
 }
 
 #shutter-button {
   width: 5rem;
   height: 5rem;
-  line-height: 5rem;
+  margin: 0;
   border-radius: 2.5rem;
+  outline: solid 0.6rem rgba(255, 255, 255, 0.5);
   background-color: #fff;
   color: #858585;
+  line-height: 5rem;
   text-align: center;
-  margin: 0;
-  outline: solid 0.6rem rgba(255, 255, 255, 0.5);
 }
 
 #shutter-button[data-icon]::before {
-  font-size: 2.4rem;
   height: 5rem;
+  font-size: 2.4rem;
   line-height: 5rem;
 }
 
 #record-button {
   width: 5rem;
   height: 5rem;
-  line-height: 5rem;
-  border-radius: 2.5rem;
-  color: #fff;
   margin: 0;
-  text-align: center;
-  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 2.5rem;
   backdrop-filter: blur(20px) saturate(180%);
+  background-color: rgba(255, 255, 255, 0.1);
+  color: #fff;
+  line-height: 5rem;
+  text-align: center;
   transition: all 0.2s ease;
 }
 
@@ -49,18 +49,20 @@
 }
 
 #record-button[data-icon]::before {
+  height: 5rem;
   font-size: 2.4rem;
+  line-height: 5rem;
 }
 
 #gallery-button {
   width: 5rem;
   height: 5rem;
-  border-radius: 2.5rem;
-  background-color: #858585;
   margin: 0;
-  background-color: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(20px) saturate(180%);
   overflow: hidden;
+  border-radius: 2.5rem;
+  backdrop-filter: blur(20px) saturate(180%);
+  background-color: #858585;
+  background-color: rgba(255, 255, 255, 0.1);
 }
 
 #gallery-button > img {

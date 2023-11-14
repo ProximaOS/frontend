@@ -372,7 +372,7 @@
       const iconImage = document.createElement('img');
       iconImage.crossOrigin = 'anonymous';
       iconImage.onerror = () => {
-        iconImage.src = '/style/images/default.png';
+        iconImage.src = '/style/images/default.svg';
       };
       element.appendChild(iconImage);
 

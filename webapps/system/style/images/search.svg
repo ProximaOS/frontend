@@ -1,43 +1,11 @@
 <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-<rect width="16" height="16" rx="4" fill="url(#paint0_linear_26_36)"/>
-<g filter="url(#filter0_d_26_36)">
-<path d="M4 12L10.364 5.63604" stroke="url(#paint1_linear_26_36)" stroke-width="2" stroke-linecap="round"/>
-</g>
-<g filter="url(#filter1_d_26_36)">
-<rect x="5" y="3" width="8" height="8" rx="4" fill="url(#paint2_linear_26_36)"/>
-</g>
+<rect width="16" height="16" rx="4" fill="white"/>
+<path d="M4 12L10.364 5.63604" stroke="#B0DDFF" stroke-width="2" stroke-linecap="round"/>
+<rect x="5" y="3" width="8" height="8" rx="4" fill="url(#paint0_linear_26_36)"/>
 <defs>
-<filter id="filter0_d_26_36" x="2" y="4.13604" width="10.364" height="10.364" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
-<feFlood flood-opacity="0" result="BackgroundImageFix"/>
-<feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
-<feOffset dy="0.5"/>
-<feGaussianBlur stdDeviation="0.5"/>
-<feComposite in2="hardAlpha" operator="out"/>
-<feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0"/>
-<feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_26_36"/>
-<feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_26_36" result="shape"/>
-</filter>
-<filter id="filter1_d_26_36" x="4" y="2.5" width="10" height="10" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
-<feFlood flood-opacity="0" result="BackgroundImageFix"/>
-<feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
-<feOffset dy="0.5"/>
-<feGaussianBlur stdDeviation="0.5"/>
-<feComposite in2="hardAlpha" operator="out"/>
-<feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0"/>
-<feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_26_36"/>
-<feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_26_36" result="shape"/>
-</filter>
-<linearGradient id="paint0_linear_26_36" x1="8" y1="0" x2="8" y2="16" gradientUnits="userSpaceOnUse">
+<linearGradient id="paint0_linear_26_36" x1="9" y1="3" x2="9" y2="11" gradientUnits="userSpaceOnUse">
 <stop stop-color="#00A0E8"/>
 <stop offset="1" stop-color="#0061E0"/>
-</linearGradient>
-<linearGradient id="paint1_linear_26_36" x1="7.18198" y1="8.81802" x2="7.88909" y2="9.52513" gradientUnits="userSpaceOnUse">
-<stop stop-color="white"/>
-<stop offset="1" stop-color="#B0DDFF"/>
-</linearGradient>
-<linearGradient id="paint2_linear_26_36" x1="9" y1="3" x2="9" y2="11" gradientUnits="userSpaceOnUse">
-<stop stop-color="#00DDFF"/>
-<stop offset="1" stop-color="#00A0E8"/>
 </linearGradient>
 </defs>
 </svg>

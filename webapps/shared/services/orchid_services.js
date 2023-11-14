@@ -13,6 +13,7 @@ import Achievements from './achievements.js';
 import OrchidAuth2 from './orchid_auth2.js';
 import OrchidFileDB from './orchid_file_db.js';
 import OrchidArticles from './orchid_articles.js';
+import OrchidMessages from './orchid_messages.js';
 
 const appConfig = await (
   await fetch('http://shared.localhost:8081/services/appConfig.json')
@@ -102,6 +103,7 @@ const OrchidServices = {
   auth: OrchidAuth2,
   achievements: Achievements,
   storage: OrchidFileDB,
+  messages: OrchidMessages,
   store: OrchidStore,
   articles: OrchidArticles
 };

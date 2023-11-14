@@ -19,7 +19,7 @@
     setCategory: function (dateTime) {
       const date = new Date(dateTime);
       const dateId = `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDay()}`;
-      const langCode = navigator.mozL10n.language.code === 'ar' ? 'ar-SA' : navigator.mozL10n.language.code;
+      const langCode = OrchidL10n.currentLanguage.startsWith('ar') ? 'ar-SA' : OrchidL10n.currentLanguage;
 
       const existingCategory = document.querySelector(`[data-date="${dateId}"]`);
       if (existingCategory) {

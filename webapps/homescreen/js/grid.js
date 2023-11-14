@@ -24,6 +24,7 @@
     shortcutsList: document.getElementById('shortcuts-menu-options'),
     shortcutsFakeIcon: document.getElementById('shortcuts-fake-icon'),
     apps: [],
+    dockApps: [],
 
     isHoldingDown: false,
     timer: null,
@@ -83,6 +84,14 @@
 
     createIcons: function () {
       this.apps = this.apps.filter((obj) => this.HIDDEN_ROLES.indexOf(obj.manifest.role) === -1);
+      this.dockApps = this.apps.filter((obj) => this.DEFAULT_DOCK_ICONS.indexOf(obj.manifestUrl['en-US']) !== -1);
+      this.apps = this.apps.filter((obj) => this.DEFAULT_DOCK_ICONS.indexOf(obj.manifestUrl['en-US']) === -1);
+
+      let index = 0;
+      this.dockApps.forEach((app) => {
+        this.createAppIcon(this.dockElement, app, index);
+        index++;
+      });
 
       const pages = this.splitArray(this.apps, this.gridColumns * this.gridRows);
       pages.forEach((array, offset) => {
@@ -101,61 +110,55 @@
         dot.classList.add('dot');
         this.paginationBarDots.appendChild(dot);
 
-        let index = 0;
         array.forEach((app) => {
-          const icon = document.createElement('li');
-          icon.id = `appicon${index}`;
-          icon.classList.add('icon');
-          const manifestIndex = this.DEFAULT_DOCK_ICONS.indexOf(app.manifestUrl['en-US']);
-          if (manifestIndex !== -1) {
-            setTimeout(() => {
-              this.dockElement.appendChild(icon);
-              this.applyParallaxEffect(icon);
-            }, manifestIndex * 10);
-          } else {
-            page.appendChild(icon);
-            this.applyParallaxEffect(icon);
-          }
-          icon.addEventListener('click', (event) => this.handleAppClick(event, app, iconContainer));
-          icon.addEventListener('contextmenu', (event) => this.handleIconContextMenu(event, app, iconContainer));
-
-          const iconHolder = document.createElement('div');
-          iconHolder.classList.add('icon-holder');
-          icon.appendChild(iconHolder);
-
-          const iconContainer = document.createElement('img');
-          iconContainer.draggable = false;
-          iconContainer.crossOrigin = 'anonymous';
-          Object.entries(app.manifest.icons).forEach((entry) => {
-            if (entry[0] <= this.APP_ICON_SIZE) {
-              return;
-            }
-            iconContainer.src = entry[1];
-          });
-          iconContainer.onerror = () => {
-            iconContainer.src = '/images/default.png';
-          };
-          DirectionalScale.init(iconContainer);
-          iconHolder.appendChild(iconContainer);
-
-          const notificationBadge = document.createElement('span');
-          notificationBadge.textContent = 0;
-          notificationBadge.classList.add('notification-badge');
-          iconHolder.appendChild(notificationBadge);
-
-          const uninstallButton = document.createElement('button');
-          uninstallButton.dataset.icon = 'remove';
-          uninstallButton.classList.add('uninstall-button');
-          iconHolder.appendChild(uninstallButton);
-
-          const name = document.createElement('div');
-          name.classList.add('name');
-          name.textContent = app.manifest.name;
-          icon.appendChild(name);
-
+          this.createAppIcon(page, app, index);
           index++;
         });
       });
+    },
+
+    createAppIcon: function (page, app, index) {
+      const icon = document.createElement('li');
+      icon.id = `appicon${index}`;
+      icon.classList.add('icon');
+      page.appendChild(icon);
+      this.applyParallaxEffect(icon);
+      icon.addEventListener('click', (event) => this.handleAppClick(event, app, iconContainer));
+      icon.addEventListener('contextmenu', (event) => this.handleIconContextMenu(event, app, iconContainer));
+
+      const iconHolder = document.createElement('div');
+      iconHolder.classList.add('icon-holder');
+      icon.appendChild(iconHolder);
+
+      const iconContainer = document.createElement('img');
+      iconContainer.draggable = false;
+      iconContainer.crossOrigin = 'anonymous';
+      Object.entries(app.manifest.icons).forEach((entry) => {
+        if (entry[0] <= this.APP_ICON_SIZE) {
+          return;
+        }
+        iconContainer.src = entry[1];
+      });
+      iconContainer.onerror = () => {
+        iconContainer.src = '/images/default.svg';
+      };
+      DirectionalScale.init(iconContainer);
+      iconHolder.appendChild(iconContainer);
+
+      const notificationBadge = document.createElement('span');
+      notificationBadge.textContent = 0;
+      notificationBadge.classList.add('notification-badge');
+      iconHolder.appendChild(notificationBadge);
+
+      const uninstallButton = document.createElement('button');
+      uninstallButton.dataset.icon = 'remove';
+      uninstallButton.classList.add('uninstall-button');
+      iconHolder.appendChild(uninstallButton);
+
+      const name = document.createElement('div');
+      name.classList.add('name');
+      name.textContent = app.manifest.name;
+      icon.appendChild(name);
     },
 
     handleSwiping: function () {
@@ -182,7 +185,7 @@
     handleAppClick: function (event, app, icon) {
       let langCode;
       try {
-        langCode = navigator.mozL10n.language.code || 'en-US';
+        langCode = OrchidL10n.currentLanguage || 'en-US';
       } catch (error) {
         // If an error occurs, set a default value for langCodes
         langCode = 'en-US';
@@ -234,7 +237,7 @@
         if (this.timePassed < 500 && this.isHoldingDown) {
           this.timePassed += 10;
           if (this.timePassed >= 500) {
-            this.app.dataset.editMode = !this.app.dataset.editMode;
+            this.app.dataset.editMode = !this.app.dataset.editMode.trim();
           }
         }
       }, 10);
@@ -246,15 +249,16 @@
     },
 
     handleContextMenu: function () {
-      this.app.dataset.editMode = !this.app.dataset.editMode;
+      this.app.dataset.editMode = !this.app.dataset.editMode.trim();
     },
 
     handleIconContextMenu: async function (event, app, icon) {
       event.preventDefault();
+      event.stopPropagation();
 
       let langCode;
       try {
-        langCode = navigator.mozL10n.language.code || 'en-US';
+        langCode = OrchidL10n.currentLanguage || 'en-US';
       } catch (error) {
         // If an error occurs, set a default value for langCode
         langCode = 'en-US';
@@ -275,21 +279,25 @@
           // You can perform further operations with the 'manifest' variable here
         })
         .catch(function (error) {
-          console.log('Error fetching manifest:', error);
+          console.error('Error fetching manifest:', error);
         });
 
+      this.element.classList.add('shortcuts-visible');
       this.shortcuts.classList.add('visible');
 
+      const launcherBox = this.element.getBoundingClientRect();
       const iconBox = icon.getBoundingClientRect();
 
       this.shortcutsFakeIcon.src = icon.src;
-      this.shortcutsFakeIcon.style.left = iconBox.left + 'px';
-      this.shortcutsFakeIcon.style.top = iconBox.top + 'px';
+      this.shortcutsFakeIcon.style.left = iconBox.left - launcherBox.left + 'px';
+      this.shortcutsFakeIcon.style.top = iconBox.top - launcherBox.top + 'px';
 
       this.shortcutsList.innerHTML = '';
       if (manifest && manifest.shortcuts) {
         this.shortcutsList.style.display = 'block';
-        manifest.shortcuts.forEach((shortcut) => {
+        for (let index = 0; index < manifest.shortcuts.length; index++) {
+          const shortcut = manifest.shortcuts[index];
+
           const item = document.createElement('li');
           this.shortcutsList.appendChild(item);
 
@@ -307,17 +315,18 @@
           name.classList.add('name');
           name.textContent = shortcut.name;
           item.appendChild(name);
-        });
+        }
       } else {
         this.shortcutsList.style.display = 'none';
       }
 
-      this.shortcutsMenu.style.top = iconBox.top + 60 + 'px';
+      this.shortcutsMenu.style.top = iconBox.top - launcherBox.top + 60 + 'px';
       if (iconBox.left > window.innerWidth - this.shortcutsMenu.clientWidth) {
-        this.shortcutsMenu.style.left = iconBox.left - this.shortcutsMenu.clientWidth + 50 + 'px';
+        this.shortcutsMenu.style.left = iconBox.left - launcherBox.left - this.shortcutsMenu.clientWidth + 50 + 'px';
       } else {
-        this.shortcutsMenu.style.left = iconBox.left + 'px';
+        this.shortcutsMenu.style.left = iconBox.left - launcherBox.left + 'px';
       }
+      Transitions.scale(icon, this.shortcutsMenu, true);
     },
 
     handleIPCMessage: function (event) {

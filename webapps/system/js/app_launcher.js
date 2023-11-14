@@ -92,7 +92,6 @@
       this.apps = this.apps.filter((obj) => this.HIDDEN_ROLES.indexOf(obj.manifest.role) === -1);
 
       const pages = this.splitArray(this.apps, this.gridColumns * this.gridRows);
-      console.log(pages);
       for (let offset = 0; offset < pages.length; offset++) {
         const array = pages[offset];
         const rtl = document.dir === 'rtl';
@@ -131,7 +130,7 @@
           iconContainer.draggable = false;
           iconContainer.crossOrigin = 'anonymous';
           iconContainer.onerror = () => {
-            iconContainer.src = '/images/default.png';
+            iconContainer.src = '/images/default.svg';
           };
           DirectionalScale.init(iconContainer);
           iconHolder.appendChild(iconContainer);
@@ -189,7 +188,7 @@
     handleAppClick: function (event, app, icon) {
       let langCode;
       try {
-        langCode = navigator.mozL10n.language.code || 'en-US';
+        langCode = OrchidL10n.currentLanguage || 'en-US';
       } catch (error) {
         // If an error occurs, set a default value for langCode
         langCode = 'en-US';
@@ -243,7 +242,7 @@
 
       let langCode;
       try {
-        langCode = navigator.mozL10n.language.code || 'en-US';
+        langCode = OrchidL10n.currentLanguage || 'en-US';
       } catch (error) {
         // If an error occurs, set a default value for langCode
         langCode = 'en-US';
@@ -264,7 +263,7 @@
           // You can perform further operations with the 'manifest' variable here
         })
         .catch(function (error) {
-          console.log('Error fetching manifest:', error);
+          console.error('Error fetching manifest:', error);
         });
 
       this.element.classList.add('shortcuts-visible');

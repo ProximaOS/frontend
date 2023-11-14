@@ -85,7 +85,7 @@
           // You can perform further operations with the 'manifest' variable here
         })
         .catch(function (error) {
-          console.log('Error fetching manifest:', error);
+          console.error('Error fetching manifest:', error);
         });
 
       const preview = document.createElement('img');
@@ -102,7 +102,7 @@
       const icon = document.createElement('img');
       icon.crossOrigin = 'anonymous';
       icon.onerror = () => {
-        icon.src = '/style/images/default.png';
+        icon.src = '/style/images/default.svg';
       };
       titlebar.appendChild(icon);
 

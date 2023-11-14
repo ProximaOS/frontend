@@ -220,6 +220,7 @@
   width: 2rem;
   height: 2rem;
   transform: scale(1);
+  image-rendering: optimizeSpeed;
   opacity: 1;
   transition: all 0.3s ease;
 }
@@ -467,6 +468,7 @@
 .chrome .navbar .addons > .addons-buttons button > img {
   width: 2rem;
   height: 2rem;
+  image-rendering: optimizeSpeed;
 }
 
 /* #screen:not(.desktop) .chrome .side-tabs-button {
@@ -1246,6 +1248,7 @@ html[dir="rtl"] #screen.mobile .chrome.side-tabs.visible .browser-container .bro
   translate: -50% -50%;
   border-radius: 50%;
   background-color: #858585;
+  image-rendering: optimizeSpeed;
   opacity: 0;
   transition: all 0.3s ease;
 }
@@ -1260,13 +1263,13 @@ html[dir="rtl"] #screen.mobile .chrome.side-tabs.visible .browser-container .bro
 
 /* Quick Access */
 .chrome .quick-access {
+  visibility: hidden;
   position: absolute;
   top: calc(var(--chrome-tablist-height) + var(--chrome-navbar-height) + (var(--chrome-toolbar-gap) * 3));
   right: 0;
   width: 6rem;
   height: calc(100% - var(--chrome-tablist-height) - var(--chrome-navbar-height) - (var(--chrome-toolbar-gap) * 3));
   background-color: var(--background);
-  visibility: hidden;
 }
 
 /* Tab List Preview */

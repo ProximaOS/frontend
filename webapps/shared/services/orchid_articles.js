@@ -30,10 +30,10 @@ const OrchidArticles = {
   report: async function (post, reason) {
     const userId = await OrchidServices.userId();
     const report = { reporter: userId, reason };
-    const storeApp = await OrchidServices.get(`posts/${post}`);
-    if (!storeApp.reports.includes(report)) {
+    const postData = await OrchidServices.get(`posts/${post}`);
+    if (!postData.reports.includes(report)) {
       await OrchidServices.set(`posts/${post}`, {
-        moderation: { reports: [...user.reports, report] }
+        moderation: { reports: [...postData.reports, report] }
       });
     }
   },

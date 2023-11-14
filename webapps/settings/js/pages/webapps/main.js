@@ -33,10 +33,10 @@
               icon.src = entry[1];
             });
           } else {
-            icon.src = '/images/default.png';
+            icon.src = '/images/default.svg';
           }
           icon.onerror = () => {
-            icon.src = '/images/default.png';
+            icon.src = '/images/default.svg';
           };
           element.appendChild(icon);
 
@@ -68,10 +68,10 @@
           this.webappInfoIcon.src = entry[1];
         });
       } else {
-        this.webappInfoIcon.src = '/images/default.png';
+        this.webappInfoIcon.src = '/images/default.svg';
       }
       this.webappInfoIcon.onerror = () => {
-        this.webappInfoIcon.src = '/images/default.png';
+        this.webappInfoIcon.src = '/images/default.svg';
       };
 
       this.webappInfoName.textContent = app.manifest.long_name || app.manifest.name;

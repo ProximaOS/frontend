@@ -25,8 +25,8 @@
           OrchidServices.getWithUpdate(
             `profile/${await OrchidServices.userId()}`,
             (data) => {
-              this.accountBanner.src = data.banner || data.profilePicture;
-              this.accountAvatar.src = data.profilePicture;
+              this.accountBanner.src = data.banner || data.profile_picture;
+              this.accountAvatar.src = data.profile_picture;
               this.accountUsername.textContent = data.username;
               this.accountFollowers.dataset.l10nArgs = JSON.stringify({
                 followers: data.followers.length
@@ -36,7 +36,7 @@
               });
               this.accountStatus.textContent = data.status.text;
               this.accountEmail.textContent = data.email;
-              this.accountPhoneNumber.textContent = data.phoneNumber;
+              this.accountPhoneNumber.textContent = data.phone_number;
             }
           );
         }
@@ -47,7 +47,7 @@
       FilePicker(['.png', '.jpg', '.jpeg', '.webp'], (data) => {
         compressImage(data, this.KB_SIZE_LIMIT, async (finalImage) => {
           OrchidServices.set(`profile/${await OrchidServices.userId()}`, {
-            profilePicture: finalImage
+            profile_picture: finalImage
           });
           console.log(finalImage);
         });

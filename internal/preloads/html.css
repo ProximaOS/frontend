@@ -27,7 +27,7 @@
 
 /* Skeleton */
 [role="app"] p,
-[role="app"] header,
+[role="app"] header:not([role="header"]),
 [role="app"] :not([role="header"]) > h1,
 [role="app"] :not([role="hea > .safezoneder"]) > h1,
 [role="app"] :not([role="header"]) > h2,
@@ -45,7 +45,7 @@
 }
 
 [role="app"] p:empty,
-[role="app"] header:empty,
+[role="app"] header:not([role="header"]):empty,
 [role="app"] :not([role="header"]) > h1:empty,
 [role="app"] :not([role="header"]) > .safezone > h1:empty,
 [role="app"] :not([role="header"]) > h2:empty,
@@ -66,7 +66,7 @@
 }
 
 [role="app"] p::after,
-[role="app"] header::after,
+[role="app"] header:not([role="header"])::after,
 [role="app"] :not([role="header"]) > h1::after,
 [role="app"] :not([role="header"])  > .safezone> h1::after,
 [role="app"] :not([role="header"]) > h2::after,

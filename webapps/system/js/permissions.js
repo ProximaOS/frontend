@@ -34,7 +34,6 @@
                 value = {};
               }
               value[event.detail.type] = decision;
-              console.log(value);
               Settings.setValue(settingId, value, 'permissions.json');
             }
           );

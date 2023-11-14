@@ -43,7 +43,7 @@
   height: 100%;
   transform: translateY(calc(100vh * (1 - var(--motion-progress, 1))));
   background: #000 url(/resources/wallpapers/default.png) no-repeat center / cover;
-  filter: brightness(calc(90% + (10% * (1 - var(--motion-progress, 1))))) blur(calc(20px * (1 - var(--motion-progress, 1))));
+  filter: brightness(calc(75% + (10% * (1 - var(--motion-progress, 1))))) blur(calc(20px * (1 - var(--motion-progress, 1))));
   mask-image: radial-gradient(circle at 50% 100%, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.2) calc(50% - 50vh), white calc(50% + 50vh), white);
   mask-position: 0 calc(200vh + 100vh);
   mask-size: calc(200% + 100vh);
@@ -134,13 +134,13 @@
   width: 5rem;
   height: 3rem;
   margin: 7rem auto 0;
-  background-color: #fff;
+  background-color: rgb(calc(200 + ((var(--accent-color-secondary-r) / 255) * 55)), calc(200 + ((var(--accent-color-secondary-g) / 255) * 55)), calc(200 + ((var(--accent-color-secondary-b) / 255) * 55)));
   mask: url(lockscreen/images/lock_base.png) no-repeat center / 3rem, url(lockscreen/images/lock_head.png) no-repeat center / 3rem;
   transition: all 0.3s ease;
 }
 
 .light #lockscreen:not(.low-power) #lockscreen-icon {
-  background-color: rgba(0, 0, 0, 0.75);
+  background-color: rgb(calc((var(--accent-color-secondary-r) / 255) * 55), calc((var(--accent-color-secondary-g) / 255) * 55), calc((var(--accent-color-secondary-b) / 255) * 55));
 }
 
 #lockscreen-icon.fail-unlock {
@@ -169,27 +169,25 @@
 }
 
 #lockscreen-clock {
-  color: #fff;
+  color: rgb(calc(200 + ((var(--accent-color-primary-r) / 255) * 55)), calc(200 + ((var(--accent-color-primary-g) / 255) * 55)), calc(200 + ((var(--accent-color-primary-b) / 255) * 55)));
   font-weight: 600;
   font-size: 7.2rem;
   line-height: 7.8rem;
-  text-shadow: 0 0 0.4rem rgba(0, 0, 0, 0.1);
 }
 
 .light #lockscreen:not(.low-power) #lockscreen-clock {
-  color: rgb(calc(var(--accent-color-r) * 0.25), calc(var(--accent-color-g) * 0.25), calc(var(--accent-color-b) * 0.25));
+  color: rgb(calc((var(--accent-color-primary-r) / 255) * 55), calc((var(--accent-color-primary-g) / 255) * 55), calc((var(--accent-color-primary-b) / 255) * 55));
   text-shadow: none;
 }
 
 #lockscreen-date {
   z-index: 2;
-  color: #fff;
+  color: rgb(calc(200 + ((var(--accent-color-secondary-r) / 255) * 55)), calc(200 + ((var(--accent-color-secondary-g) / 255) * 55)), calc(200 + ((var(--accent-color-secondary-b) / 255) * 55)));
   font-size: 2rem;
-  text-shadow: 0 0 0.4rem rgba(0, 0, 0, 0.1);
 }
 
 .light #lockscreen:not(.low-power) #lockscreen-date {
-  color: rgba(0, 0, 0, 0.75);
+  color: rgb(calc((var(--accent-color-secondary-r) / 255) * 55), calc((var(--accent-color-secondary-g) / 255) * 55), calc((var(--accent-color-secondary-b) / 255) * 55));
   text-shadow: none;
 }
 

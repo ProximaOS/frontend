@@ -1,0 +1,10 @@
+/boot 444
+/config 777
+/data 744
+/data/users 777
+/data/local/tmp 777
+/data/system/cache 777
+/mnt 744
+/sbin 755
+/system 755
+/vendor 755

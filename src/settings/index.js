@@ -47,6 +47,7 @@
      */
     setValue: function (name, value, settingsFile = 'settings.json') {
       memorySettings[name] = value;
+      ipcRenderer.emit('settingschange', { name, [name]: value });
       ipcRenderer.send('settingschange', { name, [name]: value });
 
       window.addEventListener('beforeunload', () => {

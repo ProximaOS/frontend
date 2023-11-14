@@ -10,7 +10,6 @@
 
     handleIPCMessage: function (event) {
       const data = event.detail;
-      console.log(data);
 
       switch (data.type) {
         case 'alert':

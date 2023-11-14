@@ -204,6 +204,61 @@
   line-height: 2rem;
 }
 
+#accent-color > .content
+#accent-color > .content > .scroll-content {
+  display: flex;
+  flex-direction: column;
+}
+
+.accent-color-preview-holder {
+  flex-shrink: 0;
+}
+
+.accent-color-selector {
+  flex-grow: 1;
+  width: 100%;
+  height: 100%;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+.accent-color-row {
+  box-sizing: border-box;
+  width: calc(100% - 3rem);
+  margin: 0 1.5rem;
+  padding: 1rem 0;
+}
+
+.accent-color-row:not(:last-child) {
+  border-bottom: solid 0.1rem var(--item-plus);
+}
+
+.accent-color-row .colors {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(6.25rem, 1fr));
+  gap: 1rem;
+}
+
+.accent-color-row .color {
+  position: relative;
+  width: 6.25rem;
+  height: 6.25rem;
+  overflow: hidden;
+  border-radius: 50%;
+  background-image: linear-gradient(to bottom, rgb(var(--accent-color-primary-r), var(--accent-color-primary-g), var(--accent-color-primary-b)), rgb(var(--accent-color-secondary-r), var(--accent-color-secondary-g), var(--accent-color-secondary-b)));
+}
+
+.accent-color-row .color::before {
+  position: absolute;
+  top: calc(100% / 3);
+  left: calc(100% / 3);
+  width: 100%;
+  height: 100%;
+  border-radius: 1rem 0 0 0;
+  background-color: rgb(var(--accent-color-secondary-r), var(--accent-color-secondary-g), var(--accent-color-secondary-b));
+  content: '';
+}
+
 .battery-header {
   box-sizing: border-box;
   width: 100%;

@@ -8,8 +8,7 @@ header[role="header"] {
   height: calc(var(--statusbar-height) + 5rem + (4rem * (1 - var(--progress, 0))));
   padding: var(--statusbar-height) 1rem 0;
   gap: 0.5rem;
-  backdrop-filter: blur(20px) saturate(calc(100% + (80% * var(--progress, 0))));
-  background-image: linear-gradient(to right, var(--background) 3rem, var(--header-background) 13rem, var(--header-background) calc(100% - 13rem), var(--background) calc(100% - 3rem));
+  background-color: var(--background);
 }
 
 header[role="header"]::before {

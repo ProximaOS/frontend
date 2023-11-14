@@ -45,18 +45,18 @@
   height: 100%;
   overflow: hidden;
   list-style: none;
-  transition: all 0.75s cubic-bezier(0, 0.25, 0, 1) 0.5s;
+  transition: all 0.75s cubic-bezier(0, 0.25, 0, 1) 0.5s, transform 0.3s ease;
 }
 
-#app.hidden #grid .icon {
+.icon.dragging {
+  transition: all 0.3s ease;
+}
+
+#app.hidden .icon {
   visibility: hidden;
   transform: translateZ(var(--pos-z));
   opacity: 0;
   transition: all 0.5s ease;
-}
-
-.icon.dragging {
-  transition: none;
 }
 
 .icon .icon-holder {
@@ -71,15 +71,12 @@
   width: 4.8rem;
   height: 4.8rem;
   border-radius: 25%;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.icon:hover .icon-holder > img {
-  transform: scale(1.05);
+  image-rendering: optimizeSpeed;
+  transition: box-shadow 0.3s ease;
 }
 
 .icon.dragging .icon-holder > img {
-  transform: scale(1.25);
+  box-shadow: 0 0.4rem 1.2rem rgba(0, 0, 0, 0.1);
 }
 
 .icon:active .icon-holder > img {

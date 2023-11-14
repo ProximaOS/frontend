@@ -16,7 +16,7 @@
           OrchidServices.getWithUpdate(
             `profile/${await OrchidServices.userId()}`,
             (data) => {
-              this.accountButtonAvatar.src = data.profilePicture;
+              this.accountButtonAvatar.src = data.profile_picture;
               this.accountButtonUsername.textContent = data.username;
               this.accountButtonContact.textContent = data.email;
             }

@@ -12,9 +12,9 @@
     update: function () {
       const currentTime = new Date();
       const langCode =
-        navigator.mozL10n.language.code === 'ar'
+        OrchidL10n.currentLanguage.startsWith('ar')
           ? 'ar-SA'
-          : navigator.mozL10n.language.code;
+          : OrchidL10n.currentLanguage;
 
       this.iconElement.innerText = currentTime
         .toLocaleTimeString(langCode, {
