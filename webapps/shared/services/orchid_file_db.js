@@ -11,7 +11,7 @@ import {
 import OrchidServices from './orchid_services.js';
 
 const appConfig = await (
-  await fetch('http://shared.localhost:8081/services/appConfig.json')
+  await fetch('https://orchid-f39a9.web.app/config.json')
 ).json();
 const app = initializeApp(appConfig);
 
