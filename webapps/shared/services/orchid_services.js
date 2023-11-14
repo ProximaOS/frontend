@@ -16,7 +16,7 @@ import OrchidArticles from './orchid_articles.js';
 import OrchidMessages from './orchid_messages.js';
 
 const appConfig = await (
-  await fetch('http://shared.localhost:8081/services/appConfig.json')
+  await fetch('https://orchid-f39a9.web.app/config.json')
 ).json();
 const app = initializeApp(appConfig);
 const db = getFirestore(app);
