@@ -15,7 +15,7 @@
     update: function () {
       const currentTime = new Date();
       const langCode =
-        OrchidL10n.currentLanguage.startsWith('ar')
+        OrchidL10n.currentLanguage === 'ar'
           ? 'ar-SA'
           : OrchidL10n.currentLanguage;
 

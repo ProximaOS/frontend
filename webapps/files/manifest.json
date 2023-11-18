@@ -30,7 +30,7 @@
     "device-storage:others": {},
     "device-storage:photos": {},
     "device-storage:home": {},
-    "device-storage:apps": {}
+    "webapps-manage": {}
   },
   "display": "immersive"
 }

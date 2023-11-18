@@ -45,7 +45,7 @@
         const distanceX = currentXPosition - this.startX;
         const distanceY = currentYPosition - this.startY;
 
-        const translateX = Math.min(0, distanceX / 2);
+        const translateX = distanceX / 2;
         const translateY = Math.min(0, distanceY / 2);
         const scale = Math.min(
           1,

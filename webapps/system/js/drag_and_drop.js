@@ -5,6 +5,8 @@
     screen: document.getElementById('screen'),
     element: document.getElementById('drag-and-drop'),
 
+    detailMemory: null,
+
     init: function () {
       window.addEventListener('webdrag', this.handleDrag.bind(this));
       window.addEventListener('webdrop', this.handleDrop.bind(this));
@@ -20,6 +22,8 @@
         '.appframe.active .browser-container .browser-view.active > .browser'
       );
       const webviewBox = webview.getBoundingClientRect();
+
+      this.detailMemory = detail;
 
       this.screen.classList.add('drag-and-drop-active');
       this.element.classList.add('visible');
@@ -42,8 +46,8 @@
       const initialY = event.pageY || event.touches[0].pageY;
 
       // Get initial window position
-      const initialWindowX = this.element.offsetLeft;
-      const initialWindowY = this.element.offsetTop;
+      const initialWindowX = this.detailMemory.left;
+      const initialWindowY = this.detailMemory.top;
 
       // Calculate the offset between the initial position and the window position
       const offsetX = initialX - initialWindowX;
@@ -86,7 +90,7 @@
     },
 
     handleDrop: function (event) {
-      const detail = event.detail;
+      const detail = this.detailMemory;
       const webview = document.querySelector(
         '.appframe.active .browser-container .browser-view.active > .browser'
       );

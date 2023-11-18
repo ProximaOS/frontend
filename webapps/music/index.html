@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -27,7 +28,7 @@
   <script defer type="text/javascript" src="http://shared.localhost:8081/js/spatial_navigation.js"></script>
   <script defer type="text/javascript" src="http://shared.localhost:8081/js/file_indexer.js"></script>
   <script defer type="text/javascript" src="http://shared.localhost:8081/js/lazy_loader.js"></script>
-  <script defer type="text/javascript" src="http://shared.localhost:8081/js/common/page_controller.js"></script>
+  <script defer type="text/javascript" src="http://shared.localhost:8081/js/page_controller.js"></script>
   <script type="text/javascript" src="js/bootstrap.js"></script>
   <script defer type="text/javascript" src="js/views.js"></script>
   <script defer type="text/javascript" src="js/views/grid.js"></script>
@@ -42,14 +43,27 @@
     content="af, ar, az, be, bg, bn, ca, cs, cy, da, de, el, eo, et, en-US, es, eu, fa, fi, fr, ga, gu, gl, he, hi, hr, ht, hu, id, is, it, ja, kn, ko, ku, lt, lv, mk, ms, nl, no, pl, pt, ro, ru, sq, sk, sl, sr, sw, ta, te, th, tl, tr, uk, ur, vi, yi, zh, fr-psaccent, ar-psbidi">
   <link rel="localization" href="/locales/main.{locale}.properties">
 </head>
+
 <body>
   <main id="app" role="app">
     <div role="tablist">
       <ul>
-        <li><a href="#grid" class="selected" data-icon="music-gridview" data-l10n-id="grid" data-page-id="grid"></a></li>
-        <li><a href="#playlists" data-icon="music-playlist" data-l10n-id="playlists" data-page-id="playlists"></a></li>
-        <li><a href="#artists" data-icon="music-artist" data-l10n-id="artists" data-page-id="artists"></a></li>
-        <li><a href="#albums" data-icon="music-album" data-l10n-id="albums" data-page-id="albums"></a></li>
+        <li><a href="#grid" class="selected" data-page-id="grid">
+            <span data-icon="grid"></span>
+            <span data-l10n-id="grid"></span>
+          </a></li>
+        <li><a href="#playlists" data-page-id="playlists">
+            <span data-icon="playlist"></span>
+            <span data-l10n-id="playlists"></span>
+          </a></li>
+        <li><a href="#artists" data-page-id="artists">
+            <span data-icon="artist"></span>
+            <span data-l10n-id="artists"></span>
+          </a></li>
+        <li><a href="#albums" data-page-id="albums">
+            <span data-icon="album"></span>
+            <span data-l10n-id="albums"></span>
+          </a></li>
       </ul>
     </div>
 
@@ -131,4 +145,5 @@
     </section>
   </main>
 </body>
+
 </html>

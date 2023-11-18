@@ -3,34 +3,36 @@
 
   const { ipcRenderer } = require('electron');
 
-  function OrchidNotification (title, options) {
-    this.title = title;
-    this.options = options;
+  class OrchidNotification {
+    constructor (title, options) {
+      this.title = title;
+      this.options = options;
+    }
+
+    requestPermission () {
+      // ...
+    }
+
+    show () {
+      ipcRenderer.send('message', {
+        type: 'notification',
+        options: this.options,
+        href: location.href,
+        origin: location.origin,
+        title: document.title
+      });
+    }
+
+    close () {
+      // ...
+    }
+
+    addEventListener (eventType, callback) {
+      // ...
+    }
   }
 
-  OrchidNotification.prototype.requestPermission = function () {
-    // ...
-  };
-
-  OrchidNotification.prototype.show = function () {
-    ipcRenderer.send('message', {
-      type: 'notification',
-      options: this.options,
-      href: location.href,
-      origin: location.origin,
-      title: document.title
-    });
-  };
-
-  OrchidNotification.prototype.close = function () {
-    // ...
-  };
-
-  OrchidNotification.prototype.addEventListener = function (eventType, callback) {
-    // ...
-  };
-
-  OrchidNotification.prototype.permission = 'granted';
+  OrchidNotification.permission = 'granted';
 
   module.exports = OrchidNotification;
 })(window);

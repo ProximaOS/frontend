@@ -1,8 +1,11 @@
 {
+  "name": "System",
+  "long_name": "Orchid System",
+  "description": "Orchid System",
   "version": "1.0",
   "role": "system",
-  "name": "System",
-  "description": "OpenOrchid System",
+  "core": true,
+  "default_locale": "en",
   "launch_path": "/index.html",
   "icons": {
     "16": "/style/icons/system_16.png",
@@ -13,17 +16,17 @@
     "256": "/style/icons/system_256.png"
   },
   "developer": {
-    "name": "Orchid Org.",
+    "name": "Orchid",
     "url": "https://openorchid.github.io/"
   },
-  "default_locale": "en",
+  "artwork": [],
   "background_color": "#f0f6ff",
   "theme_color": "#0061e0",
   "permissions": {
     "environment": {},
     "ipc": {},
     "bluetooth": {},
-    "settings": {},
+    "settings": { "access": "readwrite" },
     "storage": {},
     "device-storage:audio": {},
     "device-storage:books": {},
@@ -33,7 +36,7 @@
     "device-storage:others": {},
     "device-storage:photos": {},
     "device-storage:home": {},
-    "device-storage:apps": {},
+    "webapps-manage": {},
     "time": {},
     "virtualization": {},
     "child-process": {},
@@ -44,5 +47,29 @@
     "telephony": {},
     "sms": {},
     "display": {}
+  },
+  "activities": {
+    "webapp-launch": {
+      "filters": {
+        "manifestUrl": { "required": true }
+      },
+      "return_value": false
+    },
+    "webapp-install": {
+      "filters": {
+        "manifestUrl": { "required": true }
+      },
+      "return_value": false
+    },
+    "share-to": {
+      "filters": {
+        "blob": { "required": true },
+        "target": { "required": true }
+      },
+      "return_value": false
+    }
+  },
+  "serviceworker": {
+    "script_url": "sw-global.js"
   }
 }

@@ -47,41 +47,34 @@
      */
     setValue: function (name, value, settingsFile = 'settings.json') {
       memorySettings[name] = value;
-      ipcRenderer.emit('settingschange', { name, [name]: value });
-      ipcRenderer.send('settingschange', { name, [name]: value });
 
-      window.addEventListener('beforeunload', () => {
-        const settingsFilePath = path.join(process.env.ORCHID_APP_PROFILE, settingsFile);
+      const settingsFilePath = path.join(process.env.ORCHID_APP_PROFILE, settingsFile);
 
-        fs.readFile(settingsFilePath, 'utf8', (error, data) => {
-          if (error) {
-            console.error(error);
-            return;
-          }
+      fs.readFile(settingsFilePath, 'utf8', (error, data) => {
+        if (error) {
+          console.error(error);
+          return;
+        }
 
-          try {
-            const settings = JSON.parse(data);
-            settings[name] = value;
-            const updatedSettings = JSON.stringify(Object.assign(settings, memorySettings), null, 2);
+        try {
+          const settings = JSON.parse(data);
+          settings[name] = value;
+          const updatedSettings = JSON.stringify(Object.assign(settings, memorySettings), null, 2);
 
-            // Ensure the directory exists before writing the file
-            const settingsDir = path.dirname(settingsFilePath);
-            fse.ensureDir(settingsDir, (dirError) => {
-              if (dirError) {
-                console.error(dirError);
-                return;
-              }
-
-              fs.writeFile(settingsFilePath, updatedSettings, 'utf8', (writeError) => {
-                if (writeError) {
-                  console.error(writeError);
-                }
-              });
-            });
-          } catch (parseError) {
-            console.error(parseError);
-          }
-        });
+          // Ensure the directory exists before writing the file
+          const settingsDir = path.dirname(settingsFilePath);
+          fs.mkdirSync(settingsDir, { recursive: true });
+          fs.writeFile(settingsFilePath, updatedSettings, 'utf8', (writeError) => {
+            if (writeError) {
+              console.error(writeError);
+              return;
+            }
+            ipcRenderer.emit('settingschange', { name, [name]: value });
+            ipcRenderer.send('settingschange', { name, [name]: value });
+          });
+        } catch (parseError) {
+          console.error(parseError);
+        }
       });
     },
 
@@ -94,6 +87,9 @@
      */
     addObserver: function (name, callback) {
       ipcRenderer.on('settingschange', (event, data) => {
+        Settings.getValue(name).then(data => {
+          callback(data);
+        });
         if (data && data[name]) {
           callback(data[name]);
         }

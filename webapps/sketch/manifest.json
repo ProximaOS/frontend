@@ -20,7 +20,7 @@
   "background_color": "#f0f6ff",
   "theme_color": "#c00040",
   "permissions": {
-    "device-storage:apps": {}
+    "webapps-manage": {}
   },
   "display": "immersive"
 }

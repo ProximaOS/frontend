@@ -5,7 +5,7 @@
   bottom: 0;
   left: 0;
   width: 100%;
-  height: calc(40% + 1.5rem);
+  height: calc(40% + 2.5rem);
   padding-bottom: 1.5rem;
   transform: translateY(100%);
   background-color: var(--background-minus);
@@ -44,6 +44,10 @@
   height: calc(100% - 1.5rem);
 }
 
-#screen.software-buttons-enabled .inputframe .browser {
+#screen:not(.desktop).software-buttons-enabled .inputframe .browser {
   height: calc(100% - var(--software-buttons-height));
+}
+
+#screen.desktop .inputframe .browser {
+  height: calc(100% - var(--software-buttons-height) - 1rem);
 }

@@ -22,7 +22,7 @@
   "theme_color": "#ff6040",
   "permissions": {
     "ipc": {},
-    "device-storage:apps": {}
+    "webapps-manage": {}
   },
   "transparent": true,
   "statusbar": "immersive"

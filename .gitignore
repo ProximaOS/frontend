@@ -22,6 +22,7 @@ build_stage/
 logs/
 *.log
 
+/chrome
 /webapps/TearsOfMother
 
 *.orcbin

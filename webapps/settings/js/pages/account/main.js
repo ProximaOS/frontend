@@ -5,6 +5,7 @@
     accountBanner: document.getElementById('account-banner'),
     accountAvatar: document.getElementById('account-avatar'),
     accountUsername: document.getElementById('account-username'),
+    accountHandle: document.getElementById('account-handle'),
     accountFollowers: document.getElementById('account-followers'),
     accountFriends: document.getElementById('account-friends'),
     accountStatus: document.getElementById('account-status'),
@@ -28,6 +29,7 @@
               this.accountBanner.src = data.banner || data.profile_picture;
               this.accountAvatar.src = data.profile_picture;
               this.accountUsername.textContent = data.username;
+              this.accountHandle.textContent = `@${data.handle_name}`;
               this.accountFollowers.dataset.l10nArgs = JSON.stringify({
                 followers: data.followers.length
               });
@@ -37,6 +39,12 @@
               this.accountStatus.textContent = data.status.text;
               this.accountEmail.textContent = data.email;
               this.accountPhoneNumber.textContent = data.phone_number;
+
+              if (data.is_verified) {
+                this.accountUsername.classList.add('verified');
+              } else {
+                this.accountUsername.classList.remove('verified');
+              }
             }
           );
         }

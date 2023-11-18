@@ -23,7 +23,7 @@
     "settings": {},
     "device-storage:others": {},
     "device-storage:home": {},
-    "device-storage:apps": {}
+    "webapps-manage": {}
   },
   "display": "immersive"
 }

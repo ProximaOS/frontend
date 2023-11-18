@@ -117,13 +117,13 @@
         // Set the new position of the window
         const progress = newWindowX / window.innerHeight;
         panel.classList.add('will-be-visible');
-        panel.style.opacity = rtl ? 1 - (progress * -1) : (progress * -1);
+        panel.style.opacity = rtl ? progress : 1 - (progress * -1);
         panel.style.visibility = 'visible';
-        panel.style.transform = `translateX(${100 * (rtl ? progress : (progress * -1))}%)`;
+        panel.style.transform = `translateX(${(rtl ? (progress * -1) * 100 : progress * 100)}%)`;
         previousPanel.classList.add('will-be-visible');
-        previousPanel.style.opacity = rtl ? (progress * -1) : 1 - (progress * -1);
+        previousPanel.style.opacity = rtl ? 1 - (progress * -1) : progress;
         previousPanel.style.visibility = 'visible';
-        previousPanel.style.transform = `translateX(${100 * (1 - (rtl ? (progress * -1) : progress))}%)`;
+        previousPanel.style.transform = `translateX(${(rtl ? 1 - progress * 100 : 1 - (progress * -1) * 100)}%)`;
       }
 
       // Function to stop dragging
@@ -136,12 +136,14 @@
         panel.addEventListener('transitionend', () => panel.classList.remove('transitioning'));
         panel.classList.remove('dragging');
 
-        let targetDistance = 100;
+        let targetDistance;
         if (rtl) {
           targetDistance = -100;
+        } else {
+          targetDistance = 100;
         }
 
-        if (distanceX <= targetDistance) {
+        if ((targetDistance < 0 && distanceX <= targetDistance) || (targetDistance > 0 && distanceX >= targetDistance)) {
           if (panel.id === 'root') {
             panel.style.opacity = null;
             panel.style.transform = '';

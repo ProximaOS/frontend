@@ -34,6 +34,8 @@
         Settings.getValue(this.settings[this.SETTINGS_FTU_ENABLED]).then(this.handleFirstLaunch.bind(this));
         Splashscreen.hide();
       });
+
+      window.addEventListener('orchidserviceload', this.onServicesLoad.bind(this));
     },
 
     handleLanguageChange: function (value) {
@@ -42,10 +44,10 @@
       }
 
       LoadingScreen.show();
-      LoadingScreen.element.textContent = navigator.mozL10n.get('changingLanguage');
+      LoadingScreen.element.textContent = OrchidL10n.get('changingLanguage');
       LoadingScreen.element.addEventListener('transitionend', () => {
         OrchidL10n.currentLanguage = value;
-        LoadingScreen.element.textContent = navigator.mozL10n.get('changingLanguage');
+        LoadingScreen.element.textContent = OrchidL10n.get('changingLanguage');
         LoadingScreen.hide();
       });
     },
@@ -73,6 +75,12 @@
         AppWindow.create(`http://ftu.localhost:${location.port}/manifest.json`, {});
       } else {
         LazyLoader.load('js/homescreen_launcher.js');
+      }
+    },
+
+    onServicesLoad: function (event) {
+      if ('OrchidServices' in window) {
+        OrchidServices.devices.ensureDevice();
       }
     }
   };

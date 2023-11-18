@@ -1,7 +1,9 @@
 {
-  "version": "1.0",
   "name": "Settings",
   "description": "",
+  "version": "1.0",
+  "core": true,
+  "default_locale": "en",
   "launch_path": "/index.html",
   "icons": {
     "16": "/style/icons/settings_16.png",
@@ -12,17 +14,17 @@
     "256": "/style/icons/settings_256.png"
   },
   "developer": {
-    "name": "Orchid Org.",
+    "name": "Orchid",
     "url": "https://openorchid.github.io/"
   },
-  "default_locale": "en",
-  "orientation": "portrait-primary",
+  "display": "immersive",
+  "orientation": "auto",
   "background_color": "#f0f6ff",
   "theme_color": "#0061e0",
   "permissions": {
     "device-info": {},
     "bluetooth": {},
-    "settings": {},
+    "settings": { "access": "readwrite" },
     "storage": {},
     "device-storage:audio": {},
     "device-storage:books": {},
@@ -32,7 +34,7 @@
     "device-storage:others": {},
     "device-storage:photos": {},
     "device-storage:home": {},
-    "device-storage:apps": {},
+    "webapps-manage": {},
     "time": {},
     "virtualization": {},
     "child-process": {},
@@ -43,7 +45,6 @@
     "telephony": {},
     "sms": {}
   },
-  "display": "immersive",
   "shortcuts": [
     {
       "icon": "/style/shortcuts/wifi.png",
@@ -65,5 +66,13 @@
       "name": "Accessibility",
       "launch_path": "?page=accessibility"
     }
-  ]
+  ],
+  "activities": {
+    "wallpaper-set": {
+      "filters": {
+        "url": { "required": true }
+      },
+      "return_value": false
+    }
+  }
 }
