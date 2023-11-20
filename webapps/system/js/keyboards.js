@@ -7,7 +7,7 @@
     screen: document.getElementById('screen'),
     keyboardContainer: document.getElementById('keyboards'),
 
-    DEFAULT_KEYBOARD: `http://keyboard.localhost:${location.port}/manifest.json`,
+    DEFAULT_KEYBOARD: `http://keyboard.localhost:8081/manifest.json`,
 
     init: function () {
       this.create(this.DEFAULT_KEYBOARD);

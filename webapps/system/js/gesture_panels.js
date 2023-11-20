@@ -83,23 +83,6 @@
           );
           AppWindow.focusedWindow.style.setProperty('--scale', scale);
         }
-
-        if (distanceY <= -300) {
-          CardsView.element.classList.add('will-be-visible');
-          if (AppWindow.focusedWindow.id !== 'homescreen') {
-            CardsView.element.style.setProperty(
-              '--offset-x',
-              `${translateX}px`
-            );
-            CardsView.element.style.setProperty(
-              '--offset-y',
-              `${translateY}px`
-            );
-          }
-          CardsView.element.style.setProperty('--scale', scale);
-        } else {
-          CardsView.element.classList.remove('will-be-visible');
-        }
       }
     },
 
@@ -121,11 +104,11 @@
 
         AppWindow.containerElement.classList.remove('dragging');
         if (distanceY <= -300) {
-          CardsView.element.classList.remove('will-be-visible');
           CardsView.show();
         } else if (distanceY <= -50) {
           AppWindow.minimize(AppWindow.focusedWindow.id);
-        } else if (distanceY >= 0) {
+          AppWindow.focusedWindow.style.transform = '';
+        } else if (distanceY >= 5) {
           setTimeout(() => {
             this.screen.classList.add('close-reach');
           }, 16);
@@ -134,8 +117,8 @@
           AppWindow.focusedWindow.addEventListener('transitionend', () => {
             AppWindow.focusedWindow.classList.remove('transitioning');
           });
+          AppWindow.focusedWindow.style.transform = '';
         }
-        AppWindow.focusedWindow.style.transform = '';
       }
     }
   };

@@ -22,6 +22,7 @@
   <link rel="stylesheet" type="text/css" href="http://shared.localhost:8081/style/seekbars.css" />
   <link rel="stylesheet" type="text/css" href="http://shared.localhost:8081/style/input_areas.css" />
   <link rel="stylesheet" type="text/css" href="style/settings.css" />
+  <link rel="stylesheet" type="text/css" href="style/devices.css" />
   <script type="module" src="https://orchid-f39a9.web.app/orchid_services.js"></script>
   <script defer type="text/javascript" src="http://shared.localhost:8081/js/smooth-scrollbar.js"></script>
   <script defer type="text/javascript" src="http://shared.localhost:8081/js/plugins/overscroll.js"></script>
@@ -32,8 +33,8 @@
   <script defer type="text/javascript" src="http://shared.localhost:8081/js/page_controller.js"></script>
   <script type="text/javascript" src="js/bootstrap.js"></script>
   <script defer type="text/javascript" src="js/pages/root/main.js"></script>
-  <script defer type="text/javascript" src="js/pages/accessibility/main.js"></script>
   <script defer type="text/javascript" src="js/pages/account/main.js"></script>
+  <script defer type="text/javascript" src="js/pages/devices/main.js"></script>
   <script defer type="text/javascript" src="js/pages/wifi/main.js"></script>
   <script defer type="text/javascript" src="js/pages/bluetooth/main.js"></script>
   <script defer type="text/javascript" src="js/pages/general/main.js"></script>
@@ -45,6 +46,7 @@
   <script defer type="text/javascript" src="js/pages/homescreen/main.js"></script>
   <script defer type="text/javascript" src="js/pages/battery/main.js"></script>
   <script defer type="text/javascript" src="js/pages/storage/main.js"></script>
+  <script defer type="text/javascript" src="js/pages/accessibility/main.js"></script>
   <script defer type="text/javascript" src="js/pages/about/main.js"></script>
   <script defer type="text/javascript" src="js/battery_icon.js"></script>
 
@@ -87,11 +89,11 @@
           <li id="login-button" class="page" data-icon="orchid">
             <p data-l10n-id="accountLogin"></p>
           </li>
-          <li id="devices-button" class="page" data-icon="devices">
-            <p data-l10n-id="accountDevices"></p>
-          </li>
-          <li id="sync-button" class="page" data-icon="sync">
+          <li id="sync-button" class="page" data-icon="sync" data-page-id="sync">
             <p data-l10n-id="accountSync"></p>
+          </li>
+          <li id="devices-button" class="page" data-icon="devices" data-page-id="devices">
+            <p data-l10n-id="accountDevices"></p>
           </li>
         </ul>
 
@@ -233,6 +235,19 @@
             <p data-l10n-id="account-achievements"></p>
           </li>
         </ul>
+      </div>
+    </section>
+
+    <section id="devices" role="panel" data-previous-page-id="root">
+      <header role="header">
+        <div class="safezone">
+          <a href="#" data-icon="arrow-back" data-page-id="root"></a>
+          <h1 data-l10n-id="devices"></h1>
+        </div>
+      </header>
+
+      <div class="content">
+        <ul id="devices-container"></ul>
       </div>
     </section>
 

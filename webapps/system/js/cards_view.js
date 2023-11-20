@@ -12,13 +12,16 @@
     APP_ICON_SIZE: 50,
 
     isVisible: false,
+    targetPreviewElement: null,
     scrollMovement: 0,
 
     init: function () {
       this.element.addEventListener('click', this.hide.bind(this));
       this.toggleButton.addEventListener('click', this.handleToggleButton.bind(this));
 
-      StickyScroll.init(this.element, '.card-area');
+      if ('StickyScroll' in window) {
+        StickyScroll.init(this.element, '.card-area');
+      }
     },
 
     show: function () {
@@ -27,14 +30,22 @@
       this.screen.classList.add('cards-view-visible');
       this.cardsContainer.innerHTML = '';
 
-      const focusedWindow = AppWindow.focusedWindow;
-      focusedWindow.classList.add('to-cards-view');
-      focusedWindow.addEventListener('animationend', () => focusedWindow.classList.remove('to-cards-view'));
+      CardsView.element.style.setProperty('--aspect-ratio', `${window.innerWidth} / ${window.innerHeight}`);
 
       const windows = this.windowContainer.querySelectorAll('.appframe:not(#homescreen)');
+      const focusedWindow = AppWindow.focusedWindow;
       for (let index = 0; index < windows.length; index++) {
         const appWindow = windows[index];
         this.createCard(index, appWindow.dataset.manifestUrl, appWindow, appWindow.querySelector('.browser-view.active .browser'));
+
+        setTimeout(() => {
+          if (appWindow.dataset.manifestUrl === focusedWindow.dataset.manifestUrl) {
+            Transitions.scale(AppWindow.focusedWindow, this.targetPreviewElement, true);
+          } else {
+            focusedWindow.classList.add(AppWindow.CLOSE_ANIMATION);
+            focusedWindow.addEventListener('animationend', () => focusedWindow.classList.remove(AppWindow.CLOSE_ANIMATION));
+          }
+        }, 1);
       }
     },
 
@@ -46,9 +57,7 @@
       CardsView.element.style.setProperty('--offset-y', null);
       CardsView.element.style.setProperty('--scale', null);
 
-      const focusedWindow = AppWindow.focusedWindow;
-      focusedWindow.classList.add('from-cards-view');
-      focusedWindow.addEventListener('animationend', () => focusedWindow.classList.remove('from-cards-view'));
+      Transitions.scale(this.targetPreviewElement, AppWindow.focusedWindow);
     },
 
     createCard: async function (index, manifestUrl, appWindow, webview) {
@@ -57,7 +66,7 @@
 
       const cardArea = document.createElement('div');
       cardArea.classList.add('card-area');
-      cardArea.style.transform = `translateX(${rtl ? -x : x}px)`;
+      cardArea.style.setProperty('--offset-x', `${rtl ? -x : x}px`);
       this.cardsContainer.appendChild(cardArea);
 
       const focusedWindow = AppWindow.focusedWindow;
@@ -90,10 +99,15 @@
 
       const preview = document.createElement('img');
       preview.classList.add('preview');
+      card.appendChild(preview);
+
+      if (manifestUrl === focusedWindow.dataset.manifestUrl) {
+        this.targetPreviewElement = preview;
+      }
+
       DisplayManager.screenshot(webview.getWebContentsId()).then((data) => {
         preview.src = data;
       });
-      card.appendChild(preview);
 
       const titlebar = document.createElement('div');
       titlebar.classList.add('titlebar');
@@ -141,6 +155,8 @@
       event.stopPropagation();
       this.startY = event.clientY || event.touches[0].clientY;
 
+      card.classList.add('dragging');
+
       // Get initial window position
       const initialWindowY = card.offsetTop;
 
@@ -157,8 +173,8 @@
 
         // Set the new position of the window
         const progress = newWindowY / window.innerHeight;
-        card.style.opacity = 1 - (progress * -1);
-        card.style.transform = `translateY(${100 * progress}%) scale(0.65)`;
+        card.style.setProperty('--card-opacity', 1 - (progress * -1));
+        card.style.setProperty('--card-motion-progress', `${100 * progress}%`);
       }
 
       // Function to stop dragging
@@ -173,11 +189,12 @@
 
         if (distanceY <= -100) {
           if (windowId === 'homescreen') {
-            card.style.transform = '';
+            card.style.setProperty('--card-opacity', 1);
+            card.style.setProperty('--card-motion-progress', 0);
           } else {
             AppWindow.close(windowId, true);
-            card.style.opacity = 0;
-            card.style.transform = 'translateY(-100%) scale(0.65)';
+            card.style.setProperty('--card-opacity', 0);
+            card.style.setProperty('--card-motion-progress', '-100%');
             card.addEventListener('transitionend', () => {
               card.parentElement.remove();
 

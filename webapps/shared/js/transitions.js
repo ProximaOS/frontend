@@ -16,6 +16,10 @@
       const toWidth = toRect.width / fromRect.width;
       const toHeight = toRect.height / fromRect.height;
 
+      from.style.setProperty('--old-transform', from.style.transform);
+      from.style.transform = '';
+      from.style.transformOrigin = '';
+
       from.style.setProperty('--pos-x', `${toX}px`);
       from.style.setProperty('--pos-y', `${toY}px`);
       from.style.setProperty('--scale-x', toWidth);

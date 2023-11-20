@@ -85,7 +85,8 @@
     "running-apps": "^1.0.2",
     "sqlite3": "^5.1.6",
     "translate": "^2.0.2",
-    "uuid": "^9.0.0"
+    "uuid": "^9.0.0",
+    "ws": "^8.14.2"
   },
   "devDependencies": {
     "csslint": "^1.0.5",

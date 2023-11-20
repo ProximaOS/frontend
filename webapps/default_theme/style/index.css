@@ -17,8 +17,8 @@
   --accent-color-active: rgba(255, 255, 255, 0.1);
 
   --background: rgb(calc(240 + ((var(--accent-color-primary-r) / 255) * var(--accent-intensity))), calc(240 + ((var(--accent-color-primary-g) / 255) * var(--accent-intensity))), calc(240 + ((var(--accent-color-primary-b) / 255) * 15)));
-  /* --background-plus: #ffffff; */
-  --background-plus: rgba(255, 255, 255, 0.1);
+  --background-plus: #ffffff;
+  /* --background-plus: rgba(255, 255, 255, 0.1); */
   --background-minus: rgb(calc(224 + ((var(--accent-color-primary-r) / 255) * var(--accent-intensity))), calc(224 + ((var(--accent-color-primary-g) / 255) * var(--accent-intensity))), calc(224 + ((var(--accent-color-primary-b) / 255) * var(--accent-intensity))));
 
   --acrylic-background: rgba(calc(224 + ((var(--accent-color-primary-r) / 255) * var(--accent-intensity))), calc(224 + ((var(--accent-color-primary-g) / 255) * var(--accent-intensity))), calc(224 + ((var(--accent-color-primary-b) / 255) * var(--accent-intensity))), 0.5);

@@ -1,24 +1,24 @@
 body {
   margin: 0;
   padding: 0;
-  font-family: system-ui;
   background-color: #f4f4f4;
+  font-family: system-ui;
 }
 
 #splashscreen {
+  z-index: 1000;
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
   background-color: var(--background);
-  z-index: 1000;
 }
 
 #splashscreen.hidden {
+  visibility: hidden;
   transform: scale(1.1);
   opacity: 0;
-  visibility: hidden;
   transition: all 0.5s ease;
 }
 
@@ -44,18 +44,19 @@ body {
   width: 24rem;
   height: 0;
   color: var(--text-color);
-  font-size: 1.6rem;
   font-weight: normal;
+  font-size: 1.6rem;
 }
 
 #splashscreen.hidden > .warning {
+  visibility: hidden;
   transform: scale(0.75);
   opacity: 0;
-  visibility: hidden;
   transition: all 0.3s ease 2s;
 }
 
 #background {
+  z-index: -1;
   position: fixed;
   top: 0;
   left: 0;
@@ -63,30 +64,29 @@ body {
   height: 100%;
   background-image: url('your-background-image.jpg');
   background-size: cover;
-  z-index: -1;
 }
 
 #content {
+  z-index: 10;
   position: absolute;
-  left: 0;
   top: 0;
+  left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(51, 51, 51, 0.5);
   overflow: hidden;
-  z-index: 10;
+  background-color: rgba(51, 51, 51, 0.5);
   box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
 }
 
 #content .container {
   position: absolute;
-  left: 50%;
   top: 50%;
-  translate: -50% -50%;
+  left: 50%;
   width: 57rem;
   height: 40rem;
-  border-radius: 2rem;
   overflow: hidden;
+  translate: -50% -50%;
+  border-radius: 2rem;
   background-color: var(--background);
   transition: all 0.5s cubic-bezier(0.8, 0.1, 0.9, 0);
 }
@@ -102,14 +102,14 @@ body {
 }
 
 #content .container .page {
+  display: flex;
+  visibility: hidden;
   position: absolute;
-  left: 0;
   top: 0;
+  left: 0;
   width: 100%;
   height: 100%;
-  display: flex;
   gap: 1.5rem;
-  visibility: hidden;
   transition: all 0.5s ease;
 }
 
@@ -118,22 +118,22 @@ body {
 }
 
 #content .container .illustration {
-  width: 100%;
-  height: 100%;
-  flex-grow: 1;
   display: flex;
+  flex-grow: 1;
   align-items: center;
   justify-content: end;
+  width: 100%;
+  height: 100%;
 }
 
 #content .container .illustration .illustration-art {
-  width: 30rem;
-  height: 30rem;
+  visibility: hidden;
+  width: 24rem;
+  height: 24rem;
+  transform: scale(0.9);
   border-radius: 3rem;
   background: no-repeat center / contain;
-  transform: scale(0.9);
   opacity: 0;
-  visibility: hidden;
   transition: all 0.3s ease;
 }
 
@@ -150,25 +150,25 @@ body {
 }
 
 #content .container .page.visible .illustration .illustration-art {
+  visibility: visible;
   transform: scale(1);
   opacity: 1;
-  visibility: visible;
   transition: all 0.3s ease 0.3s;
 }
 
 #content .container .content {
-  width: 100%;
-  height: 100%;
-  flex-grow: 1;
+  box-sizing: border-box;
   display: flex;
+  position: relative;
+  flex-grow: 1;
   flex-direction: column;
   justify-content: center;
-  overflow-x: hidden;
-  overflow-y: auto;
+  width: 100%;
+  height: 100%;
   padding: 7rem 0;
   padding-inline-end: 3rem;
-  box-sizing: border-box;
-  position: relative;
+  overflow-x: hidden;
+  overflow-y: auto;
   opacity: 0;
   transition: all 0.5s cubic-bezier(1, 0, 0, 1);
 }
@@ -182,8 +182,8 @@ body {
 }
 
 #content .container .page.visible .content {
-  opacity: 1;
   transform: translateX(0);
+  opacity: 1;
 }
 
 #content .container .content > * {
@@ -195,8 +195,8 @@ body {
   bottom: 0;
   width: 50%;
   height: 7rem;
-  background-color: var(--background);
   padding-inline-start: 0;
+  background-color: var(--background);
 }
 html[dir="ltr"] #content .container .buttons {
   right: 0;
@@ -206,11 +206,11 @@ html[dir="rtl"] #content .container .buttons {
 }
 
 #content .container .page.greetings .buttons .next-button {
-  transition: all 0.5s cubic-bezier(0.2, 0.9, 0.1, 1);
-  width: calc(50% - 0.5rem);
-  flex-grow: 0;
-  margin-inline-start: auto;
   z-index: 3;
+  flex-grow: 0;
+  width: calc(50% - 0.5rem);
+  margin-inline-start: auto;
+  transition: all 0.5s cubic-bezier(0.2, 0.9, 0.1, 1);
 }
 
 #content .container .page.greetings.visible .buttons .next-button {
@@ -219,17 +219,17 @@ html[dir="rtl"] #content .container .buttons {
 
 #content .container .content h3 {
   margin: 0 0 0.5rem;
-  font-size: 2.4rem;
-  font-weight: bold;
   color: var(--text-color);
+  font-weight: bold;
+  font-size: 2.4rem;
   line-height: 3rem;
 }
 
 #content .container .content p {
   margin: 0 0 1rem;
-  font-size: 1.6rem;
-  font-weight: normal;
   color: var(--text-color);
+  font-weight: normal;
+  font-size: 1.6rem;
   line-height: 2.2rem;
 }
 
@@ -239,20 +239,20 @@ html[dir="rtl"] #content .container .buttons {
 
 #content .container .content ul li {
   margin: 0;
-  font-size: 1.6rem;
-  font-weight: normal;
   color: var(--text-color);
+  font-weight: normal;
+  font-size: 1.6rem;
   line-height: 2.2rem;
 }
 
 #content .container .content a {
+  width: max-content;
   margin: 0 0 1rem;
-  font-size: 1.6rem;
-  font-weight: normal;
   color: var(--accent-color);
+  font-weight: normal;
+  font-size: 1.6rem;
   line-height: 2.2rem;
   text-decoration: none;
-  width: max-content;
   transition: box-shadow 0.2s ease;
 }
 
@@ -265,21 +265,20 @@ html[dir="rtl"] #content .container .buttons {
 }
 
 #content .container .content .accent-colors {
-  margin: 0 0 1rem;
   display: flex;
-  justify-content: center;
   flex-wrap: nowrap;
-  overflow-y: hidden;
-  overflow-x: auto;
-  gap: 1rem;
   width: 100%;
+  margin: 0 0 1rem;
+  overflow-x: auto;
+  overflow-y: hidden;
+  gap: 1rem;
 }
 
 #content .container .content .accent-colors > div {
+  flex-shrink: 0;
   width: 4rem;
   height: 4rem;
   border-radius: 50%;
-  flex-shrink: 0;
 }
 
 #content .container .content .accent-colors > .red {
@@ -307,9 +306,9 @@ html[dir="rtl"] #content .container .buttons {
     position: absolute;
     top: 0;
     left: 0;
-    translate: none;
     width: 100%;
     height: 100%;
+    translate: none;
     border-radius: 0;
   }
 
@@ -318,9 +317,9 @@ html[dir="rtl"] #content .container .buttons {
   }
 
   #content .container .illustration {
+    box-sizing: border-box;
     justify-content: center;
     padding-top: var(--statusbar-height);
-    box-sizing: border-box;
   }
 
   #content .container .illustration .illustration-art {
@@ -330,14 +329,14 @@ html[dir="rtl"] #content .container .buttons {
   }
 
   #content .container .content {
-    padding: 1.5rem 3rem 7rem;
-    margin-bottom: var(--software-buttons-height);
     justify-content: unset;
+    margin-bottom: var(--software-buttons-height);
+    padding: 1.5rem 3rem 7rem;
   }
 
   #content .container .buttons {
-    padding: 1.5rem 3rem 0;
     bottom: var(--software-buttons-height);
     width: 100%;
+    padding: 1.5rem 3rem 0;
   }
 }

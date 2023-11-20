@@ -5,7 +5,7 @@
     languagesList: document.getElementById('languages-list'),
 
     init: function () {
-      fetch(`http://shared.localhost:${location.port}/resources/languages.json`)
+      fetch(`http://shared.localhost:8081/resources/languages.json`)
         .then(response => response.json())
         .then((data) => {
           data.forEach(item => {

@@ -1,6 +1,7 @@
 {
   "version": "1.0",
   "name": "Terminal",
+  "role": "system",
   "description": "",
   "launch_path": "/index.html",
   "icons": {

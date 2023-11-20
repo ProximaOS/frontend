@@ -14,23 +14,14 @@
         let level = battery.level;
         let charging = battery.charging;
         if (charging) {
-          this.iconElement.dataset.icon = `battery-charging-${
-            Math.round(level * 10) * 10
-          }`;
+          this.iconElement.dataset.icon = `battery-charging-${Math.round(level * 10) * 10}`;
         } else {
-          this.iconElement.dataset.icon = `battery-${
-            Math.round(level * 10) * 10
-          }`;
+          this.iconElement.dataset.icon = `battery-${Math.round(level * 10) * 10}`;
         }
         this.percentageElement.dataset.l10nId = 'batteryStatusPercentage';
-        this.percentageElement.dataset.l10nArgs = `{"value":"${Math.round(
-          level * 100
-        )}"}`;
+        this.percentageElement.dataset.l10nArgs = `{"value":"${Math.round(level * 100)}"}`;
         setTimeout(() => {
-          this.percentageElement.style.setProperty(
-            '--hide-margin',
-            `-${this.percentageElement.offsetWidth / 2}px`
-          );
+          this.percentageElement.style.setProperty('--hide-margin', `-${this.percentageElement.offsetWidth / 2}px`);
         }, 100);
 
         ['chargingchange', 'levelchange'].forEach((event) => {
@@ -38,22 +29,13 @@
             level = battery.level;
             charging = battery.charging;
             if (charging) {
-              this.iconElement.dataset.icon = `battery-charging-${
-                Math.round(level * 10) * 10
-              }`;
+              this.iconElement.dataset.icon = `battery-charging-${Math.round(level * 10) * 10}`;
             } else {
-              this.iconElement.dataset.icon = `battery-${
-                Math.round(level * 10) * 10
-              }`;
+              this.iconElement.dataset.icon = `battery-${Math.round(level * 10) * 10}`;
             }
             this.percentageElement.dataset.l10nId = 'batteryStatusPercentage';
-            this.percentageElement.dataset.l10nArgs = `{"value":"${Math.round(
-              level * 100
-            )}"}`;
-            this.percentageElement.style.setProperty(
-              '--hide-margin',
-              `-${this.percentageElement.offsetWidth / 2}px`
-            );
+            this.percentageElement.dataset.l10nArgs = `{"value":"${Math.round(level * 100)}"}`;
+            this.percentageElement.style.setProperty('--hide-margin', `-${this.percentageElement.offsetWidth / 2}px`);
           });
         });
       });

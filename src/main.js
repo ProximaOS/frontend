@@ -2,13 +2,14 @@ const { app, dialog, ipcMain, protocol, net } = require('electron');
 const fs = require('fs');
 const path = require('path');
 const loadChrome = require('./browser/chrome');
-const initiateServer = require('./server');
+const webappRuntime = require('./server/webapps');
 const loadOpenOrchid = require('./browser/openorchid');
 const isDev = require('electron-is-dev');
 const electronReload = require('electron-reload');
 const { pathToFileURL } = require('url');
 
 require('dotenv').config();
+require('./server/websocket');
 
 const profileDir = path.resolve(process.env.ORCHID_APP_PROFILE);
 app.setPath('appData', profileDir);
@@ -106,7 +107,7 @@ app.whenReady().then(() => {
     // Handle the rejection as needed
   });
 
-  initiateServer(app);
+  webappRuntime(app);
   if (process.argv.indexOf('--chrome') !== -1) {
     loadChrome();
   } else {

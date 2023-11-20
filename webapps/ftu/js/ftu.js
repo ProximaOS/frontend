@@ -43,7 +43,7 @@
       doneButton.onclick = () => {
         window.IPC.send('message', {
           type: 'launch',
-          manifestUrl: `http://homescreen.localhost:${location.port}/manifest.json`
+          manifestUrl: `http://homescreen.localhost:8081/manifest.json`
         });
         window.close();
       };

@@ -1,10 +1,14 @@
 @font-face {
   src: url(orchid://fonts/Rubik-VariableFont_wght.ttf);
-  font-family: 'Jali Arabic';
+  font-family: -orchid-internal-font;
 }
 
 @font-face {
   font-style: italic;
   src: url(orchid://fonts/Rubik-Italic-VariableFont_wght.ttf);
-  font-family: 'Jali Arabic';
+  font-family: -orchid-internal-font;
+}
+
+* {
+  font-family: -orchid-internal-font;
 }

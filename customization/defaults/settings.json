@@ -22,7 +22,7 @@
   "audio.profile_name": "ringing",
   "audio.vibrate.enabled": true,
   "audio.touch_sound.enabled": false,
-  "video.wallpaper.url": "http://default_theme.localhost:8081/wallpapers/default-light.png",
+  "video.wallpaper.url": "http://default_theme.localhost:8081/wallpapers/default.png",
   "video.brightness": 50,
   "video.brightness.auto": true,
   "video.dark_mode.enabled": false,
@@ -50,7 +50,7 @@
   "orchidaccount.token": "",
   "orchidaccount.profile_picture": "",
   "orchidaccount.username": "",
-  "ftu.enabled": false,
+  "ftu.enabled": true,
   "files.quick-access": [
     { "name": "home", "class_name": "home_folder", "path": "/" },
     { "name": "audio", "class_name": "audio_folder", "path": "/audio" },

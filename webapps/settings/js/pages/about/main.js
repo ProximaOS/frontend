@@ -11,7 +11,7 @@
     endianness: document.getElementById('aboutInfo-endianness'),
     type: document.getElementById('aboutInfo-type'),
 
-    EASTER_EGG_MANIFEST_URL: `http://easteregg.localhost:${location.port}/manifest.json`,
+    EASTER_EGG_MANIFEST_URL: `http://easteregg.localhost:8081/manifest.json`,
 
     init: function () {
       this.logo.addEventListener('dblclick', this.onDoubleClick.bind(this));

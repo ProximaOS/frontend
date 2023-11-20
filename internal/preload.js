@@ -289,7 +289,6 @@
         },
         title: event.target.getAttribute('title')
       });
-      console.log(event.target.getAttribute('title'));
     } else {
       ipcRenderer.send('message', {
         type: 'title',

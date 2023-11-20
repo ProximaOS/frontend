@@ -72,7 +72,7 @@
     handleFirstLaunch: function (value) {
       if (value) {
         LockscreenMotion.hideMotionElement();
-        AppWindow.create(`http://ftu.localhost:${location.port}/manifest.json`, {});
+        AppWindow.create('http://ftu.localhost:8081/manifest.json', {});
       } else {
         LazyLoader.load('js/homescreen_launcher.js');
       }

@@ -156,9 +156,6 @@
           }
         }
 
-        document.scrollingElement.style.setProperty('--accent-color-r', r1);
-        document.scrollingElement.style.setProperty('--accent-color-g', g1);
-        document.scrollingElement.style.setProperty('--accent-color-b', b1);
         document.scrollingElement.style.setProperty('--accent-color-primary-r', r1);
         document.scrollingElement.style.setProperty('--accent-color-primary-g', g1);
         document.scrollingElement.style.setProperty('--accent-color-primary-b', b1);
@@ -167,8 +164,8 @@
         document.scrollingElement.style.setProperty('--accent-color-secondary-b', b2);
 
         _Settings.setValue(this.settings[this.SETTINGS_ACCENT_COLOR], {
-          primary: { r1, g1, b1 },
-          secondary: { r2, g2, b2 }
+          primary: { r: r1, g: g1, b: b1 },
+          secondary: { r: r2, g: g2, b: b2 }
         });
 
         // Calculate relative luminance
@@ -187,23 +184,25 @@
     },
 
     handleAccentColor: function (value) {
-      if (!value || !this.appElement) {
+      if (!value && !this.appElement) {
         return;
       }
 
-      document.scrollingElement.style.setProperty('--accent-color-r', value.r);
-      document.scrollingElement.style.setProperty('--accent-color-g', value.g);
-      document.scrollingElement.style.setProperty('--accent-color-b', value.b);
+      console.log(value);
+      document.scrollingElement.style.setProperty('--accent-color-primary-r', value.primary.r);
+      document.scrollingElement.style.setProperty('--accent-color-primary-g', value.primary.g);
+      document.scrollingElement.style.setProperty('--accent-color-primary-b', value.primary.b);
+      document.scrollingElement.style.setProperty('--accent-color-secondary-r', value.secondary.r);
+      document.scrollingElement.style.setProperty('--accent-color-secondary-g', value.secondary.g);
+      document.scrollingElement.style.setProperty('--accent-color-secondary-b', value.secondary.b);
 
       // Convert the color to RGB values
-      const r = value.r;
-      const g = value.g;
-      const b = value.b;
+      const r = value.primary.r;
+      const g = value.primary.g;
+      const b = value.primary.b;
 
       // Calculate relative luminance
       const luminance = (0.2126 * r + 0.7152 * g + 0.0722 * b) / 255;
-      console.log(r, g, b, luminance);
-
       if (luminance > 0.5) {
         this.appElement.classList.remove('dark');
         this.appElement.classList.add('light');

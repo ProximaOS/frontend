@@ -14,9 +14,7 @@
     currentY: 0,
     isDragging: false,
 
-    settings: [
-      'lockscreen.type'
-    ],
+    settings: ['lockscreen.type'],
 
     SWIPE_THRESHOLD: 0.75,
     SOUND_LOCK: new Audio('/resources/sounds/lock.wav'),
@@ -40,27 +38,15 @@
         }
       });
 
-      this.notificationBadge.addEventListener(
-        'click',
-        this.handleNotificationBadgeClick.bind(this)
-      );
+      this.notificationBadge.addEventListener('click', this.handleNotificationBadgeClick.bind(this));
       document.addEventListener('keyup', this.onKeyPress.bind(this));
 
-      this.motionElement.addEventListener(
-        'dblclick',
-        this.onDoubleTap.bind(this)
-      );
-      this.motionElement.addEventListener(
-        'pointerdown',
-        this.onPointerDown.bind(this)
-      );
+      this.motionElement.addEventListener('dblclick', this.onDoubleTap.bind(this));
+      this.motionElement.addEventListener('pointerdown', this.onPointerDown.bind(this));
       document.addEventListener('pointermove', this.onPointerMove.bind(this));
       document.addEventListener('pointerup', this.onPointerUp.bind(this));
 
-      this.cameraButton.addEventListener(
-        'click',
-        this.handleCameraButton.bind(this)
-      );
+      this.cameraButton.addEventListener('click', this.handleCameraButton.bind(this));
       DirectionalScale.init(this.cameraButton);
       DirectionalScale.init(this.flashlightButton);
 
@@ -90,11 +76,7 @@
     },
 
     onPointerDown: function (event) {
-      if (
-        event.target.nodeName === 'A' ||
-        event.target.nodeName === 'BUTTON' ||
-        event.target.nodeName === 'INPUT'
-      ) {
+      if (event.target.nodeName === 'A' || event.target.nodeName === 'BUTTON' || event.target.nodeName === 'INPUT') {
         return;
       }
 
@@ -110,11 +92,7 @@
     },
 
     onPointerMove: function (event) {
-      if (
-        event.target.nodeName === 'A' ||
-        event.target.nodeName === 'BUTTON' ||
-        event.target.nodeName === 'INPUT'
-      ) {
+      if (event.target.nodeName === 'A' || event.target.nodeName === 'BUTTON' || event.target.nodeName === 'INPUT') {
         return;
       }
 
@@ -232,10 +210,7 @@
     },
 
     handleCameraButton: function () {
-      AppWindow.create(
-        `http://camera.localhost:${location.port}/manifest.json`,
-        {}
-      );
+      AppWindow.create('http://camera.localhost:8081/manifest.json', {});
       if (!this.isPINLocked) {
         this.hideMotionElement();
       } else {

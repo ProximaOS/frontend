@@ -76,6 +76,6 @@
 #media-playback .content .buttons button::before {
   position: static;
   height: 3.2rem;
-  font-size: 2rem;
+  font-size: 1.8rem;
   line-height: 3.2rem;
 }

@@ -1,10 +1,11 @@
 #cards-view {
   visibility: hidden;
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
+  overflow: hidden;
   opacity: 0;
   transition: all 0.3s ease;
 }
@@ -31,11 +32,6 @@
   transition: all 0.5s ease;
 }
 
-#cards-view.will-be-visible > #cards-view-list {
-  width: calc(100% + (50% * var(--scale)));
-  transition: all 0.3s ease;
-}
-
 #cards-view.visible > #cards-view-list {
   transform: scale(1);
 }
@@ -50,6 +46,7 @@
   left: 0;
   width: 100vw;
   height: 100vh;
+  transform: translateX(var(--offset-x, 0px));
   pointer-events: none;
   scroll-snap-align: center;
 }
@@ -60,7 +57,7 @@
   left: 0;
   width: 100%;
   height: 100%;
-  transform: translateX(var(--scroll-gap, 0)) scale(0.65);
+  transform: translateY(var(--card-motion-progress, 0px)) scale(0.65);
   pointer-events: all;
 }
 
@@ -69,6 +66,7 @@
 }
 
 #cards-view-list .card .preview {
+  display: block;
   position: absolute;
   top: 0;
   left: 0;
@@ -116,23 +114,23 @@
 #cards-view-toolbar {
   display: flex;
   position: absolute;
-  bottom: 4.5rem;
+  bottom: calc(var(--software-buttons-height) + 1rem);
   left: 0;
   justify-content: center;
   width: 100%;
-  height: 5rem;
+  height: 4rem;
   gap: 1rem;
 }
 
 #cards-view-toolbar > button {
-  width: 5rem;
-  height: 5rem;
+  width: 4rem;
+  height: 4rem;
   margin: 0;
   padding: 0;
   border-radius: 50%;
   background-color: rgba(0, 0, 0, 0.3);
   color: #fff;
-  line-height: 5rem;
+  line-height: 4rem;
 }
 
 #cards-view-toolbar > button:hover {
@@ -145,5 +143,65 @@
 
 #cards-view-toolbar > button[data-icon]::before {
   position: static;
-  font-size: 2.4rem;
+  width: 2rem;
+  height: 4rem;
+  font-size: 2rem;
+  line-height: 4rem;
+}
+
+@media screen and (max-width: 767px) {
+  #cards-view.will-be-visible > #cards-view-list {
+    width: calc(100% + (50% * var(--scale)));
+    transition: all 0.3s ease;
+  }
+}
+
+@media screen and (min-width: 768px) and (orientation: landscape) {
+  #cards-view-list {
+    box-sizing: border-box;
+    display: grid;
+    grid-template-rows: repeat(2, 1fr);
+    grid-template-columns: repeat(3, 1fr);
+    align-items: center;
+    justify-content: center;
+    padding: calc(var(--statusbar-height) + 1rem) 1.5rem calc(var(--software-buttons-height) + 6rem);
+  }
+
+  #cards-view-list .card-area {
+    box-sizing: border-box;
+    position: relative;
+    width: 100%;
+    height: max-content;
+    padding: 4.2rem 1rem 1rem;
+    transform: none;
+  }
+
+  #cards-view-list .card {
+    position: relative;
+    width: 100%;
+    height: max-content;
+    transform: translateY(var(--card-motion-progress, 0px));
+    opacity: var(--card-opacity, 1);
+  }
+
+  #cards-view-list .card .preview {
+    position: relative;
+    aspect-ratio: var(--aspect-ratio, 16 / 9);
+    height: unset;
+    border-radius: 1.5rem;
+  }
+
+  #cards-view-list .card .titlebar {
+    top: -4.2rem;
+    height: 3.6rem;
+  }
+
+  #cards-view-list .card .titlebar .titles {
+    height: 3.6rem;
+  }
+
+  #cards-view-list .card .titlebar .titles .name {
+    font-size: 1.4rem;
+    line-height: 3.6rem;
+  }
 }

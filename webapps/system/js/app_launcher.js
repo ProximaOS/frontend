@@ -25,10 +25,10 @@
     APP_ICON_SIZE: 45,
 
     DEFAULT_DOCK_ICONS: [
-      `http://browser.localhost:${location.port}/manifest.json`,
-      `http://sms.localhost:${location.port}/manifest.json`,
-      `http://contacts.localhost:${location.port}/manifest.json`,
-      `http://dialer.localhost:${location.port}/manifest.json`
+      `http://browser.localhost:8081/manifest.json`,
+      `http://sms.localhost:8081/manifest.json`,
+      `http://contacts.localhost:8081/manifest.json`,
+      `http://dialer.localhost:8081/manifest.json`
     ],
 
     init: function () {
