@@ -1,10 +1,10 @@
 @font-face {
   src: url(http://shared.localhost:8081/fonts/JaliArabic-Regular.ttf);
-  font-family: 'Jali Arabic';
+  font-family: -orchid-internal-font;
 }
 
 *, ::placeholder {
-  font-family: 'Jali Arabic', system-ui;
+  font-family: -orchid-internal-font, system-ui;
 }
 
 html, body {
@@ -13,7 +13,7 @@ html, body {
   padding: 0;
   background-color: #000;
   font-size: 10px;
-  font-family: 'Jali Arabic', system-ui;
+  font-family: -orchid-internal-font, system-ui;
   touch-action: none;
   user-select: none;
 }
@@ -42,7 +42,7 @@ html, body {
 
 #screen.screenshot {
   border-radius: var(--screen-radius);
-  animation: screenshot 0.5s ease;
+  animation: screenshot 0.5s cubic-bezier(0.5, 0.8, 0, 1);
 }
 
 @keyframes screenshot {
@@ -50,7 +50,7 @@ html, body {
     transform: scale(1);
     filter: brightness(100%);
   }
-  25% {
+  10% {
     transform: scale(0.9);
     filter: brightness(500%);
   }
@@ -71,7 +71,7 @@ html, body {
   transform: translateY(-100%);
   background: rgba(51, 51, 51, 0.5) url(images/close_reach_chevron.svg) no-repeat center bottom 1rem / 6rem 3.2rem;
   content: '';
-  transition: transform 0.5s ease, visibility 0.5s ease;
+  transition: transform 0.5s cubic-bezier(0.5, 0.8, 0, 1.1), visibility 0.5s ease;
 }
 
 #screen.close-reach::before {

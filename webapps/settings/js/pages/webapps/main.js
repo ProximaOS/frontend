@@ -11,17 +11,19 @@
     APP_ICON_SIZE: 40,
 
     init: function () {
+      const fragment = document.createDocumentFragment();
+
       // Fetch available networks and populate the list
       const apps = window.AppsManager.getAll();
       apps.then((data) => {
-        data.forEach((app) => {
+        for (let index = 0; index < data.length; index++) {
+          const app = data[index];
+
           const element = document.createElement('li');
           element.classList.add('page');
           element.dataset.pageId = 'webappInfo';
-          element.addEventListener('click', (event) =>
-            this.handleWebappInfo(app, element)
-          );
-          this.webappsList.appendChild(element);
+          element.addEventListener('click', (event) => this.handleWebappInfo(app, element));
+          fragment.appendChild(element);
 
           const icon = document.createElement('img');
           icon.crossOrigin = 'anonymous';
@@ -52,7 +54,9 @@
           textHolder.appendChild(size);
 
           PageController.init();
-        });
+        }
+
+        this.webappsList.appendChild(fragment);
       });
     },
 

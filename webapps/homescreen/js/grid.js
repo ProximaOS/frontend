@@ -8,10 +8,10 @@
     APP_ICON_SIZE: 45,
 
     DEFAULT_DOCK_ICONS: [
-      `http://browser.localhost:8081/manifest.json`,
-      `http://sms.localhost:8081/manifest.json`,
-      `http://contacts.localhost:8081/manifest.json`,
-      `http://dialer.localhost:8081/manifest.json`
+      'http://browser.localhost:8081/manifest.json',
+      'http://sms.localhost:8081/manifest.json',
+      'http://contacts.localhost:8081/manifest.json',
+      'http://dialer.localhost:8081/manifest.json'
     ],
 
     app: document.getElementById('app'),
@@ -54,7 +54,7 @@
     },
 
     splitArray: function (array, chunkSize) {
-      let result = [];
+      const result = [];
       for (let i = 0; i < array.length; i += chunkSize) {
         result.push(array.slice(i, i + chunkSize));
       }
@@ -93,6 +93,8 @@
         index++;
       });
 
+      const fragment = document.createDocumentFragment();
+
       const pages = this.splitArray(this.apps, this.gridColumns * this.gridRows);
       pages.forEach((array, offset) => {
         const rtl = document.dir === 'rtl';
@@ -104,7 +106,7 @@
         if (this.DEFAULT_PAGE_INDEX === offset) {
           page.scrollIntoView();
         }
-        this.gridElement.appendChild(page);
+        fragment.appendChild(page);
 
         const dot = document.createElement('div');
         dot.classList.add('dot');
@@ -115,6 +117,8 @@
           index++;
         });
       });
+
+      this.gridElement.appendChild(fragment);
     },
 
     createAppIcon: function (page, app, index) {

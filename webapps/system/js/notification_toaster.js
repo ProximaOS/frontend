@@ -16,25 +16,20 @@
     mediaElement: document.getElementById('notification-media'),
     actionsElement: document.getElementById('notification-actions'),
 
-    lockscreenNotifications: document.getElementById(
-      'lockscreen-notifications'
-    ),
-    lockscreenNotificationBadge: document.getElementById(
-      'lockscreen-notification-badge'
-    ),
+    lockscreenNotifications: document.getElementById('lockscreen-notifications'),
+    lockscreenNotificationBadge: document.getElementById('lockscreen-notification-badge'),
 
     isDragging: false,
     startX: 0,
     currentX: 0,
     threshold: 0.5,
 
-    notifierSound: new Audio(
-      'http://shared.localhost:8081/resources/notifications/notifier_orchid.wav'
-    ),
+    notifierSound: new Audio('http://shared.localhost:8081/resources/notifications/notifier_orchid.wav'),
 
     showNotification: function (title, options) {
-      const { body, progress, badge, source, icon, media, actions, tag } =
-        options;
+      const { body, progress, badge, source, icon, media, actions, tag } = options;
+
+      const fragment = document.createDocumentFragment();
 
       const dom = `
         <div class="titlebar">
@@ -69,17 +64,11 @@
           notification.dataset.tag = tag;
         }
         notification.innerHTML = dom;
-        this.notificationsContainer.appendChild(notification);
+        fragment.appendChild(notification);
 
-        notification.addEventListener('pointerdown', (event) =>
-          this.onPointerDown(event, notification)
-        );
-        notification.addEventListener('pointermove', (event) =>
-          this.onPointerMove(event, notification)
-        );
-        notification.addEventListener('pointerup', (event) =>
-          this.onPointerUp(event, notification)
-        );
+        notification.addEventListener('pointerdown', (event) => this.onPointerDown(event, notification));
+        notification.addEventListener('pointermove', (event) => this.onPointerMove(event, notification));
+        notification.addEventListener('pointerup', (event) => this.onPointerUp(event, notification));
       }
 
       setTimeout(() => {
@@ -93,14 +82,8 @@
 
         const progressElement = notification.querySelector('.progress');
         if (progress || progress === 0) {
-          progressElement.style.setProperty(
-            '--progress',
-            Math.min(100, progress) / 100
-          );
-          this.progressElement.style.setProperty(
-            '--progress',
-            Math.min(100, progress) / 100
-          );
+          progressElement.style.setProperty('--progress', Math.min(100, progress) / 100);
+          this.progressElement.style.setProperty('--progress', Math.min(100, progress) / 100);
           progressElement.style.display = 'block';
           this.progressElement.style.display = 'block';
         } else {
@@ -205,8 +188,9 @@
       }, 3000);
 
       setTimeout(() => {
-        this.lockscreenNotifications.appendChild(notification.cloneNode(true));
-      }, 10);
+        this.lockscreenNotifications.appendChild(fragment.cloneNode(true));
+      }, 16);
+      this.notificationsContainer.appendChild(fragment);
     },
 
     hideNotification: function () {

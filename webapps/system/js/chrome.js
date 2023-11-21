@@ -434,6 +434,11 @@
       title.classList.add('title');
       tab.appendChild(title);
 
+      const muteButton = document.createElement('button');
+      muteButton.classList.add('mute-button');
+      muteButton.dataset.icon = 'audio';
+      tab.appendChild(muteButton);
+
       const closeButton = document.createElement('button');
       closeButton.classList.add('close-button');
       closeButton.dataset.icon = 'close';
@@ -573,6 +578,23 @@
         });
       });
 
+      ['media-started-playing', 'media-paused'].forEach((eventType) => {
+        webview.addEventListener(eventType, () => {
+          if (webview.isCurrentlyAudible()) {
+            if (webview.isAudioMuted()) {
+              muteButton.dataset.icon = 'audio-muted';
+            } else {
+              muteButton.dataset.icon = 'audio';
+            }
+            muteButton.style.display = 'block';
+          } else {
+            this.timeoutID = setTimeout(() => {
+              muteButton.style.display = 'none';
+            }, 1000);
+          }
+        });
+      });
+
       const focus = () => {
         const tabs = this.chrome().querySelectorAll('.tablist li');
         for (let index = 0; index < tabs.length; index++) {
@@ -619,6 +641,18 @@
           gridTab.remove();
         });
         browserView.remove();
+      });
+
+      muteButton.addEventListener('click', (event) => {
+        event.stopPropagation();
+
+        if (webview.isAudioMuted()) {
+          webview.setAudioMuted(false);
+          muteButton.dataset.icon = 'audio';
+        } else {
+          webview.setAudioMuted(true);
+          muteButton.dataset.icon = 'audio-muted';
+        }
       });
 
       gridCloseButton.addEventListener('click', (event) => {

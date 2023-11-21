@@ -12,6 +12,7 @@
     APP_ICON_SIZE: 50,
 
     isVisible: false,
+    isMovingPointer: false,
     targetPreviewElement: null,
     scrollMovement: 0,
 
@@ -33,23 +34,18 @@
       CardsView.element.style.setProperty('--aspect-ratio', `${window.innerWidth} / ${window.innerHeight}`);
 
       const windows = this.windowContainer.querySelectorAll('.appframe:not(#homescreen)');
-      const focusedWindow = AppWindow.focusedWindow;
       for (let index = 0; index < windows.length; index++) {
         const appWindow = windows[index];
         this.createCard(index, appWindow.dataset.manifestUrl, appWindow, appWindow.querySelector('.browser-view.active .browser'));
 
-        setTimeout(() => {
-          if (appWindow.dataset.manifestUrl === focusedWindow.dataset.manifestUrl) {
-            Transitions.scale(AppWindow.focusedWindow, this.targetPreviewElement, true);
-          } else {
-            focusedWindow.classList.add(AppWindow.CLOSE_ANIMATION);
-            focusedWindow.addEventListener('animationend', () => focusedWindow.classList.remove(AppWindow.CLOSE_ANIMATION));
-          }
-        }, 1);
+        Transitions.scale(AppWindow.focusedWindow, CardsView.targetPreviewElement, true);
       }
     },
 
     hide: function () {
+      if (this.isMovingPointer) {
+        return;
+      }
       this.isVisible = false;
       this.element.classList.remove('visible');
       this.screen.classList.remove('cards-view-visible');
@@ -64,10 +60,12 @@
       const rtl = document.dir === 'rtl';
       const x = (window.innerWidth * 0.65 + 15) * index;
 
+      const fragment = document.createDocumentFragment();
+
       const cardArea = document.createElement('div');
       cardArea.classList.add('card-area');
       cardArea.style.setProperty('--offset-x', `${rtl ? -x : x}px`);
-      this.cardsContainer.appendChild(cardArea);
+      fragment.appendChild(cardArea);
 
       const focusedWindow = AppWindow.focusedWindow;
       if (focusedWindow === appWindow) {
@@ -77,7 +75,10 @@
       const card = document.createElement('div');
       card.classList.add('card');
       card.dataset.manifestUrl = manifestUrl;
-      card.addEventListener('click', (event) => {
+      card.addEventListener('pointerup', (event) => {
+        if (this.isMovingPointer) {
+          return;
+        }
         event.stopPropagation();
         AppWindow.focus(appWindow.id);
         this.hide();
@@ -104,7 +105,6 @@
       if (manifestUrl === focusedWindow.dataset.manifestUrl) {
         this.targetPreviewElement = preview;
       }
-
       DisplayManager.screenshot(webview.getWebContentsId()).then((data) => {
         preview.src = data;
       });
@@ -139,6 +139,8 @@
       name.classList.add('name');
       name.textContent = manifest.name;
       titles.appendChild(name);
+
+      this.cardsContainer.appendChild(fragment);
     },
 
     handleToggleButton: function (event) {
@@ -153,9 +155,8 @@
     onPointerDown: function (event, card, windowId) {
       event.preventDefault();
       event.stopPropagation();
+      this.isMovingPointer = false;
       this.startY = event.clientY || event.touches[0].clientY;
-
-      card.classList.add('dragging');
 
       // Get initial window position
       const initialWindowY = card.offsetTop;
@@ -166,6 +167,7 @@
       // Function to handle dragging
       const dragWindow = (event) => {
         event.preventDefault();
+        this.isMovingPointer = true;
         const y = event.clientY || event.touches[0].clientY;
 
         // Calculate the new position of the window
@@ -175,6 +177,8 @@
         const progress = newWindowY / window.innerHeight;
         card.style.setProperty('--card-opacity', 1 - (progress * -1));
         card.style.setProperty('--card-motion-progress', `${100 * progress}%`);
+
+        card.classList.add('dragging');
       }
 
       // Function to stop dragging
@@ -204,6 +208,9 @@
               }
             });
           }
+        } else {
+          card.style.setProperty('--card-opacity', 1);
+          card.style.setProperty('--card-motion-progress', 0);
         }
 
         document.removeEventListener('mousemove', dragWindow);

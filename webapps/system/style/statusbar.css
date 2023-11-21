@@ -3,7 +3,7 @@
   top: 0;
   width: 100%;
   height: var(--statusbar-height);
-  transition: all 0.3s ease;
+  transition: all 0.3s cubic-bezier(0.5, 0.8, 0, 1), transform 0.5s cubic-bezier(0.5, 0.8, 0, 1.1);
 }
 html[dir="ltr"] #statusbar {
   right: 0;
@@ -17,7 +17,7 @@ html[dir="rtl"] #statusbar {
 }
 
 #statusbar.transitioning {
-  transition: all 0.5s ease;
+  transition: all 0.5s cubic-bezier(0.5, 0.8, 0, 1), transform 0.5s cubic-bezier(0.5, 0.8, 0, 1.1);
 }
 
 #screen.close-reach #statusbar {

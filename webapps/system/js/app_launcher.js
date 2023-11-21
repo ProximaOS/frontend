@@ -25,19 +25,22 @@
     APP_ICON_SIZE: 45,
 
     DEFAULT_DOCK_ICONS: [
-      `http://browser.localhost:8081/manifest.json`,
-      `http://sms.localhost:8081/manifest.json`,
-      `http://contacts.localhost:8081/manifest.json`,
-      `http://dialer.localhost:8081/manifest.json`
+      'http://browser.localhost:8081/manifest.json',
+      'http://sms.localhost:8081/manifest.json',
+      'http://contacts.localhost:8081/manifest.json',
+      'http://dialer.localhost:8081/manifest.json'
     ],
 
     init: function () {
+      if (platform() !== 'desktop') {
+        return;
+      }
       this.gridElement.style.setProperty('--grid-columns', this.gridColumns);
       this.gridElement.style.setProperty('--grid-rows', this.gridRows);
 
+      document.addEventListener('click', this.onClick.bind(this));
       this.launcherButton.addEventListener('click', this.handleLauncherButtonClick.bind(this));
       this.maximizeButton.addEventListener('click', this.handleLauncherMaximizeButtonClick.bind(this));
-      document.addEventListener('click', this.onClick.bind(this));
       this.gridElement.addEventListener('pointerdown', this.onPointerDown.bind(this));
       this.gridElement.addEventListener('pointerup', this.onPointerUp.bind(this));
       this.gridElement.addEventListener('contextmenu', this.handleContextMenu.bind(this));
@@ -60,7 +63,7 @@
     },
 
     splitArray: function (array, chunkSize) {
-      let result = [];
+      const result = [];
       for (let i = 0; i < array.length; i += chunkSize) {
         result.push(array.slice(i, i + chunkSize));
       }
@@ -91,6 +94,8 @@
     createIcons: function () {
       this.apps = this.apps.filter((obj) => this.HIDDEN_ROLES.indexOf(obj.manifest.role) === -1);
 
+      const fragment = document.createDocumentFragment();
+
       const pages = this.splitArray(this.apps, this.gridColumns * this.gridRows);
       for (let offset = 0; offset < pages.length; offset++) {
         const array = pages[offset];
@@ -103,7 +108,7 @@
         if (this.DEFAULT_PAGE_INDEX === offset) {
           page.scrollIntoView();
         }
-        this.gridElement.appendChild(page);
+        fragment.appendChild(page);
 
         const dot = document.createElement('div');
         dot.classList.add('dot');
@@ -162,6 +167,8 @@
           iconIndex++;
         }
       }
+
+      this.gridElement.appendChild(fragment);
     },
 
     handleSwiping: function () {

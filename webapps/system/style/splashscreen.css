@@ -10,7 +10,7 @@
 #splashscreen.hidden {
   visibility: hidden;
   opacity: 0;
-  transition: all 0.5s ease 2s;
+  transition: all 1s ease 1s;
 }
 
 #splashscreen-video {
@@ -23,5 +23,5 @@
 
 #splashscreen.hidden #splashscreen-video {
   opacity: 0;
-  transition: all 0.5s ease 1s;
+  transition: all 0.5s ease;
 }

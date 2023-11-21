@@ -17,6 +17,8 @@
     handleDevices: async function (data) {
       this.devicesContainer.innerHTML = '';
 
+      const fragment = document.createDocumentFragment();
+
       const devices = data.devices;
       for (let index = 0; index < devices.length; index++) {
         const device = devices[index];
@@ -55,7 +57,7 @@
 
         const element = document.createElement('li');
         element.classList.add('device');
-        this.devicesContainer.appendChild(element);
+        fragment.appendChild(element);
 
         const textHolder = document.createElement('div');
         textHolder.classList.add('text-holder');
@@ -93,6 +95,8 @@
           wifi.dataset.icon = `wifi-${Math.round(data.wifi_level / 4) * 4}`;
         });
       }
+
+      this.devicesContainer.appendChild(fragment);
     },
 
     handleBannerEditButton: function () {

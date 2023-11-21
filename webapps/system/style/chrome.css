@@ -1314,10 +1314,8 @@ html[dir="rtl"] #screen.mobile .chrome.side-tabs.visible .browser-container .bro
   overflow: hidden;
   color: var(--text-color);
   font-weight: normal;
-  font-size: 1.6rem;
-  line-height: 2.2rem;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  font-size: 1.4rem;
+  line-height: 2rem;
 }
 
 .chrome .tablist-preview .webpage {
@@ -1347,8 +1345,8 @@ html[dir="rtl"] #screen.mobile .chrome.side-tabs.visible .browser-container .bro
   overflow: hidden;
   color: var(--text-color);
   font-weight: normal;
-  font-size: 1.6rem;
-  line-height: 2.2rem;
+  font-size: 1.4rem;
+  line-height: 2rem;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
@@ -1359,7 +1357,7 @@ html[dir="rtl"] #screen.mobile .chrome.side-tabs.visible .browser-container .bro
   color: var(--text-color-faded);
   font-weight: normal;
   font-size: 1.4rem;
-  line-height: 2.2rem;
+  line-height: 2rem;
   text-overflow: ellipsis;
   white-space: nowrap;
 }

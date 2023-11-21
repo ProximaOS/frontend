@@ -197,6 +197,12 @@
   animation-delay: 0.1s;
 }
 
+@media screen and (orientation: portrait) and (max-height: 400px) {
+  .icon .name {
+    display: none;
+  }
+}
+
 @media screen and (orientation: landscape) and (max-width: 767px) {
   .page {
     grid-template-rows: repeat(var(--grid-columns), 1fr);

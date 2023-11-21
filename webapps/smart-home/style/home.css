@@ -3,7 +3,7 @@ html, body {
   padding: 0;
   background-color: var(--accent-color);
   font-size: 10px;
-  font-family: 'Jali Arabic', system-ui, sans-serif;
+  font-family: -orchid-internal-font, system-ui, sans-serif;
 }
 
 :focus {

@@ -75,7 +75,7 @@
   color: var(--text-color);
   font-size: 1.6rem;
   font-weight: normal;
-  font-family: 'Jali Arabic', system-ui, sans-serif;
+  font-family: -orchid-internal-font, system-ui, sans-serif;
   outline: none;
   resize: none;
 }

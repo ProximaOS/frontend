@@ -21,13 +21,7 @@
     CLOSE_TO_HOMESCREEN_ANIMATION: 'shrink-to-homescreen',
     DOCK_ICON_SIZE: 40,
     SPLASH_ICON_SIZE: 60,
-    UNDRAGGABLE_ELEMENTS: [
-      'A',
-      'BUTTON',
-      'INPUT',
-      'LI',
-      'WEBVIEW'
-    ],
+    UNDRAGGABLE_ELEMENTS: ['A', 'BUTTON', 'INPUT', 'LI', 'WEBVIEW'],
 
     timeoutID: null,
     isDragging: false,
@@ -112,8 +106,10 @@
       const windowId = `appframe${AppWindow._id}`;
       AppWindow._id++;
 
+      const fragment = document.createDocumentFragment();
+
       // Create and initialize the window container
-      const windowDiv = this.createWindowContainer(manifest, windowId, options.animationVariables);
+      const windowDiv = this.createWindowContainer(fragment, manifest, windowId, options.animationVariables);
       windowDiv.dataset.manifestUrl = manifestUrl;
       windowDiv.addEventListener('contextmenu', (event) => this.handleWindowContextMenu(event, windowDiv));
 
@@ -133,6 +129,11 @@
       const chromeContainer = this.createChromeContainer(windowDiv);
       const url = new URL(manifestUrl);
       this.initializeBrowser(windowId, chromeContainer, url.origin + manifest.launch_path || manifest.start_url, manifest.chrome?.navigation || false);
+
+      this.containerElement.appendChild(fragment);
+
+      // Focus the app window
+      this.focus(windowId);
     },
 
     handleWindowContextMenu: function (event, windowDiv) {
@@ -221,7 +222,7 @@
       this.addAnimationClass(icon, this.OPEN_ANIMATION);
     },
 
-    createWindowContainer: function (manifest, windowId, animationVariables) {
+    createWindowContainer: function (fragment, manifest, windowId, animationVariables) {
       const windowDiv = document.createElement('div');
       windowDiv.id = manifest.role === 'homescreen' ? 'homescreen' : windowId;
       windowDiv.classList.add('appframe');
@@ -246,10 +247,7 @@
         this.updateTransformOrigin(windowDiv, animationVariables);
       }
 
-      this.containerElement.appendChild(windowDiv);
-
-      // Focus the app window
-      this.focus(windowDiv.id);
+      fragment.appendChild(windowDiv);
 
       // Add animation class
       this.addAnimationClass(windowDiv, this.OPEN_ANIMATION);
