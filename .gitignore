@@ -23,7 +23,6 @@ logs/
 *.log
 
 /chrome
-/webapps/browser/test/*
 /webapps/tearsofmother
 
 *.orcbin
