@@ -3,7 +3,7 @@
   top: unset;
   bottom: 1rem;
   width: max-content;
-  height: var(--software-buttons-height);
+  height: var(--dock-height);
 }
 html[dir="ltr"] #screen.desktop #statusbar {
   right: 1.5rem;

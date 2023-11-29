@@ -7,129 +7,126 @@
   <link rel="shortcut icon" href="style/icons/browser.svg" type="image/svg">
   <!-- <meta name="theme-color" media="(prefers-color-scheme: light)" content="#f0f6ff">
   <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#000000"> -->
-  <title data-l10n-id="title">New Tab</title>
+  <title data-l10n-id="title"></title>
   <link rel="stylesheet" type="text/css" href="http://default_theme.localhost:8081/style/index.css">
   <link rel="stylesheet" type="text/css" href="http://shared.localhost:8081/style/icons/icons.css">
   <link rel="stylesheet" type="text/css" href="http://shared.localhost:8081/style/layout.css">
+  <link rel="stylesheet" type="text/css" href="http://shared.localhost:8081/style/headers.css">
+  <link rel="stylesheet" type="text/css" href="http://shared.localhost:8081/style/input_areas.css">
   <link rel="stylesheet" type="text/css" href="style/homepage.css">
   <link rel="stylesheet" type="text/css" href="style/bookmarks.css">
   <link rel="stylesheet" type="text/css" href="style/history.css">
+  <script defer type="text/javascript" src="http://shared.localhost:8081/js/panels.js"></script>
+  <script defer type="text/javascript" src="js/bookmarks.js"></script>
+
+  <script type="text/javascript" src="http://shared.localhost:8081/js/l10n.js"></script>
+  <meta name="defaultLanguage" content="en-US">
+  <meta name="availableLanguages"
+    content="af, ar, az, be, bg, bn, ca, cs, cy, da, de, el, eo, et, en-US, es, eu, fa, fi, fr, ga, gu, gl, he, hi, hr, ht, hu, id, is, it, ja, kn, ko, ku, lt, lv, mk, ms, nl, no, pl, pt, ro, ru, sq, sk, sl, sr, sw, ta, te, th, tl, tr, uk, ur, vi, yi, zh, fr-psaccent, ar-psbidi">
+  <link rel="localization" href="/locales/main.{locale}.properties">
 </head>
 
 <body>
   <main id="app" role="app">
-    <header class="homepage-header">
-      <h1 class="logo-holder">
-        <div class="logo">
-          <div class="wordmark" data-l10n-id="browser-wordmark">Orchid</div>
-        </div>
-      </h1>
-      <form action="" class="searchbox">
-        <input type="text" placeholder="Type here to search...">
-        <button type="submit" data-icon="search"></button>
-      </form>
-    </header>
+    <section id="root" class="visible" role="panel">
+      <header class="auto-hide compact" role="header">
+        <a href="#" data-icon="edit"></a>
+        <h1>Orchid</h1>
+        <menu role="toolbar">
+          <a href="#" data-icon="apps"></a>
+        </menu>
+      </header>
+      <div class="content">
+        <header class="homepage-header">
+          <h1 class="logo-holder">
+            <div class="logo">
+              <div class="wordmark" data-l10n-id="browser-wordmark">Orchid</div>
+            </div>
+          </h1>
+          <form action="" role="search">
+            <input type="text" data-l10n-id="type-here-to-search">
+            <button type="reset" data-icon="close"></button>
+            <button type="submit" data-icon="search"></button>
+          </form>
+        </header>
 
-    <div class="homepage-row">
-      <header>Bookmarks</header>
-      <div id="bookmarks">
-        <div class="bookmark">
-          <div class="icon-holder"><img src="" alt=""></div>
-          <div class="name">Bookmark</div>
+        <div class="homepage-row">
+          <header data-l10n-id="bookmarks"></header>
+          <div id="bookmarks"></div>
         </div>
-        <div class="bookmark">
-          <div class="icon-holder"><img src="" alt=""></div>
-          <div class="name">Bookmark</div>
-        </div>
-        <div class="bookmark">
-          <div class="icon-holder"><img src="" alt=""></div>
-          <div class="name">Bookmark</div>
-        </div>
-        <div class="bookmark">
-          <div class="icon-holder"><img src="" alt=""></div>
-          <div class="name">Bookmark</div>
-        </div>
-        <div class="bookmark">
-          <div class="icon-holder"><img src="" alt=""></div>
-          <div class="name">Bookmark</div>
-        </div>
-        <div class="bookmark">
-          <div class="icon-holder"><img src="" alt=""></div>
-          <div class="name">Bookmark</div>
-        </div>
-      </div>
-    </div>
-    <div class="homepage-row">
-      <header>History</header>
-      <div id="history">
-        <div class="history-item">
-          <div class="icon-holder"><img src="" alt=""></div>
-          <div class="text-holder">
-            <div class="title">History Title</div>
-            <div class="url">http://www.history-link.com/index.html</div>
+        <div class="homepage-row">
+          <header data-l10n-id="history"></header>
+          <div id="history">
+            <div class="history-item">
+              <div class="icon-holder"><img src="" alt=""></div>
+              <div class="text-holder">
+                <div class="title">History Title</div>
+                <div class="url">http://www.history-link.com/index.html</div>
+              </div>
+            </div>
+            <div class="history-item">
+              <div class="icon-holder"><img src="" alt=""></div>
+              <div class="text-holder">
+                <div class="title">History Title</div>
+                <div class="url">http://www.history-link.com/index.html</div>
+              </div>
+            </div>
+            <div class="history-item">
+              <div class="icon-holder"><img src="" alt=""></div>
+              <div class="text-holder">
+                <div class="title">History Title</div>
+                <div class="url">http://www.history-link.com/index.html</div>
+              </div>
+            </div>
           </div>
         </div>
-        <div class="history-item">
-          <div class="icon-holder"><img src="" alt=""></div>
-          <div class="text-holder">
-            <div class="title">History Title</div>
-            <div class="url">http://www.history-link.com/index.html</div>
-          </div>
-        </div>
-        <div class="history-item">
-          <div class="icon-holder"><img src="" alt=""></div>
-          <div class="text-holder">
-            <div class="title">History Title</div>
-            <div class="url">http://www.history-link.com/index.html</div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="homepage-row">
-      <header>Newspaper</header>
-      <div id="news">
-        <div class="news-post">
-          <div class="thumbnail"><img src="" alt=""></div>
-          <div class="text-holder">
-            <div class="title">News Title</div>
-            <div class="description">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quaerat, aliquam.
-              Inventore placeat accusamus quam odio ipsum eos amet nisi enim quod asperiores, quibusdam adipisci
-              perspiciatis error, tempora eum. Veritatis, saepe?</div>
-            <div class="visit-text">See More</div>
-          </div>
-        </div>
-        <div class="news-post">
-          <div class="thumbnail"><img src="" alt=""></div>
-          <div class="text-holder">
-            <div class="title">News Title</div>
-            <div class="description">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quaerat, aliquam.
-              Inventore placeat accusamus quam odio ipsum eos amet nisi enim quod asperiores, quibusdam adipisci
-              perspiciatis error, tempora eum. Veritatis, saepe?</div>
-            <div class="visit-text">See More</div>
-          </div>
-        </div>
-        <div class="news-post">
-          <div class="thumbnail"><img src="" alt=""></div>
-          <div class="text-holder">
-            <div class="title">News Title</div>
-            <div class="description">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quaerat, aliquam.
-              Inventore placeat accusamus quam odio ipsum eos amet nisi enim quod asperiores, quibusdam adipisci
-              perspiciatis error, tempora eum. Veritatis, saepe?</div>
-            <div class="visit-text">See More</div>
-          </div>
-        </div>
-        <div class="news-post">
-          <div class="thumbnail"><img src="" alt=""></div>
-          <div class="text-holder">
-            <div class="title">News Title</div>
-            <div class="description">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quaerat, aliquam.
-              Inventore placeat accusamus quam odio ipsum eos amet nisi enim quod asperiores, quibusdam adipisci
-              perspiciatis error, tempora eum. Veritatis, saepe?</div>
-            <div class="visit-text">See More</div>
+        <div class="homepage-row">
+          <header data-l10n-id="newspaper"></header>
+          <div id="news">
+            <div class="news-post">
+              <div class="thumbnail"><img src="" alt=""></div>
+              <div class="text-holder">
+                <div class="title">News Title</div>
+                <div class="description">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quaerat, aliquam.
+                  Inventore placeat accusamus quam odio ipsum eos amet nisi enim quod asperiores, quibusdam adipisci
+                  perspiciatis error, tempora eum. Veritatis, saepe?</div>
+                <div class="visit-text">See More</div>
+              </div>
+            </div>
+            <div class="news-post">
+              <div class="thumbnail"><img src="" alt=""></div>
+              <div class="text-holder">
+                <div class="title">News Title</div>
+                <div class="description">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quaerat, aliquam.
+                  Inventore placeat accusamus quam odio ipsum eos amet nisi enim quod asperiores, quibusdam adipisci
+                  perspiciatis error, tempora eum. Veritatis, saepe?</div>
+                <div class="visit-text">See More</div>
+              </div>
+            </div>
+            <div class="news-post">
+              <div class="thumbnail"><img src="" alt=""></div>
+              <div class="text-holder">
+                <div class="title">News Title</div>
+                <div class="description">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quaerat, aliquam.
+                  Inventore placeat accusamus quam odio ipsum eos amet nisi enim quod asperiores, quibusdam adipisci
+                  perspiciatis error, tempora eum. Veritatis, saepe?</div>
+                <div class="visit-text">See More</div>
+              </div>
+            </div>
+            <div class="news-post">
+              <div class="thumbnail"><img src="" alt=""></div>
+              <div class="text-holder">
+                <div class="title">News Title</div>
+                <div class="description">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quaerat, aliquam.
+                  Inventore placeat accusamus quam odio ipsum eos amet nisi enim quod asperiores, quibusdam adipisci
+                  perspiciatis error, tempora eum. Veritatis, saepe?</div>
+                <div class="visit-text">See More</div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    </section>
   </main>
 </body>
 

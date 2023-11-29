@@ -11,8 +11,11 @@
     isBooting: true,
 
     init: function () {
-      this.videoElement.src = this.bootAnimationFile;
-      this.videoElement.play();
+      if (this.videoElement) {
+        this.videoElement.src = this.bootAnimationFile;
+        this.videoElement.play();
+      }
+      this.splashElement.classList.add('animate');
 
       this.bootSound.play();
       this.bootSound.ontimeupdate = () => {
@@ -32,7 +35,7 @@
     }
   };
 
-  Splashscreen.init();
+  document.addEventListener('DOMContentLoaded', () => Splashscreen.init());
 
   exports.Splashscreen = Splashscreen;
 })(window);

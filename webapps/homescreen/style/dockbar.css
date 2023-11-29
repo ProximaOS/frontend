@@ -52,7 +52,6 @@
     width: max-content;
     max-width: calc(100% - 2rem);
     translate: -50% 0;
-    outline: solid 0.1rem rgba(255, 255, 255, 0.1);
     backdrop-filter: blur(20px) saturate(180%);
     background-color: var(--acrylic-background);
   }

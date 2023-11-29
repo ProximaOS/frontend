@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <style>
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 100vw;
+      height: 100vh;
+      margin: 0;
+    }
+
+    .clock {
+      width: 100%;
+      height: 100%;
+      position: relative;
+      background: url(icon/bg.svg) no-repeat center / cover;
+      overflow: hidden;
+    }
+
+    .clock::after {
+      z-index: 1;
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      content: '';
+      background: url(icon/overlay.svg) no-repeat center / cover;
+    }
+
+    .hour,
+    .minute,
+    .second {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      transition: transform 0.3s cubic-bezier(0.2, 0.9, 0.1, 1);
+    }
+
+    .hour {
+      background: url(icon/analog_hour.svg) no-repeat center / cover;
+    }
+
+    .minute {
+      background: url(icon/analog_minute.svg) no-repeat center / cover;
+    }
+
+    .second {
+      background: url(icon/analog_second.svg) no-repeat center / cover;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="clock" id="clock">
+    <div class="hour" id="hour"></div>
+    <div class="minute" id="minute"></div>
+    <div class="second" id="second"></div>
+  </div>
+
+  <script>
+    function setClock() {
+      const clock = document.getElementById('clock');
+      const hourHand = document.getElementById('hour');
+      const minuteHand = document.getElementById('minute');
+      const secondHand = document.getElementById('second');
+
+      const currentDate = new Date();
+      const hours = currentDate.getHours() % 12;
+      const minutes = currentDate.getMinutes();
+      const seconds = currentDate.getSeconds();
+
+      const hourDegrees = (hours * 30) + (0.5 * minutes); // 30 degrees per hour, 0.5 degrees per minute
+      const minuteDegrees = (minutes * 6) + (0.1 * seconds); // 6 degrees per minute, 0.1 degrees per second
+      const secondDegrees = seconds * 6; // 6 degrees per second
+
+      hourHand.style.transform = `rotate(${hourDegrees}deg)`;
+      minuteHand.style.transform = `rotate(${minuteDegrees}deg)`;
+      secondHand.style.transform = `rotate(${secondDegrees}deg)`;
+    }
+
+    setInterval(setClock, 1000); // Update the clock every second
+    setClock(); // Set the initial position of the clock hands
+  </script>
+</body>
+
+</html>

@@ -100,44 +100,44 @@
   <script defer type="text/javascript" src="js/bletooth_icon.js"></script>
   <script defer type="text/javascript" src="js/app_window.js"></script>
   <script defer type="text/javascript" src="js/notification_toaster.js"></script>
-  <script defer type="text/javascript" src="js/utility_tray_motion.js"></script>
-  <script defer type="text/javascript" src="js/media_playback.js"></script>
-  <script defer type="text/javascript" src="js/keyboards.js"></script>
-  <script defer type="text/javascript" src="js/modal_dialog.js"></script>
-  <script defer type="text/javascript" src="js/message_handler.js"></script>
+  <!-- <script defer type="text/javascript" src="js/utility_tray_motion.js"></script> -->
+  <!-- <script defer type="text/javascript" src="js/media_playback.js"></script> -->
+  <!-- <script defer type="text/javascript" src="js/keyboards.js"></script> -->
+  <!-- <script defer type="text/javascript" src="js/modal_dialog.js"></script> -->
+  <!-- <script defer type="text/javascript" src="js/message_handler.js"></script> -->
   <script defer type="text/javascript" src="js/screen_capture.js"></script>
   <script defer type="text/javascript" src="js/screen_rotate.js"></script>
   <script defer type="text/javascript" src="js/cards_view.js"></script>
   <script defer type="text/javascript" src="js/gesture_panels.js"></script>
-  <script defer type="text/javascript" src="js/alarms_handler.js"></script>
-  <script defer type="text/javascript" src="js/dialer_handler.js"></script>
-  <script defer type="text/javascript" src="js/keybinds.js"></script>
-  <script defer type="text/javascript" src="js/utility_tray.js"></script>
+  <!-- <script defer type="text/javascript" src="js/alarms_handler.js"></script>
+  <script defer type="text/javascript" src="js/dialer_handler.js"></script> -->
+  <!-- <script defer type="text/javascript" src="js/keybinds.js"></script> -->
+  <!-- <script defer type="text/javascript" src="js/utility_tray.js"></script> -->
   <script defer type="text/javascript" src="js/wallpaper_manager.js"></script>
   <!-- <script defer type="text/javascript" src="js/homescreen_launcher.js"></script> -->
   <script defer type="text/javascript" src="js/gesture_panels.js"></script>
-  <script defer type="text/javascript" src="js/text_selection.js"></script>
+  <!-- <script defer type="text/javascript" src="js/text_selection.js"></script> -->
   <script defer type="text/javascript" src="js/context_menu.js"></script>
-  <script defer type="text/javascript" src="js/syncing_data.js"></script>
+  <!-- <script defer type="text/javascript" src="js/syncing_data.js"></script> -->
   <script defer type="text/javascript" src="js/snackbars.js"></script>
   <script defer type="text/javascript" src="js/volume_rocker.js"></script>
   <script defer type="text/javascript" src="js/hardware_buttons.js"></script>
-  <script defer type="text/javascript" src="js/permissions.js"></script>
+  <!-- <script defer type="text/javascript" src="js/permissions.js"></script> -->
   <script defer type="text/javascript" src="js/power_screen.js"></script>
-  <script defer type="text/javascript" src="js/picture_in_picture.js"></script>
-  <script defer type="text/javascript" src="js/download_manager.js"></script>
-  <script defer type="text/javascript" src="js/platform_classifier.js"></script>
+  <!-- <script defer type="text/javascript" src="js/picture_in_picture.js"></script> -->
+  <!-- <script defer type="text/javascript" src="js/download_manager.js"></script> -->
+  <!-- <script defer type="text/javascript" src="js/platform_classifier.js"></script> -->
   <script defer type="text/javascript" src="js/screenshots.js"></script>
-  <script defer type="text/javascript" src="js/drag_and_drop.js"></script>
+  <!-- <script defer type="text/javascript" src="js/drag_and_drop.js"></script> -->
   <script defer type="text/javascript" src="js/title_tooltip.js"></script>
-  <script defer type="text/javascript" src="js/login_ui.js"></script>
-  <script defer type="text/javascript" src="js/privacy_indicators.js"></script>
-  <script defer type="text/javascript" src="js/app_launcher.js"></script>
-  <script defer type="text/javascript" src="js/achievements.js"></script>
-  <script defer type="text/javascript" src="js/lockscreen/motion.js"></script>
-  <script defer type="text/javascript" src="js/lockscreen/clock.js"></script>
-  <script defer type="text/javascript" src="js/lockscreen/date.js"></script>
-  <script defer type="text/javascript" src="js/lockscreen/pin_lock.js"></script>
+  <!-- <script defer type="text/javascript" src="js/login_ui.js"></script> -->
+  <!-- <script defer type="text/javascript" src="js/privacy_indicators.js"></script> -->
+  <!-- <script defer type="text/javascript" src="js/app_launcher.js"></script> -->
+  <!-- <script defer type="text/javascript" src="js/achievements.js"></script> -->
+  <!-- <script defer type="text/javascript" src="js/lockscreen/motion.js"></script> -->
+  <!-- <script defer type="text/javascript" src="js/lockscreen/clock.js"></script> -->
+  <!-- <script defer type="text/javascript" src="js/lockscreen/date.js"></script> -->
+  <!-- <script defer type="text/javascript" src="js/lockscreen/pin_lock.js"></script> -->
 
   <!-- Chrome -->
   <link rel="stylesheet" type="text/css" href="style/chrome.css">
@@ -153,7 +153,12 @@
 <body>
   <div id="screen" role="app">
     <div id="splashscreen" data-z-index-layer="splashscreen">
-      <video src="" id="splashscreen-video"></video>
+      <!-- <video src="" id="splashscreen-video"></video> -->
+
+      <div class="logo">OrchidOS</div>
+      <div class="circle primary left"></div>
+      <div class="circle primary right"></div>
+      <div class="circle secondary"></div>
     </div>
 
     <div id="loading-screen" data-z-index-layer="loading-screen"></div>
@@ -173,8 +178,10 @@
           <div id="statusbar-camera" class="hidden" data-icon="camera"></div>
           <div id="statusbar-microphone" class="hidden" data-icon="mic"></div>
           <div id="statusbar-video" class="hidden" data-icon="video"></div>
-          <div id="statusbar-time"></div>
-          <div id="statusbar-date"></div>
+          <div class="timedate">
+            <div id="statusbar-time"></div>
+            <div id="statusbar-date"></div>
+          </div>
         </div>
         <div class="right">
           <div id="statusbar-battery" class="hidden" data-icon="battery-70"></div>
@@ -393,12 +400,21 @@
     </div>
 
     <div id="cards-view" data-z-index-layer="cards-view">
+      <ul id="cards-view-devices">
+        <li class="device active">
+          <span data-icon="devices"></span>
+          <span>Mort's PC</span>
+        </li>
+        <li class="device">
+          <span data-icon="devices"></span>
+          <span>Mort's Phone</span>
+        </li>
+      </ul>
       <ul id="cards-view-list"></ul>
       <div id="cards-view-toolbar">
         <button id="cards-view-new-window-button" data-icon="groups"></button>
         <button id="cards-view-clear-all-button" data-icon="delete"></button>
         <button id="cards-view-current-device-button" data-icon="devices"></button>
-        <div id="cards-view-devices"></div>
       </div>
     </div>
 
@@ -498,6 +514,7 @@
       <div class="desktop">
         <button id="software-launcher-button"></button>
         <button id="software-search-button"></button>
+        <button id="software-cards-view-button"></button>
         <button id="software-dashboard-button"></button>
       </div>
 
@@ -515,18 +532,17 @@
 
       <div class="footer">
         <div class="left">
-          <figure>
-            <img src="" alt="" class="avatar">
+          <figure id="launcher-account-button">
+            <img src="" alt="" id="launcher-account-avatar" class="avatar">
             <figcaption>
-              <div class="title"></div>
-              <div class="badges"></div>
+              <div id="launcher-account-username" class="title"></div>
             </figcaption>
           </figure>
         </div>
         <div class="right">
-          <button data-icon="power"></button>
-          <button data-icon="settings"></button>
-          <button data-icon="home"></button>
+          <button id="launcher-power-button" data-icon="power"></button>
+          <button id="launcher-settings-button" data-icon="settings"></button>
+          <button id="launcher-files-button" data-icon="folder"></button>
         </div>
       </div>
 
@@ -566,8 +582,14 @@
 
       <div id="power-screen">
         <div class="buttons">
-          <button id="power-screen-shutdown-button" data-icon="power" data-l10n-id="powerScreen-shutdown"></button>
-          <button id="power-screen-restart-button" data-icon="reload" data-l10n-id="powerScreen-restart"></button>
+          <button id="power-screen-shutdown-button">
+            <span data-icon="power"></span>
+            <span data-l10n-id="powerScreen-shutdown"></span>
+          </button>
+          <button id="power-screen-restart-button">
+            <span data-icon="reload"></span>
+            <span data-l10n-id="powerScreen-restart"></span>
+          </button>
         </div>
         <div class="toolbar">
           <button id="power-screen-emergency-button" class="danger" data-l10n-id="powerScreen-emergency"></button>
@@ -593,6 +615,8 @@
         <button id="text-selection-paste-button" data-icon="paste"></button>
         <button id="text-selection-select-all-button" data-icon="select-all"></button>
       </div>
+      <div id="text-selection-gripper-start"></div>
+      <div id="text-selection-gripper-end"></div>
 
       <div id="context-menu">
         <div id="context-menu-content">

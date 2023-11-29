@@ -8,6 +8,7 @@
 
     activeButton: null,
 
+    LOCALIZED_KEYBINDS: ['meta', 'ctrl', 'alt', 'shift', 'enter', 'space', 'menu'],
     SOUND_CLICK: new Audio('/resources/sounds/menu_click.wav'),
 
     show: function (x, y, array, button = null) {
@@ -64,20 +65,36 @@
             break;
 
           default:
-            if (item.name) {
-              element.textContent = item.name;
-            }
+            const name = document.createElement('span');
             if (item.l10nId) {
-              element.dataset.l10nId = item.l10nId;
+              name.dataset.l10nId = item.l10nId;
+              element.appendChild(name);
+
+              if (item.l10nArgs) {
+                name.dataset.l10nArgs = JSON.stringify(item.l10nArgs);
+              }
+            } else if (item.name && !item.l10nId) {
+              name.textContent = item.name;
+              element.appendChild(name);
             }
-            if (item.l10nArgs) {
-              element.dataset.l10nArgs = JSON.stringify(item.l10nArgs);
-            }
+
             if (item.disabled) {
               element.setAttribute('disabled', '');
             }
             if (item.icon) {
               element.dataset.icon = item.icon;
+            }
+            if (item.isNewlyAdded) {
+              const newMark = document.createElement('span');
+              newMark.classList.add('new');
+              newMark.dataset.l10nId = 'new';
+              element.appendChild(newMark);
+            }
+            if (item.keybind) {
+              const keybind = document.createElement('span');
+              keybind.classList.add('keybind');
+              keybind.textContent = item.keybind.map((a) => (this.LOCALIZED_KEYBINDS.indexOf(a) !== -1 ? L10n.get(`keybinds-${a}`) : a)).join('+');
+              element.appendChild(keybind);
             }
 
             element.onclick = item.onclick;

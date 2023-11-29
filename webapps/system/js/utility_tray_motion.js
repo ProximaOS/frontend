@@ -5,6 +5,7 @@
     titlebar: document.querySelector('#utility-tray .titlebar'),
 
     screen: document.getElementById('screen'),
+    windowContainer: document.getElementById('windows'),
     topPanel: document.getElementById('top-panel'),
     statusbar: document.getElementById('statusbar'),
     motionElement: document.getElementById('utility-tray-motion'),
@@ -35,6 +36,12 @@
       if (platform() === 'desktop') {
         this.statusbar.addEventListener('click', this.handleStatusbarClick.bind(this));
       }
+
+      this.rowElements = this.controlCenter.querySelectorAll('.control-center-row');
+      for (let index = 0; index < this.rowElements.length; index++) {
+        const element = this.rowElements[index];
+        element.style.setProperty('--transition-order', index);
+      }
     },
 
     onPointerDown: function (event) {
@@ -42,13 +49,8 @@
       this.currentY = this.startY;
       this.isDragging = true;
       this.screen.classList.add('utility-tray-visible');
-      this.statusbar.classList.add('tray-open');
-
-      this.rowElements = this.controlCenter.querySelectorAll('.control-center-row');
-      for (let index = 0; index < this.rowElements.length; index++) {
-        const element = this.rowElements[index];
-        element.style.transitionDelay = index * 50 + 'ms';
-      }
+      this.statusbar.classList.add('utility-tray-motion');
+      this.windowContainer.classList.add('utility-tray-motion');
     },
 
     onPointerMove: function (event) {
@@ -97,6 +99,7 @@
         this.titlebar.style.setProperty('--overscroll-progress', 0);
         this.motionElement.style.setProperty('--motion-progress', 1);
         this.motionElement.style.setProperty('--overscroll-progress', 0);
+        this.windowContainer.style.setProperty('--motion-progress', 1);
         this.statusbar.classList.add('transitioning');
         this.titlebar.classList.add('transitioning');
         this.motionElement.classList.add('transitioning');
@@ -114,6 +117,7 @@
         this.titlebar.style.setProperty('--overscroll-progress', 0);
         this.motionElement.style.setProperty('--motion-progress', 0);
         this.motionElement.style.setProperty('--overscroll-progress', 0);
+        this.windowContainer.style.setProperty('--motion-progress', 0);
         this.statusbar.classList.add('transitioning');
         this.titlebar.classList.add('transitioning');
         this.motionElement.classList.add('transitioning');
@@ -155,6 +159,7 @@
       this.titlebar.style.setProperty('--overscroll-progress', overflowProgress);
       this.motionElement.style.setProperty('--motion-progress', motionProgress);
       this.motionElement.style.setProperty('--overscroll-progress', overflowProgress);
+      this.windowContainer.style.setProperty('--motion-progress', motionProgress);
 
       if (motionProgress <= this.threshold) {
         this.motionElement.classList.add('fade-out');
@@ -170,20 +175,23 @@
       this.lastProgress = 0;
       this.isVisible = false;
       this.screen.classList.remove('utility-tray-visible');
-      this.statusbar.classList.remove('tray-open');
+      this.statusbar.classList.remove('utility-tray-motion');
+      this.windowContainer.classList.remove('utility-tray-motion');
       this.motionElement.classList.remove('visible');
       this.statusbar.style.setProperty('--motion-progress', 0);
       this.statusbar.style.setProperty('--overscroll-progress', 0);
       this.titlebar.style.setProperty('--overscroll-progress', 0);
       this.motionElement.style.setProperty('--motion-progress', 0);
       this.motionElement.style.setProperty('--overscroll-progress', 0);
+      this.windowContainer.style.setProperty('--motion-progress', 0);
     },
 
     showMotionElement: function () {
       this.lastProgress = 1;
       this.isVisible = true;
       this.screen.classList.add('utility-tray-visible');
-      this.statusbar.classList.add('tray-open');
+      this.statusbar.classList.add('utility-tray-motion');
+      this.windowContainer.classList.add('utility-tray-motion');
       this.motionElement.classList.add('visible');
 
       if (this.isDragging) {
@@ -194,6 +202,7 @@
       this.titlebar.style.setProperty('--overscroll-progress', 0);
       this.motionElement.style.setProperty('--motion-progress', 1);
       this.motionElement.style.setProperty('--overscroll-progress', 0);
+      this.windowContainer.style.setProperty('--motion-progress', 1);
     },
 
     resetMotionElement: function () {
@@ -208,6 +217,7 @@
         this.titlebar.style.setProperty('--overscroll-progress', 0);
         this.motionElement.style.setProperty('--motion-progress', 0);
         this.motionElement.style.setProperty('--overscroll-progress', 0);
+        this.windowContainer.style.setProperty('--motion-progress', 0);
         this.statusbar.classList.add('transitioning');
         this.titlebar.classList.add('transitioning');
         this.motionElement.classList.add('transitioning');

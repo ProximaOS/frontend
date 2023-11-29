@@ -24,6 +24,7 @@
   "theme_color": "#0061e0",
   "permissions": {
     "environment": {},
+    "tasks-manage": {},
     "ipc": {},
     "bluetooth": {},
     "settings": { "access": "readwrite" },

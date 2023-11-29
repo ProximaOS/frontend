@@ -1,3 +1,5 @@
+const Settings = require('../settings');
+
 !(function () {
   'use strict';
 
@@ -9,6 +11,19 @@
   module.exports = function (mainWindow, webview) {
     webview.webContents.on('crashed', () => {
       console.log('renderer process crashed'); // this will be called
+    });
+
+    webview.webContents.session.webRequest.onBeforeSendHeaders((details, callback) => {
+      if (details.resourceType === 'mainFrame') {
+        Settings.getValue('privacy.do_not_track.enabled').then((value) => {
+          if (details.requestHeaders.DNT !== value) {
+            details.requestHeaders.DNT = value;
+          }
+        });
+      }
+
+      const data = { cancel: false, requestHeaders: details.requestHeaders };
+      callback(data);
     });
 
     // Intercept download requests using the webContents' session

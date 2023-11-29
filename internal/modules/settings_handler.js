@@ -83,15 +83,12 @@
       }
     },
 
-    handleWallpaperAccent: async function (value) {
+    handleWallpaperAccent: function (value) {
       if (!this.appElement) {
         return;
       }
-      if (await _Settings.getValue(this.settings[this.SETTINGS_ACCENT_COLOR])) {
-        return;
-      }
 
-      this.getImageDominantColor(value, { colors: 2, brightness: 1 }).then((color) => {
+      this.getImageDominantColor(value, { colors: 2, brightness: 1 }).then(async (color) => {
         // Convert the color to RGB values
         let r1 = color[0].r;
         let g1 = color[0].g;
@@ -156,17 +153,19 @@
           }
         }
 
-        document.scrollingElement.style.setProperty('--accent-color-primary-r', r1);
-        document.scrollingElement.style.setProperty('--accent-color-primary-g', g1);
-        document.scrollingElement.style.setProperty('--accent-color-primary-b', b1);
-        document.scrollingElement.style.setProperty('--accent-color-secondary-r', r2);
-        document.scrollingElement.style.setProperty('--accent-color-secondary-g', g2);
-        document.scrollingElement.style.setProperty('--accent-color-secondary-b', b2);
+        if (!(await _Settings.getValue(this.settings[this.SETTINGS_ACCENT_COLOR]))) {
+          document.scrollingElement.style.setProperty('--accent-color-primary-r', r1);
+          document.scrollingElement.style.setProperty('--accent-color-primary-g', g1);
+          document.scrollingElement.style.setProperty('--accent-color-primary-b', b1);
+          document.scrollingElement.style.setProperty('--accent-color-secondary-r', r2);
+          document.scrollingElement.style.setProperty('--accent-color-secondary-g', g2);
+          document.scrollingElement.style.setProperty('--accent-color-secondary-b', b2);
 
-        _Settings.setValue(this.settings[this.SETTINGS_ACCENT_COLOR], {
-          primary: { r: r1, g: g1, b: b1 },
-          secondary: { r: r2, g: g2, b: b2 }
-        });
+          _Settings.setValue(this.settings[this.SETTINGS_ACCENT_COLOR], {
+            primary: { r: r1, g: g1, b: b1 },
+            secondary: { r: r2, g: g2, b: b2 }
+          });
+        }
 
         // Calculate relative luminance
         const accentLuminance1 = (0.2126 * originalR1 + 0.7152 * originalG1 + 0.0722 * originalB1) / 255;
@@ -174,11 +173,9 @@
         if (accentLuminance1 > 0.5) {
           this.appElement.classList.remove('dark');
           this.appElement.classList.add('light');
-          document.scrollingElement.style.setProperty('--accent-color-plus', 'rgba(0,0,0,0.75)');
         } else {
           this.appElement.classList.add('dark');
           this.appElement.classList.remove('light');
-          document.scrollingElement.style.setProperty('--accent-color-plus', 'rgba(255,255,255,0.75)');
         }
       });
     },
@@ -188,7 +185,6 @@
         return;
       }
 
-      console.log(value);
       document.scrollingElement.style.setProperty('--accent-color-primary-r', value.primary.r);
       document.scrollingElement.style.setProperty('--accent-color-primary-g', value.primary.g);
       document.scrollingElement.style.setProperty('--accent-color-primary-b', value.primary.b);
@@ -204,18 +200,14 @@
       // Calculate relative luminance
       const luminance = (0.2126 * r + 0.7152 * g + 0.0722 * b) / 255;
       if (luminance > 0.5) {
-        this.appElement.classList.remove('dark');
-        this.appElement.classList.add('light');
         document.scrollingElement.style.setProperty('--accent-color-plus', 'rgba(0,0,0,0.75)');
       } else {
-        this.appElement.classList.add('dark');
-        this.appElement.classList.remove('light');
         document.scrollingElement.style.setProperty('--accent-color-plus', 'rgba(255,255,255,0.75)');
       }
     },
 
     handleSoftwareButtons: function (value) {
-      if (!this.appElement) {
+      if (!this.appElement || location.protocol === 'orchid:') {
         return;
       }
       this.appElement.style.setProperty('--statusbar-height', '4rem');

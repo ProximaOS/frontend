@@ -1,0 +1,67 @@
+#net-error {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#net-error .container {
+  width: calc(100% - 3rem);
+  max-width: 60rem;
+}
+
+#net-error .container .rows {
+  display: flex;
+  flex-direction: column;
+}
+
+#net-error .container .rows > .row {
+  width: 100%;
+}
+
+#net-error-icon {
+  display: block;
+  aspect-ratio: 3 / 1;
+  width: 29rem;
+  margin: 0 0 1rem;
+  background: url(images/network_disconnected.svg) no-repeat center / cover;
+}
+
+#net-error-title {
+  width: 100%;
+  margin: 0 0 1rem;
+  color: var(--text-color);
+  font-weight: bold;
+  font-size: 2.4rem;
+}
+
+#net-error-detail {
+  width: 100%;
+  margin: 0 0 1rem;
+  color: var(--text-color);
+  font-weight: normal;
+  font-size: 1.6rem;
+}
+
+#net-error-suggestions {
+  width: 100%;
+  margin: 0 0 1rem;
+  color: var(--text-color);
+  font-weight: normal;
+  font-size: 1.6rem;
+}
+
+#net-error-code {
+  width: 100%;
+  margin: 0 0 1rem;
+  color: var(--text-color-faded);
+  font-weight: bold;
+  font-size: 1.6rem;
+  font-family: monospace;
+}
+
+.buttons {
+  display: flex;
+  width: 100%;
+  margin: 1rem 0 0;
+  gap: 1rem;
+}

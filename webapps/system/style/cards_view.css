@@ -62,7 +62,7 @@
 }
 
 #cards-view-list .card.transitioning {
-  transition: all 0.5s cubic-bezier(0.5, 0.8, 0, 1.1);
+  transition: all 0.5s cubic-bezier(0.5, 0.8, 0.4, 1.5);
 }
 
 #cards-view-list .card .preview {
@@ -124,6 +124,7 @@
 
 #cards-view-toolbar {
   display: flex;
+  z-index: 1;
   position: absolute;
   bottom: calc(var(--software-buttons-height) + 1rem);
   left: 0;
@@ -133,23 +134,28 @@
   gap: 1rem;
 }
 
+#screen.desktop #cards-view-toolbar {
+  bottom: calc(var(--software-buttons-height) + 3rem);
+}
+
 #cards-view-toolbar > button {
   width: 4rem;
   height: 4rem;
   margin: 0;
   padding: 0;
   border-radius: 50%;
-  background-color: rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(20px) saturate(180%);
+  background-color: rgba(51, 51, 51, 0.5);
   color: #fff;
   line-height: 4rem;
 }
 
 #cards-view-toolbar > button:hover {
-  background-color: rgba(128, 128, 128, 0.3);
+  background-color: rgba(255, 255, 255, 0.1);
 }
 
 #cards-view-toolbar > button:active {
-  background-color: rgba(255, 255, 255, 0.3);
+  background-color: rgba(255, 255, 255, 0.2);
 }
 
 #cards-view-toolbar > button[data-icon]::before {
@@ -158,6 +164,60 @@
   height: 4rem;
   font-size: 2rem;
   line-height: 4rem;
+}
+
+#cards-view-devices {
+  box-sizing: border-box;
+  display: flex;
+  z-index: 1;
+  position: absolute;
+  top: calc(var(--statusbar-height) + 1rem);
+  left: 50%;
+  height: 4rem;
+  margin: 0;
+  padding: 0.5rem;
+  gap: 0.5rem;
+  translate: -50% 0;
+  border-radius: 2rem;
+  backdrop-filter: blur(20px) saturate(180%);
+  background-color: rgba(51, 51, 51, 0.5);
+}
+
+#screen.desktop #cards-view-devices {
+  top: 1.5rem;
+}
+
+#cards-view-devices .device {
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  width: max-content;
+  height: 3rem;
+  margin: 0;
+  padding: 0 1.5rem;
+  gap: 1rem;
+  border-radius: 3rem;
+  color: #fff;
+  font-weight: normal;
+  font-size: 1.6rem;
+  line-height: 3rem;
+  list-style: none;
+}
+
+#cards-view-devices .device.active {
+  background-color: var(--background-plus);
+  color: var(--text-color);
+}
+
+#cards-view-devices .device > span {
+  height: 3rem;
+  line-height: 3rem;
+}
+
+#cards-view-devices .device > span[data-icon]::before {
+  height: 3rem;
+  font-size: 2rem;
+  line-height: 3rem;
 }
 
 @media screen and (max-width: 767px) {
@@ -175,7 +235,11 @@
     grid-template-columns: repeat(3, 1fr);
     align-items: center;
     justify-content: center;
-    padding: calc(var(--statusbar-height) + 1rem) 1.5rem calc(var(--software-buttons-height) + 6rem);
+    padding: calc(var(--statusbar-height) + 6rem) 1.5rem calc(var(--software-buttons-height) + 6rem);
+  }
+
+  #screen.desktop #cards-view-list {
+    padding: 6.5rem 1.5rem calc(var(--dock-height) + 8rem);
   }
 
   #cards-view-list .card-area {

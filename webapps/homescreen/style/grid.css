@@ -66,33 +66,35 @@
   padding-top: 0.4rem;
 }
 
-.icon .icon-holder > * {
+.icon .icon-holder > .appicon {
   display: block;
   width: 4.8rem;
   height: 4.8rem;
+  border: none;
   border-radius: 25%;
   image-rendering: optimizeSpeed;
+  pointer-events: none;
   transition: box-shadow 0.3s ease;
 }
 
-.icon.dragging .icon-holder > img {
+.icon.dragging .icon-holder > .appicon {
   box-shadow: 0 0.4rem 1.2rem rgba(0, 0, 0, 0.1);
 }
 
-.icon:active .icon-holder > img {
+.icon:active .icon-holder > .appicon {
   filter: brightness(0.75);
 }
 
-[data-edit-mode="true"] .icon:not(.dragging) .icon-holder > img {
+[data-edit-mode="true"] .icon:not(.dragging) .icon-holder > .appicon {
   transform-origin: center !important;
   animation: icon-edit-wiggle 0.3s ease-in-out infinite;
 }
 
-[data-edit-mode="true"] .icon:not(.dragging):nth-child(3n-1) .icon-holder > img {
+[data-edit-mode="true"] .icon:not(.dragging):nth-child(3n-1) .icon-holder > .appicon {
   animation-delay: 0.2s;
 }
 
-[data-edit-mode="true"] .icon:not(.dragging):nth-child(3n) .icon-holder > img {
+[data-edit-mode="true"] .icon:not(.dragging):nth-child(3n) .icon-holder > .appicon {
   animation-delay: 0.1s;
 }
 

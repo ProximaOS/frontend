@@ -17,6 +17,11 @@
   transition: all 0.5s cubic-bezier(0.2, 0.9, 0.1, 1), transform 0.5s cubic-bezier(0.5, 0.8, 0, 1.1);
 }
 
+/* #windows.utility-tray-motion {
+  transform: scale(calc(1 - (0.1 * var(--motion-progress))));
+  transition: all 0.3s ease;
+} */
+
 .appframe {
   position: absolute;
   top: 0;
@@ -285,7 +290,7 @@
 
 #screen.desktop .appframe.window.maximized {
   top: 0 !important;
-  height: calc(100% - var(--software-buttons-height) - 2rem) !important;
+  height: calc(100% - var(--dock-height) - 2rem) !important;
   border-radius: 0 !important;
 }
 

@@ -14,7 +14,7 @@
   <link rel="stylesheet" type="text/css" href="http://shared.localhost:8081/rolee/panels.css" />
   <link rel="stylesheet" type="text/css" href="http://shared.localhost:8081/style/headers.css" />
   <link rel="stylesheet" type="text/css" href="http://shared.localhost:8081/style/tablists.css" />
-  <link rel="stylesheet" type="text/css" href="http://shared.localhost:8081/style/activity_bars.css" />
+  <link rel="stylesheet" type="text/css" href="http://shared.localhost:8081/style/progress_activity.css" />
   <link rel="stylesheet" type="text/css" href="http://shared.localhost:8081/style/buttons.css" />
   <link rel="stylesheet" type="text/css" href="http://shared.localhost:8081/style/lists.css" />
   <link rel="stylesheet" type="text/css" href="http://shared.localhost:8081/style/switches.css" />
@@ -144,10 +144,10 @@
           <li class="page" data-icon="home" data-page-id="homescreen">
             <p data-l10n-id="homescreen"></p>
           </li>
-          <li class="page" data-icon="lock" data-page-id="lockScreen">
+          <li class="page" data-icon="lock" data-page-id="lockscreen">
             <p data-l10n-id="lockScreen"></p>
           </li>
-          <li class="page" data-icon="date" data-page-id="dateAndTime">
+          <li class="page" data-icon="date" data-page-id="date-and-time">
             <p data-l10n-id="dateAndTime"></p>
           </li>
           <li class="page" data-icon="privacy" data-page-id="privacy">
@@ -493,17 +493,34 @@
               </span>
             </div>
           </li>
-          <li id="bike-mode">
+          <li data-icon="bike-mode">
             <div class="pack-checkbox">
-              <label for="audio-bikeMode-checkbox">
+              <label for="audio-bike-mode-checkbox">
                 <p data-l10n-id="enableBikeMode"></p>
               </label>
               <span>
-                <input type="checkbox" name="audio-bikeMode-checkbox" id="audio-bikeMode-checkbox" />
+                <input type="checkbox" name="audio-bike-mode-checkbox" id="audio-bike-mode-checkbox" />
               </span>
             </div>
           </li>
         </ul>
+        <detail data-l10n-id="bikeModeTitle" data-icon="bike-mode"></detail>
+        <detail data-l10n-id="bikeModeDesc"></detail>
+
+        <ul>
+          <li data-icon="do-not-disturb">
+            <div class="pack-switch">
+              <label for="audio-do-not-disturb-switch">
+                <p data-l10n-id="enableDoNotDisturb"></p>
+              </label>
+              <span>
+                <input type="checkbox" name="audio-do-not-disturb-switch" id="audio-do-not-disturb-switch" />
+              </span>
+            </div>
+          </li>
+        </ul>
+        <detail data-l10n-id="doNotDisturbTitle" data-icon="do-not-disturb"></detail>
+        <detail data-l10n-id="doNotDisturbDesc"></detail>
 
         <header data-l10n-id="audio-customize"></header>
         <ul>
@@ -524,6 +541,9 @@
             </div>
           </li>
         </ul>
+        <detail data-l10n-id="vibrateTitle" data-icon="vibrate"></detail>
+        <detail data-l10n-id="vibrateDesc"></detail>
+        <detail class="notice" data-l10n-id="vibrateNotice" data-icon="bell-off"></detail>
       </div>
     </section>
 
@@ -716,7 +736,7 @@
       </div>
     </section>
 
-    <section id="lockScreen" role="panel" data-previous-page-id="root">
+    <section id="lockscreen" role="panel" data-previous-page-id="root">
       <header role="header">
         <div class="safezone">
           <a href="#" data-icon="arrow-back" data-page-id="root"></a>
@@ -752,17 +772,17 @@
     <section id="lockScreen-mode" role="panel" data-previous-page-id="lockScreen">
       <header role="header">
         <div class="safezone">
-          <a href="#" data-icon="arrow-back" data-page-id="lockScreen"></a>
+          <a href="#" data-icon="arrow-back" data-page-id="lockscreen"></a>
           <h1 data-l10n-id="lockScreen-mode"></h1>
         </div>
       </header>
 
       <div class="content lists">
         <ul>
-          <li id="lockScreen-mode-swipe" class="page" data-page-id="lockScreen">
+          <li id="lockscreen-mode-swipe" class="page" data-page-id="lockscreen">
             <p data-l10n-id="lockScreen-mode-swipe"></p>
           </li>
-          <li class="page" data-page-id="lockScreen-mode-pinLock">
+          <li class="page" data-page-id="lockscreen-mode-pinLock">
             <p data-l10n-id="lockScreen-mode-pinLock"></p>
           </li>
         </ul>
@@ -791,7 +811,7 @@
       </div>
     </section>
 
-    <section id="dateAndTime" role="panel" data-previous-page-id="root">
+    <section id="date-and-time" role="panel" data-previous-page-id="root">
       <header role="header">
         <div class="safezone">
           <a href="#" data-icon="arrow-back" data-page-id="root"></a>
@@ -803,11 +823,18 @@
         <ul>
           <li>
             <p data-l10n-id="dateAndTime-time"></p>
-            <input type="time" name="" id="dateAndTime-time">
+            <input type="time" name="" id="date-and-time-time">
           </li>
           <li>
             <p data-l10n-id="dateAndTime-date"></p>
-            <input type="date" name="" id="dateAndTime-date">
+            <input type="date" name="" id="date-and-time-date">
+          </li>
+          <li>
+            <p data-l10n-id="dateAndTime-numbers"></p>
+            <select name="" id="date-and-time-numbers">
+              <option value="indian">٠١٢٣٤٥٦٧٨٩</option>
+              <option value="arabic">0123456789</option>
+            </select>
           </li>
           <li>
             <div class="pack-checkbox">
@@ -815,7 +842,7 @@
                 <p data-l10n-id="date12HourTime"></p>
               </label>
               <span>
-                <input type="checkbox" name="dateAndTime-12HourTime-checkbox" id="dateAndTime-12HourTime-checkbox" />
+                <input type="checkbox" name="dateAndTime-12HourTime-checkbox" id="date-and-time-12HourTime-checkbox" />
               </span>
             </div>
           </li>
@@ -960,19 +987,19 @@
 
       <div class="content lists">
         <ul>
-          <li class="page" data-icon="sync" data-page-id="systemUpdate">
+          <li class="page" data-icon="sync" data-page-id="system-update">
             <p data-l10n-id="systemUpdate"></p>
           </li>
         </ul>
         <ul>
-          <li class="page" data-icon="edit" data-page-id="devOptions">
+          <li class="page" data-icon="edit" data-page-id="devel-options>
             <p data-l10n-id="devOptions"></p>
           </li>
         </ul>
       </div>
     </section>
 
-    <section id="devOptions" role="panel" data-previous-page-id="system">
+    <section id="devel-options" role="panel" data-previous-page-id="system">
       <header role="header">
         <div class="safezone">
           <a href="#" data-icon="arrow-back" data-page-id="system"></a>
@@ -1038,6 +1065,18 @@
           </li>
         </ul>
       </div>
+    </section>
+
+    <section id="system-update" role="panel" data-previous-page-id="system">
+      <header role="header">
+        <div class="safezone">
+          <a href="#" data-icon="arrow-back" data-page-id="system"></a>
+          <h1 data-l10n-id="systemUpdate"></h1>
+        </div>
+      </header>
+      <progress value="0" class="pack-activity"></progress>
+
+      <div class="content lists"></div>
     </section>
 
     <section id="aboutInfo" role="panel" data-previous-page-id="root">

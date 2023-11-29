@@ -7,7 +7,7 @@
   left: 0;
   height: 4rem;
   padding: 0.5rem;
-  transform: translateY(3rem);
+  transform: translateY(1.5rem);
   border-radius: 2rem;
   background-color: var(--background-plus);
   box-shadow: 0 1rem 3rem rgba(0, 0, 0, 0.3);
@@ -71,4 +71,40 @@
 #text-selection > button:hover + button::after,
 #text-selection > button:active + button::after {
   display: none;
+}
+
+#text-selection-gripper-start {
+  visibility: hidden;
+  position: absolute;
+  width: 2.4rem;
+  height: 2.4rem;
+  transform: scale(0.75);
+  transform-origin: top right;
+  translate: -100% 0;
+  border-radius: 2.4rem 0 2.4rem 2.4rem;
+  background-color: var(--accent-color);
+  box-shadow: 0 0.4rem 1.2rem rgba(0, 0, 0, 0.1);
+  opacity: 0;
+  transition: transform 0.3s cubic-bezier(0.5, 0.8, 0, 1.5), opacity 0.3s cubic-bezier(0.5, 0.8, 0, 1.5), visibility 0.3s cubic-bezier(0.5, 0.8, 0, 1.5);
+}
+
+#text-selection-gripper-end {
+  visibility: hidden;
+  position: absolute;
+  width: 2.4rem;
+  height: 2.4rem;
+  transform: scale(0.75);
+  transform-origin: top left;
+  border-radius: 0 2.4rem 2.4rem 2.4rem;
+  background-color: var(--accent-color);
+  box-shadow: 0 0.4rem 1.2rem rgba(0, 0, 0, 0.1);
+  opacity: 0;
+  transition: transform 0.3s cubic-bezier(0.5, 0.8, 0, 1.5), opacity 0.3s cubic-bezier(0.5, 0.8, 0, 1.5), visibility 0.3s cubic-bezier(0.5, 0.8, 0, 1.5);
+}
+
+#text-selection-gripper-start.visible,
+#text-selection-gripper-end.visible {
+  visibility: visible;
+  transform: scale(1);
+  opacity: 1;
 }

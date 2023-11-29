@@ -22,5 +22,10 @@
   "permissions": {
     "nodeintegration": {}
   },
-  "statusbar": "overlay"
+  "statusbar": "overlay",
+  "homescreen": {
+    "dynamic_icon": {
+      "start_url": "/dynamic/icon.html"
+    }
+  }
 }

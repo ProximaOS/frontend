@@ -88,7 +88,7 @@
 }
 
 .chrome.dark .tablist-holder {
-  --background-plus: rgba(51,51,51,0.75);
+  --background-plus: rgba(255,255,255,0.1);
 }
 
 .chrome .tablist-holder > button {
@@ -125,12 +125,11 @@
   height: var(--chrome-tablist-height);
   margin: 0;
   padding: 0 1rem;
-  padding-inline-end: 0.5rem;
+  padding-inline-end: 0.2rem;
   overflow: hidden;
-  gap: var(--chrome-toolbar-gap);
-  border-radius: 2rem;
+  border-radius: 1rem;
   list-style: none;
-  transition: width 0.5s cubic-bezier(0.5, 0.8, 0, 1), padding 0.5s cubic-bezier(0.5, 0.8, 0, 1), opacity 0.5s ease;
+  transition: width 0.5s cubic-bezier(0.5, 0.8, 0, 1), padding 0.5s cubic-bezier(0.5, 0.8, 0, 1), opacity 0.5s ease, background-color 0.3s ease;
 }
 
 .appframe:not(.chrome-visible) .chrome .tablist li {
@@ -144,13 +143,16 @@
 
 .chrome .tablist li:hover {
   background-color: var(--item-hover);
+  transition: width 0.5s cubic-bezier(0.5, 0.8, 0, 1), padding 0.5s cubic-bezier(0.5, 0.8, 0, 1), opacity 0.5s ease, background-color 0.1s ease;
 }
 
 .chrome .tablist li:active {
   background-color: var(--item-active);
+  transition: width 0.5s cubic-bezier(0.5, 0.8, 0, 1), padding 0.5s cubic-bezier(0.5, 0.8, 0, 1), opacity 0.5s ease, background-color 0.1s ease;
 }
 
 .chrome .tablist li.active {
+  border-radius: 2.5rem;
   background-color: var(--background-plus);
 }
 
@@ -268,6 +270,7 @@
   flex-grow: 1;
   width: 100%;
   height: 2rem;
+  margin-inline-start: var(--chrome-toolbar-gap);
   overflow: hidden;
   color: var(--text-color);
   font-size: 1.4rem;
@@ -360,12 +363,13 @@
   height: var(--chrome-navbar-height);
   padding: 0 1rem;
   border: none;
-  border-radius: 0.6rem;
+  border-radius: 1rem;
   background-color: transparent;
   color: var(--text-color-faded);
   font-size: 1.6rem;
   line-height: var(--chrome-navbar-height);
   text-align: center;
+  transition: background-color 0.3s ease;
 }
 
 .appframe.active .chrome .tablist-holder > button,
@@ -394,6 +398,7 @@
 .chrome .tablist-holder > button:hover,
 .chrome .navbar button:hover {
   background-color: var(--item-hover);
+  transition: background-color 0.1s ease;
 }
 
 .chrome .tablist-holder > button:active,
@@ -401,6 +406,7 @@
 .chrome .navbar button:active,
 .chrome .navbar button.active {
   background-color: var(--item-active);
+  transition: background-color 0.1s ease;
 }
 
 .navbar-reload-button[data-icon]::before {
@@ -499,10 +505,14 @@
   margin: 0;
   padding: 0;
   overflow: hidden;
-  border-radius: 2rem;
-  background-color: var(--item-hover);
-  transition: height 0.5s cubic-bezier(0.5, 0.8, 0, 1), background-color 0.2s ease 0.5s;
+  border-radius: calc(var(--chrome-navbar-height) / 2);
+  background-color: var(--background-minus);
+  transition: height 0.5s cubic-bezier(0.5, 0.8, 0, 1), background-color 0.5s ease;
   will-change: height;
+}
+
+.chrome .navbar .urlbar:hover {
+  background-color: var(--item-hover);
 }
 
 .chrome.visible .navbar .urlbar {
@@ -656,11 +666,14 @@
 }
 
 .chrome .browser-container > .browser-view {
+  display: flex;
   visibility: hidden;
   position: absolute;
   top: calc(var(--chrome-tablist-height) + var(--chrome-navbar-height) + (var(--chrome-toolbar-gap) * 3));
   width: 100%;
   height: calc(100% - var(--chrome-tablist-height) + var(--chrome-navbar-height) + (var(--chrome-toolbar-gap) * 3));
+  gap: 0.5rem;
+  direction: ltr;
   transition: transform 0.5s cubic-bezier(0.5, 0.8, 0, 1), top 0.5s cubic-bezier(0.5, 0.8, 0, 1);
 }
 
@@ -677,19 +690,35 @@
 }
 
 .chrome .browser-container > .browser-view .browser {
-  position: absolute;
+  box-sizing: border-box;
+  position: relative;
   top: 0;
   left: 0;
+  flex-grow: 1;
   width: 100%;
   height: 100%;
   overflow: hidden;
   transition: all 0.3s ease;
 }
 
-.chrome .browser-container > .browser-view.devtools-visible .browser {
-  width: calc(100% - 31rem);
+.chrome.visible .browser-container > .browser-view .browser {
+  border-top: solid 0.1rem var(--background-plus);
+}
+
+.chrome .browser-container > .browser-view.split-enabled .browser {
+  border-right: solid 0.1rem var(--background-plus);
   border-radius: 0 1.5rem 1.5rem 0;
-  background-color: var(--background-plus);
+}
+
+.chrome .browser-container > .browser-view .browser.split {
+  display: none;
+  border-right: none;
+  border-left: solid 0.1rem var(--background-plus);
+  border-radius: 1.5rem 0 0 1.5rem;
+}
+
+.chrome .browser-container > .browser-view.split-enabled .browser.split {
+  display: flex;
 }
 
 .chrome .browser-container > .browser-view .devtools {
@@ -716,8 +745,10 @@
 }
 
 .chrome .tabs-view .card {
+  box-sizing: border-box;
   top: calc(var(--statusbar-height) + 1.5rem);
   height: calc(100% - 1.5rem - var(--statusbar-height));
+  padding-top: 1.5rem;
 }
 
 .chrome .tabs-view .content .headerbar {
@@ -1199,6 +1230,10 @@ html[dir="rtl"] .chrome.side-tabs .toolbar .tablist-holder {
   pointer-events: all;
 }
 
+#screen.mobile .chrome.side-tabs .toolbar .visible {
+  padding-top: calc(var(--statusbar-height) + var(--chrome-toolbar-gap));
+}
+
 #screen.desktop .chrome.side-tabs .toolbar .navbar {
   padding-inline-end: 15rem;
 }
@@ -1376,7 +1411,7 @@ html[dir="rtl"] #screen.mobile .chrome.side-tabs.visible .browser-container .bro
   overflow: hidden;
   transform: translateY(-1.5rem);
   border-radius: 1.5rem;
-  background-color: var(--background);
+  background-color: var(--background-plus);
   box-shadow: 0 1.5rem 3rem rgba(0, 0, 0, 0.1);
   opacity: 0;
   transition: all 0.3s ease;

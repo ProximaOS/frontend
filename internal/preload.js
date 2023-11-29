@@ -17,6 +17,7 @@
   const TelephonyManager = require('../src/telephony');
   const DisplayManager = require('../src/display');
   const SmsManager = require('../src/sms');
+  const TasksManager = require('../src/tasks');
   const DeviceInformation = require('../src/device/device_info');
   const appConfig = require('../package.json');
 
@@ -123,6 +124,7 @@
   }
 
   verifyAccess('environment', 'Environment', Environment);
+  verifyAccess('tasks-manage', 'TasksManager', TasksManager);
   verifyAccess('ipc', 'IPC', IPCRenderManager);
   verifyAccess('device-info', 'DeviceInformation', DeviceInformation);
   verifyAccess('wifi-manage', 'WifiManager', WifiManager);
@@ -195,8 +197,8 @@
     if (['A', 'BUTTON', 'LI', 'INPUT'].indexOf(event.target.nodeName) === -1) {
       return;
     }
-    const x = (event.clientX / window.innerWidth) - 0.5;
-    const y = ((event.clientY / window.innerHeight) - 0.5) * -1;
+    const x = event.clientX / window.innerWidth - 0.5;
+    const y = (event.clientY / window.innerHeight - 0.5) * -1;
 
     playSpatializedAudio(x, y, 0.1, `http://shared.localhost:${location.port}/resources/sounds/click.wav`);
   });
@@ -222,18 +224,49 @@
   });
 
   document.addEventListener('DOMContentLoaded', function () {
-    require('./modules/image_handler');
     require('./modules/keyboard');
     require('./modules/media_playback');
     require('./modules/narrator');
     require('./modules/privacy_indicators');
     require('./modules/seekbars_and_switches');
     require('./modules/settings_handler');
-    // require('./modules/stylesheet_ensurer');
     require('./modules/videoplayer');
     require('./modules/picture_in_picture');
     require('./modules/webview_handler');
   });
+
+  function updateTextSelection() {
+    const selectedText = window.getSelection().toString();
+
+    if (selectedText.length > 0) {
+      const selectedRange = window.getSelection().getRangeAt(0);
+      const boundingRect = selectedRange.getBoundingClientRect();
+
+      const position = {
+        top: boundingRect.top,
+        left: boundingRect.left
+      };
+
+      const size = {
+        width: boundingRect.width,
+        height: boundingRect.height
+      };
+
+      // Call your function with the provided arguments
+      ipcRenderer.send('message', {
+        type: 'textselection',
+        action: 'show',
+        position,
+        size,
+        selectedText
+      });
+    } else {
+      ipcRenderer.send('message', {
+        type: 'textselection',
+        action: 'hide'
+      });
+    }
+  }
 
   document.addEventListener('scroll', function () {
     ipcRenderer.sendToHost('scroll', {
@@ -242,38 +275,9 @@
     });
   });
 
-  ['pointerup', 'keyup', 'keydown'].forEach((eventType) => {
+  ['pointerdown', 'pointermove', 'pointerup', 'keyup', 'keydown', 'wheel'].forEach((eventType) => {
     document.addEventListener(eventType, function () {
-      const selectedText = window.getSelection().toString();
-
-      if (selectedText.length > 0) {
-        const selectedRange = window.getSelection().getRangeAt(0);
-        const boundingRect = selectedRange.getBoundingClientRect();
-
-        const position = {
-          top: boundingRect.top,
-          left: boundingRect.left
-        };
-
-        const size = {
-          width: boundingRect.width,
-          height: boundingRect.height
-        };
-
-        // Call your function with the provided arguments
-        ipcRenderer.send('message', {
-          type: 'textselection',
-          action: 'show',
-          position,
-          size,
-          selectedText
-        });
-      } else {
-        ipcRenderer.send('message', {
-          type: 'textselection',
-          action: 'hide'
-        });
-      }
+      updateTextSelection();
     });
   });
 

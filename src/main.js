@@ -28,7 +28,7 @@ app.setPath('crashDumps', path.join(profileDir, 'crash-dumps'));
 
 // Disable error dialogs by overriding
 dialog.showErrorBox = function (title, content) {
-  // console.error(`${title}\n${content}`);
+  console.error(`${title}\n${content}`);
 };
 dialog.showMessageBox = function (options, callback) {
   // Trigger your IPC event instead of displaying the native dialog

@@ -7,6 +7,8 @@
     constructor (title, options) {
       this.title = title;
       this.options = options;
+
+      this.show();
     }
 
     requestPermission () {

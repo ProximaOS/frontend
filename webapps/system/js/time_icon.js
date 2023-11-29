@@ -4,7 +4,7 @@
   const TimeIcon = {
     iconElement: document.getElementById('statusbar-time'),
     dateElement: document.getElementById('statusbar-date'),
-    is12HourFormat: true, // Set this flag to true for 12-hour format, or false for 24-hour format
+    is12HourFormat: true,
 
     init: function () {
       this.iconElement.classList.remove('hidden');
@@ -15,9 +15,9 @@
     update: function () {
       const currentTime = new Date();
       const langCode =
-        OrchidL10n.currentLanguage === 'ar'
+        L10n.currentLanguage === 'ar'
           ? 'ar-SA'
-          : OrchidL10n.currentLanguage;
+          : L10n.currentLanguage;
 
       this.iconElement.innerText = currentTime
         .toLocaleTimeString(langCode, {

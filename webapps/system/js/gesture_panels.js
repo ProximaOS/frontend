@@ -13,15 +13,12 @@
     startY: false,
 
     init: function () {
-      this.bottomPanel.addEventListener(
-        'mousedown',
-        this.handleBottomPanel.bind(this)
-      );
-
-      document.addEventListener('touchend', this.handlePointerUp.bind(this));
-      document.addEventListener('mouseup', this.handlePointerUp.bind(this));
+      this.bottomPanel.addEventListener('touchstart', this.handleBottomPanel.bind(this));
+      this.bottomPanel.addEventListener('mousedown', this.handleBottomPanel.bind(this));
       document.addEventListener('touchmove', this.handlePointerMove.bind(this));
       document.addEventListener('mousemove', this.handlePointerMove.bind(this));
+      document.addEventListener('touchend', this.handlePointerUp.bind(this));
+      document.addEventListener('mouseup', this.handlePointerUp.bind(this));
 
       document.addEventListener('click', () => {
         this.screen.classList.remove('close-reach');
@@ -47,40 +44,25 @@
 
         const translateX = distanceX / 2;
         const translateY = Math.min(0, distanceY / 2);
-        const scale = Math.min(
-          1,
-          window.innerHeight / (window.innerHeight - distanceY)
-        );
+        const scale = Math.min(1, window.innerHeight / (window.innerHeight - distanceY));
 
         // Move the window along the Y-axis based on the dragging distance
         if (!AppWindow.focusedWindow.dataset.oldTransformOrigin) {
-          AppWindow.focusedWindow.dataset.oldTransformOrigin =
-            AppWindow.focusedWindow.style.transformOrigin;
+          AppWindow.focusedWindow.dataset.oldTransformOrigin = AppWindow.focusedWindow.style.transformOrigin;
         }
         if (AppWindow.focusedWindow.id === 'homescreen') {
           AppWindow.focusedWindow.style.transformOrigin = 'center';
           this.wallpapersContainer.classList.add('homescreen-to-cards-view');
-          this.wallpapersContainer.style.setProperty(
-            '--motion-progress',
-            Math.min(1, (1 - scale) * 2)
-          );
-          AppWindow.focusedWindow.style.transform = `scale(${
-            0.75 + scale * 0.25
-          })`;
+          this.wallpapersContainer.style.setProperty('--motion-progress', Math.min(1, (1 - scale) * 2));
+          AppWindow.focusedWindow.style.transform = `scale(${0.75 + scale * 0.25})`;
           AppWindow.focusedWindow.style.setProperty('--offset-x', 0);
           AppWindow.focusedWindow.style.setProperty('--offset-y', 0);
           AppWindow.focusedWindow.style.setProperty('--scale', scale);
         } else {
           AppWindow.focusedWindow.style.transformOrigin = 'center bottom';
           AppWindow.focusedWindow.style.transform = `translate(${translateX}px, ${translateY}px) scale(${scale})`;
-          AppWindow.focusedWindow.style.setProperty(
-            '--offset-x',
-            `${translateX}px`
-          );
-          AppWindow.focusedWindow.style.setProperty(
-            '--offset-y',
-            `${translateY}px`
-          );
+          AppWindow.focusedWindow.style.setProperty('--offset-x', `${translateX}px`);
+          AppWindow.focusedWindow.style.setProperty('--offset-y', `${translateY}px`);
           AppWindow.focusedWindow.style.setProperty('--scale', scale);
         }
       }
@@ -95,8 +77,7 @@
         const distanceY = currentYPosition - this.startY;
 
         // Reset the window transform
-        AppWindow.focusedWindow.style.transformOrigin =
-          AppWindow.focusedWindow.dataset.oldTransformOrigin;
+        AppWindow.focusedWindow.style.transformOrigin = AppWindow.focusedWindow.dataset.oldTransformOrigin;
 
         this.startX = null;
         this.startY = null;
@@ -106,9 +87,11 @@
         if (distanceY <= -300) {
           CardsView.show();
         } else if (distanceY <= -50) {
+          CardsView.hide();
           AppWindow.minimize(AppWindow.focusedWindow.id);
           AppWindow.focusedWindow.style.transform = '';
         } else if (distanceY >= 5) {
+          CardsView.hide();
           setTimeout(() => {
             this.screen.classList.add('close-reach');
           }, 16);
@@ -117,8 +100,8 @@
           AppWindow.focusedWindow.addEventListener('transitionend', () => {
             AppWindow.focusedWindow.classList.remove('transitioning');
           });
-          AppWindow.focusedWindow.style.transform = '';
         }
+        AppWindow.focusedWindow.style.transform = '';
       }
     }
   };

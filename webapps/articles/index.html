@@ -6,6 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="theme-color" media="(prefers-color-scheme: light)" content="#f0f6ff" />
   <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#101214" />
+  <link rel="shortcut icon" href="/style/icons/articles.svg" type="image/x-icon">
   <title data-l10n-id="title"></title>
   <link rel="stylesheet" type="text/css" href="http://default_theme.localhost:8081/style/index.css" />
   <link rel="stylesheet" type="text/css" href="http://shared.localhost:8081/style/layout.css" />
@@ -16,6 +17,7 @@
   <link rel="stylesheet" type="text/css" href="http://shared.localhost:8081/style/lists.css" />
   <link rel="stylesheet" type="text/css" href="http://shared.localhost:8081/style/transitions.css" />
   <link rel="stylesheet" type="text/css" href="style/index.css" />
+  <link rel="stylesheet" type="text/css" href="style/login_banner.css" />
   <link rel="stylesheet" type="text/css" href="style/posts.css" />
   <link rel="stylesheet" type="text/css" href="style/create_post.css" />
   <script type="module" src="https://orchid-f39a9.web.app/orchid_services.js"></script>
@@ -36,7 +38,7 @@
 
 <body>
   <main id="app" role="app">
-    <div class="panel-safezone">
+    <div id="views">
       <section id="root" role="panel">
         <header class="compact" role="header">
           <div class="safezone">
@@ -56,8 +58,10 @@
             </ul>
 
             <ul>
-              <li data-icon="home"><a href="#">Home</a></li>
+              <li data-icon="home" data-page-id="home"><a href="#">Home</a></li>
+              <li data-icon="search"><a href="#">Explore</a></li>
               <li data-icon="bell"><a href="#">Notifications</a></li>
+              <li data-icon="bookmark"><a href="#">Bookmarks</a></li>
               <li data-icon="settings"><a href="#">Settings</a></li>
             </ul>
 
@@ -69,8 +73,11 @@
       <section id="home" class="visible" role="panel">
         <header class="compact" role="header">
           <div class="safezone">
-            <a href="#" data-icon="menu"></a>
+            <a href="#" data-icon="menu" data-page-id="root"></a>
             <h1>Home</h1>
+            <menu role="toolbar">
+              <a href="#" data-icon="trending" data-page-id="trending"></a>
+            </menu>
           </div>
         </header>
         <div class="content">
@@ -122,6 +129,7 @@
       <section id="trending" role="panel">
         <header class="compact" role="header">
           <div class="safezone">
+            <a href="#" data-icon="arrow-back" data-page-id="home"></a>
             <h1>Trending</h1>
           </div>
         </header>
@@ -135,24 +143,37 @@
           </ul>
         </div>
       </section>
+
+      <form action="" id="create-post">
+        <div class="container">
+          <section>
+            <div class="header">
+              <button id="create-post-close-button" data-icon="close"></button>
+              <select name="" id="create-post-audience">
+                <option value="public">Public</option>
+              </select>
+            </div>
+            <textarea name="" id="create-post-input" rows="5" placeholder="Write your post..."></textarea>
+          </section>
+          <menu>
+            <button id="create-post-submit-button">Post</button>
+          </menu>
+        </div>
+      </form>
     </div>
 
-    <form action="" id="create-post">
-      <div class="container">
-        <section>
-          <div class="header">
-            <button id="create-post-close-button" data-icon="close"></button>
-            <select name="" id="create-post-audience">
-              <option value="public">Public</option>
-            </select>
-          </div>
-          <textarea name="" id="create-post-input" rows="5" placeholder="Write your post..."></textarea>
-        </section>
-        <menu>
-          <button id="create-post-submit-button">Post</button>
-        </menu>
+    <div id="login-banner">
+      <div class="safezone">
+        <div class="text-holder">
+          <h1>Login With Orchid</h1>
+          <p>Login to be able to post, follow, and like posts.</p>
+        </div>
+        <div class="buttons">
+          <button>Login</button>
+          <button data-icon="close"></button>
+        </div>
       </div>
-    </form>
+    </div>
   </main>
 </body>
 

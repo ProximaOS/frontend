@@ -6,14 +6,21 @@
     gridElement: document.getElementById('launcher-grid'),
     launcherButton: document.getElementById('software-launcher-button'),
     maximizeButton: document.getElementById('launcher-maximize-button'),
+    powerButton: document.getElementById('launcher-power-button'),
+    settingsButton: document.getElementById('launcher-settings-button'),
+    filesButton: document.getElementById('launcher-files-button'),
     shortcuts: document.getElementById('launcher-shortcuts'),
     shortcutsMenu: document.getElementById('launcher-shortcuts-menu'),
     shortcutsList: document.getElementById('launcher-shortcuts-menu-options'),
     shortcutsFakeIcon: document.getElementById('launcher-shortcuts-fake-icon'),
     paginationBar: document.getElementById('launcher-paginationBar'),
     dock: document.getElementById('dock'),
-    apps: [],
 
+    accountButton: document.getElementById('launcher-account-button'),
+    accountButtonAvatar: document.getElementById('launcher-account-avatar'),
+    accountButtonUsername: document.getElementById('launcher-account-username'),
+
+    apps: [],
     gridColumns: 6,
     gridRows: 4,
     isHoldingDown: false,
@@ -31,7 +38,7 @@
       'http://dialer.localhost:8081/manifest.json'
     ],
 
-    init: function () {
+    init: async function () {
       if (platform() !== 'desktop') {
         return;
       }
@@ -45,6 +52,9 @@
       this.gridElement.addEventListener('pointerup', this.onPointerUp.bind(this));
       this.gridElement.addEventListener('contextmenu', this.handleContextMenu.bind(this));
       this.gridElement.addEventListener('scroll', this.handleSwiping.bind(this));
+      this.powerButton.addEventListener('click', this.handleLauncherPowerButtonClick.bind(this));
+      this.settingsButton.addEventListener('click', this.handleLauncherSettingsButtonClick.bind(this));
+      this.filesButton.addEventListener('click', this.handleLauncherFilesButtonClick.bind(this));
 
       const apps = AppsManager.getAll();
       apps.then((data) => {
@@ -52,6 +62,21 @@
         this.createIcons();
         this.handleSwiping();
       });
+
+      if ('OrchidServices' in window) {
+        if (await OrchidServices.isUserLoggedIn()) {
+          this.accountButton.style.display = '';
+          OrchidServices.getWithUpdate(
+            `profile/${await OrchidServices.userId()}`,
+            (data) => {
+              this.accountButtonAvatar.src = data.profile_picture;
+              this.accountButtonUsername.textContent = data.username;
+            }
+          );
+        } else {
+          this.accountButton.style.display = 'none';
+        }
+      }
     },
 
     handleLauncherButtonClick: function (event) {
@@ -60,6 +85,18 @@
 
     handleLauncherMaximizeButtonClick: function (event) {
       this.element.classList.toggle('maximized');
+    },
+
+    handleLauncherPowerButtonClick: function (event) {
+      PowerScreen.show();
+    },
+
+    handleLauncherSettingsButtonClick: function (event) {
+      AppWindow.create('http://settings.localhost:8081/manifest.json', {});
+    },
+
+    handleLauncherFilesButtonClick: function (event) {
+      AppWindow.create('http://files.localhost:8081/manifest.json', {});
     },
 
     splitArray: function (array, chunkSize) {
@@ -195,7 +232,7 @@
     handleAppClick: function (event, app, icon) {
       let langCode;
       try {
-        langCode = OrchidL10n.currentLanguage || 'en-US';
+        langCode = L10n.currentLanguage || 'en-US';
       } catch (error) {
         // If an error occurs, set a default value for langCode
         langCode = 'en-US';
@@ -249,7 +286,7 @@
 
       let langCode;
       try {
-        langCode = OrchidL10n.currentLanguage || 'en-US';
+        langCode = L10n.currentLanguage || 'en-US';
       } catch (error) {
         // If an error occurs, set a default value for langCode
         langCode = 'en-US';

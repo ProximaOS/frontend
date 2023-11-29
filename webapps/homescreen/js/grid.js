@@ -121,7 +121,33 @@
       this.gridElement.appendChild(fragment);
     },
 
-    createAppIcon: function (page, app, index) {
+    createAppIcon: async function (page, app, index) {
+      let langCode;
+      try {
+        langCode = L10n.currentLanguage || 'en-US';
+      } catch (error) {
+        // If an error occurs, set a default value for langCodes
+        langCode = 'en-US';
+      }
+
+      let manifestUrl;
+      if (app.manifestUrl[langCode]) {
+        manifestUrl = app.manifestUrl[langCode];
+      } else {
+        manifestUrl = app.manifestUrl['en-US'];
+      }
+
+      let manifest;
+      await fetch(manifestUrl)
+        .then((response) => response.json())
+        .then(function (data) {
+          manifest = data;
+          // You can perform further operations with the 'manifest' variable here
+        })
+        .catch(function (error) {
+          console.error('Error fetching manifest:', error);
+        });
+
       const icon = document.createElement('li');
       icon.id = `appicon${index}`;
       icon.classList.add('icon');
@@ -134,20 +160,32 @@
       iconHolder.classList.add('icon-holder');
       icon.appendChild(iconHolder);
 
-      const iconContainer = document.createElement('img');
-      iconContainer.draggable = false;
-      iconContainer.crossOrigin = 'anonymous';
-      Object.entries(app.manifest.icons).forEach((entry) => {
-        if (entry[0] <= this.APP_ICON_SIZE) {
-          return;
+      let iconContainer;
+      // Used timeout to fix wrong order
+      setTimeout(() => {
+        if (app.manifest.homescreen && app.manifest.homescreen.dynamic_icon && app.manifest.homescreen.dynamic_icon.start_url) {
+          iconContainer = document.createElement('iframe');
+          iconContainer.classList.add('appicon');
+          const url = new URL(manifestUrl);
+          iconContainer.src = url.origin + app.manifest.homescreen.dynamic_icon.start_url;
+          iconHolder.appendChild(iconContainer);
+        } else {
+          iconContainer = document.createElement('img');
+          iconContainer.classList.add('appicon');
+          iconContainer.draggable = false;
+          iconContainer.crossOrigin = 'anonymous';
+          Object.entries(app.manifest.icons).forEach((entry) => {
+            if (entry[0] <= this.APP_ICON_SIZE) {
+              return;
+            }
+            iconContainer.src = entry[1];
+          });
+          iconContainer.onerror = () => {
+            iconContainer.src = '/images/default.svg';
+          };
+          iconHolder.appendChild(iconContainer);
         }
-        iconContainer.src = entry[1];
-      });
-      iconContainer.onerror = () => {
-        iconContainer.src = '/images/default.svg';
-      };
-      DirectionalScale.init(iconContainer);
-      iconHolder.appendChild(iconContainer);
+      }, 300);
 
       const notificationBadge = document.createElement('span');
       notificationBadge.textContent = 0;
@@ -161,7 +199,7 @@
 
       const name = document.createElement('div');
       name.classList.add('name');
-      name.textContent = app.manifest.name;
+      name.textContent = manifest.name;
       icon.appendChild(name);
     },
 
@@ -173,7 +211,7 @@
       for (let index = 0; index < carouselItems.length; index++) {
         const item = carouselItems[index];
         const pageX = item.getBoundingClientRect().left;
-        const progress = Math.max(0, Math.min(1, 1 - (pageX / item.offsetWidth)));
+        const progress = Math.max(0, Math.min(1, 1 - pageX / item.offsetWidth));
         dots[index].style.setProperty('--pagination-progress', progress);
 
         if (progress > 0.5 && activeIndex === -1) {
@@ -189,7 +227,7 @@
     handleAppClick: function (event, app, icon) {
       let langCode;
       try {
-        langCode = OrchidL10n.currentLanguage || 'en-US';
+        langCode = L10n.currentLanguage || 'en-US';
       } catch (error) {
         // If an error occurs, set a default value for langCodes
         langCode = 'en-US';
@@ -262,7 +300,7 @@
 
       let langCode;
       try {
-        langCode = OrchidL10n.currentLanguage || 'en-US';
+        langCode = L10n.currentLanguage || 'en-US';
       } catch (error) {
         // If an error occurs, set a default value for langCode
         langCode = 'en-US';
@@ -292,7 +330,15 @@
       const launcherBox = this.element.getBoundingClientRect();
       const iconBox = icon.getBoundingClientRect();
 
-      this.shortcutsFakeIcon.src = icon.src;
+      Object.entries(app.manifest.icons).forEach((entry) => {
+        if (entry[0] <= this.APP_ICON_SIZE) {
+          return;
+        }
+        this.shortcutsFakeIcon.src = entry[1];
+      });
+      this.shortcutsFakeIcon.onerror = () => {
+        this.shortcutsFakeIcon.src = '/images/default.svg';
+      };
       this.shortcutsFakeIcon.style.left = iconBox.left - launcherBox.left + 'px';
       this.shortcutsFakeIcon.style.top = iconBox.top - launcherBox.top + 'px';
 
@@ -346,5 +392,9 @@
     }
   };
 
-  Grid.init();
+  window.addEventListener('load', () => {
+    setTimeout(() => {
+      Grid.init();
+    }, 500);
+  });
 })(window);

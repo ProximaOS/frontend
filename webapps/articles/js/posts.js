@@ -1,12 +1,6 @@
 !(function (exports) {
   'use strict';
 
-  window.addEventListener('orchidservicesload', () => {
-    OrchidServices.getList('posts', (array) => {
-      Posts.populate(array);
-    });
-  });
-
   const Posts = {
     homePanel: document.getElementById('home'),
 
@@ -21,6 +15,14 @@
     postText: document.getElementById('post-text'),
 
     init: function () {
+      window.addEventListener('orchidservicesload', () => {
+        OrchidServices.list('posts').then((array) => {
+          array.forEach(element => {
+            this.populate(element);
+          });
+        });
+      });
+
       this.backButton.addEventListener('click', this.handleBackButton.bind(this));
     },
 
@@ -58,7 +60,7 @@
 
       const date = document.createElement('span');
       date.classList.add('date');
-      date.textContent = new Date(data.timeCreated).toLocaleDateString(
+      date.textContent = new Date(data.time_created).toLocaleDateString(
         navigator.language,
         {
           year: 'numeric',
@@ -77,11 +79,15 @@
 
       const views = document.createElement('span');
       views.classList.add('views');
-      views.textContent = data.views.length;
+      if (data.views) {
+        views.textContent = data.views.length;
+      } else {
+        views.textContent = 0;
+      }
       stats.appendChild(views);
 
-      OrchidServices.get(`profile/${data.publisherId}`).then((data) => {
-        icon.src = data.profilePicture;
+      OrchidServices.get(`profile/${data.publisher_id}`).then((data) => {
+        icon.src = data.profile_picture;
         username.textContent = data.username;
       });
 
@@ -91,7 +97,7 @@
 
       const text = document.createElement('div');
       text.classList.add('text');
-      text.innerText = data.textContent;
+      text.innerText = data.content;
       content.appendChild(text);
 
       const options = document.createElement('div');
@@ -130,7 +136,7 @@
       this.postPanel.classList.add('visible');
       this.selectedElement = element;
 
-      this.postDate.textContent = new Date(data.timeCreated).toLocaleDateString(
+      this.postDate.textContent = new Date(data.time_created).toLocaleDateString(
         navigator.language,
         {
           year: 'numeric',
@@ -143,12 +149,12 @@
       );
       this.postViews.innerText = data.views.length;
 
-      OrchidServices.get(`profile/${data.publisherId}`).then((data) => {
-        this.postAvatar.src = data.profilePicture;
+      OrchidServices.get(`profile/${data.publisher_id}`).then((data) => {
+        this.postAvatar.src = data.profile_picture;
         this.postUsername.textContent = data.username;
       });
 
-      this.postText.innerText = data.textContent;
+      this.postText.innerText = data.content;
     },
 
     handleBackButton: function (event) {

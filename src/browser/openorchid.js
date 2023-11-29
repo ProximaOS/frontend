@@ -2,7 +2,6 @@
   'use strict';
 
   const { BrowserWindow, nativeTheme, Menu, ipcMain, BrowserView, app } = require('electron');
-  const settings = require('../settings');
   const os = require('os');
   const path = require('path');
   const fs = require('fs');
@@ -138,7 +137,7 @@
         webviewTag: true,
         defaultFontSize: 16,
         defaultMonospaceFontSize: 14,
-        defaultFontFamily: 'Jali Arabic',
+        defaultFontFamily: '-orchid-internal-font',
         disableDialogs: true,
         preload: path.join(__dirname, '..', '..', 'internal', 'preload.js'),
         enableBlinkFeatures: 'OverlayScrollbar',
@@ -207,7 +206,7 @@
     });
 
     // Get settings
-    settings.getValue('video.dark_mode.enabled').then((result) => {
+    Settings.getValue('video.dark_mode.enabled').then((result) => {
       nativeTheme.themeSource = result ? 'dark' : 'light';
     });
 

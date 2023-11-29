@@ -7,6 +7,35 @@
     memory: {},
     memory_profile: 'Orchid AI',
 
+    translateTo: function (text, targetLanguage) {
+      const url = 'https://translation.googleapis.com/language/translate/v2?key=AIzaSyBJHGk4_lPVNEyL6-n_VkbfmOGuC2bd8dQ';
+
+      const data = {
+        q: text,
+        target: targetLanguage
+      };
+
+      return fetch(url, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+      })
+        .then(response => response.json())
+        .then(result => {
+          if (result && result.data && result.data.translations) {
+            return result.data.translations[0].translatedText;
+          } else {
+            throw new Error('Translation failed');
+          }
+        })
+        .catch(error => {
+          console.error('Translation error:', error);
+          return null;
+        });
+    },
+
     getRandomVariation: function (reply) {
       if (typeof reply !== 'string') return reply;
       return reply.replace(/{([^}]+)\|([^}]+)}/g, (_, p1, p2) => {

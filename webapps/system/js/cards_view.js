@@ -8,6 +8,7 @@
     element: document.getElementById('cards-view'),
     cardsContainer: document.getElementById('cards-view-list'),
     toggleButton: document.getElementById('software-recents-button'),
+    cardsViewButton: document.getElementById('software-cards-view-button'),
 
     APP_ICON_SIZE: 50,
 
@@ -19,6 +20,7 @@
     init: function () {
       this.element.addEventListener('click', this.hide.bind(this));
       this.toggleButton.addEventListener('click', this.handleToggleButton.bind(this));
+      this.cardsViewButton.addEventListener('click', this.handleToggleButton.bind(this));
 
       if ('StickyScroll' in window) {
         StickyScroll.init(this.element, '.card-area');
@@ -31,6 +33,10 @@
       this.screen.classList.add('cards-view-visible');
       this.cardsContainer.innerHTML = '';
 
+      if ('MusicController' in window) {
+        MusicController.applyMuffleEffect();
+      }
+
       CardsView.element.style.setProperty('--aspect-ratio', `${window.innerWidth} / ${window.innerHeight}`);
 
       const windows = this.windowContainer.querySelectorAll('.appframe:not(#homescreen)');
@@ -38,7 +44,9 @@
         const appWindow = windows[index];
         this.createCard(index, appWindow.dataset.manifestUrl, appWindow, appWindow.querySelector('.browser-view.active .browser'));
 
-        Transitions.scale(AppWindow.focusedWindow, CardsView.targetPreviewElement, true);
+        if ('Transitions' in window && AppWindow.focusedWindow && this.targetPreviewElement) {
+          Transitions.scale(AppWindow.focusedWindow, this.targetPreviewElement, true);
+        }
       }
     },
 
@@ -50,10 +58,16 @@
       this.element.classList.remove('visible');
       this.screen.classList.remove('cards-view-visible');
 
-      CardsView.element.style.setProperty('--offset-y', null);
-      CardsView.element.style.setProperty('--scale', null);
+      if ('MusicController' in window) {
+        MusicController.disableMuffleEffect();
+      }
 
-      Transitions.scale(this.targetPreviewElement, AppWindow.focusedWindow);
+      this.element.style.setProperty('--offset-y', null);
+      this.element.style.setProperty('--scale', null);
+
+      if ('Transitions' in window && this.targetPreviewElement && AppWindow.focusedWindow) {
+        Transitions.scale(this.targetPreviewElement, AppWindow.focusedWindow);
+      }
     },
 
     createCard: async function (index, manifestUrl, appWindow, webview) {
@@ -128,7 +142,7 @@
           continue;
         }
         const url = new URL(manifestUrl);
-        icon.src = url.origin + '/' + entry[1];
+        icon.src = url.origin + entry[1];
       }
 
       const titles = document.createElement('div');

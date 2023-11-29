@@ -5,10 +5,10 @@
   height: var(--statusbar-height);
   transition: all 0.3s cubic-bezier(0.5, 0.8, 0, 1), transform 0.5s cubic-bezier(0.5, 0.8, 0, 1.1);
 }
-html[dir="ltr"] #statusbar {
+html[dir='ltr'] #statusbar {
   right: 0;
 }
-html[dir="rtl"] #statusbar {
+html[dir='rtl'] #statusbar {
   left: 0;
 }
 
@@ -30,33 +30,40 @@ html[dir="rtl"] #statusbar {
   opacity: 0;
 }
 
-#screen:not(.desktop) #statusbar.tray-open {
-  transform: translateY(calc((var(--statusbar-height) * var(--motion-progress, 0)) + (0.5rem * var(--overscroll-progress))));
+#screen:not(.desktop) #statusbar.utility-tray-motion {
+  transform: translateY(calc((var(--statusbar-height) * var(--motion-progress, 0)) + (1rem * var(--overscroll-progress))));
   transition: transform 0.3s ease;
 }
 
-#screen:not(.desktop).close-reach #statusbar.tray-open {
-  transform: translateY(calc(40vh + ((0.5rem * var(--overscroll-progress)))));
+#screen:not(.desktop).close-reach #statusbar.utility-tray-motion {
+  transform: translateY(calc(40vh + ((1rem * var(--overscroll-progress)))));
 }
 
-#screen:not(.desktop) #statusbar.hidden.tray-open {
-  transform: translateY(calc((var(--statusbar-height) * -1) + (calc((var(--statusbar-height) * var(--motion-progress, 0)) + (1rem * var(--overscroll-progress))))));
+#screen:not(.desktop) #statusbar.hidden.utility-tray-motion {
+  transform: translateY(
+    calc((var(--statusbar-height) * -1) + (calc((var(--statusbar-height) * var(--motion-progress, 0)) + (1rem * var(--overscroll-progress)))))
+  );
 }
 
-#screen:not(.desktop) #statusbar.hidden.tray-open {
-  transform: translateY(calc((var(--statusbar-height) * -1) + (((var(--statusbar-height) * 2) * var(--motion-progress)) + (0.5rem * var(--overscroll-progress)))));
+#screen:not(.desktop) #statusbar.hidden.utility-tray-motion {
+  transform: translateY(
+    calc((var(--statusbar-height) * -1) + (((var(--statusbar-height) * 2) * var(--motion-progress)) + (1rem * var(--overscroll-progress))))
+  );
   opacity: var(--motion-progress, 0);
 }
 
-#screen:not(.desktop) #statusbar.tray-open.transitioning {
-  transition: transform 0.5s cubic-bezier(0.47, 1.64, 0.41, 0.8);
+#screen:not(.desktop) #statusbar.utility-tray-motion.transitioning {
+  transition: transform 0.5s cubic-bezier(0.5, 0.8, 0, 1.1);
 }
 
 .statusbar-icons {
   position: absolute;
   top: 0;
   left: 0;
-  width: calc(100% - calc((var(--statusbar-padding-left) * (1 - var(--motion-progress, 0))) + (3rem * var(--motion-progress, 0))) - calc((var(--statusbar-padding-right) * (1 - var(--motion-progress, 0))) + (3rem * var(--motion-progress, 0))));
+  width: calc(
+    100% - calc((var(--statusbar-padding-left) * (1 - var(--motion-progress, 0))) + (3rem * var(--motion-progress, 0))) -
+      calc((var(--statusbar-padding-right) * (1 - var(--motion-progress, 0))) + (3rem * var(--motion-progress, 0)))
+  );
   height: 100%;
   margin-right: calc((var(--statusbar-padding-right) * (1 - var(--motion-progress, 0))) + (3rem * var(--motion-progress, 0)));
   margin-left: calc((var(--statusbar-padding-left) * (1 - var(--motion-progress, 0))) + (3rem * var(--motion-progress, 0)));
@@ -72,10 +79,10 @@ html[dir="rtl"] #statusbar {
   width: 50%;
   height: 100%;
 }
-html[dir="ltr"] .statusbar-icons > .left {
+html[dir='ltr'] .statusbar-icons > .left {
   left: 0;
 }
-html[dir="rtl"] .statusbar-icons > .left {
+html[dir='rtl'] .statusbar-icons > .left {
   right: 0;
 }
 
@@ -89,10 +96,10 @@ html[dir="rtl"] .statusbar-icons > .left {
   width: 50%;
   height: 100%;
 }
-html[dir="ltr"] .statusbar-icons > .right {
+html[dir='ltr'] .statusbar-icons > .right {
   left: 50%;
 }
-html[dir="rtl"] .statusbar-icons > .right {
+html[dir='rtl'] .statusbar-icons > .right {
   right: 50%;
 }
 
@@ -106,11 +113,12 @@ html[dir="rtl"] .statusbar-icons > .right {
   font-size: 1.6rem;
   line-height: 2rem;
   text-align: center;
-  transition: opacity 0.3s cubic-bezier(0.2, 0.9, 0.1, 1.25) 0.3s, transform 0.3s cubic-bezier(0.2, 0.9, 0.1, 1.25) 0.3s, visibility 0.3s cubic-bezier(0.2, 0.9, 0.1, 1.25) 0.3s, margin 0.3s cubic-bezier(0.2, 0.9, 0.1, 1.25);
+  transition: opacity 0.3s cubic-bezier(0.2, 0.9, 0.1, 1.25) 0.3s, transform 0.3s cubic-bezier(0.2, 0.9, 0.1, 1.25) 0.3s,
+    visibility 0.3s cubic-bezier(0.2, 0.9, 0.1, 1.25) 0.3s, margin 0.3s cubic-bezier(0.2, 0.9, 0.1, 1.25);
 }
 
-#screen:not(.desktop, .cards-view-visible) #statusbar:not(.tray-open).light .statusbar-icons > .left div,
-#screen:not(.desktop, .cards-view-visible) #statusbar:not(.tray-open).light .statusbar-icons > .right div {
+#screen:not(.desktop, .cards-view-visible) #statusbar:not(.utility-tray-motion).light .statusbar-icons > .left div,
+#screen:not(.desktop, .cards-view-visible) #statusbar:not(.utility-tray-motion).light .statusbar-icons > .right div {
   color: #333;
 }
 
@@ -176,8 +184,18 @@ html[dir="rtl"] .statusbar-icons > .right {
   font-size: 1.8rem;
 }
 
-#statusbar-time {
-  transition: all 0.3s cubic-bezier(0.2, 0.9, 0.1, 1), opacity 0.3s ease, transform 0.3s ease, visibility 0.3s ease, margin 0.3s cubic-bezier(0.2, 0.9, 0.1, 1) 0.3s;
+#screen.desktop #statusbar .timedate {
+  display: flex;
+  flex-direction: column;
+  align-items: end;
+  height: 2.8rem;
+}
+
+#screen.desktop #statusbar #statusbar-time {
+  height: 1.4rem;
+  font-weight: 500;
+  font-size: 1.2rem;
+  line-height: 1.4rem;
 }
 
 #statusbar-date {
@@ -191,7 +209,7 @@ html[dir="rtl"] .statusbar-icons > .right {
   opacity: 0;
 }
 
-#statusbar.tray-open #statusbar-date {
+#statusbar.utility-tray-motion #statusbar-date {
   visibility: visible;
   margin: 0 calc(var(--hide-margin, -1rem) * (1 - var(--motion-progress, 0)));
   transform: scale(calc(0.2 + (0.8 * var(--motion-progress, 0))));
@@ -201,7 +219,16 @@ html[dir="rtl"] .statusbar-icons > .right {
 }
 
 #screen.desktop #statusbar #statusbar-date {
-  display: none;
+  visibility: visible;
+  height: 1.4rem;
+  margin: 0 0.2rem;
+  transform: none;
+  font-weight: 500;
+  font-size: 1.2rem;
+  line-height: 1.4rem;
+  filter: none;
+  opacity: 1;
+  transition: none;
 }
 
 #statusbar-battery::before {
@@ -213,10 +240,10 @@ html[dir="rtl"] .statusbar-icons > .right {
 
 #statusbar-battery.charging {
   position: relative;
-  color: rgba(255,255,255,0.5);
+  color: rgba(255, 255, 255, 0.5);
 }
 
-#screen:not(.desktop, .cards-view-visible) #statusbar:not(.tray-open).light #statusbar-battery.charging {
+#screen:not(.desktop, .cards-view-visible) #statusbar:not(.utility-tray-motion).light #statusbar-battery.charging {
   color: rgba(51, 51, 51, 0.5);
 }
 
@@ -235,7 +262,7 @@ html[dir="rtl"] .statusbar-icons > .right {
   opacity: 0;
 }
 
-#statusbar.tray-open #statusbar-battery-percentage {
+#statusbar.utility-tray-motion #statusbar-battery-percentage {
   visibility: visible;
   margin: 0 calc(var(--hide-margin, -1rem) * (1 - var(--motion-progress, 0)));
   transform: scale(calc(0.2 + (0.8 * var(--motion-progress, 0))));
@@ -294,7 +321,7 @@ html[dir="rtl"] .statusbar-icons > .right {
 
 @media screen and (min-width: 768px) {
   #screen.mobile #statusbar-date,
-  #screen.mobile #statusbar.tray-open #statusbar-date {
+  #screen.mobile #statusbar.utility-tray-motion #statusbar-date {
     visibility: visible;
     position: relative;
     margin: 0 0.2rem;
@@ -315,15 +342,15 @@ html[dir="rtl"] .statusbar-icons > .right {
     content: '';
     opacity: 0.5;
   }
-  html[dir="ltr"] #statusbar-date::after {
+  html[dir='ltr'] #statusbar-date::after {
     left: 0.2rem;
   }
-  html[dir="rtl"] #statusbar-date::after {
+  html[dir='rtl'] #statusbar-date::after {
     right: 0.2rem;
   }
 
   #screen.mobile #statusbar-battery-percentage,
-  #screen.mobile #statusbar.tray-open #statusbar-battery-percentage {
+  #screen.mobile #statusbar.utility-tray-motion #statusbar-battery-percentage {
     visibility: visible;
     margin: 0 0.2rem;
     padding-inline-start: 1rem;
@@ -339,10 +366,10 @@ html[dir="rtl"] .statusbar-icons > .right {
     left: unset;
     width: calc(100% - var(--software-buttons-height));
   }
-  html[dir="ltr"] #screen.software-buttons-enabled #statusbar {
+  html[dir='ltr'] #screen.software-buttons-enabled #statusbar {
     right: 0;
   }
-  html[dir="rtl"] #screen.software-buttons-enabled #statusbar {
+  html[dir='rtl'] #screen.software-buttons-enabled #statusbar {
     left: 0;
   }
 }

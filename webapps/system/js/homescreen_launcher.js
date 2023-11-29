@@ -22,11 +22,13 @@
 
     handleHomescreen: function (value) {
       AppWindow.create(value, {});
+      AppWindow.focus('homescreen');
     },
 
     handleHomescreenChange: function (value) {
       AppWindow.close('homescreen');
       AppWindow.create(value, {});
+      AppWindow.focus('homescreen');
     }
   };
 

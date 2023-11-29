@@ -2,13 +2,13 @@
   display: flex;
   visibility: hidden;
   position: absolute;
-  bottom: calc(var(--software-buttons-height) + 2rem);
+  bottom: calc(var(--dock-height) + 2rem);
   left: calc(50% - 28rem);
   flex-direction: column;
   width: 56rem;
   height: 48rem;
   overflow: hidden;
-  transform: translateY(var(--software-buttons-height));
+  transform: translateY(var(--dock-height));
   transform-origin: bottom;
   border-radius: 2rem;
   backdrop-filter: blur(20px) saturate(180%);
@@ -27,7 +27,7 @@
   visibility: visible;
   transform: translateY(0);
   opacity: 1;
-  transition: all 0.5s cubic-bezier(0.2, 0.9, 0.1, 1.1);
+  transition: all 0.5s cubic-bezier(0.2, 0.9, 0.1, 1);
 }
 
 #launcher.maximized {
@@ -89,12 +89,57 @@
   box-sizing: border-box;
   flex-shrink: 0;
   width: 4rem;
+  height: 4rem;
   padding: 0 1rem;
+  line-height: 4rem;
 }
 
 #launcher .header button[data-icon]::before,
 #launcher .footer button[data-icon]::before {
   position: static;
+}
+
+#launcher .footer figure {
+  box-sizing: border-box;
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  height: 4rem;
+  margin: 0;
+  padding: 0 1.5rem;
+  padding-inline-start: 0.2rem;
+  gap: 1rem;
+  border-radius: 2rem;
+}
+
+#launcher .footer figure:hover {
+  background-color: var(--item-hover);
+}
+
+#launcher .footer figure:active {
+  background-color: var(--item-active);
+}
+
+#launcher-account-avatar {
+  width: 3.6rem;
+  height: 3.6rem;
+  border-radius: 50%;
+  background-color: var(--background-plus);
+}
+
+#launcher .footer figure > figcaption {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin: 0;
+  padding: 0;
+}
+
+#launcher-account-username {
+  color: var(--text-color);
+  font-weight: normal;
+  font-size: 1.6rem;
+  line-height: 2.2rem;
 }
 
 /* Grid */

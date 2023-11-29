@@ -1,22 +1,26 @@
 #bookmarks {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(8.75rem, 1fr));
+  gap: 1rem;
 }
 
 .bookmark {
+  box-sizing: border-box;
   width: 100%;
-  border-radius: 1rem;
+  padding: 0.5rem;
+  border-radius: 1.5rem;
+  background-color: var(--background-plus);
   transition: background-color 0.3s ease;
 }
 
 .bookmark:hover {
   background-color: var(--item-hover);
-  transition: none;
+  transition: background-color 0.1s ease;
 }
 
 .bookmark:active {
   background-color: var(--item-active);
-  transition: none;
+  transition: background-color 0.1s ease;
 }
 
 .bookmark .icon-holder {
@@ -26,12 +30,14 @@
 }
 
 .bookmark .icon-holder > img {
+  box-sizing: border-box;
   display: block;
   width: 5rem;
   height: 5rem;
   margin: 0 auto;
+  padding: 0.6rem;
   object-fit: cover;
-  border-radius: 50%;
+  border-radius: 25%;
   background-color: var(--item-plus);
 }
 

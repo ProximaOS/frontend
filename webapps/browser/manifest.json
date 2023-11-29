@@ -20,7 +20,9 @@
   "orientation": "portrait-primary",
   "background_color": "#f0f6ff",
   "theme_color": "#8030a0",
-  "permissions": {},
+  "permissions": {
+    "settings": { "access": "readwrite" }
+  },
   "chrome": {
     "navigation": true
   },

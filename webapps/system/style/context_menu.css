@@ -38,7 +38,9 @@
 
 #context-menu-content li:not(.separator):not(.nav) {
   box-sizing: border-box;
+  display: flex;
   position: relative;
+  align-items: center;
   width: 100%;
   height: 4rem;
   margin: 0;
@@ -110,6 +112,41 @@ html[dir='rtl'] #context-menu-content li[data-icon]:not(.separator):not(.nav):be
   right: 1rem;
 }
 
+#context-menu-content li:not(.separator):not(.nav) > .new {
+  margin-inline-start: 1rem;
+  padding: 0.2rem 1rem;
+  border-radius: 1rem;
+  background-image: linear-gradient(to right, var(--item-plus), var(--item-plus) 50%, var(--item-active) 75%, var(--item-plus));
+  background-position: 0 0;
+  background-size: 200%;
+  color: var(--accent-color);
+  line-height: 2.2rem;
+  animation: context-menu-new 2s ease;
+}
+
+@keyframes context-menu-new {
+  from {
+    background-position: 0 0;
+  }
+  to {
+    background-position: 200% 0;
+  }
+}
+
+#context-menu-content li:not(.separator):not(.nav):hover > .new {
+  background-color: var(--accent-color);
+  color: var(--accent-color-plus);
+  animation: none;
+}
+
+#context-menu-content li:not(.separator):not(.nav) > .keybind {
+  margin-inline-start: auto;
+  padding-inline-start: 1rem;
+  color: var(--text-color-faded);
+  font-size: 1.4rem;
+  text-transform: uppercase;
+}
+
 #context-menu-content .separator {
   width: calc(100% + 1rem);
   height: 0.5rem;
@@ -136,13 +173,13 @@ html[dir='rtl'] #context-menu-content li[data-icon]:not(.separator):not(.nav):be
 
 #context-menu-content .nav > ul li {
   flex-grow: 1;
+  justify-content: center;
   width: 100%;
   height: 4rem;
   margin: 0;
   padding: 0 1rem !important;
   line-height: 4rem;
   list-style: none;
-  text-align: center;
 }
 
 #context-menu-content .nav > ul li[data-icon] {

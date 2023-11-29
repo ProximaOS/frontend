@@ -16,7 +16,7 @@
             stroke-miterlimit: 10;
             stroke-linecap: round;
             transform-origin: 50% 50%;
-            stroke: var(--accent-color);
+            stroke: #fff;
           }
 
           @keyframes spinner {
@@ -27,7 +27,7 @@
             }
             100% {
               stroke-dasharray: 130,200;
-              stroke-dashoffset: -43.9;
+              stroke-dashoffset: -43;
               transform: rotate(-360deg);
             }
           }
@@ -51,3 +51,4 @@
 
   exports.LoadingScreen = LoadingScreen;
 })(window);
+

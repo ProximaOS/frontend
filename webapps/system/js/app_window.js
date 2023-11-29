@@ -5,7 +5,7 @@
     _id: 0,
 
     screen: document.getElementById('screen'),
-    wallpapers: document.getElementById('wallpapers'),
+    wallpapersContainer: document.getElementById('wallpapers'),
     containerElement: document.getElementById('windows'),
     statusbar: document.getElementById('statusbar'),
     softwareButtons: document.getElementById('software-buttons'),
@@ -133,7 +133,7 @@
       this.containerElement.appendChild(fragment);
 
       // Focus the app window
-      this.focus(windowId);
+      this.focus(windowDiv.id);
     },
 
     handleWindowContextMenu: function (event, windowDiv) {
@@ -359,7 +359,7 @@
     },
 
     initializeBrowser: function (windowId, chromeContainer, startUrl, isChromeEnabled) {
-      Browser.init(chromeContainer, startUrl, isChromeEnabled);
+      const browser = new Chrome(chromeContainer, startUrl, isChromeEnabled);
 
       chromeContainer.addEventListener('mousedown', this.startDrag.bind(this, windowId));
       chromeContainer.addEventListener('touchstart', this.startDrag.bind(this, windowId));
@@ -382,7 +382,7 @@
           continue;
         }
         const url = new URL(manifestUrl);
-        iconImage.src = url.origin + '/' + entry[1];
+        iconImage.src = url.origin + entry[1];
       }
     },
 
@@ -407,6 +407,8 @@
       if (this.isDragging) {
         return;
       }
+      this.wallpapersContainer.classList.remove('homescreen-to-cards-view');
+      this.wallpapersContainer.style.setProperty('--motion-progress', 0);
 
       const windowDiv = document.getElementById(id);
       const manifestUrl = windowDiv.dataset.manifestUrl;
@@ -416,11 +418,15 @@
       windowDiv.style.transform = '';
 
       if (id !== 'homescreen') {
-        this.wallpapers.classList.add('app-open');
+        this.wallpapersContainer.classList.add('app-open');
         this.bottomPanel.classList.remove('homescreen');
+
+        MusicController.fadeOutCurrentMusic(1);
       } else {
-        this.wallpapers.classList.remove('app-open');
+        this.wallpapersContainer.classList.remove('app-open');
         this.bottomPanel.classList.add('homescreen');
+
+        MusicController.fadeInCurrentMusic(1);
       }
 
       if (windowDiv.classList.contains('fullscreen')) {
@@ -743,10 +749,10 @@
       this.startWidth = this.resizingWindow.offsetWidth;
       this.startHeight = this.resizingWindow.offsetHeight;
 
-      document.addEventListener('mousemove', this.resize.bind(this, event.target));
-      document.addEventListener('touchmove', this.resize.bind(this, event.target));
-      document.addEventListener('mouseup', this.stopResize.bind(this, event.target));
-      document.addEventListener('touchend', this.stopResize.bind(this, event.target));
+      document.addEventListener('mousemove', (event) => this.resize(event, event.target));
+      document.addEventListener('touchmove', (event) => this.resize(event, event.target));
+      document.addEventListener('mouseup', (event) => this.stopResize(event, event.target));
+      document.addEventListener('touchend', (event) => this.stopResize(event, event.target));
     },
 
     resize: function (event, gripper) {

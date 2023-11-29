@@ -2,12 +2,14 @@
   'use strict';
 
   const LockscreenMotion = {
+    screen: document.getElementById('screen'),
     motionElement: document.getElementById('lockscreen'),
     lockscreenIcon: document.getElementById('lockscreen-icon'),
     cameraButton: document.getElementById('lockscreen-camera-button'),
     flashlightButton: document.getElementById('lockscreen-flashlight-button'),
     notifications: document.getElementById('lockscreen-notifications'),
     notificationBadge: document.getElementById('lockscreen-notification-badge'),
+    bottomPanel: document.getElementById('bottom-panel'),
 
     isPINLocked: false,
     startY: 0,
@@ -121,12 +123,14 @@
 
       if (progress >= this.SWIPE_THRESHOLD) {
         this.motionElement.style.setProperty('--motion-progress', 1);
+        this.bottomPanel.style.setProperty('--motion-progress', 1);
         this.lockscreenIcon.classList.add('fail-unlock');
         this.lockscreenIcon.onanimationend = () => {
           this.lockscreenIcon.classList.remove('fail-unlock');
         };
       } else {
         this.motionElement.style.setProperty('--motion-progress', 0);
+        this.bottomPanel.style.setProperty('--motion-progress', 0);
         if (!this.isPINLocked) {
           this.hideMotionElement();
         } else {
@@ -140,6 +144,7 @@
     updateMotionProgress: function (progress) {
       const motionProgress = 1 - progress;
       this.motionElement.style.setProperty('--motion-progress', motionProgress);
+      this.bottomPanel.style.setProperty('--motion-progress', motionProgress);
 
       if (motionProgress >= this.SWIPE_THRESHOLD) {
         this.showMotionElement();
@@ -152,14 +157,17 @@
         this.SOUND_UNLOCK.play();
       }
 
+      this.screen.classList.remove('lockscreen-visible');
       this.motionElement.classList.add('transitioning');
       this.motionElement.classList.remove('visible');
       this.motionElement.classList.remove('pin-lock-visible');
+      this.bottomPanel.classList.add('transitioning');
       TimeIcon.iconElement.classList.remove('hidden');
 
       clearTimeout(this.timer);
       this.timer = setTimeout(() => {
         this.motionElement.classList.remove('transitioning');
+        this.bottomPanel.classList.remove('transitioning');
       }, 500);
 
       IPC.send('message', {
@@ -172,11 +180,13 @@
     showMotionElementPIN: function () {
       this.motionElement.classList.add('transitioning');
       this.motionElement.classList.add('pin-lock-visible');
+      this.bottomPanel.classList.add('transitioning');
       TimeIcon.iconElement.classList.remove('hidden');
 
       clearTimeout(this.timer);
       this.timer = setTimeout(() => {
         this.motionElement.classList.remove('transitioning');
+        this.bottomPanel.classList.remove('transitioning');
       }, 500);
     },
 
@@ -190,6 +200,7 @@
       this.notifications.classList.remove('visible');
       this.notificationBadge.classList.remove('hidden');
 
+      this.screen.classList.add('lockscreen-visible');
       this.motionElement.classList.add('visible');
       this.motionElement.classList.remove('transitioning');
       TimeIcon.iconElement.classList.add('hidden');
@@ -202,11 +213,14 @@
 
     resetMotionElement: function () {
       this.motionElement.classList.add('transitioning');
+      this.bottomPanel.classList.add('transitioning');
       clearTimeout(this.timer);
       this.timer = setTimeout(() => {
         this.motionElement.classList.remove('transitioning');
+        this.bottomPanel.classList.remove('transitioning');
       }, 500);
       this.motionElement.style.setProperty('--motion-progress', 1);
+      this.bottomPanel.motionElement.style.setProperty('--motion-progress', 1);
     },
 
     handleCameraButton: function () {

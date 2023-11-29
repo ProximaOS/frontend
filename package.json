@@ -1,11 +1,12 @@
 {
   "name": "openorchid",
-  "productName": "OrchidBrowser",
-  "manufacturer": "Orchid",
-  "deviceModelName": "OROS-DEV2",
-  "servicePackName": "OSCore/5.1",
-  "version": "4.0.0-b2023-11-08T15:20:53.802Z",
+  "product_name": "OrchidBrowser",
   "description": "Open source Orchid web OS and browser",
+  "manufacturer": "Orchid",
+  "device_model_name": "OROS-DEV2",
+  "service_pack_name": "OSCore/5.1",
+  "version": "4.0.0-b2023-11-08T15:20:53.802Z",
+  "api_version": 1,
   "main": "src/main.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -25,6 +26,8 @@
     "build-mac-x64": "electron-builder --mac --x64"
   },
   "keywords": [
+    "mort",
+    "mortcodesweb",
     "orchid",
     "openorchid",
     "orchidos",
@@ -34,6 +37,8 @@
     "vividus",
     "vividusgames",
     "vividusengine",
+    "websight",
+    "websightos",
     "vulpes",
     "vulpos",
     "aluminum",

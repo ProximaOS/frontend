@@ -31,10 +31,10 @@
               this.accountUsername.textContent = data.username;
               this.accountHandle.textContent = `@${data.handle_name}`;
               this.accountFollowers.dataset.l10nArgs = JSON.stringify({
-                followers: data.followers.length
+                count: data.followers.length
               });
               this.accountFriends.dataset.l10nArgs = JSON.stringify({
-                friends: data.friends.length
+                count: data.friends.length
               });
               this.accountStatus.textContent = data.status.text;
               this.accountEmail.textContent = data.email;
@@ -52,23 +52,35 @@
     },
 
     handleAvatarEditButton: function () {
-      FilePicker(['.png', '.jpg', '.jpeg', '.webp'], (data) => {
-        compressImage(data, this.KB_SIZE_LIMIT, async (finalImage) => {
+      FilePicker(['.png', '.jpg', '.jpeg', '.webp'], (data, mime) => {
+        let binaryString = '';
+        for (let i = 0; i < data.length; i++) {
+          binaryString += String.fromCharCode(data[i]);
+        }
+        const base64String = btoa(binaryString);
+        const dataUrl = `data:${mime};base64,${base64String}`;
+
+        compressImage(dataUrl, this.KB_SIZE_LIMIT, async (finalImage) => {
           OrchidServices.set(`profile/${await OrchidServices.userId()}`, {
             profile_picture: finalImage
           });
-          console.log(finalImage);
         });
       });
     },
 
     handleBannerEditButton: function () {
-      FilePicker(['.png', '.jpg', '.jpeg', '.webp'], (data) => {
-        compressImage(data, this.KB_SIZE_LIMIT, async (finalImage) => {
+      FilePicker(['.png', '.jpg', '.jpeg', '.webp'], (data, mime) => {
+        let binaryString = '';
+        for (let i = 0; i < data.length; i++) {
+          binaryString += String.fromCharCode(data[i]);
+        }
+        const base64String = btoa(binaryString);
+        const dataUrl = `data:${mime};base64,${base64String}`;
+
+        compressImage(dataUrl, this.KB_SIZE_LIMIT, async (finalImage) => {
           OrchidServices.set(`profile/${await OrchidServices.userId()}`, {
             banner: finalImage
           });
-          console.log(finalImage);
         });
       });
     }

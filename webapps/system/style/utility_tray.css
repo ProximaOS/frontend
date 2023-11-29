@@ -76,10 +76,9 @@
   width: 100%;
   height: 5rem;
   padding: 0 1.5rem;
-  transform: scale(calc(0.9 + (0.1 * var(--motion-progress, 0)))) translateY(calc(1rem * var(--overscroll-progress)));
+  transform: scale(calc(0.9 + (0.1 * var(--motion-progress, 0)))) translateY(calc(2rem * var(--overscroll-progress)));
   filter: blur(calc(20px * (1 - var(--motion-progress, 0))));
   opacity: var(--motion-progress, 0);
-  transition: transform 0.3s ease, opacity 0.3s ease, visibility 0.3s ease;
   transition: all 0.3s ease;
 }
 
@@ -88,7 +87,7 @@
 }
 
 #utility-tray-motion.transitioning .utility-tray-header {
-  transition: transform 0.5s cubic-bezier(0.47, 1.64, 0.41, 0.8), opacity 0.5s ease, visibility 0.5s ease;
+  transition: transform 0.5s cubic-bezier(0.5, 0.8, 0, 1.1), opacity 0.5s ease, visibility 0.5s ease;
 }
 
 .utility-tray-header h1 {
@@ -120,7 +119,7 @@
   height: 4rem;
   margin: 0;
   padding: 0 1rem;
-  border-radius: 0.6rem;
+  border-radius: 1rem;
   color: #fff;
   line-height: 4rem;
   text-decoration: none;
@@ -187,23 +186,24 @@
   gap: 1rem;
   transform: scale(calc(0.9 + (0.1 * var(--motion-progress, 0))));
   opacity: var(--motion-progress, 0);
-  transition: transform 0.3s ease, opacity 0.3s ease;
+  transition: all 0.3s ease;
 }
 
 .control-center-row:nth-child(2) {
-  transform: scale(calc(0.9 + (0.1 * var(--motion-progress, 0)))) translateY(calc(1.5rem * var(--overscroll-progress)));
-}
-
-.control-center-row:nth-child(3) {
   transform: scale(calc(0.9 + (0.1 * var(--motion-progress, 0)))) translateY(calc(2rem * var(--overscroll-progress)));
 }
 
+.control-center-row:nth-child(3) {
+  transform: scale(calc(0.9 + (0.1 * var(--motion-progress, 0)))) translateY(calc(3rem * var(--overscroll-progress)));
+}
+
 .control-center-row:nth-child(4) {
-  transform: scale(calc(0.9 + (0.1 * var(--motion-progress, 0)))) translateY(calc(2.5rem * var(--overscroll-progress)));
+  transform: scale(calc(0.9 + (0.1 * var(--motion-progress, 0)))) translateY(calc(4rem * var(--overscroll-progress)));
 }
 
 #utility-tray-motion.transitioning .control-center-row {
-  transition: transform 0.5s cubic-bezier(0.47, 1.64, 0.41, 0.8), opacity 0.5s ease, visibility 0.5s ease;
+  transition: transform 0.5s cubic-bezier(0.5, 0.8, 0, 1.1) calc(50ms * var(--transition-order)), opacity 0.5s ease calc(50ms * var(--transition-order)),
+    visibility 0.5s ease calc(50ms * var(--transition-order));
 }
 
 #notifications-container {

@@ -1,0 +1,59 @@
+.neck {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 150px;
+  height: 150px;
+  translate: -50% 0;
+  background: url(neck.svg) no-repeat center top / contain;
+}
+
+.head {
+  position: absolute;
+  bottom: 87.5%;
+  left: -50px;
+  width: 206px;
+  height: 206px;
+  transform: rotate(calc(-15deg * var(--mouse-progress-y)));
+  transform-origin: 60% 100%;
+  background: url(head.svg) no-repeat center top / contain;
+}
+
+.visor {
+  -webkit-mask: url(head_mask.svg) no-repeat center top / contain;
+  position: absolute;
+  bottom: 3px;
+  left: 3px;
+  width: 136px;
+  height: 94px;
+  mask: url(head_mask.svg) no-repeat center top / contain;
+}
+
+#eyes {
+  position: absolute;
+  right: 28%;
+  bottom: 48%;
+  width: 174px;
+  transform: translate(calc(10px * var(--mouse-progress-x)), calc(5px * var(--mouse-progress-y)));
+  transform-origin: bottom center;
+}
+
+#mouth {
+  position: absolute;
+  right: 40%;
+  bottom: -5%;
+  width: 161px;
+  height: 48px;
+  transform: translate(calc(4px * var(--mouse-progress-x)), calc(2px * var(--mouse-progress-y)));
+  transform-origin: 50% 30%;
+}
+
+#nose {
+  position: absolute;
+  bottom: 25%;
+  left: -5%;
+  width: 28px;
+  height: 10px;
+  transform: translate(calc(6px * var(--mouse-progress-x)), calc(3px * var(--mouse-progress-y)));
+  transform-origin: top center;
+}

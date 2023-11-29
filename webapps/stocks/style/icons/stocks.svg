@@ -1,22 +1,46 @@
 <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-<g clip-path="url(#clip0_698_47)">
-<rect width="16" height="16" rx="4" fill="url(#paint0_linear_698_47)"/>
+<g clip-path="url(#clip0_657_143)">
+<rect width="16" height="16" rx="4" fill="url(#paint0_linear_657_143)"/>
 <rect x="2.5" width="1" height="16" fill="#0061E0" fill-opacity="0.1"/>
 <rect x="7.5" width="1" height="16" fill="#0061E0" fill-opacity="0.1"/>
 <rect x="12.5" width="1" height="16" fill="#0061E0" fill-opacity="0.1"/>
-<path d="M3 8H0V16H16V9H14L10 5L5 10L3 8Z" fill="url(#paint1_linear_698_47)"/>
+<g filter="url(#filter0_i_657_143)">
+<path d="M3 8H0V16H16V9H14L10 5L5 10L3 8Z" fill="url(#paint1_linear_657_143)"/>
+</g>
+<g filter="url(#filter1_i_657_143)">
 <path d="M0 8H2.58579C2.851 8 3.10536 8.10536 3.29289 8.29289L4.29289 9.29289C4.68342 9.68342 5.31658 9.68342 5.70711 9.29289L9.29289 5.70711C9.68342 5.31658 10.3166 5.31658 10.7071 5.70711L13.7071 8.70711C13.8946 8.89464 14.149 9 14.4142 9H16" stroke="white" stroke-linecap="round"/>
 </g>
+</g>
 <defs>
-<linearGradient id="paint0_linear_698_47" x1="8" y1="0" x2="8" y2="16" gradientUnits="userSpaceOnUse">
+<filter id="filter0_i_657_143" x="0" y="5" width="16" height="13" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<feFlood flood-opacity="0" result="BackgroundImageFix"/>
+<feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape"/>
+<feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+<feOffset dy="2"/>
+<feGaussianBlur stdDeviation="1"/>
+<feComposite in2="hardAlpha" operator="arithmetic" k2="-1" k3="1"/>
+<feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0"/>
+<feBlend mode="normal" in2="shape" result="effect1_innerShadow_657_143"/>
+</filter>
+<filter id="filter1_i_657_143" x="-0.5" y="4.41422" width="17" height="5.67157" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<feFlood flood-opacity="0" result="BackgroundImageFix"/>
+<feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape"/>
+<feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+<feOffset dy="-0.5"/>
+<feGaussianBlur stdDeviation="0.25"/>
+<feComposite in2="hardAlpha" operator="arithmetic" k2="-1" k3="1"/>
+<feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0"/>
+<feBlend mode="normal" in2="shape" result="effect1_innerShadow_657_143"/>
+</filter>
+<linearGradient id="paint0_linear_657_143" x1="8" y1="0" x2="8" y2="16" gradientUnits="userSpaceOnUse">
 <stop stop-color="#212325"/>
 <stop offset="1" stop-color="#192F44"/>
 </linearGradient>
-<linearGradient id="paint1_linear_698_47" x1="8" y1="5" x2="8" y2="16" gradientUnits="userSpaceOnUse">
+<linearGradient id="paint1_linear_657_143" x1="8" y1="5" x2="8" y2="16" gradientUnits="userSpaceOnUse">
 <stop stop-color="#80C2FF" stop-opacity="0.5"/>
 <stop offset="1" stop-color="#80C2FF" stop-opacity="0"/>
 </linearGradient>
-<clipPath id="clip0_698_47">
+<clipPath id="clip0_657_143">
 <rect width="16" height="16" rx="4" fill="white"/>
 </clipPath>
 </defs>

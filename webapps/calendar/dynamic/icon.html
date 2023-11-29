@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <style>
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 100vw;
+      height: 100vh;
+      margin: 0;
+    }
+
+    .calendar {
+      width: 100%;
+      height: 100%;
+      position: relative;
+      background: url(icon/bg.svg) no-repeat center / cover;
+      overflow: hidden;
+    }
+
+    .day {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      line-height: 130vh;
+      text-align: center;
+      font-size: calc((100vw / 16) * 6);
+      color: rgba(51, 51, 51, 0.5);
+      font-family: -orchid-internal-font, 'Rubik', 'Jali Arabic', 'IBM Plex Sans Arabic', 'IBM Plex Sans', 'Fira Sans', 'Open Sans', 'Noto Sans', system-ui, sans-serif;
+      transition: transform 0.3s cubic-bezier(0.2, 0.9, 0.1, 1);
+    }
+  </style>
+
+  <script type="text/javascript" src="http://shared.localhost:8081/js/l10n.js"></script>
+  <meta name="defaultLanguage" content="en-US">
+  <meta name="availableLanguages"
+    content="af, ar, az, be, bg, bn, ca, cs, cy, da, de, el, eo, et, en-US, es, eu, fa, fi, fr, ga, gu, gl, he, hi, hr, ht, hu, id, is, it, ja, kn, ko, ku, lt, lv, mk, ms, nl, no, pl, pt, ro, ru, sq, sk, sl, sr, sw, ta, te, th, tl, tr, uk, ur, vi, yi, zh, fr-psaccent, ar-psbidi">
+</head>
+
+<body>
+  <div class="calendar" id="calendar">
+    <div class="day" id="day"></div>
+  </div>
+
+  <script>
+    function setCalendar() {
+      const calendar = document.getElementById('calendar');
+      const dayNumber = document.getElementById('day');
+
+      const currentDate = new Date();
+      const day = currentDate.getDate().toLocaleString(L10n.currentLanguage === 'ar' ? 'ar-SA' : L10n.currentLanguage);
+
+      dayNumber.textContent = day;
+    }
+
+    setInterval(setCalendar, 1000); // Update the calendar every second
+    setCalendar(); // Set the initial position of the calendar hands
+  </script>
+</body>
+
+</html>

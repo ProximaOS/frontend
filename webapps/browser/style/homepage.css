@@ -1,12 +1,17 @@
 @font-face {
   src: url(/fonts/ReadexPro-VariableFont_HEXP.ttf);
-  font-family: 'Readex Pro';
+  font-family: 'Orchid Brand';
 }
 
-[role="app"] {
-  box-sizing: border-box;
-  padding-bottom: 5rem;
-  overflow-y: auto;
+#root [role="header"] {
+  height: calc(5rem + (4rem * (1 - var(--progress, 0))));
+  padding: 0 1rem;
+}
+
+#root [role="header"] h1 {
+  font-weight: 600;
+  font-family: 'Orchid Brand';
+  text-align: center;
 }
 
 .homepage-header {
@@ -20,13 +25,14 @@
 }
 
 .homepage-header .logo-holder {
+  box-sizing: border-box;
   display: flex;
   align-items: center;
   justify-content: center;
-  aspect-ratio: 3 / 1;
   width: 100%;
   max-width: calc(var(--safezone-width) - 3rem);
   margin-bottom: 1.5rem;
+  padding: 1.5rem;
   border-radius: 1.5rem;
 }
 
@@ -42,7 +48,7 @@
   color: var(--text-color);
   font-weight: 600;
   font-size: 4rem;
-  font-family: 'Readex Pro';
+  font-family: 'Orchid Brand';
 }
 
 .homepage-header .searchbox {
@@ -108,9 +114,5 @@
 }
 
 .homepage-row > div {
-  box-sizing: border-box;
   width: 100%;
-  padding: 0.5rem;
-  border-radius: 1.5rem;
-  background-color: var(--background-plus);
 }

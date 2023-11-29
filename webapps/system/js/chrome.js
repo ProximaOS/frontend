@@ -1,194 +1,103 @@
 !(function (exports) {
   'use strict';
 
-  const Browser = {
-    _id: 0,
+  class Chrome {
+    constructor (chromeElement, url, isVisible = true) {
+      this.chromeElement = chromeElement;
+      this.url = url;
+      this.isVisible = isVisible;
 
-    chrome: null,
-    screen: document.getElementById('screen'),
-    statusbar: document.getElementById('statusbar'),
-    softwareButtons: document.getElementById('software-buttons'),
-    bottomPanel: document.getElementById('bottom-panel'),
+      this.screen = document.getElementById('screen');
+      this.statusbar = document.getElementById('statusbar');
+      this.softwareButtons = document.getElementById('software-buttons');
+      this.bottomPanel = document.getElementById('bottom-panel');
 
-    DEFAULT_URL: 'https://www.duckduckgo.com',
-    SEARCH_ENGINE: 0,
+      this.DEFAULT_URL = 'https://browser.localhost:8081/index.html';
+      this.SEARCH_ENGINE = 0;
 
-    searchIcon: 'https://www.google.com/favicon.ico',
-    searchUrl: 'https://www.google.com/search?q={searchTerms}',
-    suggestUrl: 'https://www.google.com/complete/search?output=chrome&q={searchTerms}',
+      this.searchIcon = 'https://www.google.com/favicon.ico';
+      this.searchUrl = 'https://duckduckgo.com/?q={searchTerms}';
+      this.suggestUrl = 'https://duckduckgo.com/ac/?q={searchTerms}';
 
-    lastScroll: 0,
-    currentScroll: 0,
+      this.lastScroll = 0;
+      this.currentScroll = 0;
+      this.tabAmount = 0;
 
-    ADDON_ICON_SIZE: 20 * window.devicePixelRatio,
+      this.ADDON_ICON_SIZE = 20 * window.devicePixelRatio;
 
-    toolbar: function () {
-      return this.chrome().querySelector('.toolbar');
-    },
+      fetch('http://system.localhost:8081/elements/chrome_interface.html').then((response) => {
+        response.text().then((htmlContent) => {
+          this.htmlContent = htmlContent;
+          this.init();
+        });
+      });
+    }
 
-    tablistHolder: function () {
-      return this.chrome().querySelector('.tablist-holder');
-    },
+    async init () {
+      this.chromeElement.innerHTML = this.htmlContent;
 
-    tablist: function () {
-      return this.chrome().querySelector('.tablist');
-    },
+      this.toolbar = this.chromeElement.querySelector('.toolbar');
+      this.tablistHolder = this.chromeElement.querySelector('.tablist-holder');
+      this.tablist = this.chromeElement.querySelector('.tablist');
+      this.profileButton = this.chromeElement.querySelector('.profile-button');
+      this.sideTabsButton = this.chromeElement.querySelector('.side-tabs-button');
+      this.addButton = this.chromeElement.querySelector('.add-button');
+      this.navbarBackButton = this.chromeElement.querySelector('.navbar-back-button');
+      this.navbarForwardButton = this.chromeElement.querySelector('.navbar-forward-button');
+      this.navbarReloadButton = this.chromeElement.querySelector('.navbar-reload-button');
+      this.navbarHomeButton = this.chromeElement.querySelector('.navbar-home-button');
+      this.navbarSplitButton = this.chromeElement.querySelector('.navbar-split-button');
+      this.navbarTabsButton = this.chromeElement.querySelector('.navbar-tabs-button');
+      this.navbarDownloadsButton = this.chromeElement.querySelector('.navbar-downloads-button');
+      this.navbarLibraryButton = this.chromeElement.querySelector('.navbar-library-button');
+      this.navbarAddonsButton = this.chromeElement.querySelector('.navbar-addons-button');
+      this.navbarOptionsButton = this.chromeElement.querySelector('.navbar-options-button');
+      this.urlbar = this.chromeElement.querySelector('.urlbar');
+      this.urlbarInput = this.chromeElement.querySelector('.urlbar-input');
+      this.urlbarDisplayUrl = this.chromeElement.querySelector('.urlbar-display-url');
+      this.urlbarSSLButton = this.chromeElement.querySelector('.urlbar-ssl-button');
+      this.suggestions = this.chromeElement.querySelector('.suggestions');
+      this.addonsButtons = this.chromeElement.querySelector('.addons-buttons');
+      this.browserContainer = this.chromeElement.querySelector('.browser-container');
+      this.tabsView = this.chromeElement.querySelector('.tabs-view');
+      this.tabsViewCloseButton = this.chromeElement.querySelector('.tabs-view-close-button');
+      this.tabsViewAddButton = this.chromeElement.querySelector('.tabs-view-add-button');
+      this.tabsViewList = this.chromeElement.querySelector('.tabs-view .grid');
+      this.dropdown = this.chromeElement.querySelector('.dropdown');
+      this.ftuDialog = this.chromeElement.querySelector('.ftu-dialog');
+      this.tablistPreview = this.chromeElement.querySelector('.tablist-preview');
+      this.tablistPreviewImage = this.chromeElement.querySelector('.tablist-preview .preview-image');
+      this.tablistPreviewTitle = this.chromeElement.querySelector('.tablist-preview .title');
+      this.tablistPreviewIcon = this.chromeElement.querySelector('.tablist-preview .icon');
+      this.tablistPreviewOrigin = this.chromeElement.querySelector('.tablist-preview .origin');
+      this.tablistPreviewMediaNotice = this.chromeElement.querySelector('.tablist-preview .media-notice');
+      this.tablistPreviewHibernationNotice = this.chromeElement.querySelector('.tablist-preview .hibernation-notice');
+      this.addonDropdown = this.chromeElement.querySelector('.addon-dropdown');
+      this.addonDropdownBrowser = this.chromeElement.querySelector('.addon-dropdown .browser');
 
-    profileButton: function () {
-      return this.chrome().querySelector('.profile-button');
-    },
+      this.tablistHolder.addEventListener('contextmenu', this.handleTablistHolderContextMenu.bind(this));
+      this.sideTabsButton.addEventListener('click', this.handleSideTabsButton.bind(this));
+      this.addButton.addEventListener('click', this.openNewTab.bind(this, false));
+      this.urlbarInput.addEventListener('focus', this.handleUrlbarInputFocus.bind(this));
+      this.urlbarInput.addEventListener('blur', this.handleUrlbarInputBlur.bind(this));
+      this.urlbarInput.addEventListener('keydown', this.handleUrlbarInputKeydown.bind(this));
+      this.navbarBackButton.addEventListener('click', this.handleNavbarBackButton.bind(this));
+      this.navbarForwardButton.addEventListener('click', this.handleNavbarForwardButton.bind(this));
+      this.navbarReloadButton.addEventListener('click', this.handleNavbarReloadButton.bind(this));
+      this.navbarHomeButton.addEventListener('click', this.handleNavbarHomeButton.bind(this));
+      this.navbarSplitButton.addEventListener('click', this.handleNavbarSplitButton.bind(this));
+      this.navbarTabsButton.addEventListener('click', this.handleNavbarTabsButton.bind(this));
+      this.navbarDownloadsButton.addEventListener('click', this.handleNavbarDownloadsButton.bind(this));
+      this.navbarLibraryButton.addEventListener('click', this.handleNavbarLibraryButton.bind(this));
+      this.navbarAddonsButton.addEventListener('click', this.handleNavbarAddonsButton.bind(this));
+      this.navbarOptionsButton.addEventListener('click', this.handleNavbarOptionsButton.bind(this));
+      this.urlbarSSLButton.addEventListener('click', this.handleUrlbarSSLButton.bind(this));
+      this.tabsViewCloseButton.addEventListener('click', this.handleTabsViewCloseButton.bind(this));
+      this.tabsViewAddButton.addEventListener('click', this.openNewTab.bind(this));
 
-    sideTabsButton: function () {
-      return this.chrome().querySelector('.side-tabs-button');
-    },
-
-    addButton: function () {
-      return this.chrome().querySelector('.add-button');
-    },
-
-    navbarBackButton: function () {
-      return this.chrome().querySelector('.navbar-back-button');
-    },
-
-    navbarForwardButton: function () {
-      return this.chrome().querySelector('.navbar-forward-button');
-    },
-
-    navbarReloadButton: function () {
-      return this.chrome().querySelector('.navbar-reload-button');
-    },
-
-    navbarHomeButton: function () {
-      return this.chrome().querySelector('.navbar-home-button');
-    },
-
-    navbarTabsButton: function () {
-      return this.chrome().querySelector('.navbar-tabs-button');
-    },
-
-    navbarDownloadsButton: function () {
-      return this.chrome().querySelector('.navbar-downloads-button');
-    },
-
-    navbarLibraryButton: function () {
-      return this.chrome().querySelector('.navbar-library-button');
-    },
-
-    navbarAddonsButton: function () {
-      return this.chrome().querySelector('.navbar-addons-button');
-    },
-
-    navbarOptionsButton: function () {
-      return this.chrome().querySelector('.navbar-options-button');
-    },
-
-    urlbar: function () {
-      return this.chrome().querySelector('.urlbar');
-    },
-
-    urlbarInput: function () {
-      return this.chrome().querySelector('.urlbar-input');
-    },
-
-    urlbarDisplayUrl: function () {
-      return this.chrome().querySelector('.urlbar-display-url');
-    },
-
-    urlbarSSLButton: function () {
-      return this.chrome().querySelector('.urlbar-ssl-button');
-    },
-
-    suggestions: function () {
-      return this.chrome().querySelector('.suggestions');
-    },
-
-    addonsButtons: function () {
-      return this.chrome().querySelector('.addons-buttons');
-    },
-
-    browserContainer: function () {
-      return this.chrome().querySelector('.browser-container');
-    },
-
-    tabsView: function () {
-      return this.chrome().querySelector('.tabs-view');
-    },
-
-    tabsViewCloseButton: function () {
-      return this.chrome().querySelector('.tabs-view-close-button');
-    },
-
-    tabsViewAddButton: function () {
-      return this.chrome().querySelector('.tabs-view-add-button');
-    },
-
-    tabsViewList: function () {
-      return this.chrome().querySelector('.tabs-view .grid');
-    },
-
-    dropdown: function () {
-      return this.chrome().querySelector('.dropdown');
-    },
-
-    ftuDialog: function () {
-      return this.chrome().querySelector('.ftu-dialog');
-    },
-
-    tablistPreview: function () {
-      return this.chrome().querySelector('.tablist-preview');
-    },
-
-    tablistPreviewImage: function () {
-      return this.chrome().querySelector('.tablist-preview .preview-image');
-    },
-
-    tablistPreviewTitle: function () {
-      return this.chrome().querySelector('.tablist-preview .title');
-    },
-
-    tablistPreviewIcon: function () {
-      return this.chrome().querySelector('.tablist-preview .icon');
-    },
-
-    tablistPreviewOrigin: function () {
-      return this.chrome().querySelector('.tablist-preview .origin');
-    },
-
-    tablistPreviewMediaNotice: function () {
-      return this.chrome().querySelector('.tablist-preview .media-notice');
-    },
-
-    tablistPreviewHibernationNotice: function () {
-      return this.chrome().querySelector('.tablist-preview .hibernation-notice');
-    },
-
-    addonDropdown: function () {
-      return this.chrome().querySelector('.addon-dropdown');
-    },
-
-    addonDropdownBrowser: function () {
-      return this.chrome().querySelector('.addon-dropdown .browser');
-    },
-
-    init: async function (chromeElement, url, isChromeEnabled = true) {
-      this.chrome = function () {
-        if (chromeElement) {
-          return chromeElement;
-        }
-
-        if ('AppWindow' in window) {
-          return document.querySelector('.appframe.active .chrome');
-        }
-      };
-
-      const response = await fetch('http://system.localhost:8081/elements/chrome_interface.html');
-      const htmlContent = await response.text();
-
-      this.chrome().innerHTML = htmlContent;
-
-      if (isChromeEnabled) {
-        this.chrome().classList.add('visible');
-        this.chrome().parentElement.classList.add('chrome-visible');
+      if (this.isVisible) {
+        this.chromeElement.classList.add('visible');
+        this.chromeElement.parentElement.classList.add('chrome-visible');
 
         Settings.getValue('ftu.browser.enabled').then((value) => {
           if (value) {
@@ -198,12 +107,12 @@
       }
 
       Settings.getValue('general.chrome.position').then((data) => {
-        this.chrome().classList.add(data);
+        this.chromeElement.classList.add(data);
       });
       Settings.addObserver('general.chrome.position', (data) => {
-        this.chrome().classList.remove('top');
-        this.chrome().classList.remove('bottom');
-        this.chrome().classList.add(data);
+        this.chromeElement.classList.remove('top');
+        this.chromeElement.classList.remove('bottom');
+        this.chromeElement.classList.add(data);
       });
 
       if (this.statusbar) {
@@ -220,22 +129,24 @@
       }
 
       if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-        this.chrome().classList.add('dark');
-        this.chrome().parentElement.classList.add('dark');
+        this.chromeElement.classList.add('dark');
+        this.chromeElement.parentElement.classList.add('dark');
       } else {
-        this.chrome().classList.add('light');
-        this.chrome().parentElement.classList.add('light');
+        this.chromeElement.classList.add('light');
+        this.chromeElement.parentElement.classList.add('light');
       }
 
-      this.chrome().dataset.id = 0;
-      this.DEFAULT_URL = url;
-      CardPanel.init();
-      this.openNewTab(false, url);
+      this.chromeElement.dataset.id = 0;
+      this.DEFAULT_URL = this.url;
+      if ('CardPanel' in window) {
+        CardPanel.init();
+      }
+      this.openNewTab(false, this.url);
 
-      const avatarImage = this.profileButton().querySelector('.avatar');
+      const avatarImage = this.profileButton.querySelector('.avatar');
       if ('OrchidServices' in window) {
         if (await OrchidServices.isUserLoggedIn()) {
-          this.profileButton().classList.add('logged-in');
+          this.profileButton.classList.add('logged-in');
           OrchidServices.getWithUpdate(`profile/${await OrchidServices.userId()}`, function (data) {
             avatarImage.src = data.profile_picture;
           });
@@ -246,61 +157,41 @@
         this.statusbar.addEventListener('dblclick', this.handleStatusbarDoubleClick.bind(this));
       }
 
-      this.tablistHolder().addEventListener('contextmenu', this.handleTablistHolderContextMenu.bind(this));
-      this.sideTabsButton().addEventListener('click', this.handleSideTabsButton.bind(this));
-      this.addButton().addEventListener('click', this.openNewTab.bind(this, false));
-      this.urlbarInput().addEventListener('keydown', this.handleUrlbarInputKeydown.bind(this));
-      this.navbarBackButton().addEventListener('click', this.handleNavbarBackButton.bind(this));
-      this.navbarForwardButton().addEventListener('click', this.handleNavbarForwardButton.bind(this));
-      this.navbarReloadButton().addEventListener('click', this.handleNavbarReloadButton.bind(this));
-      this.navbarHomeButton().addEventListener('click', this.handleNavbarHomeButton.bind(this));
-      this.navbarTabsButton().addEventListener('click', this.handleNavbarTabsButton.bind(this));
-      this.navbarDownloadsButton().addEventListener('click', this.handleNavbarDownloadsButton.bind(this));
-      this.navbarLibraryButton().addEventListener('click', this.handleNavbarLibraryButton.bind(this));
-      this.navbarAddonsButton().addEventListener('click', this.handleNavbarAddonsButton.bind(this));
-      this.navbarOptionsButton().addEventListener('click', this.handleNavbarOptionsButton.bind(this));
-      this.urlbarSSLButton().addEventListener('click', this.handleUrlbarSSLButton.bind(this));
-      this.tabsViewCloseButton().addEventListener('click', this.handleTabsViewCloseButton.bind(this));
-      this.tabsViewAddButton().addEventListener('click', this.openNewTab.bind(this));
-
-      document.onclick = () => {
-        this.addonDropdown().classList.remove('visible');
-      };
-
-      this.addonDropdownBrowser().addEventListener('dom-ready', () => {
+      this.addonDropdownBrowser.addEventListener('dom-ready', () => {
         const webContents = webview.getWebContents();
         const scrollHeight = webContents.executeJavaScript('document.body.scrollHeight');
-        this.addonDropdown().style.height = scrollHeight + 'px';
+        this.addonDropdown.style.height = scrollHeight + 'px';
       });
 
       const apps = await AppsManager.getAll();
-      const addons = apps.filter(app => app.manifest.role === 'addon');
+      const addons = apps.filter((app) => app.manifest.role === 'addon');
+      const addonFragment = document.createDocumentFragment();
       for (let index = 0; index < addons.length; index++) {
         const addon = addons[index];
 
         const addonButton = document.createElement('button');
         addonButton.title = addon.manifest.name;
-        this.addonsButtons().appendChild(addonButton);
+        addonFragment.appendChild(addonButton);
 
         addonButton.onclick = () => {
-          const chromeBox = this.chrome().getBoundingClientRect();
-          const addonDropdownBox = this.addonDropdown().getBoundingClientRect();
+          const chromeBox = this.chromeElement.getBoundingClientRect();
+          const addonDropdownBox = this.addonDropdown.getBoundingClientRect();
           const addonButtonBox = addonButton.getBoundingClientRect();
           let x = addonButtonBox.left - chromeBox.left;
-          const y = (addonButtonBox.top + addonButtonBox.height) - chromeBox.top;
+          const y = addonButtonBox.top + addonButtonBox.height - chromeBox.top;
 
-          if (x > (window.innerWidth / 2)) {
-            x = (addonButtonBox.left - addonDropdownBox.width - chromeBox.left) + addonButtonBox.width;
+          if (x > window.innerWidth / 2) {
+            x = addonButtonBox.left - addonDropdownBox.width - chromeBox.left + addonButtonBox.width;
           }
 
-          this.addonDropdown().style.left = x + 'px';
-          this.addonDropdown().style.top = y + 'px';
+          this.addonDropdown.style.left = x + 'px';
+          this.addonDropdown.style.top = y + 'px';
           setTimeout(() => {
-            this.addonDropdown().classList.add('visible');
+            this.addonDropdown.classList.add('visible');
           }, 16);
 
           const url = new URL(addon.manifestUrl['en-US']);
-          this.addonDropdownBrowser().src = url.origin + addon.dropdown.launch_url;
+          this.addonDropdownBrowser.src = url.origin + addon.manifest.dropdown.launch_path;
         };
 
         const addonIcon = document.createElement('img');
@@ -314,13 +205,14 @@
             continue;
           }
           const url = new URL(addon.manifestUrl['en-US']);
-          addonIcon.src = url.origin + '/' + entry[1];
+          addonIcon.src = url.origin + entry[1];
         }
       }
-    },
+      this.addonsButtons.appendChild(addonFragment);
+    }
 
-    handleStatusbarDoubleClick: function () {
-      const webview = this.chrome().querySelector('.browser-container .browser-view.active > .browser');
+    handleStatusbarDoubleClick () {
+      const webview = this.chromeElement.querySelector('.browser-container .browser-view.active > .browser');
       webview.executeJavaScript(`
         const panelContent = document.querySelector('[role="panel"].visible > .content');
         if (panelContent) {
@@ -337,10 +229,10 @@
           });
         }
       `);
-    },
+    }
 
-    handleTablistHolderContextMenu: function (event) {
-      const appId = this.chrome().parentElement.id;
+    handleTablistHolderContextMenu (event) {
+      const appId = this.chromeElement.parentElement.id;
 
       const x = event.clientX;
       const y = event.clientY;
@@ -369,12 +261,14 @@
           name: 'New Tab',
           l10nId: 'browserMenu-newTab',
           icon: 'add',
+          keybind: ['ctrl', 't'],
           onclick: () => this.openNewTab(false)
         },
         {
           name: 'New Private Tab',
           l10nId: 'browserMenu-newPrivateTab',
           icon: 'privacy',
+          keybind: ['ctrl', 'shift', 't'],
           onclick: () => this.openNewTab(true)
         },
         { type: 'separator' },
@@ -382,7 +276,7 @@
           name: 'Toggle Side Tabs',
           l10nId: 'browserMenu-sideTabs',
           icon: 'side-tabs',
-          onclick: () => this.chrome().classList.toggle('side-tabs')
+          onclick: () => this.chromeElement.classList.toggle('side-tabs')
         },
         { type: 'separator' },
         {
@@ -398,15 +292,15 @@
       setTimeout(() => {
         ContextMenu.show(x, y, menu);
       }, 16);
-    },
+    }
 
-    handleSideTabsButton: function () {
-      this.chrome().classList.toggle('side-tabs');
-    },
+    handleSideTabsButton () {
+      this.chromeElement.classList.toggle('side-tabs');
+    }
 
-    openNewTab: function (isPrivate = false, url) {
-      this.chrome().dataset.id++;
-      this.navbarTabsButton().dataset.amount = this.chrome().dataset.id;
+    openNewTab (isPrivate = false, url) {
+      this.chromeElement.dataset.id++;
+      this.navbarTabsButton.dataset.amount = this.chromeElement.dataset.id;
 
       const tab = document.createElement('li');
       if (isPrivate) {
@@ -416,7 +310,7 @@
       tab.addEventListener('animationend', () => {
         tab.classList.remove('expand');
       });
-      this.tablist().appendChild(tab);
+      this.tablist.appendChild(tab);
 
       const favicons = document.createElement('div');
       favicons.classList.add('favicons');
@@ -437,6 +331,7 @@
       const muteButton = document.createElement('button');
       muteButton.classList.add('mute-button');
       muteButton.dataset.icon = 'audio';
+      muteButton.style.display = 'none';
       tab.appendChild(muteButton);
 
       const closeButton = document.createElement('button');
@@ -450,7 +345,7 @@
       gridTab.addEventListener('animationend', () => {
         gridTab.classList.remove('expand');
       });
-      this.tabsViewList().appendChild(gridTab);
+      this.tabsViewList.appendChild(gridTab);
 
       const gridHeader = document.createElement('div');
       gridHeader.classList.add('header');
@@ -475,7 +370,7 @@
 
       const browserView = document.createElement('div');
       browserView.classList.add('browser-view');
-      this.browserContainer().appendChild(browserView);
+      this.browserContainer.appendChild(browserView);
 
       const webview = document.createElement('webview');
       setTimeout(() => {
@@ -484,46 +379,49 @@
       webview.classList.add('browser');
       browserView.appendChild(webview);
 
-      function updateUserAgent(value) {
-        switch (value) {
-          case 'android':
-            webview.useragent = navigator.userAgent.replace(/\((.*)\)/i, '(Linux; Android 14)');
-            break;
+      const splitView = document.createElement('webview');
+      setTimeout(() => {
+        splitView.src = url || this.DEFAULT_URL;
+      }, 300);
+      splitView.classList.add('browser');
+      splitView.classList.add('split');
+      browserView.appendChild(splitView);
 
-          case 'desktop':
-            webview.useragent = navigator.userAgent.replace(/\((.*)\)/i, '(X11; Linux x86_64)').replace('Mobile ', '');
-            break;
-
-          case 'default':
-          default:
-            webview.useragent = navigator.userAgent;
-            break;
-        }
-      }
-      Settings.getValue('general.chrome.user_agent').then(updateUserAgent);
-      Settings.addObserver('general.chrome.user_agent', updateUserAgent);
+      Settings.getValue('general.chrome.user_agent').then((value) => this.updateUserAgent(webview, value));
+      Settings.addObserver('general.chrome.user_agent', (value) => this.updateUserAgent(webview, value));
 
       if (isPrivate) {
         webview.partition = 'private';
         webview.classList.add('private');
+        splitView.partition = 'private';
+        splitView.classList.add('private');
       }
 
       const devToolsView = document.createElement('webview');
       devToolsView.classList.add('devtools');
-      devToolsView.nodeintegration = true;
-      devToolsView.nodeintegrationinsubframes = true;
-      devToolsView.preload = `file://${Environment.dirName().replaceAll('\\', '/')}/preload.js`;
       browserView.appendChild(devToolsView);
 
       webview.addEventListener('ipc-message', this.handleIpcMessage.bind(this));
       webview.addEventListener('context-menu', this.handleContextMenu.bind(this));
       webview.addEventListener('page-favicon-updated', this.handlePageFaviconUpdated.bind(this));
       webview.addEventListener('page-title-updated', this.handlePageTitleUpdated.bind(this));
-      webview.addEventListener('did-start-navigation', this.handleDidStartNavigation.bind(this));
+      webview.addEventListener('will-navigate', this.handleNavigation.bind(this));
+      webview.addEventListener('will-frame-navigate', this.handleNavigation.bind(this));
+      webview.addEventListener('did-redirect-navigation', this.handleNavigation.bind(this));
+      webview.addEventListener('did-start-navigation', this.handleNavigation.bind(this));
       webview.addEventListener('did-change-theme-color', this.handleThemeColorUpdated.bind(this));
+      splitView.addEventListener('ipc-message', this.handleIpcMessage.bind(this));
+      splitView.addEventListener('context-menu', this.handleContextMenu.bind(this));
+      splitView.addEventListener('page-favicon-updated', this.handlePageFaviconUpdated.bind(this));
+      splitView.addEventListener('page-title-updated', this.handlePageTitleUpdated.bind(this));
+      splitView.addEventListener('will-navigate', this.handleNavigation.bind(this));
+      splitView.addEventListener('will-frame-navigate', this.handleNavigation.bind(this));
+      splitView.addEventListener('did-redirect-navigation', this.handleNavigation.bind(this));
+      splitView.addEventListener('did-start-navigation', this.handleNavigation.bind(this));
+      splitView.addEventListener('did-change-theme-color', this.handleThemeColorUpdated.bind(this));
 
       webview.addEventListener('did-start-loading', () => {
-        this.navbarReloadButton().classList.add('stop');
+        this.navbarReloadButton.classList.add('stop');
         favicons.classList.add('loading');
         favicons.classList.remove('dom-loading');
       });
@@ -534,11 +432,11 @@
       });
 
       webview.addEventListener('did-stop-loading', () => {
-        this.navbarReloadButton().classList.remove('stop');
+        this.navbarReloadButton.classList.remove('stop');
         favicons.classList.remove('loading');
         favicons.classList.remove('dom-loading');
 
-        const splashElement = this.chrome().parentElement.querySelector('.splashscreen');
+        const splashElement = this.chromeElement.parentElement.querySelector('.splashscreen');
         if (splashElement) {
           splashElement.classList.add('hidden');
         }
@@ -546,12 +444,12 @@
 
       webview.addEventListener('enter-html-full-screen', (event) => {
         event.preventDefault();
-        this.chrome().parentElement.classList.add('fullscreen');
+        this.chromeElement.parentElement.classList.add('fullscreen');
       });
 
       webview.addEventListener('leave-html-full-screen', (event) => {
         event.preventDefault();
-        this.chrome().parentElement.classList.remove('fullscreen');
+        this.chromeElement.parentElement.classList.remove('fullscreen');
       });
 
       webview.addEventListener('close', () => {
@@ -559,9 +457,9 @@
         gridTab.remove();
         browserView.remove();
 
-        if (this.browserContainer().children.length === 0) {
+        if (this.browserContainer.children.length === 0) {
           if ('AppWindow' in window) {
-            AppWindow.close(this.chrome().parentElement.id);
+            AppWindow.close(this.chromeElement.parentElement.id);
           } else {
             window.close();
           }
@@ -579,141 +477,231 @@
       });
 
       ['media-started-playing', 'media-paused'].forEach((eventType) => {
-        webview.addEventListener(eventType, () => {
-          if (webview.isCurrentlyAudible()) {
-            if (webview.isAudioMuted()) {
-              muteButton.dataset.icon = 'audio-muted';
-            } else {
-              muteButton.dataset.icon = 'audio';
-            }
-            muteButton.style.display = 'block';
+        webview.addEventListener(eventType, () => this.handleMediaStateChange(webview, muteButton));
+      });
+
+      splitView.addEventListener('did-start-loading', () => {
+        this.navbarReloadButton.classList.add('stop');
+        favicons.classList.add('loading');
+        favicons.classList.remove('dom-loading');
+      });
+
+      splitView.addEventListener('dom-ready', () => {
+        favicons.classList.add('loading');
+        favicons.classList.add('dom-loading');
+      });
+
+      splitView.addEventListener('did-stop-loading', () => {
+        this.navbarReloadButton.classList.remove('stop');
+        favicons.classList.remove('loading');
+        favicons.classList.remove('dom-loading');
+
+        const splashElement = this.chromeElement.parentElement.querySelector('.splashscreen');
+        if (splashElement) {
+          splashElement.classList.add('hidden');
+        }
+      });
+
+      splitView.addEventListener('enter-html-full-screen', (event) => {
+        event.preventDefault();
+        this.chromeElement.parentElement.classList.add('fullscreen');
+      });
+
+      splitView.addEventListener('leave-html-full-screen', (event) => {
+        event.preventDefault();
+        this.chromeElement.parentElement.classList.remove('fullscreen');
+      });
+
+      splitView.addEventListener('close', () => {
+        tab.remove();
+        gridTab.remove();
+        browserView.remove();
+
+        if (this.browserContainer.children.length === 0) {
+          if ('AppWindow' in window) {
+            AppWindow.close(this.chromeElement.parentElement.id);
           } else {
-            this.timeoutID = setTimeout(() => {
-              muteButton.style.display = 'none';
-            }, 1000);
+            window.close();
+          }
+        }
+      });
+
+      ['did-start-loading', 'did-start-navigation', 'did-stop-loading', 'dom-ready'].forEach((eventType) => {
+        splitView.addEventListener(eventType, () => {
+          if (!isPrivate) {
+            DisplayManager.screenshot(splitView.getWebContentsId()).then((data) => {
+              gridPreview.src = data;
+            });
           }
         });
       });
 
-      const focus = () => {
-        const tabs = this.chrome().querySelectorAll('.tablist li');
-        for (let index = 0; index < tabs.length; index++) {
-          const tab = tabs[index];
-          tab.classList.remove('active');
-        }
-
-        const gridTabs = this.chrome().querySelectorAll('.tabs-view .grid .tab');
-        for (let index = 0; index < gridTabs.length; index++) {
-          const gridTab = gridTabs[index];
-          gridTab.classList.remove('active');
-        }
-
-        const browserViews = this.chrome().querySelectorAll('.browser-container .browser-view');
-        for (let index = 0; index < browserViews.length; index++) {
-          const browserView = browserViews[index];
-          browserView.classList.remove('active');
-        }
-
-        tab.classList.add('active');
-        gridTab.classList.add('active');
-        browserView.classList.add('active');
-      };
-
-      focus();
-
-      tab.addEventListener('click', focus.bind(this));
-      gridTab.addEventListener('click', focus.bind(this));
-
-      closeButton.addEventListener('click', (event) => {
-        event.stopPropagation();
-
-        this.chrome().dataset.id--;
-        this.navbarTabsButton().dataset.amount = this.chrome().dataset.id;
-
-        tab.classList.add('shrink');
-        tab.addEventListener('animationend', () => {
-          tab.classList.remove('shrink');
-          tab.remove();
-        });
-        gridTab.classList.add('shrink');
-        gridTab.addEventListener('animationend', () => {
-          gridTab.classList.remove('shrink');
-          gridTab.remove();
-        });
-        browserView.remove();
+      ['media-started-playing', 'media-paused'].forEach((eventType) => {
+        splitView.addEventListener(eventType, () => this.handleMediaStateChange(splitView, muteButton));
       });
 
-      muteButton.addEventListener('click', (event) => {
-        event.stopPropagation();
+      this.focusTab(tab, gridTab, browserView, webview);
 
+      tab.addEventListener('click', () => this.focusTab(tab, gridTab, browserView, webview));
+      tab.addEventListener('mouseover', () => this.handleTabHover(tab, webview, favicon.src));
+      tab.addEventListener('mouseleave', this.handleTabUnhover.bind(this));
+      gridTab.addEventListener('click', (event) => this.focusTab(event, tab, gridTab, browserView, webview));
+      closeButton.addEventListener('click', (event) => this.closeTab(event, tab, gridTab, browserView));
+      gridCloseButton.addEventListener('click', (event) => this.closeTab(event, tab, gridTab, browserView));
+      muteButton.addEventListener('click', (event) => this.toggleMuteTab(event, webview, muteButton));
+    }
+
+    closeTab (event, tab, gridTab, browserView) {
+      event.stopPropagation();
+
+      this.chromeElement.dataset.id--;
+      this.navbarTabsButton.dataset.amount = this.chromeElement.dataset.id;
+
+      tab.classList.add('shrink');
+      tab.addEventListener('animationend', () => {
+        tab.classList.remove('shrink');
+        tab.remove();
+      });
+      gridTab.classList.add('shrink');
+      gridTab.addEventListener('animationend', () => {
+        gridTab.classList.remove('shrink');
+        gridTab.remove();
+      });
+      browserView.remove();
+    }
+
+    focusTab (tab, gridTab, browserView, webview) {
+      const tabs = this.chromeElement.querySelectorAll('.tablist li');
+      for (let index = 0; index < tabs.length; index++) {
+        const tab = tabs[index];
+        tab.classList.remove('active');
+      }
+
+      const gridTabs = this.chromeElement.querySelectorAll('.tabs-view .grid .tab');
+      for (let index = 0; index < gridTabs.length; index++) {
+        const gridTab = gridTabs[index];
+        gridTab.classList.remove('active');
+      }
+
+      const browserViews = this.chromeElement.querySelectorAll('.browser-container .browser-view');
+      for (let index = 0; index < browserViews.length; index++) {
+        const browserView = browserViews[index];
+        browserView.classList.remove('active');
+
+        const webviews = browserView.querySelectorAll('.browser');
+        for (let index1 = 0; index1 < webviews.length; index1++) {
+          const webview1 = webviews[index1];
+          if (webview || TasksManager.getThrottle(webview1.getWebContentsId())) {
+            continue;
+          }
+          TasksManager.setThrottle(webview1.getWebContentsId(), true);
+        }
+      }
+
+      tab.classList.add('active');
+      gridTab.classList.add('active');
+      browserView.classList.add('active');
+      if (!TasksManager.getThrottle(webview.getWebContentsId())) {
+        TasksManager.setThrottle(webview.getWebContentsId(), false);
+      }
+
+      setTimeout(() => {
+        this.handleNavigation();
+      }, 100);
+    }
+
+    toggleMuteTab (event, webview, muteButton) {
+      event.stopPropagation();
+
+      if (webview.isAudioMuted()) {
+        webview.setAudioMuted(false);
+        muteButton.dataset.icon = 'audio';
+      } else {
+        webview.setAudioMuted(true);
+        muteButton.dataset.icon = 'audio-muted';
+      }
+    }
+
+    handleTabHover (tab, webview, faviconSrc) {
+      const chromeBox = this.chromeElement.getBoundingClientRect();
+      const tabBox = tab.getBoundingClientRect();
+      const x = tabBox.left - chromeBox.left;
+      const y = tabBox.top + tabBox.height + 5 - chromeBox.top;
+
+      this.tablistPreview.style.left = x + 'px';
+      this.tablistPreview.style.top = y + 'px';
+
+      this.tablistPreview.classList.add('visible');
+      DisplayManager.screenshot(webview.getWebContentsId()).then((data) => {
+        this.tablistPreviewImage.src = data;
+        this.tablistPreviewImage.onload = () => {
+          tab.dataset.previewImage = data;
+        };
+        this.tablistPreviewImage.onerror = () => {
+          if (!tab.dataset.previewImage) {
+            return;
+          }
+          this.tablistPreviewImage.src = tab.dataset.previewImage;
+        };
+      });
+      this.tablistPreviewTitle.textContent = webview.getTitle();
+      this.tablistPreviewIcon.src = faviconSrc;
+      const url = new URL(webview.getURL());
+      this.tablistPreviewOrigin.textContent = url.origin;
+    }
+
+    handleTabUnhover () {
+      this.tablistPreview.classList.remove('visible');
+    }
+
+    handleMediaStateChange (webview, muteButton) {
+      if (webview.isCurrentlyAudible()) {
+        this.timeoutID = setTimeout(() => {
+          muteButton.style.display = 'none';
+        }, 1000);
+      } else {
         if (webview.isAudioMuted()) {
-          webview.setAudioMuted(false);
-          muteButton.dataset.icon = 'audio';
-        } else {
-          webview.setAudioMuted(true);
           muteButton.dataset.icon = 'audio-muted';
+        } else {
+          muteButton.dataset.icon = 'audio';
         }
-      });
+        muteButton.style.display = 'block';
+      }
+    }
 
-      gridCloseButton.addEventListener('click', (event) => {
-        event.stopPropagation();
+    updateUserAgent (webview, value) {
+      switch (value) {
+        case 'android':
+          webview.useragent = navigator.userAgent.replace(/\((.*)\)/i, '(Linux; Android 14)');
+          break;
 
-        this.chrome().dataset.id--;
-        this.navbarTabsButton().dataset.amount = this.chrome().dataset.id;
+        case 'desktop':
+          webview.useragent = navigator.userAgent.replace(/\((.*)\)/i, '(X11; Linux x86_64)').replace('Mobile ', '');
+          break;
 
-        tab.classList.add('shrink');
-        tab.addEventListener('animationend', () => {
-          tab.classList.remove('shrink');
-          tab.remove();
-        });
-        gridTab.classList.add('shrink');
-        gridTab.addEventListener('animationend', () => {
-          gridTab.classList.remove('shrink');
-          gridTab.remove();
-        });
-        browserView.remove();
-      });
+        case 'default':
+        default:
+          webview.useragent = navigator.userAgent;
+          break;
+      }
+    }
 
-      tab.addEventListener('mouseover', () => {
-        const chromeBox = this.chrome().getBoundingClientRect();
-        const tabBox = tab.getBoundingClientRect();
-        const x = tabBox.left - chromeBox.left;
-        const y = (tabBox.top + tabBox.height + 5) - chromeBox.top;
-
-        this.tablistPreview().style.left = x + 'px';
-        this.tablistPreview().style.top = y + 'px';
-
-        this.tablistPreview().classList.add('visible');
-        DisplayManager.screenshot(webview.getWebContentsId()).then((data) => {
-          this.tablistPreviewImage().src = data;
-        });
-        this.tablistPreviewTitle().textContent = webview.getTitle();
-        this.tablistPreviewIcon().src = favicon.src;
-        const url = new URL(webview.getURL());
-        this.tablistPreviewOrigin().textContent = url.origin;
-      });
-
-      tab.addEventListener('mouseleave', () => {
-        this.tablistPreview().classList.remove('visible');
-      });
-    },
-
-    updateSuggestions: function () {
-      const inputText = this.urlbarInput().value;
+    updateSuggestions () {
+      const inputText = this.urlbarInput.value;
 
       fetch(this.suggestUrl.replace('{searchTerms}', encodeURI(inputText))).then((suggestionData) => {
-        suggestionData.json().then((data) => {
-          this.suggestions().innerHTML = '';
+        suggestionData.json.then((data) => {
+          this.suggestions.innerHTML = '';
           for (let index = 0; index < data[1].length; index++) {
             const item = data[1][index];
 
             const suggestion = document.createElement('div');
             suggestion.classList.add('suggestion');
             suggestion.addEventListener('click', () => {
-              const webview = this.chrome().querySelector('.browser-container .browser-view.active > .browser');
+              const webview = this.chromeElement.querySelector('.browser-container .browser-view.active > .browser');
               webview.src = this.searchUrl.replace('{searchTerms}', encodeURI(item));
             });
-            this.suggestions().appendChild(suggestion);
+            this.suggestions.appendChild(suggestion);
 
             const favicon = document.createElement('img');
             favicon.classList.add('favicon');
@@ -732,14 +720,22 @@
           }
         });
       });
-    },
+    }
 
-    handleUrlbarInputKeydown: function (event) {
-      function checkURL(url) {
-        const urlPattern = /^(https?:\/\/)?([\w-]+\.)*[\w-]+(:\d+)?(\/[\w-./?%&=]*)?$/;
+    handleUrlbarInputFocus (event) {
+      this.urlbar.classList.add('suggestions-visible');
+    }
+
+    handleUrlbarInputBlur (event) {
+      this.urlbar.classList.remove('suggestions-visible');
+    }
+
+    handleUrlbarInputKeydown (event) {
+      function checkURL (url) {
+        const urlPattern = /^(\w+?:\/\/)?([\w-]+\.)*[\w-]+(:\d+)?(\/[\w-./?%&=]*)?$/;
 
         const isURL = urlPattern.test(url);
-        const hasProtocol = /^(https?:\/\/)/.test(url);
+        const hasProtocol = /^(\w+?:\/\/)/.test(url);
 
         return {
           isURL,
@@ -748,7 +744,7 @@
       }
 
       if (event.key === 'Enter') {
-        const webview = this.chrome().querySelector('.browser-container .browser-view.active > .browser');
+        const webview = this.browserContainer.querySelector('.browser-view.active > .browser');
         const input = event.target.value;
         if (checkURL(input).isURL && checkURL(input).hasProtocol) {
           webview.src = input;
@@ -760,53 +756,64 @@
       } else {
         this.updateSuggestions();
       }
-    },
+    }
 
-    handleNavbarBackButton: function () {
-      const webview = this.browserContainer().querySelector('.browser-view.active > .browser');
+    handleNavbarBackButton () {
+      const webview = this.browserContainer.querySelector('.browser-view.active > .browser');
       if (webview.canGoBack()) {
         webview.goBack();
       }
-    },
+    }
 
-    handleNavbarForwardButton: function () {
-      const webview = this.browserContainer().querySelector('.browser-view.active > .browser');
+    handleNavbarForwardButton () {
+      const webview = this.browserContainer.querySelector('.browser-view.active > .browser');
       if (webview.canGoForward()) {
         webview.goForward();
       }
-    },
+    }
 
-    handleNavbarReloadButton: function () {
-      const webview = this.browserContainer().querySelector('.browser-view.active > .browser');
+    handleNavbarReloadButton () {
+      const webview = this.browserContainer.querySelector('.browser-view.active > .browser');
       webview.reload();
-    },
+    }
 
-    handleNavbarHomeButton: function () {
-      const webview = this.browserContainer().querySelector('.browser-view.active > .browser');
+    handleNavbarHomeButton () {
+      const webview = this.browserContainer.querySelector('.browser-view.active > .browser');
       webview.src = this.DEFAULT_URL;
-    },
+    }
 
-    handleNavbarTabsButton: function () {
-      this.chrome().classList.toggle('tabs-view-visible');
-      this.tabsView().classList.toggle('visible');
-    },
+    handleNavbarSplitButton () {
+      const browserView = this.browserContainer.querySelector('.browser-view.active');
+      const splitView = this.browserContainer.querySelector('.browser-view.active > .split');
+      browserView.classList.toggle('split-enabled');
+      if (browserView.classList.contains('split-enabled')) {
+        splitView.src = this.DEFAULT_URL;
+      }
 
-    handleNavbarDownloadsButton: function (event) {
+      this.navbarSplitButton.classList.toggle('active');
+    }
+
+    handleNavbarTabsButton () {
+      this.chromeElement.classList.toggle('tabs-view-visible');
+      this.tabsView.classList.toggle('visible');
+    }
+
+    handleNavbarDownloadsButton (event) {
       this.openDropdown('downloads');
-    },
+    }
 
-    handleNavbarLibraryButton: function (event) {
+    handleNavbarLibraryButton (event) {
       this.openDropdown('library');
-    },
+    }
 
-    handleNavbarAddonsButton: function (event) {
+    handleNavbarAddonsButton (event) {
       ContextMenu({});
-    },
+    }
 
-    handleNavbarOptionsButton: async function (event) {
-      const webview = this.browserContainer().querySelector('.browser-view.active > .browser');
+    async handleNavbarOptionsButton (event) {
+      const webview = this.browserContainer.querySelector('.browser-view.active > .browser');
 
-      const box = this.navbarOptionsButton().getBoundingClientRect();
+      const box = this.navbarOptionsButton.getBoundingClientRect();
       const rtl = document.dir === 'rtl';
 
       const x = rtl ? box.left : box.left + box.width - 25;
@@ -865,6 +872,7 @@
           name: 'History',
           l10nId: 'dropdown-history',
           icon: 'history',
+          keybind: ['ctrl', 'h'],
           onclick: () => this.openNewTab(false, 'orchid://history/')
         },
         {
@@ -877,6 +885,7 @@
           name: 'Webapps',
           l10nId: 'dropdown-webapps',
           icon: 'apps',
+          keybind: ['ctrl', 'l'],
           onclick: () => this.openNewTab(false, 'orchid://webapps/')
         },
         { type: 'separator' },
@@ -885,8 +894,8 @@
           l10nId: 'dropdown-readerMode',
           icon: 'reader-mode',
           onclick: () => {
-            if (webview.getURL().startsWith('orchidreader://')) {
-              webview.url = webview.getURL().substring('orchidreader://?content='.length);
+            if (webview.getURL.startsWith('orchidreader://')) {
+              webview.url = webview.getURL.substring('orchidreader://?content='.length);
             } else {
               webview.url = `orchidreader://?content=${webview.getURL()}`;
             }
@@ -896,6 +905,7 @@
           name: 'Translate',
           l10nId: 'dropdown-translate',
           icon: 'translate',
+          isNewlyAdded: true,
           onclick: () => {}
         },
         { type: 'separator' },
@@ -908,10 +918,10 @@
               onclick: () => {
                 const zoom = webview.getZoomFactor();
                 const targetZoom = Math.min(5, Math.max(0.3, zoom - 0.2));
-                const duration = 500; // 500ms transition time
+                const duration = 250; // 250ms transition time
 
                 const startTime = performance.now();
-                function animateZoom() {
+                function animateZoom () {
                   const currentTime = performance.now();
                   const progress = Math.min((currentTime - startTime) / duration, 1);
 
@@ -935,10 +945,10 @@
               onclick: () => {
                 const zoom = webview.getZoomFactor();
                 const targetZoom = 1;
-                const duration = 500; // 500ms transition time
+                const duration = 250; // 250ms transition time
 
                 const startTime = performance.now();
-                function animateZoom() {
+                function animateZoom () {
                   const currentTime = performance.now();
                   const progress = Math.min((currentTime - startTime) / duration, 1);
 
@@ -960,10 +970,10 @@
               onclick: () => {
                 const zoom = webview.getZoomFactor();
                 const targetZoom = Math.min(5, Math.max(0.3, zoom + 0.2));
-                const duration = 500; // 500ms transition time
+                const duration = 250; // 250ms transition time
 
                 const startTime = performance.now();
-                function animateZoom() {
+                function animateZoom () {
                   const currentTime = performance.now();
                   const progress = Math.min((currentTime - startTime) / duration, 1);
 
@@ -994,7 +1004,7 @@
           icon: 'power',
           onclick: () => {
             if ('AppWindow' in window) {
-              AppWindow.close(this.chrome().parentElement.id);
+              AppWindow.close(this.chromeElement.parentElement.id);
             } else {
               window.close();
             }
@@ -1016,14 +1026,14 @@
       // Delaying the context menu opening so it won't fire the same time click
       // does and instantly hide as soon as it opens
       setTimeout(() => {
-        ContextMenu.show(x, y, menu, this.navbarOptionsButton());
+        ContextMenu.show(x, y, menu, this.navbarOptionsButton);
       }, 16);
-    },
+    }
 
-    requestBookmark: function () {
-      const webview = this.browserContainer().querySelector('.browser-view.active > .browser');
+    requestBookmark () {
+      const webview = this.browserContainer.querySelector('.browser-view.active > .browser');
 
-      ModalDialog.showPrompt(navigator.mozL10n.get('bookmark'), navigator.mozL10n.get('bookmark-detail'), (value) => {
+      ModalDialog.showPrompt(L10n.get('bookmark'), L10n.get('bookmark-detail'), (value) => {
         const newItem = {
           name: value,
           url: webview.getURL(),
@@ -1037,12 +1047,12 @@
           }
         });
       });
-    },
+    }
 
-    handleUrlbarSSLButton: async function (event) {
-      const webview = this.browserContainer().querySelector('.browser-view.active > .browser');
+    async handleUrlbarSSLButton (event) {
+      const webview = this.browserContainer.querySelector('.browser-view.active > .browser');
 
-      const box = this.urlbarSSLButton().getBoundingClientRect();
+      const box = this.urlbarSSLButton.getBoundingClientRect();
       const rtl = document.dir === 'rtl';
 
       const x = rtl ? box.left : box.left + box.width - 25;
@@ -1056,6 +1066,7 @@
         { type: 'separator' },
         {
           name: 'User Agent',
+          l10nId: 'ssl-userAgent',
           disabled: true
         },
         {
@@ -1088,17 +1099,17 @@
       // Delaying the context menu opening so it won't fire the same time click
       // does and instantly hide as soon as it opens
       setTimeout(() => {
-        ContextMenu.show(x, y, menu, this.urlbarSSLButton());
+        ContextMenu.show(x, y, menu, this.urlbarSSLButton);
       }, 16);
-    },
+    }
 
-    handleTabsViewCloseButton: function () {
-      this.chrome().classList.remove('tabs-view-visible');
-      this.tabsView().classList.remove('visible');
-    },
+    handleTabsViewCloseButton () {
+      this.chromeElement.classList.remove('tabs-view-visible');
+      this.tabsView.classList.remove('visible');
+    }
 
-    handleIpcMessage: function (event) {
-      const webview = this.browserContainer().querySelector('.browser-view.active > .browser');
+    handleIpcMessage (event) {
+      const webview = this.browserContainer.querySelector('.browser-view.active > .browser');
 
       const scrollPosition = event.args[0].top;
       let progress = scrollPosition / 80;
@@ -1108,16 +1119,16 @@
           progress = Math.min(1, progress);
           webview.style.setProperty('--scroll-progress', progress);
 
-          if (!this.chrome().classList.contains('chrome-visible')) {
+          if (!this.chromeElement.classList.contains('chrome-visible')) {
             return;
           }
 
           this.currentScroll = event.args[0].top;
           if (this.currentScroll > this.lastScroll + 50) {
-            this.chrome().classList.remove('visible');
+            this.chromeElement.classList.remove('visible');
             this.lastScroll = event.args[0].top;
           } else if (this.currentScroll < this.lastScroll - 50) {
-            this.chrome().classList.add('visible');
+            this.chromeElement.classList.add('visible');
             this.lastScroll = event.args[0].top;
           }
           break;
@@ -1125,12 +1136,12 @@
         default:
           break;
       }
-    },
+    }
 
-    handleContextMenu: function (event) {
-      const browserView = this.browserContainer().querySelector('.browser-view.active');
-      const webview = this.browserContainer().querySelector('.browser-view.active > .browser');
-      const devToolsView = this.browserContainer().querySelector('.browser-view.active > .devtools');
+    handleContextMenu (event) {
+      const browserView = this.browserContainer.querySelector('.browser-view.active');
+      const webview = this.browserContainer.querySelector('.browser-view.active > .browser');
+      const devToolsView = this.browserContainer.querySelector('.browser-view.active > .devtools');
 
       const itemsBefore = [
         {
@@ -1298,31 +1309,31 @@
       }
 
       ContextMenu.show(event.params.x, event.params.y, [...itemsBefore, ...suggestions, ...itemsAfter]);
-    },
+    }
 
-    handlePageFaviconUpdated: function (event) {
-      const favicon = this.tablist().querySelector('li.active .favicon');
-      const gridFavicon = this.tabsViewList().querySelector('.active .favicon');
+    handlePageFaviconUpdated (event) {
+      const favicon = this.tablist.querySelector('li.active .favicon');
+      const gridFavicon = this.tabsViewList.querySelector('.active .favicon');
       favicon.src = event.favicons[0];
       gridFavicon.src = event.favicons[0];
-    },
+    }
 
-    handlePageTitleUpdated: function (event) {
-      const title = this.tablist().querySelector('li.active .title');
-      const gridTitle = this.tabsViewList().querySelector('.active .title');
+    handlePageTitleUpdated (event) {
+      const title = this.tablist.querySelector('li.active .title');
+      const gridTitle = this.tabsViewList.querySelector('.active .title');
       title.textContent = event.title;
       gridTitle.textContent = event.title;
-    },
+    }
 
-    handleDidStartNavigation: function () {
-      const webview = this.browserContainer().querySelector('.browser-view.active > .browser');
-      this.urlbarInput().value = webview.getURL();
+    handleNavigation () {
+      const webview = this.browserContainer.querySelector('.browser-view.active > .browser');
+      this.urlbarInput.value = webview.getURL();
 
       if (webview.getURL() === this.DEFAULT_URL) {
-        this.urlbarDisplayUrl().innerText = navigator.mozL10n.get('urlbar');
+        this.urlbarDisplayUrl.innerText = L10n.get('urlbar');
       } else {
         const url = new URL(webview.getURL());
-        this.urlbarDisplayUrl().innerHTML = `
+        this.urlbarDisplayUrl.innerHTML = `
           <div class="ignored">${url.protocol}//</div>
           <div class="highlighted">${url.host}</div>
           <div class="ignored">${url.pathname}</div>
@@ -1330,23 +1341,23 @@
           <div class="ignored">${url.hash}</div>
         `;
       }
-    },
+    }
 
-    handleThemeColorUpdated: function (event) {
-      const webview = this.browserContainer().querySelector('.browser-view.active > .browser');
+    handleThemeColorUpdated (event) {
+      const webview = this.browserContainer.querySelector('.browser-view.active > .browser');
       const color = event.themeColor;
       if (color) {
         webview.dataset.themeColor = (color + 'C0').toLowerCase();
-        this.chrome().parentElement.dataset.themeColor = color.substring(0, 7);
-        this.chrome().parentElement.style.setProperty('--theme-color', color);
+        this.chromeElement.parentElement.dataset.themeColor = color.substring(0, 7);
+        this.chromeElement.parentElement.style.setProperty('--theme-color', color);
 
         // Calculate the luminance of the color
         const luminance = this.calculateLuminance(color);
 
         // If the color is light (luminance > 0.5), add 'light' class to the status bar
         if (luminance > 0.5) {
-          this.chrome().classList.remove('dark');
-          this.chrome().parentElement.classList.remove('dark');
+          this.chromeElement.classList.remove('dark');
+          this.chromeElement.parentElement.classList.remove('dark');
           if (this.statusbar) {
             this.statusbar.classList.remove('dark');
           }
@@ -1356,8 +1367,8 @@
           if (this.bottomPanel) {
             this.bottomPanel.classList.remove('dark');
           }
-          this.chrome().classList.add('light');
-          this.chrome().parentElement.classList.add('light');
+          this.chromeElement.classList.add('light');
+          this.chromeElement.parentElement.classList.add('light');
           if (this.statusbar) {
             this.statusbar.classList.add('light');
           }
@@ -1369,8 +1380,8 @@
           }
         } else {
           // Otherwise, remove 'light' class
-          this.chrome().classList.remove('light');
-          this.chrome().parentElement.classList.remove('light');
+          this.chromeElement.classList.remove('light');
+          this.chromeElement.parentElement.classList.remove('light');
           if (this.statusbar) {
             this.statusbar.classList.remove('light');
           }
@@ -1380,8 +1391,8 @@
           if (this.bottomPanel) {
             this.bottomPanel.classList.remove('light');
           }
-          this.chrome().classList.add('dark');
-          this.chrome().parentElement.classList.add('dark');
+          this.chromeElement.classList.add('dark');
+          this.chromeElement.parentElement.classList.add('dark');
           if (this.statusbar) {
             this.statusbar.classList.add('dark');
           }
@@ -1394,12 +1405,12 @@
         }
       } else {
         webview.dataset.themeColor = null;
-        this.chrome().parentElement.style.setProperty('--theme-color', null);
-        this.toolbar().style.setProperty('--theme-color', null);
+        this.chromeElement.parentElement.style.setProperty('--theme-color', null);
+        this.toolbar.style.setProperty('--theme-color', null);
 
         if (window.matchMedia('(prefers-color-scheme: light)').matches) {
-          this.chrome().classList.remove('dark');
-          this.chrome().parentElement.classList.remove('dark');
+          this.chromeElement.classList.remove('dark');
+          this.chromeElement.parentElement.classList.remove('dark');
           if (this.statusbar) {
             this.statusbar.classList.remove('dark');
           }
@@ -1409,8 +1420,8 @@
           if (this.bottomPanel) {
             this.bottomPanel.classList.remove('dark');
           }
-          this.chrome().classList.add('light');
-          this.chrome().parentElement.classList.add('light');
+          this.chromeElement.classList.add('light');
+          this.chromeElement.parentElement.classList.add('light');
           if (this.statusbar) {
             this.statusbar.classList.add('light');
           }
@@ -1422,8 +1433,8 @@
           }
         } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
           // Otherwise, remove 'light' class
-          this.chrome().classList.remove('light');
-          this.chrome().parentElement.classList.remove('light');
+          this.chromeElement.classList.remove('light');
+          this.chromeElement.parentElement.classList.remove('light');
           if (this.statusbar) {
             this.statusbar.classList.remove('light');
           }
@@ -1433,8 +1444,8 @@
           if (this.bottomPanel) {
             this.bottomPanel.classList.remove('light');
           }
-          this.chrome().classList.add('dark');
-          this.chrome().parentElement.classList.add('dark');
+          this.chromeElement.classList.add('dark');
+          this.chromeElement.parentElement.classList.add('dark');
           if (this.statusbar) {
             this.statusbar.classList.add('dark');
           }
@@ -1446,9 +1457,9 @@
           }
         }
       }
-    },
+    }
 
-    calculateLuminance: function (color) {
+    calculateLuminance (color) {
       // Convert the color to RGB values
       const rgb = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(color);
       const r = parseInt(rgb[1], 16);
@@ -1459,29 +1470,29 @@
       const luminance = (0.2126 * r + 0.7152 * g + 0.0722 * b) / 255;
 
       return luminance;
-    },
+    }
 
-    openFtuDialog: function () {
-      this.ftuDialog().classList.add('visible');
-      this.ftuDialog().onclick = () => {
+    openFtuDialog () {
+      this.ftuDialog.classList.add('visible');
+      this.ftuDialog.onclick = () => {
         new Audio('/resources/sounds/exclamation.wav').play();
-        this.ftuDialog().classList.add('alert');
-        this.ftuDialog().addEventListener('transitionend', () => {
-          this.ftuDialog().classList.remove('alert');
+        this.ftuDialog.classList.add('alert');
+        this.ftuDialog.addEventListener('transitionend', () => {
+          this.ftuDialog.classList.remove('alert');
         });
       };
 
-      this.ftuDialog().querySelector('.container').onclick = (event) => {
+      this.ftuDialog.querySelector('.container').onclick = (event) => {
         event.stopPropagation();
       };
 
-      const pageButtons = this.ftuDialog().querySelectorAll('[data-page-id]');
+      const pageButtons = this.ftuDialog.querySelectorAll('[data-page-id]');
       for (let index = 0; index < pageButtons.length; index++) {
         const button = pageButtons[index];
         button.addEventListener('click', () => this.handlePageButtonClick(button));
       }
 
-      const panels = this.ftuDialog().querySelectorAll('.page');
+      const panels = this.ftuDialog.querySelectorAll('.page');
       for (let index = 0; index < panels.length; index++) {
         const panel = panels[index];
 
@@ -1489,16 +1500,16 @@
         panel.classList.add('next');
       }
 
-      const doneButton = this.ftuDialog().querySelector('.done-button');
+      const doneButton = this.ftuDialog.querySelector('.done-button');
       doneButton.onclick = () => {
-        this.ftuDialog().classList.remove('visible');
+        this.ftuDialog.classList.remove('visible');
       };
 
-      const accentColorRed = this.ftuDialog().querySelector('.accent-colors .red');
-      const accentColorYellow = this.ftuDialog().querySelector('.accent-colors .yellow');
-      const accentColorGreen = this.ftuDialog().querySelector('.accent-colors .green');
-      const accentColorBlue = this.ftuDialog().querySelector('.accent-colors .blue');
-      const accentColorPurple = this.ftuDialog().querySelector('.accent-colors .purple');
+      const accentColorRed = this.ftuDialog.querySelector('.accent-colors .red');
+      const accentColorYellow = this.ftuDialog.querySelector('.accent-colors .yellow');
+      const accentColorGreen = this.ftuDialog.querySelector('.accent-colors .green');
+      const accentColorBlue = this.ftuDialog.querySelector('.accent-colors .blue');
+      const accentColorPurple = this.ftuDialog.querySelector('.accent-colors .purple');
 
       accentColorRed.onclick = () => {
         document.scrollingElement.style.setProperty('--accent-color-r', 192);
@@ -1550,17 +1561,17 @@
           b: 160
         });
       };
-    },
+    }
 
-    handlePageButtonClick: function (button) {
+    handlePageButtonClick (button) {
       const id = button.dataset.pageId;
-      const selectedPanel = this.ftuDialog().querySelector('.page.visible');
+      const selectedPanel = this.ftuDialog.querySelector('.page.visible');
 
       this.togglePanelVisibility(selectedPanel, id);
-    },
+    }
 
-    togglePanelVisibility: function (selectedPanel, targetPanelId) {
-      const targetPanel = this.ftuDialog().querySelector(`.${targetPanelId}`);
+    togglePanelVisibility (selectedPanel, targetPanelId) {
+      const targetPanel = this.ftuDialog.querySelector(`.${targetPanelId}`);
 
       if (selectedPanel) {
         selectedPanel.classList.toggle('visible');
@@ -1572,7 +1583,7 @@
       targetPanel.classList.toggle('previous', selectedPanel.dataset.index <= targetPanel.dataset.index);
       targetPanel.classList.toggle('next', selectedPanel.dataset.index >= targetPanel.dataset.index);
     }
-  };
+  }
 
-  exports.Browser = Browser;
+  exports.Chrome = Chrome;
 })(window);

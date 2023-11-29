@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="shortcut icon" href="style/images/net_error_favicon.svg" type="image/svg">
+  <title>Net Error</title>
+  <link rel="stylesheet" href="orchid://shared/themes/default_theme.css">
+  <link rel="stylesheet" href="orchid://shared/style/layout.css">
+  <link rel="stylesheet" href="orchid://shared/style/icons/icons.css">
+  <link rel="stylesheet" href="orchid://shared/style/buttons.css">
+  <link rel="stylesheet" href="style/net_error.css">
+
+  <script type="text/javascript" src="orchid://shared/js/l10n.js"></script>
+  <meta name="defaultLanguage" content="en-US">
+  <meta name="availableLanguages"
+    content="af, ar, az, be, bg, bn, ca, cs, cy, da, de, el, eo, et, en-US, es, eu, fa, fi, fr, ga, gu, gl, he, hi, hr, ht, hu, id, is, it, ja, kn, ko, ku, lt, lv, mk, ms, nl, no, pl, pt, ro, ru, sq, sk, sl, sr, sw, ta, te, th, tl, tr, uk, ur, vi, yi, zh, fr-psaccent, ar-psbidi">
+  <link rel="localization" href="orchid://locales/net_error.{locale}.properties">
+</head>
+<body>
+  <div id="net-error" role="app">
+    <div class="container">
+      <div class="rows">
+        <div class="row">
+          <div id="net-error-icon"></div>
+        </div>
+        <div class="row">
+          <h1 id="net-error-title">Network Error</h1>
+          <p id="net-error-detail">Net Error Description</p>
+          <ul id="net-error-suggestions">
+            <li>Test Suggested Solution 1</li>
+            <li>Test Suggested Solution 2</li>
+            <li>Test Suggested Solution 3</li>
+          </ul>
+          <span id="net-error-code">NET_ERROR_CODE - 420</span>
+        </div>
+        <div class="row">
+          <div class="buttons">
+            <button id="net-error-reload-button" class="recommend">Reload</button>
+            <button id="net-error-learn-more-button" data-icon="chevron-down">Learn More</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

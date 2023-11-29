@@ -23,7 +23,7 @@
 }
 
 #lockscreen.transitioning {
-  transition: all 0.5s ease;
+  transition: all 0.5s cubic-bezier(0.2, 0.9, 0.1, 1);
 }
 
 #lockscreen.visible {
@@ -71,11 +71,6 @@
   left: 0;
   width: 100%;
   height: 100%;
-}
-
-#lockscreen.low-power #lockscreen-container {
-  transform: scale(0.95);
-  opacity: 0.75;
 }
 
 #lockscreen.pin-lock #lockscreen-container,
@@ -173,6 +168,11 @@
   font-weight: 600;
   font-size: 7.2rem;
   line-height: 7.8rem;
+  transition: all 0.5s ease;
+}
+
+#lockscreen.low-power #lockscreen-clock {
+  font-weight: 300;
 }
 
 .light #lockscreen:not(.low-power) #lockscreen-clock {

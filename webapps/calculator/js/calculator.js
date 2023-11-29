@@ -47,7 +47,7 @@
     const result = document.getElementById('result').value;
     const answer = result.replace('÷', '/');
     document.getElementById('result').value = answer.toLocaleString(
-      OrchidL10n.currentLanguage
+      L10n.currentLanguage
     );
   }
 })(window);

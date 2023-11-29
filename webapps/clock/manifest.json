@@ -22,5 +22,11 @@
   "permissions": {
     "settings": {}
   },
-  "display": "immersive"
+  "display": "immersive",
+  "homescreen": {
+    "dynamic_icon": {
+      "start_url": "/dynamic/icon.html"
+    },
+    "widgets": []
+  }
 }

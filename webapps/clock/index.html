@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -35,14 +36,27 @@
     content="af, ar, az, be, bg, bn, ca, cs, cy, da, de, el, eo, et, en-US, es, eu, fa, fi, fr, ga, gu, gl, he, hi, hr, ht, hu, id, is, it, ja, kn, ko, ku, lt, lv, mk, ms, nl, no, pl, pt, ro, ru, sq, sk, sl, sr, sw, ta, te, th, tl, tr, uk, ur, vi, yi, zh, fr-psaccent, ar-psbidi">
   <link rel="localization" href="/locales/main.{locale}.properties">
 </head>
+
 <body>
   <main id="app" role="app">
     <nav role="tablist">
       <ul>
-        <li><a href="#alarms" id="tab-alarms" data-icon="alarm-clock" class="selected">Alarms</a></li>
-        <li><a href="#world-clock" id="tab-world-clock" data-icon="world-clock">World Clock</a></li>
-        <li><a href="#stopwatch" id="tab-stopwatch" data-icon="stopwatch">Stopwatch</a></li>
-        <li><a href="#timer" id="tab-timer" data-icon="timer">Timer</a></li>
+        <li><a href="#alarms" class="selected">
+            <span data-icon="alarm-clock"></span>
+            <span data-page-id="alarms"></span>
+          </a></li>
+        <li><a href="#world-clock">
+            <span data-icon="world-clock"></span>
+            <span data-page-id="world-clock"></span>
+          </a></li>
+        <li><a href="#stopwatch">
+            <span data-icon="stopwatch"></span>
+            <span data-page-id="stopwatch"></span>
+          </a></li>
+        <li><a href="#timer">
+            <span data-icon="bell"></span>
+            <span data-page-id="timer"></span>
+          </a></li>
       </ul>
     </nav>
 
@@ -135,7 +149,8 @@
           </div>
         </div>
       </section>
-    </d>
-  </div>
+      </d>
+    </div>
 </body>
+
 </html>

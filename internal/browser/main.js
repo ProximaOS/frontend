@@ -1,5 +1,5 @@
-window.addEventListener('load', async function () {
-  Browser.init(
+window.addEventListener('load', function () {
+  window.browser = new Chrome(
     document.getElementById('chrome'),
     'http://browser.localhost:8081/index.html',
     true

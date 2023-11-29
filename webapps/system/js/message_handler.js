@@ -97,7 +97,7 @@
 
     handleTextSelection: function (data) {
       if (data.action === 'show') {
-        TextSelection.show(data.selectedText, data.position.left, data.position.top);
+        TextSelection.show(data.selectedText, data.position.left, data.position.top, data.size.width, data.size.height);
       } else {
         TextSelection.hide();
       }

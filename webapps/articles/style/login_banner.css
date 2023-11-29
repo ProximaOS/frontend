@@ -1,0 +1,94 @@
+#login-banner {
+  box-sizing: border-box;
+  display: flex;
+  z-index: 1;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  flex-wrap: wrap;
+  width: 100%;
+  height: calc(8rem + var(--software-buttons-height));
+  margin-top: calc(var(--software-buttons-height) * -1);
+  padding: 1rem 1rem calc(var(--software-buttons-height) + 1rem);
+  gap: 1rem;
+  background-image: linear-gradient(45deg, #ff80c0, #00ddff);
+}
+
+#login-banner .safezone {
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+  max-width: calc(var(--safezone-width) - 3rem);
+  margin: 0 auto;
+  gap: 1rem;
+}
+
+#login-banner .text-holder {
+  display: flex;
+  flex-grow: 1;
+  flex-direction: column;
+  justify-content: center;
+  min-width: 29rem;
+}
+
+#login-banner .text-holder h1 {
+  margin: 0 0 0.2rem;
+  color: rgba(0, 0, 0, 0.75);
+  font-weight: bold;
+  font-size: 1.6rem;
+}
+
+#login-banner .text-holder p {
+  margin: 0 0 0.2rem;
+  color: rgba(0, 0, 0, 0.75);
+  font-weight: normal;
+  font-size: 1.6rem;
+}
+
+#login-banner .buttons {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  height: 100%;
+  gap: 1rem;
+}
+
+#login-banner .buttons > button {
+  width: max-content;
+  height: 4rem;
+  margin: 0;
+  border: solid 2px rgba(0, 0, 0, 0.75);
+  background-color: transparent;
+  color: rgba(0, 0, 0, 0.75);
+  line-height: 3.6rem;
+  transition: all 0.3s ease;
+}
+
+#login-banner .buttons > button:hover {
+  background-color: #000;
+  color: #ff80c0;
+  transition: all 0.3s ease, background-color 0.1s ease;
+}
+
+#login-banner .buttons > button:active {
+  transform: scale(0.9);
+  opacity: 0.75;
+  transition: all 0.1s ease;
+}
+
+#login-banner .buttons > button[data-icon] {
+  width: 4rem;
+  padding: 0 1rem;
+  border: none;
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
+#login-banner .buttons > button[data-icon]:hover {
+  background-color: #000;
+}
+
+#login-banner .buttons > button[data-icon]::before {
+  position: static;
+  height: 4rem;
+  line-height: 4rem;
+}
