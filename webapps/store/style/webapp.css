@@ -1,10 +1,17 @@
-#webapp-banner {
-  -webkit-mask-image: linear-gradient(to bottom, white, transparent);
+.banner-container {
   display: block;
-  aspect-ratio: 16 / 9;
   width: calc(100% - 3rem);
   max-width: calc(var(--safezone-width) - 3rem);
   margin: 0 auto;
+}
+
+.banner-container > img {
+  -webkit-mask-image: linear-gradient(to bottom, white, transparent);
+  display: block;
+  aspect-ratio: 16 / 9;
+  width: 100%;
+  max-width: var(--safezone-width);
+  transform: translateY(calc(8rem * var(--progress, 0)));
   border-radius: 1.5rem 1.5rem 0 0;
   background-color: var(--background-plus);
   mask-image: linear-gradient(to bottom, white, transparent);
@@ -26,6 +33,7 @@
   margin: 0;
   padding: 0 1.5rem;
   gap: 1rem;
+  opacity: calc(1 - var(--progress, 0));
 }
 
 .webapp-header figure > img {
@@ -85,8 +93,10 @@
 }
 
 .webapp-header .buttons {
+  display: flex;
   height: 4rem;
   padding: 0 1.5rem;
+  gap: 1rem;
 }
 
 .webapp-row {

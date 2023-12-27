@@ -8,7 +8,6 @@
   const isDev = require('electron-is-dev');
   const registerEvents = require('./events');
   const registerControls = require('./controls');
-  const update = require('../update/auto_updater');
   const RPC = require('discord-rpc');
   const appConfig = require('../../package.json');
   const { l18n, initializeLocale } = require('../locales/locale_reader');
@@ -112,15 +111,11 @@
 
     // Create the browser window.
     const mainWindow = new BrowserWindow({
-      icon: path.join(__dirname, '..', '..', 'internal', 'branding', 'icon.png'),
+      icon: path.join(__dirname, '..', '..', 'internal', 'branding', 'openorchid', 'openorchid_128.png'),
       title: `OrchidOS ${app.getVersion()} ${systemConfig.type} - Orchid Simulator`,
       width: process.platform !== 'win32' ? systemConfig.width + (isDev ? 50 : 0) : systemConfig.width + (isDev ? 50 : 0) + 14,
       height: process.platform !== 'win32' ? systemConfig.height : systemConfig.height + 37,
-      show: false,
-      fullscreenable: false,
-      disableAutoHideCursor: true,
       autoHideMenuBar: true,
-      center: true,
       backgroundColor: '#000000',
       tabbingIdentifier: 'openorchid',
       kiosk: !isDev
@@ -196,9 +191,6 @@
     if (isDev) {
       webview.webContents.openDevTools();
     }
-
-    // Initialize updater
-    update.init(mainWindow);
 
     // Prepare profile
     fs.mkdirSync(path.join(process.env.ORCHID_APP_PROFILE), {

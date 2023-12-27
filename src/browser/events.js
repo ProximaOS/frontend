@@ -1,12 +1,10 @@
-const Settings = require('../settings');
-
 !(function () {
   'use strict';
 
-  const { ipcMain, app, webContents } = require('electron');
+  const { ipcMain, app, webContents, autoUpdater } = require('electron');
   const path = require('path');
   const fs = require('fs');
-  const electronLocalshortcut = require('electron-localshortcut');
+  const Settings = require('../settings');
 
   module.exports = function (mainWindow, webview) {
     webview.webContents.on('crashed', () => {
@@ -27,102 +25,82 @@ const Settings = require('../settings');
     });
 
     // Intercept download requests using the webContents' session
-    webview.webContents.session.on(
-      'will-download',
-      (event, item, webContents) => {
-        // Send an event to the renderer process to get download path and decision
-        webview.webContents.send('downloadrequest', {
+    webview.webContents.session.on('will-download', (event, item, webContents) => {
+      // Send an event to the renderer process to get download path and decision
+      webview.webContents.send('downloadrequest', {
+        url: item.getURL(),
+        suggestedFilename: item.getFilename(),
+        lastModified: item.getLastModifiedTime(),
+        size: item.getTotalBytes(),
+        mime: item.getMimeType()
+      });
+
+      // Listen for the response from the renderer process
+      ipcMain.once('download-response', (event, downloadData) => {
+        if (downloadData.shouldDownload) {
+          // Set the download path and start the download
+          item.setSavePath(downloadData.path);
+        } else {
+          // Cancel the download
+          item.cancel();
+        }
+      });
+
+      // Listen for download progress events
+      item.on('updated', (event, state) => {
+        const progress = item.getReceivedBytes() / item.getTotalBytes();
+        webview.webContents.send('downloadprogress', {
           url: item.getURL(),
           suggestedFilename: item.getFilename(),
           lastModified: item.getLastModifiedTime(),
           size: item.getTotalBytes(),
-          mime: item.getMimeType()
+          mime: item.getMimeType(),
+          progress,
+          state
         });
+      });
+    });
 
-        // Listen for the response from the renderer process
-        ipcMain.once('downloadresponse', (event, downloadData) => {
-          if (downloadData.shouldDownload) {
-            // Set the download path and start the download
-            item.setSavePath(downloadData.path);
-          } else {
-            // Cancel the download
-            item.cancel();
-          }
-        });
-
-        // Listen for download progress events
-        item.on('updated', (event, state) => {
-          const progress = item.getReceivedBytes() / item.getTotalBytes();
-          webview.webContents.send('downloadprogress', {
-            url: item.getURL(),
-            suggestedFilename: item.getFilename(),
-            lastModified: item.getLastModifiedTime(),
-            size: item.getTotalBytes(),
-            mime: item.getMimeType(),
-            progress,
-            state
-          });
-        });
-      }
-    );
-
-    webview.webContents.session.setPermissionRequestHandler(
-      (webContents, permission, callback) => {
-        webview.webContents.send('permissionrequest', {
-          type: permission,
-          origin: webContents.getURL(),
-          title: webContents.getTitle()
-        });
-        ipcMain.once('permissionrequest', (event, data) => {
-          callback(data.decision);
-        });
-      }
-    );
+    webview.webContents.session.setPermissionRequestHandler((webContents, permission, callback) => {
+      webview.webContents.send('permissionrequest', {
+        type: permission,
+        origin: webContents.getURL(),
+        title: webContents.getTitle()
+      });
+      ipcMain.once('permissionrequest', (event, data) => {
+        callback(data.decision);
+      });
+    });
 
     // webview.webContents.session.setDisplayMediaRequestHandler((request, callback) => {
     //   const object = { video: request.frame };
     //   callback(object);
     // });
 
-    electronLocalshortcut.register(webview, ['Ctrl+R', 'F5'], () => {
-      webview.webContents.reload();
+    autoUpdater.on('update-available', () => {
+      webview.webContents.send('update-available');
     });
-    electronLocalshortcut.register(webview, ['Ctrl+F', 'F11'], () => {
-      webview.webContents.setFullScreen(!webview.isFullScreen());
+    autoUpdater.on('update-download-progress', (progressObj) => {
+      webview.webContents.send('update-download-progress', progressObj);
     });
-    electronLocalshortcut.register(webview, ['Ctrl+Shift+I', 'F12'], () => {
-      webview.webContents.openDevTools();
+    autoUpdater.on('update-downloaded', () => {
+      webview.webContents.send('update-downloaded');
     });
 
-    electronLocalshortcut.register(webview, 'Ctrl+J', () => {
-      webview.webContents.send('rotate', { rotation: '-90deg' });
-    });
-    electronLocalshortcut.register(webview, 'Ctrl+K', () => {
-      webview.webContents.send('rotate', { rotation: '0deg' });
-    });
-    electronLocalshortcut.register(webview, 'Ctrl+L', () => {
-      webview.webContents.send('rotate', { rotation: '90deg' });
-    });
-    electronLocalshortcut.register(webview, 'Ctrl+H', () => {
-      webview.webContents.send('rotate', { rotation: '180deg' });
+    ipcMain.on('request-update-status', (event) => {
+      event.sender.send('update-status', autoUpdater.checkForUpdates());
     });
 
     fs.mkdirSync(path.join(process.env.ORCHID_APP_PROFILE, 'extensions'), {
       recursive: true
     });
     fs.readdirSync(process.env.OPENORCHID_ADDONS).forEach((extensionName) => {
-      const extensionPath = path.join(
-        process.env.OPENORCHID_ADDONS,
-        extensionName
-      );
+      const extensionPath = path.join(process.env.OPENORCHID_ADDONS, extensionName);
       webview.webContents.session.loadExtension(extensionPath);
     });
 
     ipcMain.on('request-extension-list', (event, data) => {
-      webview.webContents.send(
-        'extension-list',
-        webview.webContents.session.getAllExtensions()
-      );
+      event.sender.send('extension-list', webview.webContents.session.getAllExtensions());
     });
 
     function valueTransition(value, target, callback) {
@@ -132,13 +110,9 @@ const Settings = require('../settings');
       const startTime = performance.now();
       function animateValue() {
         const currentTime = performance.now();
-        const progress = Math.min(
-          (currentTime - startTime) / duration,
-          1
-        );
+        const progress = Math.min((currentTime - startTime) / duration, 1);
 
-        const easedProgress =
-          0.5 - 0.5 * Math.cos(progress * Math.PI);
+        const easedProgress = 0.5 - 0.5 * Math.cos(progress * Math.PI);
         const newValue = value + (targetValue - value) * easedProgress;
         callback(newValue);
 
@@ -239,14 +213,14 @@ const Settings = require('../settings');
       if (data.webContentsId) {
         const wc = webContents.fromId(data.webContentsId);
         wc.capturePage().then((image) => {
-          webview.webContents.send('screenshotted', {
+          event.sender.send('screenshotted', {
             webContentsId: data.webContentsId,
             imageDataURL: image.toDataURL()
           });
         });
       } else {
         webview.webContents.capturePage().then((image) => {
-          webview.webContents.send('screenshotted', {
+          event.sender.send('screenshotted', {
             webContentsId: data.webContentsId,
             imageDataURL: image.toDataURL()
           });

@@ -1,39 +1,39 @@
 !(function (exports) {
   'use strict';
 
-  class Chrome {
-    constructor (chromeElement, url, isVisible = true) {
-      this.chromeElement = chromeElement;
-      this.url = url;
-      this.isVisible = isVisible;
+  function Chrome(chromeElement, url, isVisible = true) {
+    this.chromeElement = chromeElement;
+    this.isVisible = isVisible;
+    this.url = url;
 
-      this.screen = document.getElementById('screen');
-      this.statusbar = document.getElementById('statusbar');
-      this.softwareButtons = document.getElementById('software-buttons');
-      this.bottomPanel = document.getElementById('bottom-panel');
-
-      this.DEFAULT_URL = 'https://browser.localhost:8081/index.html';
-      this.SEARCH_ENGINE = 0;
-
-      this.searchIcon = 'https://www.google.com/favicon.ico';
-      this.searchUrl = 'https://duckduckgo.com/?q={searchTerms}';
-      this.suggestUrl = 'https://duckduckgo.com/ac/?q={searchTerms}';
-
-      this.lastScroll = 0;
-      this.currentScroll = 0;
-      this.tabAmount = 0;
-
-      this.ADDON_ICON_SIZE = 20 * window.devicePixelRatio;
-
-      fetch('http://system.localhost:8081/elements/chrome_interface.html').then((response) => {
-        response.text().then((htmlContent) => {
-          this.htmlContent = htmlContent;
-          this.init();
-        });
+    fetch('http://system.localhost:8081/elements/chrome_interface.html').then((response) => {
+      response.text().then((htmlContent) => {
+        this.htmlContent = htmlContent;
+        this.init();
       });
-    }
+    });
+  }
 
-    async init () {
+  Chrome.prototype = {
+    screen: document.getElementById('screen'),
+    statusbar: document.getElementById('statusbar'),
+    softwareButtons: document.getElementById('software-buttons'),
+    bottomPanel: document.getElementById('bottom-panel'),
+
+    DEFAULT_URL: 'https://browser.localhost:8081/index.html',
+    SEARCH_ENGINE: 0,
+
+    searchIcon: 'https://www.duckduckgo.com/favicon.ico',
+    searchUrl: 'https://duckduckgo.com/?q={searchTerms}',
+    suggestUrl: 'https://duckduckgo.com/ac/?q={searchTerms}',
+
+    lastScroll: 0,
+    currentScroll: 0,
+    tabAmount: 0,
+
+    ADDON_ICON_SIZE: 20 * window.devicePixelRatio,
+
+    init: async function () {
       this.chromeElement.innerHTML = this.htmlContent;
 
       this.toolbar = this.chromeElement.querySelector('.toolbar');
@@ -136,7 +136,7 @@
         this.chromeElement.parentElement.classList.add('light');
       }
 
-      this.chromeElement.dataset.id = 0;
+      this.chromeElement.dataset.tabAmount = this.tabAmount;
       this.DEFAULT_URL = this.url;
       if ('CardPanel' in window) {
         CardPanel.init();
@@ -166,7 +166,7 @@
       const apps = await AppsManager.getAll();
       const addons = apps.filter((app) => app.manifest.role === 'addon');
       const addonFragment = document.createDocumentFragment();
-      for (let index = 0; index < addons.length; index++) {
+      for (let index = 0, length = addons.length; index < length; index++) {
         const addon = addons[index];
 
         const addonButton = document.createElement('button');
@@ -186,9 +186,9 @@
 
           this.addonDropdown.style.left = x + 'px';
           this.addonDropdown.style.top = y + 'px';
-          setTimeout(() => {
+          requestAnimationFrame(() => {
             this.addonDropdown.classList.add('visible');
-          }, 16);
+          });
 
           const url = new URL(addon.manifestUrl['en-US']);
           this.addonDropdownBrowser.src = url.origin + addon.manifest.dropdown.launch_path;
@@ -198,7 +198,7 @@
         addonButton.appendChild(addonIcon);
 
         const entries = Object.entries(addon.manifest.dropdown.icons);
-        for (let index = 0; index < entries.length; index++) {
+        for (let index = 0, length = entries.length; index < length; index++) {
           const entry = entries[index];
 
           if (entry[0] <= this.ADDON_ICON_SIZE) {
@@ -209,9 +209,9 @@
         }
       }
       this.addonsButtons.appendChild(addonFragment);
-    }
+    },
 
-    handleStatusbarDoubleClick () {
+    handleStatusbarDoubleClick: function () {
       const webview = this.chromeElement.querySelector('.browser-container .browser-view.active > .browser');
       webview.executeJavaScript(`
         const panelContent = document.querySelector('[role="panel"].visible > .content');
@@ -229,9 +229,9 @@
           });
         }
       `);
-    }
+    },
 
-    handleTablistHolderContextMenu (event) {
+    handleTablistHolderContextMenu: function (event) {
       const appId = this.chromeElement.parentElement.id;
 
       const x = event.clientX;
@@ -292,15 +292,15 @@
       setTimeout(() => {
         ContextMenu.show(x, y, menu);
       }, 16);
-    }
+    },
 
-    handleSideTabsButton () {
+    handleSideTabsButton: function () {
       this.chromeElement.classList.toggle('side-tabs');
-    }
+    },
 
-    openNewTab (isPrivate = false, url) {
-      this.chromeElement.dataset.id++;
-      this.navbarTabsButton.dataset.amount = this.chromeElement.dataset.id;
+    openNewTab: function (isPrivate = false, url) {
+      this.chromeElement.dataset.tabAmount++;
+      this.navbarTabsButton.dataset.amount = this.chromeElement.dataset.tabAmount;
 
       const tab = document.createElement('li');
       if (isPrivate) {
@@ -372,6 +372,13 @@
       browserView.classList.add('browser-view');
       this.browserContainer.appendChild(browserView);
 
+      const progressBar = document.createElement('progress');
+      progressBar.value = 0;
+      progressBar.min = 0;
+      progressBar.max = 100;
+      progressBar.classList.add('progress-bar');
+      browserView.appendChild(progressBar);
+
       const webview = document.createElement('webview');
       setTimeout(() => {
         webview.src = url || this.DEFAULT_URL;
@@ -380,9 +387,6 @@
       browserView.appendChild(webview);
 
       const splitView = document.createElement('webview');
-      setTimeout(() => {
-        splitView.src = url || this.DEFAULT_URL;
-      }, 300);
       splitView.classList.add('browser');
       splitView.classList.add('split');
       browserView.appendChild(splitView);
@@ -420,13 +424,39 @@
       splitView.addEventListener('did-start-navigation', this.handleNavigation.bind(this));
       splitView.addEventListener('did-change-theme-color', this.handleThemeColorUpdated.bind(this));
 
+      tab.addEventListener('click', () => this.focusTab(tab, gridTab, browserView, webview));
+      tab.addEventListener('mouseover', () => this.handleTabHover(tab, webview, favicon.src));
+      tab.addEventListener('mouseleave', this.handleTabUnhover.bind(this));
+      gridTab.addEventListener('click', (event) => this.focusTab(event, tab, gridTab, browserView, webview));
+      closeButton.addEventListener('click', (event) => this.closeTab(event, tab, gridTab, browserView));
+      gridCloseButton.addEventListener('click', (event) => this.closeTab(event, tab, gridTab, browserView));
+      muteButton.addEventListener('click', (event) => this.toggleMuteTab(event, webview, muteButton));
+
       webview.addEventListener('did-start-loading', () => {
         this.navbarReloadButton.classList.add('stop');
         favicons.classList.add('loading');
         favicons.classList.remove('dom-loading');
+
+        progressBar.value = 0;
+        progressBar.classList.add('visible');
+
+        clearInterval(this.intervalID);
+        this.isLoading = true;
+        this.intervalID = setInterval(() => {
+          if (this.isLoading) {
+            progressBar.value += Math.min(1, Math.max(0, progressBar.value + 0.5));
+          } else {
+            if (progressBar.value < 1) {
+              progressBar.value += Math.min(1, Math.max(0, progressBar.value + 5));
+            } else {
+              progressBar.classList.remove('visible');
+            }
+          }
+        }, 16);
       });
 
       webview.addEventListener('dom-ready', () => {
+        this.focusTab(tab, gridTab, browserView, webview);
         favicons.classList.add('loading');
         favicons.classList.add('dom-loading');
       });
@@ -435,6 +465,8 @@
         this.navbarReloadButton.classList.remove('stop');
         favicons.classList.remove('loading');
         favicons.classList.remove('dom-loading');
+
+        this.isLoading = false;
 
         const splashElement = this.chromeElement.parentElement.querySelector('.splashscreen');
         if (splashElement) {
@@ -503,12 +535,10 @@
       });
 
       splitView.addEventListener('enter-html-full-screen', (event) => {
-        event.preventDefault();
         this.chromeElement.parentElement.classList.add('fullscreen');
       });
 
       splitView.addEventListener('leave-html-full-screen', (event) => {
-        event.preventDefault();
         this.chromeElement.parentElement.classList.remove('fullscreen');
       });
 
@@ -539,23 +569,13 @@
       ['media-started-playing', 'media-paused'].forEach((eventType) => {
         splitView.addEventListener(eventType, () => this.handleMediaStateChange(splitView, muteButton));
       });
+    },
 
-      this.focusTab(tab, gridTab, browserView, webview);
-
-      tab.addEventListener('click', () => this.focusTab(tab, gridTab, browserView, webview));
-      tab.addEventListener('mouseover', () => this.handleTabHover(tab, webview, favicon.src));
-      tab.addEventListener('mouseleave', this.handleTabUnhover.bind(this));
-      gridTab.addEventListener('click', (event) => this.focusTab(event, tab, gridTab, browserView, webview));
-      closeButton.addEventListener('click', (event) => this.closeTab(event, tab, gridTab, browserView));
-      gridCloseButton.addEventListener('click', (event) => this.closeTab(event, tab, gridTab, browserView));
-      muteButton.addEventListener('click', (event) => this.toggleMuteTab(event, webview, muteButton));
-    }
-
-    closeTab (event, tab, gridTab, browserView) {
+    closeTab: function (event, tab, gridTab, browserView) {
       event.stopPropagation();
 
-      this.chromeElement.dataset.id--;
-      this.navbarTabsButton.dataset.amount = this.chromeElement.dataset.id;
+      this.chromeElement.dataset.tabAmount--;
+      this.navbarTabsButton.dataset.amount = this.chromeElement.dataset.tabAmount;
 
       tab.classList.add('shrink');
       tab.addEventListener('animationend', () => {
@@ -568,49 +588,63 @@
         gridTab.remove();
       });
       browserView.remove();
-    }
+    },
 
-    focusTab (tab, gridTab, browserView, webview) {
+    focusTab: function (tab, gridTab, browserView, webview) {
       const tabs = this.chromeElement.querySelectorAll('.tablist li');
-      for (let index = 0; index < tabs.length; index++) {
+      for (let index = 0, length = tabs.length; index < length; index++) {
         const tab = tabs[index];
         tab.classList.remove('active');
       }
 
       const gridTabs = this.chromeElement.querySelectorAll('.tabs-view .grid .tab');
-      for (let index = 0; index < gridTabs.length; index++) {
+      for (let index = 0, length = gridTabs.length; index < length; index++) {
         const gridTab = gridTabs[index];
         gridTab.classList.remove('active');
       }
 
       const browserViews = this.chromeElement.querySelectorAll('.browser-container .browser-view');
-      for (let index = 0; index < browserViews.length; index++) {
+      for (let index = 0, length = browserViews.length; index < length; index++) {
         const browserView = browserViews[index];
         browserView.classList.remove('active');
 
         const webviews = browserView.querySelectorAll('.browser');
         for (let index1 = 0; index1 < webviews.length; index1++) {
           const webview1 = webviews[index1];
-          if (webview || TasksManager.getThrottle(webview1.getWebContentsId())) {
-            continue;
+
+          try {
+            const webContentsId = webview1.getWebContentsId();
+            if (webview || (!webview && TasksManager.getThrottle(webContentsId))) {
+              continue;
+            }
+            TasksManager.setThrottle(webContentsId, true);
+            webview1.send('visibilitystate', 'hidden');
+          } catch (error) {
+            // console.error(error);
           }
-          TasksManager.setThrottle(webview1.getWebContentsId(), true);
         }
       }
 
       tab.classList.add('active');
       gridTab.classList.add('active');
       browserView.classList.add('active');
-      if (!TasksManager.getThrottle(webview.getWebContentsId())) {
-        TasksManager.setThrottle(webview.getWebContentsId(), false);
+
+      const webContentsId = webview.getWebContentsId();
+      try {
+        if (!TasksManager.getThrottle(webContentsId)) {
+          TasksManager.setThrottle(webContentsId, false);
+          webview.send('visibilitystate', 'visible');
+        }
+      } catch (error) {
+        // console.error(error);
       }
 
-      setTimeout(() => {
+      requestAnimationFrame(() => {
         this.handleNavigation();
-      }, 100);
-    }
+      });
+    },
 
-    toggleMuteTab (event, webview, muteButton) {
+    toggleMuteTab: function (event, webview, muteButton) {
       event.stopPropagation();
 
       if (webview.isAudioMuted()) {
@@ -620,9 +654,9 @@
         webview.setAudioMuted(true);
         muteButton.dataset.icon = 'audio-muted';
       }
-    }
+    },
 
-    handleTabHover (tab, webview, faviconSrc) {
+    handleTabHover: function (tab, webview, faviconSrc) {
       const chromeBox = this.chromeElement.getBoundingClientRect();
       const tabBox = tab.getBoundingClientRect();
       const x = tabBox.left - chromeBox.left;
@@ -648,18 +682,20 @@
       this.tablistPreviewIcon.src = faviconSrc;
       const url = new URL(webview.getURL());
       this.tablistPreviewOrigin.textContent = url.origin;
-    }
+    },
 
-    handleTabUnhover () {
+    handleTabUnhover: function () {
       this.tablistPreview.classList.remove('visible');
-    }
+    },
 
-    handleMediaStateChange (webview, muteButton) {
+    handleMediaStateChange: function (webview, muteButton) {
       if (webview.isCurrentlyAudible()) {
+        MusicController.fadeInCurrentMusic(1);
         this.timeoutID = setTimeout(() => {
           muteButton.style.display = 'none';
         }, 1000);
       } else {
+        MusicController.fadeOutCurrentMusic(1);
         if (webview.isAudioMuted()) {
           muteButton.dataset.icon = 'audio-muted';
         } else {
@@ -667,9 +703,9 @@
         }
         muteButton.style.display = 'block';
       }
-    }
+    },
 
-    updateUserAgent (webview, value) {
+    updateUserAgent: function (webview, value) {
       switch (value) {
         case 'android':
           webview.useragent = navigator.userAgent.replace(/\((.*)\)/i, '(Linux; Android 14)');
@@ -684,15 +720,15 @@
           webview.useragent = navigator.userAgent;
           break;
       }
-    }
+    },
 
-    updateSuggestions () {
+    updateSuggestions: function () {
       const inputText = this.urlbarInput.value;
 
       fetch(this.suggestUrl.replace('{searchTerms}', encodeURI(inputText))).then((suggestionData) => {
         suggestionData.json.then((data) => {
           this.suggestions.innerHTML = '';
-          for (let index = 0; index < data[1].length; index++) {
+          for (let index = 0, length = data[1].length; index < length; index++) {
             const item = data[1][index];
 
             const suggestion = document.createElement('div');
@@ -720,18 +756,18 @@
           }
         });
       });
-    }
+    },
 
-    handleUrlbarInputFocus (event) {
+    handleUrlbarInputFocus: function (event) {
       this.urlbar.classList.add('suggestions-visible');
-    }
+    },
 
-    handleUrlbarInputBlur (event) {
+    handleUrlbarInputBlur: function (event) {
       this.urlbar.classList.remove('suggestions-visible');
-    }
+    },
 
-    handleUrlbarInputKeydown (event) {
-      function checkURL (url) {
+    handleUrlbarInputKeydown: function (event) {
+      function checkURL(url) {
         const urlPattern = /^(\w+?:\/\/)?([\w-]+\.)*[\w-]+(:\d+)?(\/[\w-./?%&=]*)?$/;
 
         const isURL = urlPattern.test(url);
@@ -756,33 +792,33 @@
       } else {
         this.updateSuggestions();
       }
-    }
+    },
 
-    handleNavbarBackButton () {
+    handleNavbarBackButton: function () {
       const webview = this.browserContainer.querySelector('.browser-view.active > .browser');
       if (webview.canGoBack()) {
         webview.goBack();
       }
-    }
+    },
 
-    handleNavbarForwardButton () {
+    handleNavbarForwardButton: function () {
       const webview = this.browserContainer.querySelector('.browser-view.active > .browser');
       if (webview.canGoForward()) {
         webview.goForward();
       }
-    }
+    },
 
-    handleNavbarReloadButton () {
+    handleNavbarReloadButton: function () {
       const webview = this.browserContainer.querySelector('.browser-view.active > .browser');
       webview.reload();
-    }
+    },
 
-    handleNavbarHomeButton () {
+    handleNavbarHomeButton: function () {
       const webview = this.browserContainer.querySelector('.browser-view.active > .browser');
       webview.src = this.DEFAULT_URL;
-    }
+    },
 
-    handleNavbarSplitButton () {
+    handleNavbarSplitButton: function () {
       const browserView = this.browserContainer.querySelector('.browser-view.active');
       const splitView = this.browserContainer.querySelector('.browser-view.active > .split');
       browserView.classList.toggle('split-enabled');
@@ -791,32 +827,32 @@
       }
 
       this.navbarSplitButton.classList.toggle('active');
-    }
+    },
 
-    handleNavbarTabsButton () {
+    handleNavbarTabsButton: function () {
       this.chromeElement.classList.toggle('tabs-view-visible');
       this.tabsView.classList.toggle('visible');
-    }
+    },
 
-    handleNavbarDownloadsButton (event) {
+    handleNavbarDownloadsButton: function (event) {
       this.openDropdown('downloads');
-    }
+    },
 
-    handleNavbarLibraryButton (event) {
+    handleNavbarLibraryButton: function (event) {
       this.openDropdown('library');
-    }
+    },
 
-    handleNavbarAddonsButton (event) {
+    handleNavbarAddonsButton: function (event) {
       ContextMenu({});
-    }
+    },
 
-    async handleNavbarOptionsButton (event) {
+    handleNavbarOptionsButton: async function (event) {
       const webview = this.browserContainer.querySelector('.browser-view.active > .browser');
 
       const box = this.navbarOptionsButton.getBoundingClientRect();
       const rtl = document.dir === 'rtl';
 
-      const x = rtl ? box.left : box.left + box.width - 25;
+      const x = rtl ? box.left + box.width : box.left;
       const y = box.top > window.innerHeight / 2 ? box.top : box.top + box.height;
 
       const menu = [
@@ -918,23 +954,7 @@
               onclick: () => {
                 const zoom = webview.getZoomFactor();
                 const targetZoom = Math.min(5, Math.max(0.3, zoom - 0.2));
-                const duration = 250; // 250ms transition time
-
-                const startTime = performance.now();
-                function animateZoom () {
-                  const currentTime = performance.now();
-                  const progress = Math.min((currentTime - startTime) / duration, 1);
-
-                  const easedProgress = 0.5 - 0.5 * Math.cos(progress * Math.PI);
-                  const newZoom = zoom + (targetZoom - zoom) * easedProgress;
-                  webview.setZoomFactor(newZoom);
-
-                  if (progress < 1) {
-                    requestAnimationFrame(animateZoom);
-                  }
-                }
-
-                animateZoom();
+                webview.setZoomFactor(targetZoom);
               }
             },
             {
@@ -943,25 +963,7 @@
                 value: Math.round(webview.getZoomFactor() * 100)
               },
               onclick: () => {
-                const zoom = webview.getZoomFactor();
-                const targetZoom = 1;
-                const duration = 250; // 250ms transition time
-
-                const startTime = performance.now();
-                function animateZoom () {
-                  const currentTime = performance.now();
-                  const progress = Math.min((currentTime - startTime) / duration, 1);
-
-                  const easedProgress = 0.5 - 0.5 * Math.cos(progress * Math.PI);
-                  const newZoom = zoom + (targetZoom - zoom) * easedProgress;
-                  webview.setZoomFactor(newZoom);
-
-                  if (progress < 1) {
-                    requestAnimationFrame(animateZoom);
-                  }
-                }
-
-                animateZoom();
+                webview.setZoomFactor(1);
               }
             },
             {
@@ -970,23 +972,7 @@
               onclick: () => {
                 const zoom = webview.getZoomFactor();
                 const targetZoom = Math.min(5, Math.max(0.3, zoom + 0.2));
-                const duration = 250; // 250ms transition time
-
-                const startTime = performance.now();
-                function animateZoom () {
-                  const currentTime = performance.now();
-                  const progress = Math.min((currentTime - startTime) / duration, 1);
-
-                  const easedProgress = 0.5 - 0.5 * Math.cos(progress * Math.PI);
-                  const newZoom = zoom + (targetZoom - zoom) * easedProgress;
-                  webview.setZoomFactor(newZoom);
-
-                  if (progress < 1) {
-                    requestAnimationFrame(animateZoom);
-                  }
-                }
-
-                animateZoom();
+                webview.setZoomFactor(targetZoom);
               }
             }
           ]
@@ -1025,12 +1011,12 @@
 
       // Delaying the context menu opening so it won't fire the same time click
       // does and instantly hide as soon as it opens
-      setTimeout(() => {
+      requestAnimationFrame(() => {
         ContextMenu.show(x, y, menu, this.navbarOptionsButton);
-      }, 16);
-    }
+      });
+    },
 
-    requestBookmark () {
+    requestBookmark: function () {
       const webview = this.browserContainer.querySelector('.browser-view.active > .browser');
 
       ModalDialog.showPrompt(L10n.get('bookmark'), L10n.get('bookmark-detail'), (value) => {
@@ -1047,15 +1033,15 @@
           }
         });
       });
-    }
+    },
 
-    async handleUrlbarSSLButton (event) {
+    handleUrlbarSSLButton: async function (event) {
       const webview = this.browserContainer.querySelector('.browser-view.active > .browser');
 
       const box = this.urlbarSSLButton.getBoundingClientRect();
       const rtl = document.dir === 'rtl';
 
-      const x = rtl ? box.left : box.left + box.width - 25;
+      const x = rtl ? box.left + box.width : box.left;
       const y = box.top > window.innerHeight / 2 ? box.top : box.top + box.height;
 
       const menu = [
@@ -1101,20 +1087,25 @@
       setTimeout(() => {
         ContextMenu.show(x, y, menu, this.urlbarSSLButton);
       }, 16);
-    }
+    },
 
-    handleTabsViewCloseButton () {
+    handleTabsViewCloseButton: function () {
       this.chromeElement.classList.remove('tabs-view-visible');
       this.tabsView.classList.remove('visible');
-    }
+    },
 
-    handleIpcMessage (event) {
+    handleIpcMessage: function (event) {
       const webview = this.browserContainer.querySelector('.browser-view.active > .browser');
 
-      const scrollPosition = event.args[0].top;
-      let progress = scrollPosition / 80;
+      const data = event.args[0];
+      const scrollPosition = data.top;
+      let progress = scrollPosition / 100;
 
       switch (event.channel) {
+        case 'keybind':
+          this.handleKeybind(data.keyCode);
+          break;
+
         case 'scroll':
           progress = Math.min(1, progress);
           webview.style.setProperty('--scroll-progress', progress);
@@ -1123,22 +1114,33 @@
             return;
           }
 
-          this.currentScroll = event.args[0].top;
+          this.currentScroll = data.top;
           if (this.currentScroll > this.lastScroll + 50) {
             this.chromeElement.classList.remove('visible');
-            this.lastScroll = event.args[0].top;
+            this.lastScroll = data.top;
           } else if (this.currentScroll < this.lastScroll - 50) {
             this.chromeElement.classList.add('visible');
-            this.lastScroll = event.args[0].top;
+            this.lastScroll = data.top;
           }
           break;
 
         default:
           break;
       }
-    }
+    },
 
-    handleContextMenu (event) {
+    handleKeybind: function (keyCode) {
+      switch (keyCode) {
+        case 'Home':
+          AppWindow.focus('homescreen');
+          break;
+
+        default:
+          break;
+      }
+    },
+
+    handleContextMenu: function (event) {
       const browserView = this.browserContainer.querySelector('.browser-view.active');
       const webview = this.browserContainer.querySelector('.browser-view.active > .browser');
       const devToolsView = this.browserContainer.querySelector('.browser-view.active > .devtools');
@@ -1300,7 +1302,7 @@
       ];
 
       if (event.params.spellcheckEnabled) {
-        for (let index = 0; index < event.params.dictionarySuggestions.length; index++) {
+        for (let index = 0, length = event.params.dictionarySuggestions.length; index < length; index++) {
           const suggestion = event.params.dictionarySuggestions[index];
           suggestions.push({
             name: `"${suggestion}"`
@@ -1309,41 +1311,45 @@
       }
 
       ContextMenu.show(event.params.x, event.params.y, [...itemsBefore, ...suggestions, ...itemsAfter]);
-    }
+    },
 
-    handlePageFaviconUpdated (event) {
+    handlePageFaviconUpdated: function (event) {
       const favicon = this.tablist.querySelector('li.active .favicon');
       const gridFavicon = this.tabsViewList.querySelector('.active .favicon');
       favicon.src = event.favicons[0];
       gridFavicon.src = event.favicons[0];
-    }
+    },
 
-    handlePageTitleUpdated (event) {
+    handlePageTitleUpdated: function (event) {
       const title = this.tablist.querySelector('li.active .title');
       const gridTitle = this.tabsViewList.querySelector('.active .title');
       title.textContent = event.title;
       gridTitle.textContent = event.title;
-    }
+    },
 
-    handleNavigation () {
+    handleNavigation: function () {
       const webview = this.browserContainer.querySelector('.browser-view.active > .browser');
-      this.urlbarInput.value = webview.getURL();
 
-      if (webview.getURL() === this.DEFAULT_URL) {
-        this.urlbarDisplayUrl.innerText = L10n.get('urlbar');
-      } else {
-        const url = new URL(webview.getURL());
-        this.urlbarDisplayUrl.innerHTML = `
+      try {
+        this.urlbarInput.value = webview.getURL();
+        if (webview.getURL() === this.DEFAULT_URL) {
+          this.urlbarDisplayUrl.innerText = L10n.get('urlbar');
+        } else {
+          const url = new URL(webview.getURL());
+          this.urlbarDisplayUrl.innerHTML = `
           <div class="ignored">${url.protocol}//</div>
           <div class="highlighted">${url.host}</div>
           <div class="ignored">${url.pathname}</div>
           <div class="ignored">${url.search}</div>
           <div class="ignored">${url.hash}</div>
         `;
+        }
+      } catch (error) {
+        // console.error(error);
       }
-    }
+    },
 
-    handleThemeColorUpdated (event) {
+    handleThemeColorUpdated: function (event) {
       const webview = this.browserContainer.querySelector('.browser-view.active > .browser');
       const color = event.themeColor;
       if (color) {
@@ -1457,9 +1463,9 @@
           }
         }
       }
-    }
+    },
 
-    calculateLuminance (color) {
+    calculateLuminance: function (color) {
       // Convert the color to RGB values
       const rgb = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(color);
       const r = parseInt(rgb[1], 16);
@@ -1470,9 +1476,9 @@
       const luminance = (0.2126 * r + 0.7152 * g + 0.0722 * b) / 255;
 
       return luminance;
-    }
+    },
 
-    openFtuDialog () {
+    openFtuDialog: function () {
       this.ftuDialog.classList.add('visible');
       this.ftuDialog.onclick = () => {
         new Audio('/resources/sounds/exclamation.wav').play();
@@ -1487,13 +1493,13 @@
       };
 
       const pageButtons = this.ftuDialog.querySelectorAll('[data-page-id]');
-      for (let index = 0; index < pageButtons.length; index++) {
+      for (let index = 0, length = pageButtons.length; index < length; index++) {
         const button = pageButtons[index];
         button.addEventListener('click', () => this.handlePageButtonClick(button));
       }
 
       const panels = this.ftuDialog.querySelectorAll('.page');
-      for (let index = 0; index < panels.length; index++) {
+      for (let index = 0, length = panels.length; index < length; index++) {
         const panel = panels[index];
 
         panel.dataset.index = index;
@@ -1561,16 +1567,16 @@
           b: 160
         });
       };
-    }
+    },
 
-    handlePageButtonClick (button) {
+    handlePageButtonClick: function (button) {
       const id = button.dataset.pageId;
       const selectedPanel = this.ftuDialog.querySelector('.page.visible');
 
       this.togglePanelVisibility(selectedPanel, id);
-    }
+    },
 
-    togglePanelVisibility (selectedPanel, targetPanelId) {
+    togglePanelVisibility: function (selectedPanel, targetPanelId) {
       const targetPanel = this.ftuDialog.querySelector(`.${targetPanelId}`);
 
       if (selectedPanel) {
@@ -1583,7 +1589,7 @@
       targetPanel.classList.toggle('previous', selectedPanel.dataset.index <= targetPanel.dataset.index);
       targetPanel.classList.toggle('next', selectedPanel.dataset.index >= targetPanel.dataset.index);
     }
-  }
+  };
 
   exports.Chrome = Chrome;
 })(window);

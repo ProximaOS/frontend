@@ -3,12 +3,12 @@
   font-family: 'Orchid Brand';
 }
 
-#root [role="header"] {
-  height: calc(5rem + (4rem * (1 - var(--progress, 0))));
+section[role="panel"]#root > header:first-child {
+  height: calc(5rem + (3.5rem * (1 - var(--progress, 0))));
   padding: 0 1rem;
 }
 
-#root [role="header"] h1 {
+section[role="panel"]#root > header:first-child h1 {
   font-weight: 600;
   font-family: 'Orchid Brand';
   text-align: center;
@@ -41,6 +41,7 @@
   align-items: center;
   padding: 1rem;
   border-radius: 1rem;
+  opacity: calc(1 - var(--progress, 0));
 }
 
 .homepage-header .logo-holder > .logo .wordmark {
@@ -49,49 +50,6 @@
   font-weight: 600;
   font-size: 4rem;
   font-family: 'Orchid Brand';
-}
-
-.homepage-header .searchbox {
-  display: flex;
-  width: 100%;
-  max-width: calc(var(--safezone-width) - 3rem);
-  height: 4.4rem;
-  margin-bottom: 1.5rem;
-  border-radius: 2.2rem;
-  background: var(--background-plus) url(icons/browser_64.png) no-repeat left 1.5rem center / 2.4rem;
-  box-shadow: 0 1.5rem 3rem rgba(0,0,0,0.25);
-}
-
-.homepage-header .searchbox input[type="text"] {
-  box-sizing: border-box;
-  flex-grow: 1;
-  width: 100%;
-  padding: 0;
-  padding-inline-start: 5rem;
-  border: none;
-  outline: none;
-  background-color: transparent;
-  color: var(--text-color);
-  font-size: 1.6rem;
-}
-
-.homepage-header .searchbox button[type="submit"] {
-  flex-shrink: 0;
-  width: 4.4rem;
-  height: 3.4rem;
-  margin: 0.5rem;
-  border: none;
-  border-radius: 2rem;
-  outline: none;
-  background-color: transparent;
-  background-color: var(--accent-color);
-  color: var(--accent-color-plus);
-  line-height: 3.4rem;
-}
-
-.homepage-header .searchbox button[type="submit"][data-icon]::before {
-  position: static;
-  font-size: 2rem;
 }
 
 .homepage-row {

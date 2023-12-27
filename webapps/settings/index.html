@@ -11,7 +11,6 @@
   <link rel="stylesheet" type="text/css" href="http://default_theme.localhost:8081/style/index.css" />
   <link rel="stylesheet" type="text/css" href="http://shared.localhost:8081/style/layout.css" />
   <link rel="stylesheet" type="text/css" href="http://shared.localhost:8081/style/icons/icons.css" />
-  <link rel="stylesheet" type="text/css" href="http://shared.localhost:8081/rolee/panels.css" />
   <link rel="stylesheet" type="text/css" href="http://shared.localhost:8081/style/headers.css" />
   <link rel="stylesheet" type="text/css" href="http://shared.localhost:8081/style/tablists.css" />
   <link rel="stylesheet" type="text/css" href="http://shared.localhost:8081/style/progress_activity.css" />
@@ -21,8 +20,11 @@
   <link rel="stylesheet" type="text/css" href="http://shared.localhost:8081/style/checkboxes.css" />
   <link rel="stylesheet" type="text/css" href="http://shared.localhost:8081/style/seekbars.css" />
   <link rel="stylesheet" type="text/css" href="http://shared.localhost:8081/style/input_areas.css" />
+  <link rel="stylesheet" type="text/css" href="http://shared.localhost:8081/style/skeletons.css" />
+  <link rel="stylesheet" type="text/css" href="http://shared.localhost:8081/style/softkeys.css" />
   <link rel="stylesheet" type="text/css" href="style/settings.css" />
   <link rel="stylesheet" type="text/css" href="style/devices.css" />
+  <link rel="stylesheet" type="text/css" href="style/systemupdate.css" />
   <script type="module" src="https://orchid-f39a9.web.app/orchid_services.js"></script>
   <script defer type="text/javascript" src="http://shared.localhost:8081/js/smooth-scrollbar.js"></script>
   <script defer type="text/javascript" src="http://shared.localhost:8081/js/plugins/overscroll.js"></script>
@@ -31,8 +33,10 @@
   <script type="text/javascript" src="http://shared.localhost:8081/js/file_picker.js"></script>
   <script type="text/javascript" src="http://shared.localhost:8081/js/compress_image.js"></script>
   <script defer type="text/javascript" src="http://shared.localhost:8081/js/page_controller.js"></script>
+  <script defer type="text/javascript" src="http://shared.localhost:8081/js/lazy_loader.js"></script>
+  <script defer type="text/javascript" src="http://shared.localhost:8081/js/file_indexer.js"></script>
   <script type="text/javascript" src="js/bootstrap.js"></script>
-  <script defer type="text/javascript" src="js/pages/root/main.js"></script>
+  <!-- <script defer type="text/javascript" src="js/pages/root/main.js"></script>
   <script defer type="text/javascript" src="js/pages/account/main.js"></script>
   <script defer type="text/javascript" src="js/pages/devices/main.js"></script>
   <script defer type="text/javascript" src="js/pages/wifi/main.js"></script>
@@ -40,6 +44,7 @@
   <script defer type="text/javascript" src="js/pages/general/main.js"></script>
   <script defer type="text/javascript" src="js/pages/webapps/main.js"></script>
   <script defer type="text/javascript" src="js/pages/languages/main.js"></script>
+  <script defer type="text/javascript" src="js/pages/audio/main.js"></script>
   <script defer type="text/javascript" src="js/pages/display/main.js"></script>
   <script defer type="text/javascript" src="js/pages/display/accent_color.js"></script>
   <script defer type="text/javascript" src="js/pages/display/font_settings.js"></script>
@@ -48,7 +53,7 @@
   <script defer type="text/javascript" src="js/pages/storage/main.js"></script>
   <script defer type="text/javascript" src="js/pages/accessibility/main.js"></script>
   <script defer type="text/javascript" src="js/pages/about/main.js"></script>
-  <script defer type="text/javascript" src="js/battery_icon.js"></script>
+  <script defer type="text/javascript" src="js/battery_icon.js"></script> -->
 
   <script type="text/javascript" src="http://shared.localhost:8081/js/l10n.js"></script>
   <meta name="defaultLanguage" content="en-US">
@@ -61,22 +66,24 @@
 <body>
   <main id="app" role="app">
     <section id="root" class="visible" role="panel">
-      <header role="header">
+      <header>
         <div class="safezone">
           <h1 data-l10n-id="title"></h1>
           <menu role="toolbar">
-            <a href="#" data-icon="search"></a>
             <a href="#" data-icon="options"></a>
+            <a href="#" data-icon="search"></a>
           </menu>
         </div>
       </header>
 
       <div class="content lists">
-        <form action="" role="search" id="searchbox">
-          <input type="text" name="" id="" data-l10n-id="type-here-to-search">
-          <button type="reset" data-icon="close"></button>
-          <button type="submit" data-icon="search"></button>
-        </form>
+        <div class="searchbox">
+          <form action="" id="searchbox" class="bb-search">
+            <input type="text" name="" id="" data-l10n-id="type-here-to-search">
+            <button type="reset" data-icon="close"></button>
+            <button type="submit" data-icon="search"></button>
+          </form>
+        </div>
 
         <ul>
           <li id="account-button" class="page hbox" data-page-id="account">
@@ -89,8 +96,8 @@
           <li id="login-button" class="page" data-icon="orchid">
             <p data-l10n-id="accountLogin"></p>
           </li>
-          <li id="sync-button" class="page" data-icon="sync" data-page-id="sync">
-            <p data-l10n-id="accountSync"></p>
+          <li id="parental-control-button" class="page" data-icon="parental-control" data-page-id="parental-control">
+            <p data-l10n-id="parentalControl"></p>
           </li>
           <li id="devices-button" class="page" data-icon="devices" data-page-id="devices">
             <p data-l10n-id="accountDevices"></p>
@@ -176,15 +183,21 @@
           <li class="page" data-icon="power" data-page-id="system">
             <p data-l10n-id="system"></p>
           </li>
-          <li class="page" data-icon="about" data-page-id="aboutInfo">
+          <li class="page" data-icon="about" data-page-id="about">
             <p data-l10n-id="aboutInfo"></p>
           </li>
         </ul>
       </div>
+
+      <div class="bb-softkeys">
+        <div class="softkey"></div>
+        <div class="softkey">Select</div>
+        <div class="softkey">Search</div>
+      </div>
     </section>
 
     <section id="account" role="panel" data-previous-page-id="root">
-      <header role="header">
+      <header>
         <div class="safezone">
           <a href="#" data-icon="arrow-back" data-page-id="root"></a>
           <h1 data-l10n-id="account"></h1>
@@ -239,10 +252,13 @@
     </section>
 
     <section id="devices" role="panel" data-previous-page-id="root">
-      <header role="header">
+      <header>
         <div class="safezone">
           <a href="#" data-icon="arrow-back" data-page-id="root"></a>
           <h1 data-l10n-id="devices"></h1>
+          <menu role="toolbar">
+            <a href="#" id="devices-reload-button" data-icon="reload"></a>
+          </menu>
         </div>
       </header>
 
@@ -252,7 +268,7 @@
     </section>
 
     <section id="wifi" role="panel" data-previous-page-id="root">
-      <header role="header">
+      <header>
         <div class="safezone">
           <a href="#" data-icon="arrow-back" data-page-id="root"></a>
           <h1 data-l10n-id="wifi"></h1>
@@ -293,7 +309,7 @@
     </section>
 
     <section id="bluetooth" role="panel" data-previous-page-id="root">
-      <header role="header">
+      <header>
         <div class="safezone">
           <a href="#" data-icon="arrow-back" data-page-id="root"></a>
           <h1 data-l10n-id="bluetooth"></h1>
@@ -333,7 +349,7 @@
     </section>
 
     <section id="general" role="panel" data-previous-page-id="root">
-      <header role="header">
+      <header>
         <div class="safezone">
           <a href="#" data-icon="arrow-back" data-page-id="root"></a>
           <h1 data-l10n-id="general"></h1>
@@ -341,44 +357,105 @@
       </header>
 
       <div class="content lists">
-        <header data-l10n-id="system"></header>
+        <header data-l10n-id="gestures"></header>
         <ul>
           <li data-icon="gestures">
             <div class="pack-checkbox">
-              <label for="general-softwareButtons-checkbox">
+              <label for="general-software-buttons-checkbox">
                 <p data-l10n-id="enableSoftwareButtons"></p>
               </label>
               <span>
-                <input type="checkbox" name="general-softwareButtons-checkbox" id="general-softwareButtons-checkbox" />
+                <input type="checkbox" name="general-software-buttons-checkbox"
+                  id="general-software-buttons-checkbox" />
               </span>
             </div>
+          </li>
+          <li class="page" data-icon="crowd-play" data-page-id="gaming">
+            <p data-l10n-id="gaming"></p>
           </li>
         </ul>
 
         <header data-l10n-id="webapps"></header>
         <ul>
-          <li id="general-webapps-button" class="page" data-icon="apps" data-page-id="webapps">
+          <li class="page" data-icon="web" data-page-id="browser">
+            <p data-l10n-id="browser"></p>
+          </li>
+          <li class="page" data-icon="apps" data-page-id="webapps">
             <p data-l10n-id="webapps"></p>
           </li>
-          <li id="general-addons-button" class="page" data-icon="addons" data-page-id="addons">
+          <li class="page" data-icon="addons" data-page-id="addons">
             <p data-l10n-id="addons"></p>
           </li>
         </ul>
 
-        <header data-l10n-id="locales"></header>
+        <header data-l10n-id="localization"></header>
         <ul>
           <li class="page" data-icon="languages" data-page-id="languages">
             <p data-l10n-id="languages"></p>
           </li>
-          <li id="general-languages-button" class="page" data-icon="direction" data-page-id="languages">
+          <li class="page" data-icon="direction" data-page-id="language-direction">
             <p data-l10n-id="changeLanguageDirection"></p>
+          </li>
+          <li class="page" data-icon="numeric" data-page-id="numeric-language">
+            <p data-l10n-id="changeNumericLanguage"></p>
+          </li>
+          <li class="page" data-icon="price" data-page-id="currency">
+            <p data-l10n-id="changeCurrency"></p>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <section id="browser" role="panel" data-previous-page-id="general">
+      <header>
+        <div class="safezone">
+          <a href="#" data-icon="arrow-back" data-page-id="general"></a>
+          <h1 data-l10n-id="browser"></h1>
+        </div>
+      </header>
+
+      <div class="content lists">
+        <ul>
+          <li data-icon="browser-moveup">
+            <p data-l10n-id="chromePosition"></p>
+            <select name="" id="display-chromePosition">
+              <option value="top">Top</option>
+              <option value="bottom">Bottom</option>
+            </select>
+          </li>
+        </ul>
+
+        <header data-l10n-id="browser-webBrowsing"></header>
+        <ul>
+          <li data-icon="js">
+            <div class="pack-checkbox">
+              <label for="general-js-checkbox">
+                <p data-l10n-id="enableJavascript"></p>
+              </label>
+              <span>
+                <input type="checkbox" name="general-js-checkbox" id="general-js-checkbox" />
+              </span>
+            </div>
+          </li>
+          <li data-icon="cookies">
+            <div class="pack-checkbox">
+              <label for="general-cookies-checkbox">
+                <p data-l10n-id="enableCookies"></p>
+              </label>
+              <span>
+                <input type="checkbox" name="general-cookies-checkbox" id="general-cookies-checkbox" />
+              </span>
+            </div>
+          </li>
+          <li data-icon="cookies-off">
+            <p data-l10n-id="browser-deleteCookies"></p>
           </li>
         </ul>
       </div>
     </section>
 
     <section id="webapps" role="panel" data-previous-page-id="general">
-      <header role="header">
+      <header>
         <div class="safezone">
           <a href="#" data-icon="arrow-back" data-page-id="general"></a>
           <h1 data-l10n-id="webapps"></h1>
@@ -389,11 +466,11 @@
         <ul>
           <li data-icon="download">
             <div class="pack-checkbox">
-              <label for="general-enable3rdParty-checkbox">
+              <label for="general-3rd-party-sources-checkbox">
                 <p data-l10n-id="enable3rdParty"></p>
               </label>
               <span>
-                <input type="checkbox" name="general-enable3rdParty-checkbox" id="general-enable3rdParty-checkbox" />
+                <input type="checkbox" name="general-3rd-party-sources-checkbox" id="general-3rd-party-sources-checkbox" />
               </span>
             </div>
           </li>
@@ -403,8 +480,8 @@
       </div>
     </section>
 
-    <section id="webappInfo" role="panel" data-previous-page-id="webapps">
-      <header class=" compact" role="header">
+    <section id="webapp-info" role="panel" data-previous-page-id="webapps">
+      <header class=" compact">
         <div class="safezone">
           <a href="#" data-icon="arrow-back" data-page-id="webapps"></a>
           <h1 id="webappInfo-header"></h1>
@@ -414,24 +491,23 @@
       <div class="content lists">
         <div class="webapp-header">
           <figure>
-            <img src="" alt="" id="webappInfo-icon">
+            <img src="" alt="" id="webapp-info-icon">
             <figcaption>
-              <div id="webappInfo-name"></div>
-              <div id="webappInfo-version"></div>
+              <div id="webapp-info-name"></div>
+              <div id="webapp-info-version"></div>
               <a href="#" id="webappInfo-author"></a>
             </figcaption>
           </figure>
           <div class="buttons">
-            <button id="webappInfo-uninstall-button" class="danger" data-l10n-id="webappInfo-uninstall"></button>
-            <button id="webappInfo-store-button" data-l10n-id="webappInfo-store"></button>
+            <button id="webapp-info-uninstall-button" class="danger" data-l10n-id="webappInfo-uninstall"></button>
+            <button id="webapp-info-store-button" data-l10n-id="webappInfo-store"></button>
           </div>
         </div>
-        <ul id="webapps-list"></ul>
       </div>
     </section>
 
     <section id="languages" role="panel" data-previous-page-id="general">
-      <header role="header">
+      <header>
         <div class="safezone">
           <a href="#" data-icon="arrow-back" data-page-id="general"></a>
           <h1 data-l10n-id="languages"></h1>
@@ -444,7 +520,7 @@
     </section>
 
     <section id="audio" role="panel" data-previous-page-id="root">
-      <header role="header">
+      <header>
         <div class="safezone">
           <a href="#" data-icon="arrow-back" data-page-id="root"></a>
           <h1 data-l10n-id="audio"></h1>
@@ -506,6 +582,8 @@
         </ul>
         <detail data-l10n-id="bikeModeTitle" data-icon="bike-mode"></detail>
         <detail data-l10n-id="bikeModeDesc"></detail>
+        <detail data-l10n-id="bikeModeDesc-dos1"></detail>
+        <detail data-l10n-id="bikeModeDesc-dos2"></detail>
 
         <ul>
           <li data-icon="do-not-disturb">
@@ -548,7 +626,7 @@
     </section>
 
     <section id="display" role="panel" data-previous-page-id="root">
-      <header role="header">
+      <header>
         <div class="safezone">
           <a href="#" data-icon="arrow-back" data-page-id="root"></a>
           <h1 data-l10n-id="display"></h1>
@@ -569,11 +647,11 @@
           </li>
           <li>
             <div class="pack-checkbox">
-              <label for="display-autoBrightness-checkbox">
+              <label for="display-auto-brightness-checkbox">
                 <p data-l10n-id="enableAutoBrightness"></p>
               </label>
               <span>
-                <input type="checkbox" name="display-autoBrightness-checkbox" id="display-autoBrightness-checkbox" />
+                <input type="checkbox" name="display-auto-brightness-checkbox" id="display-auto-brightness-checkbox" />
               </span>
             </div>
           </li>
@@ -581,44 +659,54 @@
 
         <header data-l10n-id="display-interface"></header>
         <ul>
-          <li data-icon="browser-moveup">
-            <p data-l10n-id="chromePosition"></p>
-            <select name="" id="display-chromePosition">
-              <option value="top">Top</option>
-              <option value="bottom">Bottom</option>
-            </select>
-          </li>
           <li data-icon="dark-mode">
             <div class="pack-switch">
-              <label for="display-darkMode-switch">
+              <label for="display-dark-mode-switch">
                 <p data-l10n-id="enableDarkMode"></p>
               </label>
               <span>
-                <input type="checkbox" name="display-darkMode-switch" id="display-darkMode-switch" />
+                <input type="checkbox" name="display-dark-mode-switch" id="display-dark-mode-switch" />
               </span>
             </div>
           </li>
           <li data-icon="book-mode">
             <div class="pack-switch">
-              <label for="display-eBook-switch">
-                <p data-l10n-id="enableEBook"></p>
+              <label for="display-reader-mode-switch">
+                <p data-l10n-id="enableReaderMode"></p>
               </label>
               <span>
-                <input type="checkbox" name="display-eBook-switch" id="display-eBook-switch" />
+                <input type="checkbox" name="display-reader-mode-switch" id="display-reader-mode-switch" />
               </span>
             </div>
           </li>
           <li data-icon="eye">
             <div class="pack-switch">
-              <label for="display-warmColors-switch">
+              <label for="display-warm-colors-switch">
                 <p data-l10n-id="enableWarmColors"></p>
               </label>
               <span>
-                <input type="checkbox" name="display-warmColors-switch" id="display-warmColors-switch" />
+                <input type="checkbox" name="display-warm-colors-switch" id="display-warm-colors-switch" />
               </span>
             </div>
           </li>
         </ul>
+        <detail data-l10n-id="warmColorsTitle" data-icon="eye"></detail>
+        <detail data-l10n-id="warmColorsDesc"></detail>
+
+        <ul>
+          <li data-icon="eye-off">
+            <div class="pack-switch">
+              <label for="display-red-light-point-switch">
+                <p data-l10n-id="enableRedLightPoint"></p>
+              </label>
+              <span>
+                <input type="checkbox" name="display-red-light-point-switch" id="display-red-light-point-switch" />
+              </span>
+            </div>
+          </li>
+        </ul>
+        <detail data-l10n-id="redLightPointTitle" data-icon="eye"></detail>
+        <detail data-l10n-id="redLightPointDesc"></detail>
 
         <header data-l10n-id="display-personalize"></header>
         <ul>
@@ -639,7 +727,7 @@
     </section>
 
     <section id="accent-color" role="panel" data-previous-page-id="display">
-      <header role="header">
+      <header>
         <div class="safezone">
           <a href="#" data-icon="arrow-back" data-page-id="display"></a>
           <h1 data-l10n-id="accentColor"></h1>
@@ -675,7 +763,7 @@
     </section>
 
     <section id="font-settings" role="panel" data-previous-page-id="display">
-      <header role="header">
+      <header>
         <div class="safezone">
           <a href="#" data-icon="arrow-back" data-page-id="display"></a>
           <h1 data-l10n-id="fontSettings"></h1>
@@ -697,7 +785,7 @@
     </section>
 
     <section id="homescreen" role="panel" data-previous-page-id="root">
-      <header role="header">
+      <header>
         <div class="safezone">
           <a href="#" data-icon="arrow-back" data-page-id="root"></a>
           <h1 data-l10n-id="homescreen"></h1>
@@ -737,7 +825,7 @@
     </section>
 
     <section id="lockscreen" role="panel" data-previous-page-id="root">
-      <header role="header">
+      <header>
         <div class="safezone">
           <a href="#" data-icon="arrow-back" data-page-id="root"></a>
           <h1 data-l10n-id="lockScreen"></h1>
@@ -770,7 +858,7 @@
     </section>
 
     <section id="lockScreen-mode" role="panel" data-previous-page-id="lockScreen">
-      <header role="header">
+      <header>
         <div class="safezone">
           <a href="#" data-icon="arrow-back" data-page-id="lockscreen"></a>
           <h1 data-l10n-id="lockScreen-mode"></h1>
@@ -790,7 +878,7 @@
     </section>
 
     <section id="lockScreen-mode-pinLock" role="panel" data-previous-page-id="lockScreen-mode">
-      <header role="header">
+      <header>
         <div class="safezone">
           <a href="#" data-icon="arrow-back" data-page-id="lockScreen-mode"></a>
           <h1 data-l10n-id="lockScreen-mode-pinLock"></h1>
@@ -812,7 +900,7 @@
     </section>
 
     <section id="date-and-time" role="panel" data-previous-page-id="root">
-      <header role="header">
+      <header>
         <div class="safezone">
           <a href="#" data-icon="arrow-back" data-page-id="root"></a>
           <h1 data-l10n-id="dateAndTime"></h1>
@@ -851,7 +939,7 @@
     </section>
 
     <section id="privacy" role="panel" data-previous-page-id="root">
-      <header role="header">
+      <header>
         <div class="safezone">
           <a href="#" data-icon="arrow-back" data-page-id="root"></a>
           <h1 data-l10n-id="privacy"></h1>
@@ -895,7 +983,7 @@
     </section>
 
     <section id="battery" role="panel" data-previous-page-id="root">
-      <header role="header">
+      <header>
         <div class="safezone">
           <a href="#" data-icon="arrow-back" data-page-id="root"></a>
           <h1 data-l10n-id="battery"></h1>
@@ -934,7 +1022,7 @@
     </section>
 
     <section id="storage" role="panel" data-previous-page-id="root">
-      <header role="header">
+      <header>
         <div class="safezone">
           <a href="#" data-icon="arrow-back" data-page-id="root"></a>
           <h1 data-l10n-id="storage"></h1>
@@ -954,7 +1042,7 @@
     </section>
 
     <section id="accessibility" role="panel" data-previous-page-id="root">
-      <header role="header">
+      <header>
         <div class="safezone">
           <a href="#" data-icon="arrow-back" data-page-id="root"></a>
           <h1 data-l10n-id="accessibility"></h1>
@@ -978,7 +1066,7 @@
     </section>
 
     <section id="system" role="panel" data-previous-page-id="root">
-      <header role="header">
+      <header>
         <div class="safezone">
           <a href="#" data-icon="arrow-back" data-page-id="root"></a>
           <h1 data-l10n-id="system"></h1>
@@ -992,7 +1080,7 @@
           </li>
         </ul>
         <ul>
-          <li class="page" data-icon="edit" data-page-id="devel-options>
+          <li class="page" data-icon="edit" data-page-id="devel-options">
             <p data-l10n-id="devOptions"></p>
           </li>
         </ul>
@@ -1000,7 +1088,7 @@
     </section>
 
     <section id="devel-options" role="panel" data-previous-page-id="system">
-      <header role="header">
+      <header>
         <div class="safezone">
           <a href="#" data-icon="arrow-back" data-page-id="system"></a>
           <h1 data-l10n-id="devOptions"></h1>
@@ -1068,19 +1156,47 @@
     </section>
 
     <section id="system-update" role="panel" data-previous-page-id="system">
-      <header role="header">
+      <header>
         <div class="safezone">
           <a href="#" data-icon="arrow-back" data-page-id="system"></a>
           <h1 data-l10n-id="systemUpdate"></h1>
         </div>
       </header>
-      <progress value="0" class="pack-activity"></progress>
 
-      <div class="content lists"></div>
+      <div class="content lists">
+        <div class="updates">
+          <div id="current-update" class="update">
+            <div class="artwork">
+              <div class="ring first">
+                <div class="circle"></div>
+              </div>
+              <div class="ring second">
+                <div class="circle"></div>
+              </div>
+              <div class="ring third">
+                <div class="circle"></div>
+              </div>
+            </div>
+            <div class="text-holder">
+              <h1 class="release-number" id="current-update-release-number">4</h1>
+              <p class="name" id="current-update-name">Developer Update</p>
+              <div class="stats">
+                <span class="version" id="current-update-version">4.0.1</span>
+                <div class="separator"></div>
+                <span class="size" id="current-update-size">0.9GB</span>
+              </div>
+              <div class="updated-apps" id="current-update-apps">
+                <img src="style/icons/settings_64.png" alt="">
+              </div>
+            </div>
+          </div>
+          <div id="updates-list"></div>
+        </div>
+      </div>
     </section>
 
-    <section id="aboutInfo" role="panel" data-previous-page-id="root">
-      <header role="header">
+    <section id="about" role="panel" data-previous-page-id="root">
+      <header>
         <div class="safezone">
           <a href="#" data-icon="arrow-back" data-page-id="root"></a>
           <h1 data-l10n-id="aboutInfo"></h1>
@@ -1092,9 +1208,12 @@
           <div id="aboutInfo-logo" class="logo"></div>
         </div>
         <ul>
-          <li class="noclick">
+          <li class="page">
             <p data-l10n-id="aboutInfo-hostname"></p>
             <p id="aboutInfo-hostname"></p>
+          </li>
+          <li class="page" data-page-id="about-credits">
+            <p data-l10n-id="credits"></p>
           </li>
         </ul>
         <ul>
@@ -1125,7 +1244,44 @@
         </ul>
       </div>
     </section>
-  </div>
+
+    <section id="about-credits" role="panel" data-previous-page-id="about">
+      <header>
+        <div class="safezone">
+          <a href="#" data-icon="arrow-back" data-page-id="about"></a>
+          <h1 data-l10n-id="credits"></h1>
+          <menu role="toolbar">
+            <a href="#" data-icon="play" data-page-id="about-credits-animated"></a>
+          </menu>
+        </div>
+      </header>
+
+      <div class="content lists">
+        <div class="aboutInfo-header">
+          <div id="aboutInfo-logo" class="logo"></div>
+        </div>
+
+        <section class="content">
+          <div class="credits-category">
+            <header data-l10n-id="credits-head"></header>
+            <p>MortCodesWeb</p>
+          </div>
+          <div class="credits-category">
+            <header data-l10n-id="credits-sound"></header>
+            <p>Periyuh</p>
+          </div>
+          <div class="credits-category">
+            <header data-l10n-id="credits-design"></header>
+            <p>Matei</p>
+          </div>
+          <div class="credits-category">
+            <header data-l10n-id="credits-artwork"></header>
+            <p>Sourmind67</p>
+          </div>
+        </section>
+      </div>
+    </section>
+    </div>
 </body>
 
 </html>

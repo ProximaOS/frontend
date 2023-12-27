@@ -2,16 +2,22 @@
   'use strict';
 
   const HomescreenLauncher = {
-    settings: ['homescreen.manifest_url.mobile', 'homescreen.manifest_url.smart_tv'],
-    SETTINGS_HOMESCREEN_MANIFEST_URL_MOBILE: 0,
-    SETTINGS_HOMESCREEN_MANIFEST_URL_SMART_TV: 1,
+    homescreenWindow: null,
+
+    settings: ['homescreen.manifest_url.desktop', 'homescreen.manifest_url.mobile', 'homescreen.manifest_url.smart_tv'],
+    SETTINGS_HOMESCREEN_MANIFEST_URL_DESKTOP: 0,
+    SETTINGS_HOMESCREEN_MANIFEST_URL_MOBILE: 1,
+    SETTINGS_HOMESCREEN_MANIFEST_URL_SMART_TV: 2,
 
     init: function () {
-      if (platform() === 'desktop') {
+      if (window.deviceType === 'desktop') {
         return;
       }
 
-      if (platform() === 'smart-tv') {
+      if (window.deviceType === 'desktop') {
+        Settings.getValue(this.settings[this.SETTINGS_HOMESCREEN_MANIFEST_URL_DESKTOP]).then(this.handleHomescreen.bind(this));
+        Settings.addObserver(this.settings[this.SETTINGS_HOMESCREEN_MANIFEST_URL_DESKTOP], this.handleHomescreenChange.bind(this));
+      } else if (window.deviceType === 'smart-tv') {
         Settings.getValue(this.settings[this.SETTINGS_HOMESCREEN_MANIFEST_URL_SMART_TV]).then(this.handleHomescreen.bind(this));
         Settings.addObserver(this.settings[this.SETTINGS_HOMESCREEN_MANIFEST_URL_SMART_TV], this.handleHomescreenChange.bind(this));
       } else {
@@ -21,16 +27,16 @@
     },
 
     handleHomescreen: function (value) {
-      AppWindow.create(value, {});
-      AppWindow.focus('homescreen');
+      this.homescreenWindow = new AppWindow(value, {});
     },
 
     handleHomescreenChange: function (value) {
-      AppWindow.close('homescreen');
-      AppWindow.create(value, {});
-      AppWindow.focus('homescreen');
+      this.homescreenWindow.close();
+      this.homescreenWindow = new AppWindow(value, {});
     }
   };
 
   HomescreenLauncher.init();
+
+  exports.HomescreenLauncher = HomescreenLauncher;
 })(window);

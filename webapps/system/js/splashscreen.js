@@ -4,33 +4,65 @@
   const Splashscreen = {
     splashElement: document.getElementById('splashscreen'),
     videoElement: document.getElementById('splashscreen-video'),
+    videoSource: document.getElementById('splashscreen-video-source'),
 
-    bootAnimationFile: '/resources/videos/splashscreen.mp4',
-    bootSound: new Audio('/resources/sounds/startup.wav'),
+    VIDEO_BOOT_START: '/resources/videos/splashscreen.mp4',
+    VIDEO_BOOT_LOADING: '/resources/videos/splashscreen_loop.mp4',
+    SOUND_BOOT_UP: new Audio('/resources/sounds/startup.wav'),
 
     isBooting: true,
+    isFirstTime: false,
+    audioTimeoutID: null,
 
     init: function () {
       if (this.videoElement) {
-        this.videoElement.src = this.bootAnimationFile;
-        this.videoElement.play();
-      }
-      this.splashElement.classList.add('animate');
+        this.videoElement.src = this.VIDEO_BOOT_START;
 
-      this.bootSound.play();
-      this.bootSound.ontimeupdate = () => {
-        if (this.isBooting && this.bootSound.currentTime >= 1.65) {
-          this.bootSound.playbackRate = this.bootSound.playbackRate * 0.2;
-        }
-      };
+        this.videoElement.onended = () => {
+          this.videoElement.src = this.VIDEO_BOOT_LOADING;
+          this.videoElement.load();
+          setTimeout(() => {
+            this.videoElement.play();
+            this.videoElement.loop = true;
+          }, 1000);
+        };
+      }
+
+      this.splashElement.classList.add('safety-warning');
+      setTimeout(() => {
+        this.splashElement.classList.remove('safety-warning');
+
+        setTimeout(() => {
+          this.SOUND_BOOT_UP.play();
+          this.SOUND_BOOT_UP.ontimeupdate = () => {
+            if (this.isBooting && this.SOUND_BOOT_UP.currentTime >= 1.65) {
+              this.SOUND_BOOT_UP.playbackRate = this.SOUND_BOOT_UP.playbackRate * 0.2;
+            }
+          };
+
+          if (this.videoElement) {
+            this.videoElement.play();
+          }
+        }, 300);
+      }, 3000);
     },
 
     hide: function () {
-      this.splashElement.classList.add('hidden');
+      this.videoElement.pause();
 
-      this.audioTimer = setTimeout(() => {
+      if (this.isFirstTime) {
+        this.splashElement.classList.add('reveal');
+        this.splashElement.addEventListener('transitionend', () => {
+          this.splashElement.classList.remove('reveal');
+          this.splashElement.classList.add('hidden');
+        });
+      } else {
+        this.splashElement.classList.add('hidden');
+      }
+
+      this.audioTimeoutID = setTimeout(() => {
         this.isBooting = false;
-        this.bootSound.playbackRate = 1;
+        this.SOUND_BOOT_UP.playbackRate = 1;
       }, 2000);
     }
   };

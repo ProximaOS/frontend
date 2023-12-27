@@ -24,5 +24,13 @@
       const { width, height } = mainWindow.getContentBounds();
       webview.setBounds({ x: width - 50, y: 0, width: 50, height });
     });
+    mainWindow.on('maximize', () => {
+      const { width, height } = mainWindow.getContentBounds();
+      webview.setBounds({ x: width - 50, y: 0, width: 50, height });
+    });
+    mainWindow.on('restore', () => {
+      const { width, height } = mainWindow.getContentBounds();
+      webview.setBounds({ x: width - 50, y: 0, width: 50, height });
+    });
   };
 })();

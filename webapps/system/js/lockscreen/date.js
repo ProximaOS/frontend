@@ -4,6 +4,7 @@
   const LockscreenDate = {
     dateElement: document.getElementById('lockscreen-date'),
     is12HourFormat: true, // Set this flag to true for 12-hour format, or false for 24-hour format
+    timeoutID: null,
 
     init: function () {
       this.dateElement.classList.remove('hidden');
@@ -25,7 +26,7 @@
       });
 
       clearTimeout(this.timer);
-      this.timer = setTimeout(this.update.bind(this), 1000);
+      this.timeoutID = setTimeout(this.update.bind(this), 1000);
     }
   };
 

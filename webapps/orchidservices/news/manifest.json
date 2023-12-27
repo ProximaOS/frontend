@@ -1,0 +1,24 @@
+{
+  "version": "1.0",
+  "name": "News",
+  "long_name": "Orchid Newspaper",
+  "description": "Watch the latest news",
+  "launch_path": "/index.html",
+  "icons": {
+    "16": "/style/icons/newspaper_16.png",
+    "32": "/style/icons/newspaper_32.png",
+    "48": "/style/icons/newspaper_48.png",
+    "64": "/style/icons/newspaper_64.png",
+    "128": "/style/icons/newspaper_128.png",
+    "256": "/style/icons/newspaper_256.png"
+  },
+  "developer": {
+    "name": "Orchid Org.",
+    "url": "https://openorchid.github.io/"
+  },
+  "default_locale": "en",
+  "orientation": "portrait-primary",
+  "permissions": {
+    "nodeintegration": {}
+  }
+}

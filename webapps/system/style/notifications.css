@@ -7,7 +7,7 @@
   transform: translateY(calc(-100% - var(--statusbar-height) - 4.5rem));
   backdrop-filter: blur(20px) saturate(180%);
   background-color: var(--acrylic-background-plus);
-  box-shadow: 0 1.5rem 3rem rgba(0, 0, 0, 0.3);
+  box-shadow: 0 1.5rem 3rem rgba(0, 0, 0, 0.2);
   transition: all 0.5s cubic-bezier(0.8, 0.1, 0.9, 0);
 }
 
@@ -69,7 +69,6 @@
   width: 100%;
   margin: 0 0 1rem;
   border-radius: 2rem;
-  background-color: var(--acrylic-background-plus);
 }
 
 .notification .titlebar {
@@ -77,10 +76,10 @@
   display: flex;
   align-items: center;
   width: 100%;
-  margin: 0 0 0.2rem;
+  margin: 0 0 0.5rem;
   padding: 1rem 1.5rem;
-  border-radius: 2rem 2rem 0.5rem 0.5rem;
-  background-color: var(--acrylic-background-plus);
+  border-radius: 2rem 2rem 1rem 1rem;
+  background-color: var(--tray-button-background);
 }
 
 .notification .titlebar .badge {
@@ -108,9 +107,9 @@
   display: flex;
   align-items: center;
   width: 100%;
-  padding: 0 1.5rem 1rem;
-  border-radius: 0.5rem 0.5rem 2rem 2rem;
-  background-color: var(--acrylic-background-plus);
+  padding: 1rem 1.5rem;
+  border-radius: 1rem 1rem 2rem 2rem;
+  background-color: var(--tray-button-background);
 }
 
 .notification .content .icon {

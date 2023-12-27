@@ -1,15 +1,25 @@
 #screen.desktop #software-buttons {
+  visibility: visible;
   position: absolute;
   right: 1.5rem;
   bottom: 1rem;
   left: 1.5rem;
   width: calc(100% - 3rem);
   height: var(--dock-height);
+  transform: translateY(0);
   border-radius: calc(var(--dock-height) / 2);
+  background-color: var(--translucent-background-plus);
+  box-shadow: 0 0.4rem 1.2rem rgba(0, 0, 0, 0.1);
+  transition: transform 0.5s cubic-bezier(0.5, 0.8, 0, 1.2), opacity 0.5s cubic-bezier(0.5, 0.8, 0, 1.2), visibility 0.5s cubic-bezier(0.5, 0.8, 0, 1.2);
+}
+
+#screen.desktop.gpu-capable #software-buttons {
   backdrop-filter: blur(20px) saturate(180%);
   background-color: var(--acrylic-background-plus);
 }
 
-#screen.desktop:not(.software-buttons-enabled) #software-buttons {
-  transform: translateY(0);
+#screen.desktop:not(.launcher-visible, .lockscreen-visible, .utility-tray-visible) #software-buttons.hidden {
+  visibility: hidden;
+  transform: translateY(calc(var(--dock-height) + 1rem)) scale(0.95);
+  transition: transform 0.3s ease, opacity 0.3s ease, visibility 0.3s ease;
 }

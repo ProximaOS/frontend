@@ -14,9 +14,8 @@
 
 #splashscreen.hidden {
   visibility: hidden;
-  background-color: transparent;
   opacity: 0;
-  transition: all 1s ease 1s, background-color 0.75s ease 0.25s;
+  transition: all 0.5s ease 1s;
 }
 
 #splashscreen-video {
@@ -25,83 +24,66 @@
   left: 50%;
   object-fit: cover;
   translate: -50% -50%;
+  transition: opacity 0.5s ease;
+}
+
+#splashscreen.hidden #splashscreen-video,
+#splashscreen.safety-warning #splashscreen-video {
   opacity: 0;
 }
 
-#splashscreen.hidden #splashscreen-video {
-  opacity: 0;
-  transition: all 0.5s ease;
-}
-
-#splashscreen .logo {
+#splashscreen .safety-warning {
+  display: flex;
+  visibility: hidden;
   position: absolute;
   top: 50%;
   left: 50%;
-  transform: scale(0.9);
+  flex-direction: column;
+  width: calc(100% - 5rem);
+  max-width: 40rem;
+  gap: 1rem;
+  transform: scale(0.5);
   translate: -50% -50%;
-  color: var(--text-color);
-  font-weight: 600;
-  font-size: 5rem;
-  font-family: 'Orchid Brand';
-  letter-spacing: -1rem;
   opacity: 0;
+  transition: all 0.5s ease, opacity 0.5s ease;
 }
 
-#splashscreen.animate .logo {
+#splashscreen.safety-warning .safety-warning {
+  visibility: visible;
   transform: scale(1);
-  letter-spacing: 0;
   opacity: 1;
-  transition: all 0.5s cubic-bezier(0.5, 0.8, 0, 1.1) 1.5s, opacity 0.5s ease 1.5s;
 }
 
-#splashscreen.hidden .logo {
-  transform: scale(0.75);
-  font-weight: 100;
-  opacity: 0;
-  transition: all 0.5s cubic-bezier(1, 0, 0, 1);
+#splashscreen .safety-warning span[data-icon] {
+  color: #fff;
 }
 
-#splashscreen .circle {
-  visibility: hidden;
+#splashscreen .safety-warning span[data-icon]::before {
+  width: 3rem;
+  height: 3rem;
+  font-size: 3rem;
+  line-height: 3rem;
+}
+
+#splashscreen .safety-warning p {
+  margin: 0;
+  color: #fff;
+  font-weight: normal;
+  font-size: 1.6rem;
+}
+
+#splashscreen .os-logo {
   position: absolute;
-  width: 80vw;
-  height: 80vw;
-  transform: scale(0);
-  border-radius: 50%;
-  background-color: var(--background);
-  opacity: 1;
-  transition: all 1s cubic-bezier(0.2, 0.9, 0.1, 1);
+  top: 80%;
+  left: 50%;
+  width: 12rem;
+  height: 12rem;
+  translate: -50% -50%;
+  background: url(http://shared.localhost:8081/resources/branding/official/oslogo.svg) no-repeat center / contain;
+  transition: opacity 0.5s ease;
 }
 
-#splashscreen.hidden .circle {
-  visibility: unset;
-  transform: scale(1);
+#splashscreen.hidden .os-logo,
+#splashscreen.safety-warning .os-logo {
   opacity: 0;
-}
-
-#splashscreen .circle.left {
-  top: calc(50% - 40vw);
-  left: -40vw;
-}
-
-#splashscreen .circle.right {
-  top: calc(50% - 40vw);
-  right: -40vw;
-}
-
-#splashscreen .circle.primary {
-  background-color: var(--background);
-}
-
-#splashscreen .circle.secondary {
-  top: calc(50% - 40vw);
-  left: calc(50% - 40vw);
-  transform: scale(0) rotate(0deg);
-  border-radius: 25%;
-  background-color: var(--background-plus);
-  transition: all 1s cubic-bezier(0.2, 0.9, 0.1, 1) 0.3s;
-}
-
-#splashscreen.hidden .circle.secondary {
-  transform: scale(1) rotate(20deg);
 }

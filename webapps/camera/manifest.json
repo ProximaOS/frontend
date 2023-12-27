@@ -17,13 +17,14 @@
   },
   "default_locale": "en",
   "orientation": "portrait-primary",
-  "background_color": "#000000",
-  "theme_color": "#0061e0",
   "permissions": {
     "settings": {},
     "storage": {},
     "device-storage:home": {},
     "device-storage:photos": {}
   },
-  "display": "fullscreen"
+  "display": {
+    "desktop": "immersive",
+    "default": "fullscreen"
+  }
 }

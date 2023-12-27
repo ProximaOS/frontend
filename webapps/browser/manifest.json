@@ -12,14 +12,15 @@
     "128": "/style/icons/browser_128.png",
     "256": "/style/icons/browser_256.png"
   },
+  "artworks": {
+    "360": "/style/artwork/browser.svg"
+  },
   "developer": {
     "name": "Orchid Org.",
     "url": "https://openorchid.github.io/"
   },
   "default_locale": "en",
   "orientation": "portrait-primary",
-  "background_color": "#f0f6ff",
-  "theme_color": "#8030a0",
   "permissions": {
     "settings": { "access": "readwrite" }
   },
@@ -31,5 +32,8 @@
     "top": "calc(50% - (640px + var(--software-buttons-height) + 2rem) / 2)",
     "width": "1024px",
     "height": "640px"
-  }
+  },
+  "platforms": [
+    "smart_tv"
+  ]
 }

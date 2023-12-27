@@ -1,0 +1,41 @@
+{
+  "version": "1.0",
+  "name": "Orchid Studio",
+  "long_name": "Orchid Studio",
+  "role": "system",
+  "description": "Orchid app development kit",
+  "launch_path": "/ide/index.html",
+  "icons": {
+    "16": "/ide/style/icons/orchidstudioide_16.png",
+    "32": "/ide/style/icons/orchidstudioide_32.png",
+    "48": "/ide/style/icons/orchidstudioide_48.png",
+    "64": "/ide/style/icons/orchidstudioide_64.png",
+    "128": "/ide/style/icons/orchidstudioide_128.png",
+    "256": "/ide/style/icons/orchidstudioide_256.png"
+  },
+  "developer": {
+    "name": "Orchid Org.",
+    "url": "https://openorchid.github.io/"
+  },
+  "default_locale": "en",
+  "orientation": "portrait-primary",
+  "permissions": {
+    "settings": {}
+  },
+  "entry_points": {
+    "terminal": {
+      "name": "Terminal",
+      "description": "Write and execute commands",
+      "launch_path": "/terminal/index.html",
+      "icons": {
+        "16": "/terminal/style/icons/terminal_16.png",
+        "32": "/terminal/style/icons/terminal_32.png",
+        "48": "/terminal/style/icons/terminal_48.png",
+        "64": "/terminal/style/icons/terminal_64.png",
+        "128": "/terminal/style/icons/terminal_128.png",
+        "256": "/terminal/style/icons/terminal_256.png"
+      },
+      "display": "immersive"
+    }
+  }
+}

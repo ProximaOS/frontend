@@ -5,23 +5,23 @@
   const fs = require('fs');
   const path = require('path');
   const { v4 } = require('uuid');
+  const Settings = require('../settings');
 
   require('dotenv').config();
 
   const AppsManager = {
     getAll: function () {
-      return new Promise((resolve, reject) => {
+      return new Promise(async (resolve, reject) => {
         try {
-          const appListData = fs.readFileSync(
-            process.env.OPENORCHID_WEBAPPS_CONF,
-            'utf8'
-          );
-          const appListJson = JSON.parse(appListData);
+          let appListData = fs.readFileSync(process.env.OPENORCHID_WEBAPPS_CONF, 'utf8');
+          let appListJson = JSON.parse(appListData);
+          const currentLanguage = await Settings.getValue('general.lang.code');
 
-          appListJson.forEach(async (app, index) => {
+          for (let index = 0, length = appListJson.length; index < length; index++) {
+            const app = appListJson[index];
             let langCode;
             try {
-              langCode = navigator.mozL10n.language.code || 'en-US';
+              langCode = currentLanguage || 'en-US';
             } catch (error) {
               // If an error occurs, set a default value for langCode
               langCode = 'en-US';
@@ -37,54 +37,47 @@
             const response = await fetch(manifestUrl);
             const manifest = await response.json();
 
-            if (manifest.icons) {
-              Object.entries(manifest.icons).forEach((icon) => {
-                manifest.icons[
-                  icon[0]
-                ] = `http://${app.appId}.localhost:${location.port}${icon[1]}`;
-              });
-            }
             if (!manifest.role) {
               manifest.role = 'webapp';
             }
             app.manifest = manifest;
 
-            const size = AppsManager.getFolderSize(
-              path.join(process.env.OPENORCHID_WEBAPPS, app.appId)
-            );
+            const size = AppsManager.getFolderSize(path.join(process.env.OPENORCHID_WEBAPPS, app.appId));
             app.size = size;
 
             if (index === appListJson.length - 1) {
               setTimeout(() => {
                 resolve(appListJson);
-              }, 10);
+                appListJson = null;
+              }, 16);
             }
-          });
+          }
+          appListData = null;
         } catch (error) {
           console.error('Error reading app list:', error);
           console.log('Creating a new webapps configuration file.');
 
           const webappsDir = process.env.OPENORCHID_WEBAPPS;
-          const appList = fs.readdirSync(webappsDir).map((file) => {
+          let appList = fs.readdirSync(webappsDir).map((file) => {
             const appId = file || v4();
             const installedAt = new Date().toISOString();
             const manifestUrl = {
               'en-US': `http://${appId}.localhost:${location.port}/manifest.json`
             };
 
-            const webappAssets = fs.readdirSync(path.join(webappsDir, file));
-            webappAssets.forEach((manifest) => {
+            let webappAssets = fs.readdirSync(path.join(webappsDir, file));
+            for (let index = 0, length = webappAssets.length; index < length; index++) {
+              const manifest = webappAssets[index];
               if (!manifest.startsWith('manifest.')) {
-                return;
+                continue;
               }
               if (manifest === 'manifest.json') {
-                return;
+                continue;
               }
               const langCode = manifest.split('.')[1];
-              manifestUrl[
-                langCode
-              ] = `http://${appId}.localhost:${location.port}/manifest.${langCode}.json`;
-            });
+              manifestUrl[langCode] = `http://${appId}.localhost:${location.port}/manifest.${langCode}.json`;
+            }
+            webappAssets = null;
 
             return { appId, installedAt, manifestUrl };
           });
@@ -93,19 +86,17 @@
           console.log(appList);
           setTimeout(() => {
             resolve(appList);
-          }, 10);
+            appList = null;
+          }, 16);
         }
       });
     },
 
     writeAppList: function (appList) {
       try {
-        const appListData = JSON.stringify(appList, null, 2);
-        fs.writeFileSync(
-          process.env.OPENORCHID_WEBAPPS_CONF,
-          appListData,
-          'utf8'
-        );
+        let appListData = JSON.stringify(appList, null, 2);
+        fs.writeFileSync(process.env.OPENORCHID_WEBAPPS_CONF, appListData, 'utf8');
+        appListData = null;
       } catch (error) {
         console.error('Error writing app list:', error);
       }
@@ -114,19 +105,13 @@
     installPackage: function (zipFilePath) {
       return new Promise((resolve, reject) => {
         const appId = v4();
-        const appDir = path.join(
-          process.env.ORCHID_APP_PROFILE,
-          'webapps',
-          `{${appId}}`
-        );
+        const appDir = path.join(process.env.ORCHID_APP_PROFILE, 'webapps', `{${appId}}`);
 
         AppsManager.getAll().then((appList) => {
           fs.mkdirSync(appDir, { recursive: true });
 
           try {
-            const zip = new AdmZip(
-              path.join(process.env.OPENORCHID_STORAGE, zipFilePath)
-            );
+            const zip = new AdmZip(path.join(process.env.OPENORCHID_STORAGE, zipFilePath));
             zip.extractAllTo(appDir, true);
 
             const appEntry = {

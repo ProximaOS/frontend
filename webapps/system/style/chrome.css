@@ -44,7 +44,7 @@
 }
 
 .appframe.chrome-visible .chrome .toolbar,
-.appframe.window:not(.chrome-visible) .chrome .toolbar {
+.appframe.window:not(.fullscreen, .chrome-visible) .chrome .toolbar {
   /* Setting it to 'visible' shows them even if tablist-holder is hidden
      Which is why we set it to 'unset' */
   visibility: unset;
@@ -127,7 +127,7 @@
   padding: 0 1rem;
   padding-inline-end: 0.2rem;
   overflow: hidden;
-  border-radius: 1rem;
+  border-radius: 2.5rem;
   list-style: none;
   transition: width 0.5s cubic-bezier(0.5, 0.8, 0, 1), padding 0.5s cubic-bezier(0.5, 0.8, 0, 1), opacity 0.5s ease, background-color 0.3s ease;
 }
@@ -152,7 +152,6 @@
 }
 
 .chrome .tablist li.active {
-  border-radius: 2.5rem;
   background-color: var(--background-plus);
 }
 
@@ -457,7 +456,7 @@
   left: -0.5rem;
   width: calc(100% + 1rem);
   height: calc(100% - 1rem);
-  border-inline-end: solid 0.1rem var(--item-plus);
+  border-inline-end: solid 0.1rem rgba(0, 0, 0, 0.1);
   content: '';
   pointer-events: none;
 }
@@ -689,6 +688,24 @@
   background-color: var(--theme-color, var(--background));
 }
 
+.chrome .browser-container > .browser-view .progress-bar {
+  visibility: hidden;
+  z-index: 5;
+  position: absolute;
+  width: 100%;
+  max-width: 100%;
+  height: 0.3rem;
+  border-radius: 0;
+  opacity: 0;
+  transition: all 1s ease;
+}
+
+.chrome .browser-container > .browser-view .progress-bar.visible {
+  visibility: visible;
+  opacity: 1;
+  transition: all 0.3s ease;
+}
+
 .chrome .browser-container > .browser-view .browser {
   box-sizing: border-box;
   position: relative;
@@ -701,19 +718,22 @@
   transition: all 0.3s ease;
 }
 
-.chrome.visible .browser-container > .browser-view .browser {
-  border-top: solid 0.1rem var(--background-plus);
+.chrome.top.visible .browser-container > .browser-view .browser {
+  border-top: solid 0.1rem rgba(200, 200, 200, 0.1);
+}
+.chrome.bottom.visible .browser-container > .browser-view .browser {
+  border-bottom: solid 0.1rem rgba(200, 200, 200, 0.1);
 }
 
 .chrome .browser-container > .browser-view.split-enabled .browser {
-  border-right: solid 0.1rem var(--background-plus);
+  border-right: solid 0.1rem rgba(200, 200, 200, 0.1);
   border-radius: 0 1.5rem 1.5rem 0;
 }
 
 .chrome .browser-container > .browser-view .browser.split {
   display: none;
   border-right: none;
-  border-left: solid 0.1rem var(--background-plus);
+  border-left: solid 0.1rem rgba(200, 200, 200, 0.1);
   border-radius: 1.5rem 0 0 1.5rem;
 }
 

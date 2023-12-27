@@ -1,0 +1,24 @@
+{
+  "version": "1.0",
+  "name": "Search",
+  "long_name": "Orchid Search",
+  "description": "",
+  "launch_path": "/index.html",
+  "icons": {
+    "16": "/style/icons/search_16.png",
+    "32": "/style/icons/search_32.png",
+    "48": "/style/icons/search_48.png",
+    "64": "/style/icons/search_64.png",
+    "128": "/style/icons/search_128.png",
+    "256": "/style/icons/search_256.png"
+  },
+  "developer": {
+    "name": "Orchid Org.",
+    "url": "https://openorchid.github.io/"
+  },
+  "default_locale": "en",
+  "orientation": "portrait-primary",
+  "permissions": {
+    "nodeintegration": {}
+  }
+}

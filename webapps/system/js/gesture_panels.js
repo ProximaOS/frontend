@@ -4,6 +4,7 @@
   const GesturePanels = {
     screen: document.getElementById('screen'),
     wallpapersContainer: document.getElementById('wallpapers'),
+    windowContainer: document.getElementById('windows'),
     topPanel: document.getElementById('top-panel'),
     leftPanel: document.getElementById('left-panel'),
     rightPanel: document.getElementById('right-panel'),
@@ -30,7 +31,7 @@
       this.startX = event.clientX;
       this.startY = event.clientY;
       this.isDragging = true;
-      AppWindow.containerElement.classList.add('dragging');
+      this.windowContainer.classList.add('dragging');
     },
 
     // Add the following event handler for touchmove and pointermove events on the grippy bar
@@ -46,24 +47,26 @@
         const translateY = Math.min(0, distanceY / 2);
         const scale = Math.min(1, window.innerHeight / (window.innerHeight - distanceY));
 
+        const focusedWindow = new AppWindow().getFocusedWindow().element;
+
         // Move the window along the Y-axis based on the dragging distance
-        if (!AppWindow.focusedWindow.dataset.oldTransformOrigin) {
-          AppWindow.focusedWindow.dataset.oldTransformOrigin = AppWindow.focusedWindow.style.transformOrigin;
+        if (!focusedWindow.dataset.oldTransformOrigin) {
+          focusedWindow.dataset.oldTransformOrigin = focusedWindow.style.transformOrigin;
         }
-        if (AppWindow.focusedWindow.id === 'homescreen') {
-          AppWindow.focusedWindow.style.transformOrigin = 'center';
+        if (focusedWindow.id === 'homescreen') {
+          focusedWindow.style.transformOrigin = 'center';
           this.wallpapersContainer.classList.add('homescreen-to-cards-view');
           this.wallpapersContainer.style.setProperty('--motion-progress', Math.min(1, (1 - scale) * 2));
-          AppWindow.focusedWindow.style.transform = `scale(${0.75 + scale * 0.25})`;
-          AppWindow.focusedWindow.style.setProperty('--offset-x', 0);
-          AppWindow.focusedWindow.style.setProperty('--offset-y', 0);
-          AppWindow.focusedWindow.style.setProperty('--scale', scale);
+          focusedWindow.style.transform = `scale(${0.75 + scale * 0.25})`;
+          focusedWindow.style.setProperty('--offset-x', 0);
+          focusedWindow.style.setProperty('--offset-y', 0);
+          focusedWindow.style.setProperty('--scale', scale);
         } else {
-          AppWindow.focusedWindow.style.transformOrigin = 'center bottom';
-          AppWindow.focusedWindow.style.transform = `translate(${translateX}px, ${translateY}px) scale(${scale})`;
-          AppWindow.focusedWindow.style.setProperty('--offset-x', `${translateX}px`);
-          AppWindow.focusedWindow.style.setProperty('--offset-y', `${translateY}px`);
-          AppWindow.focusedWindow.style.setProperty('--scale', scale);
+          focusedWindow.style.transformOrigin = 'center bottom';
+          focusedWindow.style.transform = `translate(${translateX}px, ${translateY}px) scale(${scale})`;
+          focusedWindow.style.setProperty('--offset-x', `${translateX}px`);
+          focusedWindow.style.setProperty('--offset-y', `${translateY}px`);
+          focusedWindow.style.setProperty('--scale', scale);
         }
       }
     },
@@ -76,32 +79,38 @@
         const distanceX = currentXPosition - this.startX;
         const distanceY = currentYPosition - this.startY;
 
+        const focusedWindow = new AppWindow().getFocusedWindow().element;
+
         // Reset the window transform
-        AppWindow.focusedWindow.style.transformOrigin = AppWindow.focusedWindow.dataset.oldTransformOrigin;
+        focusedWindow.style.transformOrigin = focusedWindow.dataset.oldTransformOrigin;
 
         this.startX = null;
         this.startY = null;
         this.isDragging = false;
 
-        AppWindow.containerElement.classList.remove('dragging');
+        this.windowContainer.classList.remove('dragging');
         if (distanceY <= -300) {
           CardsView.show();
         } else if (distanceY <= -50) {
           CardsView.hide();
-          AppWindow.minimize(AppWindow.focusedWindow.id);
-          AppWindow.focusedWindow.style.transform = '';
+          if (focusedWindow) {
+            Webapps.getWindowById(focusedWindow.id).minimize();
+            focusedWindow.style.transform = '';
+          } else {
+            Webapps.getWindowById('homescreen').focus();
+          }
         } else if (distanceY >= 5) {
           CardsView.hide();
-          setTimeout(() => {
+          requestAnimationFrame(() => {
             this.screen.classList.add('close-reach');
-          }, 16);
+          });
         } else {
-          AppWindow.focusedWindow.classList.add('transitioning');
-          AppWindow.focusedWindow.addEventListener('transitionend', () => {
-            AppWindow.focusedWindow.classList.remove('transitioning');
+          focusedWindow.classList.add('transitioning');
+          focusedWindow.addEventListener('transitionend', () => {
+            focusedWindow.classList.remove('transitioning');
           });
         }
-        AppWindow.focusedWindow.style.transform = '';
+        focusedWindow.style.transform = '';
       }
     }
   };

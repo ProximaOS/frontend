@@ -11,7 +11,7 @@
 
     // Initialize the panel object
     init: function () {
-      this.cardPanels = document.querySelectorAll('.card-panel');
+      this.cardPanels = document.querySelectorAll('section[role="card"]');
       this.bindCardEvents();
     },
 
@@ -85,7 +85,6 @@
       }
       cardPanel.style.setProperty('--card-progress', 0);
       cardPanel.classList.remove('dragging');
-      console.log(cardPanel.children[0].getBoundingClientRect().top, (cardPanel.children[0].offsetHeight / 4) * 3);
     }
   };
 

@@ -9,16 +9,15 @@
 
     init: function () {
       FileIndexer(this.MUSIC_DIR, this.MUSIC_MIME).then((array) => {
-        array.forEach((item, index) => {
-          this.addAudio(item, index);
-        });
+        for (let index = 0; index < array.length; index++) {
+          const element = array[index];
+          this.addAudio(element, index);
+        }
       });
     },
 
     setCategory: function (artist) {
-      const existingCategory = document.querySelector(
-        `[data-artist="${artist}"]`
-      );
+      const existingCategory = document.querySelector(`[data-artist="${artist}"]`);
       if (existingCategory) {
         return existingCategory.querySelector('.container');
       }
@@ -60,10 +59,6 @@
         const fileName = parts[parts.length - 1];
 
         const item = document.createElement('div');
-        item.addEventListener('click', () => {
-          const blobURL = URL.createObjectURL(blob);
-          Player.play(blobURL);
-        });
         item.classList.add('music');
 
         const artwork = document.createElement('img');
@@ -88,29 +83,49 @@
         textHolder.appendChild(artist);
 
         jsmediatags.read(blob, {
-          onSuccess: function (tag) {
-            console.log(tag);
-
-            if (tag.picture) {
+          onSuccess: (tag) => {
+            if (tag) {
               const data = tag.tags.picture.data;
               const format = tag.tags.picture.format;
-              let base64String = '';
-              for (let i = 0; i < data.length; i++) {
-                base64String += String.fromCharCode(data[i]);
-              }
-              const artworkUrl = `data:${format};base64,${base64String.toString('base64')}`;
+              const imageBlob = new Blob(data, { type: format });
+              const artworkUrl = URL.createObjectURL(imageBlob);
               artwork.src = artworkUrl;
-            }
+              console.log(artworkUrl);
 
-            title.textContent = tag.tags.title;
-            artist.textContent = tag.tags.artist;
+              title.textContent = tag.tags.title;
+              artist.textContent = tag.tags.artist;
+
+              this.setCategory(tag.tags.artist).appendChild(item);
+              item.addEventListener('click', () => {
+                SDCardManager.read(path, { encoding: 'base64' }).then((data) => {
+                  Player.play(`data:${mime};base64,${data}`, {
+                    title: tag.tags.title,
+                    artist: tag.tags.artist,
+                    album: tag.tags.album,
+                    artwork: artworkUrl,
+                    date: tag.tags.date
+                  });
+                });
+              });
+            } else {
+              this.setCategory('Unknown Artist').appendChild(item);
+              item.addEventListener('click', () => {
+                SDCardManager.read(path, { encoding: 'base64' }).then((data) => {
+                  Player.play(`data:${mime};base64,${data}`, {
+                    title: fileName,
+                    artist: 'Unknown Artist',
+                    album: 'Unknown Album',
+                    artwork: '',
+                    date: '1970'
+                  });
+                });
+              });
+            }
           },
           onError: function (error) {
             console.log(error);
           }
         });
-
-        this.setCategory('Unknown Artist').appendChild(item);
       });
     }
   };

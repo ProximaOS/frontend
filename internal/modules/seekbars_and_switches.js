@@ -20,7 +20,7 @@
     handleEachElement: function (inputElement) {
       if (inputElement.type === 'range') {
         inputElement.setAttribute('value', inputElement.value);
-        inputElement.addEventListener('change', () => {
+        inputElement.addEventListener('input', () => {
           inputElement.setAttribute('value', inputElement.value);
         });
       } else {

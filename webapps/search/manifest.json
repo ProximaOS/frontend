@@ -2,7 +2,7 @@
   "version": "1.0",
   "name": "Search",
   "long_name": "Orchid Search",
-  "description": "",
+  "description": "Search around the internet",
   "launch_path": "/index.html",
   "icons": {
     "16": "/style/icons/search_16.png",
@@ -18,8 +18,6 @@
   },
   "default_locale": "en",
   "orientation": "portrait-primary",
-  "background_color": "#f0f6ff",
-  "theme_color": "#00ddff",
   "permissions": {
     "nodeintegration": {}
   }

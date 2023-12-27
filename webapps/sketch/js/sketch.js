@@ -1,98 +1,114 @@
-const canvas = document.getElementById('paintCanvas');
-const context = canvas.getContext('2d');
-const colorPicker = document.getElementById('colorPicker');
-const lineWidth = document.getElementById('lineWidth');
-const opacity = document.getElementById('opacity');
-const presetColors = document.getElementById('presetColors');
+!(function (exports) {
+  'use strict';
 
-let painting = false;
+  const Sketch = {
+    canvas: document.getElementById('paintCanvas'),
+    context: document.getElementById('paintCanvas').getContext('2d'),
+    colorPicker: document.getElementById('colorPicker'),
+    lineWidth: document.getElementById('lineWidth'),
+    opacity: document.getElementById('opacity'),
+    presetColors: document.getElementById('presetColors'),
 
-canvas.width = window.innerWidth;
-canvas.height = window.innerHeight - 100;
+    painting: false,
+    zoomLevel: 1,
 
-context.lineCap = 'round';
-context.strokeStyle = colorPicker.value;
-context.lineWidth = lineWidth.value;
-context.globalAlpha = opacity.value;
+    init: function () {
+      this.canvas.width = this.canvas.offsetWidth;
+      this.canvas.height = this.canvas.offsetHeight;
 
-canvas.addEventListener('mousedown', startPainting);
-canvas.addEventListener('mouseup', stopPainting);
-canvas.addEventListener('mousemove', draw);
-colorPicker.addEventListener('change', updateColor);
-lineWidth.addEventListener('input', updateLineWidth);
-opacity.addEventListener('input', updateOpacity);
-presetColors.addEventListener('change', usePresetColor);
+      this.context.lineCap = 'round';
+      this.context.lineJoin = 'round';
+      this.context.strokeStyle = this.colorPicker.value;
+      this.context.lineWidth = this.lineWidth.value;
+      this.context.globalAlpha = this.opacity.value;
 
-function startPainting(e) {
-  painting = true;
-  draw(e);
-}
+      window.addEventListener('load', this.handleResize.bind(this));
+      window.addEventListener('resize', this.handleResize.bind(this));
+      this.canvas.addEventListener('mousedown', this.startPainting.bind(this));
+      this.canvas.addEventListener('mouseup', this.stopPainting.bind(this));
+      this.canvas.addEventListener('mousemove', this.draw.bind(this));
+      this.colorPicker.addEventListener('change', this.updateColor.bind(this));
+      this.lineWidth.addEventListener('input', this.updateLineWidth.bind(this));
+      this.opacity.addEventListener('input', this.updateOpacity.bind(this));
+      this.presetColors.addEventListener('change', this.usePresetColor.bind(this));
+      this.canvas.addEventListener('wheel', this.handleWheel.bind(this));
+    },
 
-function stopPainting() {
-  painting = false;
-  context.beginPath();
-}
+    handleResize: function () {
+      this.canvas.width = null;
+      this.canvas.height = null;
+      this.canvas.width = this.canvas.offsetWidth;
+      this.canvas.height = this.canvas.offsetHeight;
+    },
 
-function draw(e) {
-  if (!painting) return;
+    startPainting: function (event) {
+      this.painting = true;
+      this.draw(event);
+    },
 
-  const x = e.clientX - canvas.getBoundingClientRect().left;
-  const y = e.clientY - canvas.getBoundingClientRect().top;
+    stopPainting: function () {
+      this.painting = false;
+      this.context.beginPath();
+    },
 
-  context.lineTo(x, y);
-  context.stroke();
-  context.beginPath();
-  context.moveTo(x, y);
-}
+    draw: function (event) {
+      if (!this.painting) return;
+      const x = event.clientX - this.canvas.getBoundingClientRect().left;
+      const y = event.clientY - this.canvas.getBoundingClientRect().top;
 
-function updateColor() {
-  context.strokeStyle = colorPicker.value;
-}
+      this.context.lineTo(x, y);
+      this.context.stroke();
+      this.context.beginPath();
+      this.context.moveTo(x, y);
+    },
 
-function updateLineWidth() {
-  context.lineWidth = lineWidth.value;
-}
+    updateColor: function () {
+      this.context.strokeStyle = this.colorPicker.value;
+    },
 
-function updateOpacity() {
-  context.globalAlpha = opacity.value;
-}
+    updateLineWidth: function () {
+      this.context.lineWidth = this.lineWidth.value;
+    },
 
-function usePresetColor() {
-  colorPicker.value = presetColors.value;
-  updateColor();
-}
+    updateOpacity: function () {
+      this.context.globalAlpha = this.opacity.value;
+    },
 
-let zoomLevel = 1;
+    usePresetColor: function () {
+      this.colorPicker.value = this.presetColors.value;
+      this.updateColor();
+    },
 
-canvas.addEventListener('wheel', handleWheel);
+    redrawCanvas: function () {
+      this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
+      this.context.save();
+      this.context.scale(this.zoomLevel, this.zoomLevel);
 
-function redrawCanvas() {
-  context.clearRect(0, 0, canvas.width, canvas.height);
-  context.save();
-  context.scale(zoomLevel, zoomLevel);
+      // Place your drawing operations here
+      // For example, drawing lines or shapes
+      this.context.beginPath();
+      this.context.moveTo(50, 50);
+      this.context.lineTo(150, 150);
+      this.context.stroke();
 
-  // Place your drawing operations here
-  // For example, drawing lines or shapes
-  context.beginPath();
-  context.moveTo(50, 50);
-  context.lineTo(150, 150);
-  context.stroke();
+      // End of drawing operations
 
-  // End of drawing operations
+      this.context.restore();
+    },
 
-  context.restore();
-}
+    handleWheel: function (event) {
+      if (event.ctrlKey) {
+        event.preventDefault();
+        const deltaY = event.deltaY;
+        const zoomFactor = deltaY > 0 ? 0.9 : 1.1;
 
-function handleWheel(e) {
-  if (e.ctrlKey) {
-    e.preventDefault();
+        this.zoomLevel *= zoomFactor;
+        this.zoomLevel = Math.max(0.1, Math.min(2, this.zoomLevel)); // Limit zoom range
 
-    const deltaY = e.deltaY;
-    const zoomFactor = deltaY > 0 ? 0.9 : 1.1;
+        this.redrawCanvas();
+      }
+    }
+  };
 
-    zoomLevel *= zoomFactor;
-    zoomLevel = Math.max(0.1, Math.min(2, zoomLevel)); // Limit zoom range
-
-    redrawCanvas();
-  }
-}
+  Sketch.init();
+})(window);

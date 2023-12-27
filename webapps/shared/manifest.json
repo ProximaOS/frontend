@@ -3,9 +3,34 @@
   "name": "Shared",
   "description": "",
   "role": "system",
+  "icons": {
+    "16": "/icons/shared_16.png",
+    "32": "/icons/shared_32.png",
+    "48": "/icons/shared_48.png",
+    "64": "/icons/shared_64.png",
+    "128": "/icons/shared_128.png",
+    "256": "/icons/shared_256.png"
+  },
   "developer": {
     "name": "Orchid Org.",
     "url": "https://openorchid.github.io/"
   },
-  "default_locale": "en"
+  "default_locale": "en",
+  "entry_points": {
+    "easter_egg": {
+      "name": "Secret Easter Egg",
+      "role": "system",
+      "description": "Super secret Orchid easter egg",
+      "launch_path": "/easter_egg/index.html",
+      "icons": {
+        "16": "/easter_egg/style/icons/easter_egg_16.png",
+        "32": "/easter_egg/style/icons/easter_egg_32.png",
+        "48": "/easter_egg/style/icons/easter_egg_48.png",
+        "64": "/easter_egg/style/icons/easter_egg_64.png",
+        "128": "/easter_egg/style/icons/easter_egg_128.png",
+        "256": "/easter_egg/style/icons/easter_egg_256.png"
+      },
+      "display": "immersive"
+    }
+  }
 }

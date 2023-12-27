@@ -44,7 +44,7 @@
     <main id="app" role="app">
       <div id="container">
         <section id="login" class="visible" role="panel">
-          <header class="compact" role="header">
+          <header class="compact">
             <div class="safezone">
               <a href="#" data-icon="close"></a>
               <h1 data-l10n-id="login"></h1>
@@ -84,12 +84,12 @@
           </div>
 
           <menu role="buttons">
-            <button id="login-confirm" class="recommend" data-l10n-id="login-short"></button>
+            <button id="login-confirm-button" class="recommend" data-l10n-id="login-short"></button>
           </menu>
         </section>
 
         <section id="signup" role="panel">
-          <header class="compact" role="header">
+          <header class="compact">
             <div class="safezone">
               <a href="#" data-icon="close"></a>
               <h1 data-l10n-id="signup"></h1>
@@ -104,6 +104,16 @@
                   </div>
                   <span>
                     <input type="text" name="" id="signup-username" />
+                  </span>
+                </label>
+              </li>
+              <li>
+                <label for="" class="pack-input">
+                  <div>
+                    <p data-l10n-id="handleName"></p>
+                  </div>
+                  <span>
+                    <input type="text" name="" id="signup-handle-name" />
                   </span>
                 </label>
               </li>
@@ -133,7 +143,17 @@
                     <p data-l10n-id="confirmPassword"></p>
                   </div>
                   <span>
-                    <input type="password" name="" id="signup-passwordConfirm" />
+                    <input type="password" name="" id="signup-password-confirm" />
+                  </span>
+                </label>
+              </li>
+              <li>
+                <label for="" class="pack-input">
+                  <div>
+                    <p data-l10n-id="birthDate"></p>
+                  </div>
+                  <span>
+                    <input type="date" name="" id="signup-birth-date" />
                   </span>
                 </label>
               </li>
@@ -153,15 +173,15 @@
           </menu>
         </section>
 
-        <div id="profiles" role="panel">
-          <div class="compact" role="header">
+        <section id="profiles" role="panel">
+          <div class="compact">
             <div class="safezone">
               <a href="#" data-icon="close"></a>
               <h1 data-l10n-id="profiles"></h1>
             </div>
           </div>
           <div class="content"></div>
-        </div>
+        </section>
       </div>
     </main>
   </body>

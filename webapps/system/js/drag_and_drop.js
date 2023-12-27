@@ -18,9 +18,7 @@
       event.preventDefault();
 
       const detail = event.detail;
-      const webview = document.querySelector(
-        '.appframe.active .browser-container .browser-view.active > .browser'
-      );
+      const webview = document.querySelector('.appframe.active .browser-container .browser-view.active > .browser');
       const webviewBox = webview.getBoundingClientRect();
 
       this.detailMemory = detail;
@@ -39,6 +37,9 @@
     },
 
     handleDragMove: function (event) {
+      if (!this.detailMemory) {
+        return;
+      }
       event.preventDefault();
 
       // Get initial position
@@ -90,16 +91,16 @@
     },
 
     handleDrop: function (event) {
-      const detail = this.detailMemory;
-      const webview = document.querySelector(
-        '.appframe.active .browser-container .browser-view.active > .browser'
-      );
+      if (!this.detailMemory) {
+        return;
+      }
+      const webview = document.querySelector('.appframe.active .browser-container .browser-view.active > .browser');
       const webviewBox = webview.getBoundingClientRect();
 
       this.screen.classList.remove('drag-and-drop-active');
       this.element.classList.remove('visible');
-      this.element.style.left = webviewBox.left + detail.left + 'px';
-      this.element.style.top = webviewBox.top + detail.top + 'px';
+      this.element.style.left = webviewBox.left + this.detailMemory.left + 'px';
+      this.element.style.top = webviewBox.top + this.detailMemory.top + 'px';
     }
   };
 

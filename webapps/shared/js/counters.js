@@ -23,6 +23,9 @@
 
           charElement.style.width = `${oldValue.offsetWidth}px`;
           charElement.style.height = `${oldValue.offsetHeight}px`;
+          if (originalChars[index] === ' ') {
+            charElement.style.width = '0.3em';
+          }
 
           const newValue = document.createElement('span');
           newValue.classList.add('new');
@@ -33,6 +36,9 @@
           charElement.style.transition = '0.3s ease';
           charElement.style.width = `${newValue.offsetWidth}px`;
           charElement.style.height = `${newValue.offsetHeight}px`;
+          if (char === ' ') {
+            charElement.style.width = '0.3em';
+          }
 
           setTimeout(() => {
             oldValue.textContent = '';

@@ -39,12 +39,13 @@
     ],
 
     init: async function () {
-      if (platform() !== 'desktop') {
+      if (window.deviceType !== 'desktop') {
         return;
       }
       this.gridElement.style.setProperty('--grid-columns', this.gridColumns);
       this.gridElement.style.setProperty('--grid-rows', this.gridRows);
 
+      window.addEventListener('orchid-services-ready', this.handleServicesLoad.bind(this));
       document.addEventListener('click', this.onClick.bind(this));
       this.launcherButton.addEventListener('click', this.handleLauncherButtonClick.bind(this));
       this.maximizeButton.addEventListener('click', this.handleLauncherMaximizeButtonClick.bind(this));
@@ -61,22 +62,23 @@
         this.apps = data;
         this.createIcons();
         this.handleSwiping();
+        this.apps = null;
       });
+    },
 
-      if ('OrchidServices' in window) {
-        if (await OrchidServices.isUserLoggedIn()) {
-          this.accountButton.style.display = '';
-          OrchidServices.getWithUpdate(
-            `profile/${await OrchidServices.userId()}`,
-            (data) => {
-              this.accountButtonAvatar.src = data.profile_picture;
-              this.accountButtonUsername.textContent = data.username;
-            }
-          );
-        } else {
-          this.accountButton.style.display = 'none';
-        }
+    handleServicesLoad: async function () {
+      if (await _os.isLoggedIn()) {
+        this.accountButton.style.display = '';
+        _os.auth.getAvatar().then((data) => {
+          this.accountButtonAvatar.src = data;
+        });
+        _os.auth.getUsername().then((data) => {
+          this.accountButtonUsername.textContent = data;
+        });
+      } else {
+        this.accountButton.style.display = 'none';
       }
+      window.removeEventListener('orchid-services-ready', this.handleServicesLoad.bind(this));
     },
 
     handleLauncherButtonClick: function (event) {
@@ -92,17 +94,17 @@
     },
 
     handleLauncherSettingsButtonClick: function (event) {
-      AppWindow.create('http://settings.localhost:8081/manifest.json', {});
+      const appWindow = new AppWindow('http://settings.localhost:8081/manifest.json', {});
     },
 
     handleLauncherFilesButtonClick: function (event) {
-      AppWindow.create('http://files.localhost:8081/manifest.json', {});
+      const appWindow = new AppWindow('http://files.localhost:8081/manifest.json', {});
     },
 
     splitArray: function (array, chunkSize) {
       const result = [];
-      for (let i = 0; i < array.length; i += chunkSize) {
-        result.push(array.slice(i, i + chunkSize));
+      for (let index = 0, length = array.length; index < length; index += chunkSize) {
+        result.push(array.slice(index, index + chunkSize));
       }
       return result;
     },
@@ -129,7 +131,30 @@
     },
 
     createIcons: function () {
+      for (let index = 0, length = this.apps.length; index < length; index++) {
+        const obj = this.apps[index];
+
+        if (!(obj.manifest && obj.manifest?.entry_points)) {
+          continue;
+        }
+        const entryPoints = Object.entries(obj.manifest?.entry_points) || [];
+
+        if (!(entryPoints && entryPoints.length > 0)) {
+          continue;
+        }
+        for (let index1 = 0, length1 = entryPoints.length; index1 < length1; index1++) {
+          const newObj = {
+            entry_id: entryPoints[index1][0],
+            manifest: entryPoints[index1][1]
+          };
+          const baseObj = { ...obj };
+          const merge = Object.assign(baseObj, newObj);
+          this.apps.push(merge);
+          console.log(merge);
+        }
+      }
       this.apps = this.apps.filter((obj) => this.HIDDEN_ROLES.indexOf(obj.manifest.role) === -1);
+      this.apps.sort();
 
       const fragment = document.createDocumentFragment();
 
@@ -152,7 +177,7 @@
         this.paginationBar.appendChild(dot);
 
         let iconIndex = 0;
-        for (let index = 0; index < array.length; index++) {
+        for (let index = 0, length = array.length; index < length; index++) {
           const app = array[index];
 
           const icon = document.createElement('li');
@@ -161,7 +186,7 @@
           page.appendChild(icon);
           this.applyParallaxEffect(icon);
 
-          icon.addEventListener('click', (event) => this.handleAppClick(event, app, iconContainer));
+          icon.addEventListener('click', (event) => this.handleAppClick(event, app));
           icon.addEventListener('contextmenu', (event) => this.handleIconContextMenu(event, app, iconContainer));
 
           const iconHolder = document.createElement('div');
@@ -183,7 +208,8 @@
             if (entry[0] <= this.APP_ICON_SIZE) {
               continue;
             }
-            iconContainer.src = entry[1];
+            const url = new URL(app.manifestUrl['en-US']);
+            iconContainer.src = url.origin + entry[1];
           }
 
           const notificationBadge = document.createElement('span');
@@ -213,10 +239,10 @@
       const carouselItems = this.gridElement.querySelectorAll('.page');
       let activeIndex = -1;
 
-      for (let index = 0; index < carouselItems.length; index++) {
+      for (let index = 0, length = carouselItems.length; index < length; index++) {
         const item = carouselItems[index];
-        const pageX = item.getBoundingClientRect().left;
-        const progress = Math.max(0, Math.min(1, 1 - (pageX / item.offsetWidth)));
+        const pageX = item.offsetLeft;
+        const progress = Math.max(0, Math.min(1, 1 - pageX / item.offsetWidth));
         dots[index].style.setProperty('--pagination-progress', progress);
 
         if (progress > 0.5 && activeIndex === -1) {
@@ -229,7 +255,7 @@
       }
     },
 
-    handleAppClick: function (event, app, icon) {
+    handleAppClick: function (event, app) {
       let langCode;
       try {
         langCode = L10n.currentLanguage || 'en-US';
@@ -247,7 +273,9 @@
 
       if (!this.isDragging) {
         // Dispatch the custom event with the manifest URL
-        AppWindow.create(manifestUrl);
+        const appWindow = new AppWindow(manifestUrl, {
+          entryId: app.entry_id
+        });
       }
     },
 
@@ -323,7 +351,7 @@
       this.shortcutsList.innerHTML = '';
       if (manifest && manifest.shortcuts) {
         this.shortcutsList.style.display = 'block';
-        for (let index = 0; index < manifest.shortcuts.length; index++) {
+        for (let index = 0, length = manifest.shortcuts.length; index < length; index++) {
           const shortcut = manifest.shortcuts[index];
 
           const item = document.createElement('li');

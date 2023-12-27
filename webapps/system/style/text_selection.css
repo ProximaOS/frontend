@@ -10,7 +10,7 @@
   transform: translateY(1.5rem);
   border-radius: 2rem;
   background-color: var(--background-plus);
-  box-shadow: 0 1rem 3rem rgba(0, 0, 0, 0.3);
+  box-shadow: 0 1rem 3rem rgba(0, 0, 0, 0.2);
   direction: ltr;
   opacity: 0;
   transition: transform 0.3s ease, opacity 0.3s ease, visibility 0.3s ease;
@@ -34,7 +34,7 @@
   color: var(--text-color);
   font-size: 1.4rem;
   line-height: 3rem;
-  transition: all 0.3s ease;
+  transition: transform 0.3s ease, opacity 0.3s ease, visibility 0.3s ease;
 }
 
 #text-selection > button:hover {

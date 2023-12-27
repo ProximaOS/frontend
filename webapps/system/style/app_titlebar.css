@@ -1,11 +1,13 @@
 .appframe .titlebar {
   box-sizing: border-box;
   display: flex;
-  z-index: 5;
+  z-index: 10;
   position: absolute;
   top: 0;
+  align-items: center;
   width: 100%;
-  padding: 0.75rem 1.5rem;
+  height: var(--titlebar-height);
+  padding: 0 1.5rem;
   gap: 1rem;
   opacity: 0.5;
   transition: opacity 0.3s ease;
@@ -18,6 +20,18 @@ html[dir='rtl'] .appframe .titlebar {
 }
 
 .appframe.active .titlebar {
+  opacity: 1;
+}
+
+.appframe.fullscreen .titlebar {
+  transform: translateY(calc((var(--titlebar-height) * -1) + 1rem));
+  opacity: 0;
+  transition: transform 0.3s ease, opacity 0.3s ease, background-color 0.3s ease;
+}
+
+.appframe.fullscreen .titlebar:hover {
+  transform: translateY(0);
+  background-color: var(--background);
   opacity: 1;
 }
 
@@ -68,7 +82,7 @@ html[dir='rtl'] .appframe .titlebar {
   background: transparent no-repeat center / 1.6rem;
   content: '';
   opacity: 0.8;
-  transition: all 0.3s cubic-bezier(0.2, 0.9, 0.1, 1);
+  transition: transform 0.3s cubic-bezier(0.2, 0.9, 0.1, 1);
 }
 
 .appframe .titlebar .close-button::before {

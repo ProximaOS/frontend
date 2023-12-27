@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="theme-color" media="(prefers-color-scheme: light)" content="#f0f6ff">
   <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#000000">
-  <title>Store</title>
+  <title data-l10n-id="title"></title>
   <link rel="stylesheet" type="text/css" href="http://default_theme.localhost:8081/style/index.css" />
   <link rel="stylesheet" type="text/css" href="http://shared.localhost:8081/style/layout.css" />
   <link rel="stylesheet" type="text/css" href="http://shared.localhost:8081/style/icons/icons.css" />
@@ -16,16 +16,15 @@
   <link rel="stylesheet" type="text/css" href="http://shared.localhost:8081/style/buttons.css" />
   <link rel="stylesheet" type="text/css" href="http://shared.localhost:8081/style/lists.css" />
   <link rel="stylesheet" type="text/css" href="http://shared.localhost:8081/style/switches.css" />
-  <link rel="stylesheet" type="text/css" href="http://shared.localhost:8081/style/toolbars.css" />
+  <link rel="stylesheet" type="text/css" href="http://shared.localhost:8081/style/tablists.css" />
   <link rel="stylesheet" type="text/css" href="http://shared.localhost:8081/style/input_areas.css" />
   <link rel="stylesheet" type="text/css" href="http://shared.localhost:8081/style/action_buttons.css" />
   <link rel="stylesheet" type="text/css" href="http://shared.localhost:8081/style/transitions.css" />
   <link rel="stylesheet" type="text/css" href="style/index.css" />
+  <link rel="stylesheet" type="text/css" href="style/views.css" />
   <link rel="stylesheet" type="text/css" href="style/slideshow.css" />
   <link rel="stylesheet" type="text/css" href="style/webapp.css" />
   <link rel="stylesheet" type="text/css" href="style/webapps.css" />
-  <link rel="stylesheet" type="text/css" href="style/search.css" />
-  <link rel="stylesheet" type="text/css" href="style/notifications.css" />
   <script type="module" src="https://orchid-f39a9.web.app/orchid_services.js"></script>
   <script defer type="text/javascript" src="http://shared.localhost:8081/js/smooth-scrollbar.js"></script>
   <script defer type="text/javascript" src="http://shared.localhost:8081/js/plugins/overscroll.js"></script>
@@ -33,8 +32,9 @@
   <script defer type="text/javascript" src="http://shared.localhost:8081/js/spatial_navigation.js"></script>
   <script defer type="text/javascript" src="http://shared.localhost:8081/js/transitions.js"></script>
   <script defer type="text/javascript" src="http://shared.localhost:8081/js/page_controller.js"></script>
+  <script type="text/javascript" src="http://shared.localhost:8081/js/lazy_loader.js"></script>
   <script type="text/javascript" src="js/bootstrap.js"></script>
-  <script defer type="text/javascript" src="js/webapps.js"></script>
+  <!-- <script defer type="text/javascript" src="js/webapps.js"></script> -->
 
   <script type="text/javascript" src="http://shared.localhost:8081/js/l10n.js"></script>
   <meta name="defaultLanguage" content="en-US">
@@ -45,172 +45,196 @@
 
 <body>
   <main id="app" role="app">
-    <section id="root" role="panel">
-      <header role="header">
-        <h1>Store</h1>
-      </header>
-      <div class="content lists">
-        <ul>
-          <li data-icon="apps" data-page-id="content">
-            <p>All Webapps</p>
-          </li>
-          <li data-icon="trending" data-page-id="trending">
-            <p>Trending</p>
-          </li>
-          <li data-icon="download" data-page-id="installed">
-            <p>Installed</p>
-          </li>
-        </ul>
-      </div>
-    </section>
+    <nav class="bb-tablist">
+      <ul>
+        <li><a href="#root" class="selected" data-page-id="root">
+            <span data-icon="apps"></span>
+            <span data-l10n-id="webapps"></span>
+          </a></li>
+        <li><a href="#games" data-page-id="games">
+            <span data-icon="crowd-play"></span>
+            <span data-l10n-id="games"></span>
+          </a></li>
+        <li><a href="#trending" data-page-id="trending">
+            <span data-icon="trending"></span>
+            <span data-l10n-id="trending"></span>
+          </a></li>
+        <li><a href="#installed" data-page-id="installed">
+            <span data-icon="download"></span>
+            <span data-l10n-id="installed"></span>
+          </a></li>
+      </ul>
+    </nav>
 
-    <section id="content" class="visible" role="panel">
-      <header class="compact" role="header">
-        <div class="safezone">
+    <div id="views">
+      <section id="root" class="visible" role="panel">
+        <header class="compact">
           <a href="#" data-icon="menu" data-page-id="root"></a>
-          <div class="logo"></div>
+          <img src="icons/store_128.png" alt="">
+          <nav role="tablist">
+            <ul>
+              <li><a href="#root" class="selected" data-page-id="root">
+                  <span data-l10n-id="webapps"></span>
+                </a></li>
+              <li><a href="#games" data-page-id="games">
+                  <span data-l10n-id="games"></span>
+                </a></li>
+              <li><a href="#trending" data-page-id="trending">
+                  <span data-l10n-id="trending"></span>
+                </a></li>
+              <li><a href="#installed" data-page-id="installed">
+                  <span data-l10n-id="installed"></span>
+                </a></li>
+            </ul>
+          </nav>
           <div class="searchbox">
-            <div class="placeholder" data-icon="search" data-l10n-id="type-here-to-search" data-page-id="search"></div>
+            <div class="placeholder" data-icon="search" data-l10n-id="type-here-to-search" data-page-id="search">
+            </div>
             <a href="#" data-icon="bell" data-page-id="notifications"></a>
-            <a href="#" class="user-avatar"></a>
+            <a href="#" class="avatar">
+              <img src="style/images/defaultuser.png" alt="">
+            </a>
           </div>
-        </div>
-      </header>
-      <div class="content">
-        <div id="slideshow-container">
-          <div id="slideshow"></div>
-          <div id="slideshow-dots"></div>
+        </header>
+        <div class="content">
+          <div id="slideshow-container">
+            <div id="slideshow"></div>
+            <div id="slideshow-dots"></div>
 
-          <button id="slideshow-previous-button" data-icon="chevron-left"></button>
-          <button id="slideshow-next-button" data-icon="chevron-right"></button>
+            <button id="slideshow-previous-button" data-icon="chevron-left"></button>
+            <button id="slideshow-next-button" data-icon="chevron-right"></button>
+          </div>
+          <div id="webapps"></div>
         </div>
-        <div id="webapps"></div>
-      </div>
-    </section>
+      </section>
 
-    <section id="search" role="panel">
-      <header class="compact" role="header">
-        <div class="safezone">
-          <a href="#" data-icon="arrow-back" data-page-id="content"></a>
-          <form action="" role="search" id="searchbox">
-            <input type="text" name="" id="" data-l10n-id="type-here-to-search">
-            <button type="reset" data-icon="close"></button>
-            <button type="submit" data-icon="search"></button>
-          </form>
+      <section id="search" role="panel">
+        <header class="compact">
+          <div class="safezone">
+            <a href="#" data-icon="arrow-back" data-page-id="root"></a>
+            <form action="" id="searchbox" class="bb-search">
+              <input type="text" name="" id="" data-l10n-id="type-here-to-search">
+              <button data-icon="mic"></button>
+              <button type="reset" data-icon="close"></button>
+              <button type="submit" data-icon="search"></button>
+            </form>
+          </div>
+        </header>
+        <div class="content lists"></div>
+      </section>
+
+      <section id="webapp" role="panel">
+        <header class="compact auto-hide">
+          <div class="safezone">
+            <a href="#" data-icon="arrow-back" data-page-id="root"></a>
+            <img src="" alt="" id="webapp-header-icon">
+            <h1 id="webapp-header-name"></h1>
+            <menu role="toolbar">
+              <a href="#" data-icon="search" data-page-id="search"></a>
+            </menu>
+          </div>
+        </header>
+        <div class="content lists">
+          <div class="banner-container">
+            <img src="" alt="" id="webapp-banner">
+          </div>
+
+          <div class="webapp-header">
+            <figure>
+              <img src="" alt="" id="webapp-icon">
+              <figcaption>
+                <div id="webapp-name"></div>
+                <div id="webapp-authors"></div>
+                <div id="webapp-categories"></div>
+              </figcaption>
+            </figure>
+            <div class="buttons">
+              <button class="recommend" data-l10n-id="webappGet"></button>
+              <button data-l10n-id="webappCancel"></button>
+            </div>
+          </div>
+
+          <ul>
+            <li class="page">
+              <p data-l10n-id="webappPatchNotes"></p>
+            </li>
+          </ul>
+
+          <div class="webapp-row">
+            <div class="item">
+              <span data-icon="storage"></span>
+              <div class="text-holder">
+                <p>Install Size</p>
+                <p>12.8MB</p>
+              </div>
+            </div>
+            <div class="item">
+              <span data-icon="download"></span>
+              <div class="text-holder">
+                <p data-l10n-id="webappDownloads"></p>
+                <p id="webapp-downloads"></p>
+              </div>
+            </div>
+            <div class="item">
+              <span data-icon="privacy"></span>
+              <div class="text-holder">
+                <p>Privacy Rating</p>
+                <p>8/10</p>
+              </div>
+            </div>
+          </div>
+
+          <ul>
+            <li class="page" data-page-id="description">
+              <p data-l10n-id="webappDescription"></p>
+            </li>
+            <li id="webapp-license-item" class="page">
+              <p data-l10n-id="webappLicense"></p>
+              <p id="webapp-license"></p>
+            </li>
+            <li class="page">
+              <p data-l10n-id="webappGitRepo"></p>
+              <p id="webapp-git-repo"></p>
+            </li>
+            <li class="noclick">
+              <p data-l10n-id="webappIncludesAds"></p>
+              <p id="webapp-includes-ads"></p>
+            </li>
+            <li class="noclick">
+              <p data-l10n-id="webappIncludesTracking"></p>
+              <div id="webapp-included-tracking"></div>
+            </li>
+          </ul>
         </div>
-      </header>
-      <div class="content lists"></div>
-    </section>
+      </section>
+
+      <section id="description" role="panel">
+        <header>
+          <div class="safezone">
+            <a href="#" data-icon="arrow-back" data-page-id="webapp"></a>
+            <h1 data-l10n-id="description"></h1>
+          </div>
+        </header>
+        <div class="content">
+          <p id="webapp-description"></p>
+        </div>
+      </section>
+
+      <menu class="bb-actions">
+        <button data-icon="upload"></button>
+        <button class="recommend" data-icon="feedback"></button>
+      </menu>
+    </div>
 
     <section id="notifications" role="panel">
-      <header class="compact" role="header">
+      <header class="compact">
         <div class="safezone">
-          <a href="#" data-icon="arrow-back" data-page-id="content"></a>
+          <a href="#" data-icon="arrow-back" data-page-id="root"></a>
           <h1 data-l10n-id="notifications"></h1>
         </div>
       </header>
       <div class="content lists"></div>
     </section>
-
-    <section id="webapp" role="panel">
-      <header class="compact auto-hide" role="header">
-        <div class="safezone">
-          <a href="#" data-icon="arrow-back" data-page-id="content"></a>
-          <img src="" alt="" id="webapp-header-icon">
-          <h1 id="webapp-header-name"></h1>
-          <menu role="toolbar">
-            <a href="#" data-icon="search" data-page-id="search"></a>
-          </menu>
-        </div>
-      </header>
-      <div class="content lists">
-        <img src="" alt="" id="webapp-banner">
-
-        <div class="webapp-header">
-          <figure>
-            <img src="" alt="" id="webapp-icon">
-            <figcaption>
-              <div id="webapp-name"></div>
-              <div id="webapp-authors"></div>
-              <div id="webapp-categories"></div>
-            </figcaption>
-          </figure>
-          <div class="buttons">
-            <button class="recommend" data-l10n-id="webappGet"></button>
-            <button data-l10n-id="webappCancel"></button>
-          </div>
-        </div>
-
-        <ul>
-          <li class="page">
-            <p data-l10n-id="webappPatchNotes"></p>
-          </li>
-        </ul>
-
-        <div class="webapp-row">
-          <div class="item">
-            <span data-icon="storage"></span>
-            <div class="text-holder">
-              <p>Install Size</p>
-              <p>12.8MB</p>
-            </div>
-          </div>
-          <div class="item">
-            <span data-icon="download"></span>
-            <div class="text-holder">
-              <p data-l10n-id="webappDownloads"></p>
-              <p id="webapp-downloads"></p>
-            </div>
-          </div>
-          <div class="item">
-            <span data-icon="privacy"></span>
-            <div class="text-holder">
-              <p>Privacy Rating</p>
-              <p>8/10</p>
-            </div>
-          </div>
-        </div>
-
-        <ul>
-          <li class="page" data-page-id="description">
-            <p data-l10n-id="webappDescription"></p>
-          </li>
-          <li class="page">
-            <p data-l10n-id="webappLicense"></p>
-            <p id="webapp-license"></p>
-          </li>
-          <li class="page">
-            <p data-l10n-id="webappGitRepo"></p>
-            <p id="webapp-git-repo"></p>
-          </li>
-          <li class="noclick">
-            <p data-l10n-id="webappIncludesAds"></p>
-            <p id="webapp-includes-ads"></p>
-          </li>
-          <li class="noclick">
-            <p data-l10n-id="webappIncludesTracking"></p>
-            <div id="webapp-included-tracking"></div>
-          </li>
-        </ul>
-      </div>
-    </section>
-
-    <section id="description" role="panel">
-      <header class="compact auto-hide" role="header">
-        <div class="safezone">
-          <a href="#" data-icon="arrow-back" data-page-id="webapp"></a>
-          <h1 data-l10n-id="description"></h1>
-        </div>
-      </header>
-      <div class="content">
-        <p id="webapp-description"></p>
-      </div>
-    </section>
-
-    <menu role="actions">
-      <button data-icon="upload"></button>
-      <button class="recommend" data-icon="feedback"></button>
-    </menu>
   </main>
 </body>
 

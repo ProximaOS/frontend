@@ -44,6 +44,10 @@
           this.handleAppLaunch(data);
           break;
 
+        case 'window':
+          this.handleWindowOpen(data);
+          break;
+
         case 'picture-in-picture':
           this.handlePictureInPicture(data);
           break;
@@ -53,7 +57,7 @@
       }
 
       const webviews = document.querySelectorAll('webview');
-      for (let index = 0; index < webviews.length; index++) {
+      for (let index = 0, length = webviews.length; index < length; index++) {
         const webview = webviews[index];
 
         try {
@@ -91,8 +95,8 @@
       if (options.icon && !options.icon.startsWith('http')) {
         options.icon = `${data.origin}/${data.options.icon}`;
       }
-      options.source = data.origin;
-      NotificationToaster.showNotification(data.title, options);
+      options.source = data.title || data.origin;
+      NotificationToaster.showNotification(data.name, options);
     },
 
     handleTextSelection: function (data) {
@@ -112,6 +116,10 @@
     },
 
     handleKeyboard: function (data) {
+      if (window.deviceType === 'desktop') {
+        return;
+      }
+
       clearTimeout(this.keyboardTimer);
       if (data.action === 'show') {
         Keyboard.show();
@@ -124,7 +132,8 @@
     },
 
     handleAppLaunch: function (data) {
-      AppWindow.create(data.manifestUrl, {
+      const appWindow = new AppWindow(data.manifestUrl, {
+        entryId: data.entryId,
         animationVariables: {
           xPos: data.xPos,
           yPos: data.yPos,
@@ -135,6 +144,12 @@
           iconXScale: data.iconXScale,
           iconYScale: data.iconYScale
         }
+      });
+    },
+
+    handleWindowOpen: function (data) {
+      const appWindow = new AppWindow('http://browser.localhost:8081/manifest.json', {
+        url: data.url
       });
     },
 

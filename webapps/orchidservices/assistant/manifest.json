@@ -1,0 +1,25 @@
+{
+  "version": "1.0",
+  "name": "Assistant",
+  "long_name": "Orchid Assistant",
+  "description": "Helps assist you in usage",
+  "launch_path": "/index.html",
+  "icons": {
+    "16": "/style/icons/assistant_16.png",
+    "32": "/style/icons/assistant_32.png",
+    "48": "/style/icons/assistant_48.png",
+    "64": "/style/icons/assistant_64.png",
+    "128": "/style/icons/assistant_128.png",
+    "256": "/style/icons/assistant_256.png"
+  },
+  "developer": {
+    "name": "Orchid Org.",
+    "url": "https://openorchid.github.io/"
+  },
+  "default_locale": "en",
+  "orientation": "portrait-primary",
+  "permissions": {
+    "settings": {}
+  },
+  "display": "immersive"
+}

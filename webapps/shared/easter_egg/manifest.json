@@ -1,0 +1,22 @@
+{
+  "version": "1.0",
+  "role": "system",
+  "name": "Top Secret App",
+  "description": "Double-tap OrchidOS logo in your Settings > About page and watch.",
+  "launch_path": "/index.html",
+  "icons": {},
+  "developer": {
+    "name": "Orchid Org.",
+    "url": "https://openorchid.github.io/"
+  },
+  "default_locale": "en",
+  "orientation": "portrait-primary",
+  "permissions": {},
+  "display": "fullscreen",
+  "window_bounds": {
+    "left": "3.6rem",
+    "top": "2.4rem",
+    "width": "320px",
+    "height": "480px"
+  }
+}

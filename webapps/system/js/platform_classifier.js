@@ -5,7 +5,7 @@
     screen: document.getElementById('screen'),
 
     init: function () {
-      this.screen.classList.add(platform());
+      this.screen.classList.add(window.deviceType);
     }
   };
 

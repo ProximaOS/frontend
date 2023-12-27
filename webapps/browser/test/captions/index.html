@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Video Captioning Test</title>
+</head>
+<body>
+  <video id="videoPlayer" controls>
+    <source src="your-video.mp4" type="video/mp4">
+    Your browser does not support the video tag.
+  </video>
+  <div id="captions"></div>
+
+  <script>
+    const videoPlayer = document.getElementById('videoPlayer');
+    const captionsDiv = document.getElementById('captions');
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+
+    if (SpeechRecognition) {
+      const recognition = new SpeechRecognition();
+      recognition.lang = 'en-US'; // Set the language (change according to the video's language)
+
+      recognition.onresult = function(event) {
+        const transcript = event.results[event.results.length - 1][0].transcript;
+        displayCaption(transcript);
+      };
+
+      recognition.onend = function() {
+        recognition.start(); // Restart recognition after it ends to continuously transcribe
+      };
+
+      videoPlayer.addEventListener('play', function() {
+        recognition.start(); // Start recognition when the video is played
+      });
+
+      videoPlayer.addEventListener('pause', function() {
+        recognition.stop(); // Stop recognition when the video is paused
+      });
+    } else {
+      captionsDiv.innerHTML = 'Speech recognition not supported in this browser.';
+    }
+
+    function displayCaption(text) {
+      captionsDiv.innerHTML = text;
+    }
+  </script>
+</body>
+</html>

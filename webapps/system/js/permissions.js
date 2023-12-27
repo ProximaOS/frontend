@@ -3,10 +3,7 @@
 
   const Permissions = {
     init: function () {
-      window.addEventListener(
-        'permissionrequest',
-        this.handlePermissionRequest.bind(this)
-      );
+      window.addEventListener('permissionrequest', this.handlePermissionRequest.bind(this));
     },
 
     handlePermissionRequest: async function (event) {
@@ -21,8 +18,8 @@
           });
         } else {
           ModalDialog.showPermissionRequest(
-            navigator.mozL10n.get(`permission-${event.detail.type}`),
-            navigator.mozL10n.get(`permissionDetail-${event.detail.type}`),
+            L10n.get(`permission-${event.detail.type}`),
+            L10n.get(`permissionDetail-${event.detail.type}`),
             (decision) => {
               IPC.send('permissionrequest', {
                 permission: event.detail.type,

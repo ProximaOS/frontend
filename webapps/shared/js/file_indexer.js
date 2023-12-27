@@ -10,7 +10,7 @@
         for (const file of files) {
           const filePath = `${currentDir}/${file}`;
 
-          const stats = SDCardManager.getFileStats(filePath);
+          const stats = SDCardManager.getStats(filePath);
           if (stats.is_directory) {
             await findMatchingFiles(filePath);
           } else {

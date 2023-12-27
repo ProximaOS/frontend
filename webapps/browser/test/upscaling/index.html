@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Image Sharpener</title>
+  <style>
+    canvas {
+      border: 1px solid black;
+    }
+  </style>
+</head>
+<body>
+  <input type="file" id="fileInput" accept="image/*">
+  <button id="apply">Apply Sharpening</button>
+  <canvas id="canvas"></canvas>
+
+  <script>
+    const fileInput = document.getElementById('fileInput');
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+    const applyBtn = document.getElementById('apply');
+
+    let originalImage = new Image();
+
+    fileInput.addEventListener('change', function(e) {
+      const file = e.target.files[0];
+      const reader = new FileReader();
+
+      reader.onload = function(event) {
+        originalImage.src = event.target.result;
+      };
+
+      reader.readAsDataURL(file);
+    });
+
+    applyBtn.addEventListener('click', function() {
+      if (originalImage.src === '') {
+        alert('Please select an image first.');
+        return;
+      }
+
+      originalImage.onload = function() {
+        canvas.width = originalImage.width;
+        canvas.height = originalImage.height;
+
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.drawImage(originalImage, 0, 0);
+
+        const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+        const data = imageData.data;
+
+        const sharpenFactor = 1.5; // Adjust the sharpening strength
+
+        for (let i = 0; i < data.length; i += 4) {
+          const gray = (data[i] + data[i + 1] + data[i + 2]) / 3;
+
+          // Apply sharpening algorithm
+          const sharpenedR = data[i] + (data[i] - gray) * sharpenFactor;
+          const sharpenedG = data[i + 1] + (data[i + 1] - gray) * sharpenFactor;
+          const sharpenedB = data[i + 2] + (data[i + 2] - gray) * sharpenFactor;
+
+          data[i] = sharpenedR;
+          data[i + 1] = sharpenedG;
+          data[i + 2] = sharpenedB;
+        }
+
+        ctx.putImageData(imageData, 0, 0);
+      };
+    });
+  </script>
+</body>
+</html>

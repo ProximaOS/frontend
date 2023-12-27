@@ -1,0 +1,27 @@
+{
+  "version": "1.0",
+  "name": "Studio IDE",
+  "long_name": "Orchid Studio IDE",
+  "description": "",
+  "launch_path": "/index.html",
+  "icons": {
+    "16": "/style/icons/orchidstudioide_16.png",
+    "32": "/style/icons/orchidstudioide_32.png",
+    "48": "/style/icons/orchidstudioide_48.png",
+    "64": "/style/icons/orchidstudioide_64.png",
+    "128": "/style/icons/orchidstudioide_128.png",
+    "256": "/style/icons/orchidstudioide_256.png"
+  },
+  "developer": {
+    "name": "Orchid Org.",
+    "url": "https://orchidorg.github.io/"
+  },
+  "default_locale": "en",
+  "permissions": {
+    "settings": {},
+    "device-storage:others": {},
+    "device-storage:home": {},
+    "webapps-manage": {}
+  },
+  "display": "immersive"
+}

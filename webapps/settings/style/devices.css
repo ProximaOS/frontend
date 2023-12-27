@@ -73,7 +73,7 @@
   height: 4.6rem;
   padding: 1rem 2rem;
   gap: 1rem;
-  border-top: solid 0.1rem var(--item-plus);
+  border-top: solid 0.1rem var(--separator-color);
   background-color: var(--item-plus);
   transition: all 0.2s ease;
 }

@@ -59,7 +59,8 @@
         try {
           const settings = JSON.parse(data);
           settings[name] = value;
-          const updatedSettings = JSON.stringify(Object.assign(settings, memorySettings), null, 2);
+          const mergedSettings = Object.assign(settings, memorySettings);
+          const updatedSettings = JSON.stringify(mergedSettings, null, 2);
 
           // Ensure the directory exists before writing the file
           const settingsDir = path.dirname(settingsFilePath);

@@ -36,7 +36,7 @@
     createList: function (array, parentElement, x, y) {
       const fragment = document.createDocumentFragment();
 
-      for (let index = 0; index < array.length; index++) {
+      for (let index = 0, length = array.length; index < length; index++) {
         const item = array[index];
 
         if (item.hidden) {
@@ -47,8 +47,11 @@
         element.addEventListener('pointerup', this.onPointerUp.bind(this));
         element.addEventListener('pointerenter', (event) => this.onPointerEnter(event, element));
         element.addEventListener('pointerleave', (event) => this.onPointerLeave(event, element));
-        element.focus();
         fragment.appendChild(element);
+
+        element.addEventListener('pointerup', () => {
+          this.hide();
+        });
 
         switch (item.type) {
           case 'separator':
@@ -97,36 +100,38 @@
               element.appendChild(keybind);
             }
 
-            element.onclick = item.onclick;
+            element.addEventListener('pointerup', item.onclick);
             break;
         }
       }
 
       parentElement.appendChild(fragment);
 
-      if (x >= window.innerWidth / 2) {
-        if (this.activeButton) {
-          this.overlay.style.left = x - this.overlay.offsetWidth + this.activeButton.getBoundingClientRect().width + 'px';
-        } else {
-          this.overlay.style.left = x - this.overlay.offsetWidth + 'px';
-        }
+      requestAnimationFrame(() => {
+        if (x >= window.innerWidth / 2) {
+          if (this.activeButton) {
+            this.overlay.style.left = x - this.overlay.offsetWidth + this.activeButton.getBoundingClientRect().width + 'px';
+          } else {
+            this.overlay.style.left = x - this.overlay.offsetWidth + 'px';
+          }
 
-        if (this.overlay.offsetLeft <= 0) {
-          this.overlay.style.left = 0;
+          if (this.overlay.offsetLeft <= 0) {
+            this.overlay.style.left = 0;
+          }
+        } else {
+          this.overlay.style.left = x + 'px';
         }
-      } else {
-        this.overlay.style.left = x + 'px';
-      }
-      if (y >= window.innerHeight - this.overlay.getBoundingClientRect().height) {
-        this.overlay.style.top = y - this.overlay.getBoundingClientRect().height + 'px';
-        this.overlay.classList.add('bottom');
-        if (this.overlay.offsetTop <= 0) {
-          this.overlay.style.top = 0;
+        if (y >= window.innerHeight - this.overlay.getBoundingClientRect().height) {
+          this.overlay.style.top = y - this.overlay.getBoundingClientRect().height + 'px';
+          this.overlay.classList.add('bottom');
+          if (this.overlay.offsetTop <= 0) {
+            this.overlay.style.top = 0;
+          }
+        } else {
+          this.overlay.style.top = y + 'px';
+          this.overlay.classList.remove('bottom');
         }
-      } else {
-        this.overlay.style.top = y + 'px';
-        this.overlay.classList.remove('bottom');
-      }
+      });
     },
 
     onClick: function (event) {

@@ -13,13 +13,11 @@
     "256": "/style/icons/officewriter_256.png"
   },
   "developer": {
-    "name": "Orchid Org.",
+    "name": "Orchid Team",
     "url": "https://openorchid.github.io/"
   },
   "default_locale": "en",
   "orientation": "portrait-primary",
-  "background_color": "#f0f6ff",
-  "theme_color": "#0061e0",
   "permissions": {
     "settings": {},
     "storage": {},

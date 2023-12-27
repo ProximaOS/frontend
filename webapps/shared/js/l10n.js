@@ -19,6 +19,23 @@
 
     RTL_LANGUAGES: ['ar', 'he', 'iw', 'fa', 'ur', 'ku', 'ps', 'sd', 'dv'],
 
+    init: function () {
+      if ('Settings' in window) {
+        Settings.getValue('general.lang.code').then(this.handleLanguage.bind(this));
+        Settings.addObserver('general.lang.code', this.handleLanguage.bind(this));
+      } else {
+        if (L10n.availableLanguages.includes(navigator.language)) {
+          L10n.setLocale(navigator.language);
+        } else {
+          L10n.setLocale('en-US');
+        }
+      }
+    },
+
+    handleLanguage: function (value) {
+      L10n.setLocale(value);
+    },
+
     loadJsonFile: function () {
       fetch(href)
         .then((response) => response.json())
@@ -80,17 +97,13 @@
     observeLocalizationChanges: function () {
       const observer = new MutationObserver((mutationsList) => {
         for (const mutation of mutationsList) {
-          if (mutation.type === 'attributes' && mutation.attributeName.startsWith('data-l10n')) {
-            const target = mutation.target;
-            if (target.getAttribute('data-l10n-id')) {
-              this.translateElements();
-              break;
-            }
+          if ((mutation.type === 'childList' && mutation.addedNodes.length > 0) || (mutation.type === 'attributes' && mutation.attributeName.startsWith('data-l10n'))) {
+            this.translateElements();
           }
         }
       });
 
-      const config = { attributes: true, subtree: true };
+      const config = { childList: true, attributes: true, subtree: true };
       observer.observe(document, config);
     },
 
@@ -120,12 +133,19 @@
     },
 
     getTranslation: function (lang) {
-      lang = lang || this.defaultLanguage || 'en';
+      lang = lang || this.defaultLanguage || 'en-US';
 
       return {
         _: (key, data = {}) => {
-          const translation = this.translations[lang][key];
+          const translations = this.translations[lang];
+          if (!translations) {
+            console.warn(`Failed to find L10n locale in ${lang}: ${key}`);
+            return `[${key}]`;
+          }
+
+          const translation = translations[key];
           if (!translation) {
+            console.warn(`Failed to find L10n locale in ${lang}: ${key}`);
             return `[${key}]`;
           }
 
@@ -142,11 +162,12 @@
         ngettext: (key, count, data = {}) => {
           const translation = this.translations[lang][key];
           if (!translation) {
+            console.warn(`Failed to find L10n locale in ${lang}: ${key}`);
             return `[${key}]`;
           }
           const pluralForm = this.getPluralForm(count);
           const pluralTranslation = translation[pluralForm] || translation.other;
-          return this.interpolate(pluralTranslation.replace('{count}', this.localizeNumber(lang, count)), data);
+          return this.interpolate(pluralTranslation.replace('{[count]}', this.localizeNumber(lang, count)), data);
         }
       };
     },
@@ -210,21 +231,15 @@
           });
         }
       });
+
+      const customEvent = new CustomEvent('localized');
+      document.dispatchEvent(customEvent);
     }
   };
 
   // Set up localization on DOMContentLoaded
   document.addEventListener('DOMContentLoaded', () => {
-    if ('Settings' in window) {
-      Settings.getValue('general.lang.code').then((lang) => {
-        L10n.setLocale(lang);
-      });
-      Settings.addObserver('general.lang.code', (lang) => {
-        L10n.setLocale(lang);
-      });
-    } else {
-      L10n.setLocale(navigator.language);
-    }
+    L10n.init();
   });
 
   exports.L10n = L10n;

@@ -28,8 +28,13 @@
   "video.brightness.auto": true,
   "video.dark_mode.enabled": false,
   "video.warm_colors.enabled": false,
-  "video.ebook_mode.enabled": false,
+  "video.reader_mode.enabled": false,
+  "video.red_light_point.enabled": true,
   "video.timeout_duration": 15000,
+  "homescreen.manifest_url.desktop": {
+    "url": "http://system-extended.localhost:8081/manifest.json",
+    "entry": "desktop"
+  },
   "homescreen.manifest_url.mobile": "http://homescreen.localhost:8081/manifest.json",
   "homescreen.manifest_url.smart_tv": "http://smart-home.localhost:8081/manifest.json",
   "homescreen.accent_color.rgb": null,

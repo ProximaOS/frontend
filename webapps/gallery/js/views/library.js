@@ -62,7 +62,7 @@
           image.src = imageSrc;
           item.appendChild(image);
 
-          const stats = window.SDCardManager.getFileStats(path);
+          const stats = window.SDCardManager.getStats(path);
           this.setCategory(stats.birthtime).appendChild(item);
         });
     },

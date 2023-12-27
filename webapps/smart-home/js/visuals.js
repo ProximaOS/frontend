@@ -36,7 +36,7 @@
     },
 
     createParticles: function (particlesArray) {
-      for (let i = 0; i < 256; i++) {
+      for (let i = 0; i < 16; i++) {
         const x = Math.random() * this.backgroundCanvas.width;
         const y = Math.random() * this.backgroundCanvas.height;
         particlesArray.push(new this.Particle(x, y));

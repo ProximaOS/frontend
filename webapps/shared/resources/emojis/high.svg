@@ -1,0 +1,62 @@
+<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g clip-path="url(#clip0_91_1699)">
+<g filter="url(#filter0_i_91_1699)">
+<rect width="16" height="16" rx="8" fill="url(#paint0_radial_91_1699)"/>
+</g>
+<path d="M12 7.5V7.5C11.1716 7.5 10.5 8.17157 10.5 9V11C10.5 12.3807 9.38071 13.5 8 13.5V13.5C6.61929 13.5 5.5 12.3807 5.5 11V9C5.5 8.17157 4.82843 7.5 4 7.5V7.5" stroke="url(#paint1_linear_91_1699)" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="3" y="3" width="3" height="3" rx="1.5" fill="url(#paint2_linear_91_1699)"/>
+<mask id="mask0_91_1699" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="3" y="3" width="3" height="3">
+<rect x="3" y="3" width="3" height="3" rx="1.5" fill="url(#paint3_linear_91_1699)"/>
+</mask>
+<g mask="url(#mask0_91_1699)">
+<rect x="3" y="3" width="2" height="2" rx="1" fill="black"/>
+</g>
+<rect x="10" y="3" width="3" height="3" rx="1.5" fill="url(#paint4_linear_91_1699)"/>
+<mask id="mask1_91_1699" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="10" y="3" width="3" height="3">
+<rect x="10" y="3" width="3" height="3" rx="1.5" fill="url(#paint5_linear_91_1699)"/>
+</mask>
+<g mask="url(#mask1_91_1699)">
+<rect x="11" y="4" width="2" height="2" rx="1" fill="black"/>
+</g>
+<path d="M8 10.5V8.5" stroke="#FF6040" stroke-linecap="round" stroke-linejoin="round"/>
+</g>
+<defs>
+<filter id="filter0_i_91_1699" x="0" y="-2" width="16" height="18" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<feFlood flood-opacity="0" result="BackgroundImageFix"/>
+<feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape"/>
+<feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+<feOffset dy="-2"/>
+<feGaussianBlur stdDeviation="2"/>
+<feComposite in2="hardAlpha" operator="arithmetic" k2="-1" k3="1"/>
+<feColorMatrix type="matrix" values="0 0 0 0 0.71 0 0 0 0 0 0 0 0 0 0.5964 0 0 0 0.5 0"/>
+<feBlend mode="normal" in2="shape" result="effect1_innerShadow_91_1699"/>
+</filter>
+<radialGradient id="paint0_radial_91_1699" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(8) rotate(90) scale(16)">
+<stop offset="0.244977" stop-color="#FFC000"/>
+<stop offset="1" stop-color="#FF6040"/>
+</radialGradient>
+<linearGradient id="paint1_linear_91_1699" x1="8" y1="10.5" x2="8" y2="13.5" gradientUnits="userSpaceOnUse">
+<stop/>
+<stop offset="1" stop-opacity="0.75"/>
+</linearGradient>
+<linearGradient id="paint2_linear_91_1699" x1="4.5" y1="3" x2="4.5" y2="6" gradientUnits="userSpaceOnUse">
+<stop stop-color="white"/>
+<stop offset="1" stop-color="#B0DDFF"/>
+</linearGradient>
+<linearGradient id="paint3_linear_91_1699" x1="4.5" y1="3" x2="4.5" y2="6" gradientUnits="userSpaceOnUse">
+<stop stop-color="white"/>
+<stop offset="1" stop-color="#B0DDFF"/>
+</linearGradient>
+<linearGradient id="paint4_linear_91_1699" x1="11.5" y1="3" x2="11.5" y2="6" gradientUnits="userSpaceOnUse">
+<stop stop-color="white"/>
+<stop offset="1" stop-color="#B0DDFF"/>
+</linearGradient>
+<linearGradient id="paint5_linear_91_1699" x1="11.5" y1="3" x2="11.5" y2="6" gradientUnits="userSpaceOnUse">
+<stop stop-color="white"/>
+<stop offset="1" stop-color="#B0DDFF"/>
+</linearGradient>
+<clipPath id="clip0_91_1699">
+<rect width="16" height="16" fill="white"/>
+</clipPath>
+</defs>
+</svg>

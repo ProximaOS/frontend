@@ -1,0 +1,128 @@
+html, body {
+  margin: 0;
+  padding: 0;
+  background-color: var(--background);
+  font-size: 10px;
+}
+
+#editor {
+  width: calc(100% - 64rem) !important;
+}
+
+#editor > header::before,
+#editor > header::after {
+  display: none;
+}
+
+#editor-container {
+  position: absolute;
+  width: calc(100% - 1rem);
+  height: 100%;
+  margin: 0 0.5rem;
+  overflow: auto;
+  border-radius: 1rem;
+  background-color: var(--background-minus);
+  line-height: 2rem;
+}
+
+#editor-container::-webkit-scrollbar {
+  width: 1.5rem;
+  height: 1.5rem;
+}
+
+#editor-container::-webkit-scrollbar-thumb {
+  width: 1.5rem;
+  height: 1.5rem;
+  border: solid 0.4rem transparent;
+  border-radius: 1.5rem;
+  background-clip: content-box;
+  background-color: var(--item-active);
+}
+
+#editor-container::-webkit-scrollbar-corner {
+  display: none;
+}
+
+#webapps {
+  visibility: visible;
+  position: absolute;
+  right: 0;
+  left: unset !important;
+  width: 32rem !important;
+  transform: none !important;
+  opacity: 1;
+}
+
+#webapps > .content {
+  visibility: visible;
+  transform: none !important;
+  opacity: 1;
+}
+
+#webapps-list li {
+  flex-direction: row;
+  align-items: center;
+}
+
+#webapps-list li > img {
+  flex-shrink: 0;
+  width: 3.6rem;
+  height: 3.6rem;
+  border-radius: 25%;
+  outline: solid 0.1rem var(--separator-color);
+  background-color: #fff;
+}
+
+#webapps-list li > div {
+  display: flex;
+  flex-grow: 1;
+  flex-direction: column;
+  width: 100%;
+  padding-inline-start: 1rem;
+}
+
+@media screen and (min-width: 768px) {
+  #root {
+    box-sizing: border-box;
+    visibility: visible;
+    z-index: 1;
+    position: absolute;
+    top: 0;
+    width: 32rem;
+    height: 100%;
+    transform: none;
+    filter: none;
+    opacity: 1;
+  }
+  html[dir="ltr"] #root {
+    left: 0;
+  }
+  html[dir="rtl"] #root {
+    right: 0;
+  }
+
+  #root.visible {
+    width: 100%;
+    border-inline-end: none;
+  }
+
+  #root > .content > *:not(.scroll-content, .scrollbar-track, .bb-emptyscreen),
+  #root > .content > .scroll-content > *:not(.bb-emptyscreen) {
+    visibility: visible;
+    transform: translateY(0);
+    opacity: 1;
+  }
+
+  [role="panel"]:not(#root) {
+    position: absolute;
+    top: 0;
+    width: calc(100% - 32rem);
+    height: 100%;
+  }
+  html[dir="ltr"] [role="panel"]:not(#root) {
+    left: 32rem;
+  }
+  html[dir="rtl"] [role="panel"]:not(#root) {
+    right: 32rem;
+  }
+}

@@ -20,7 +20,7 @@
 <body>
   <main id="app" role="app">
     <section class="visible" role="panel">
-      <header class="compact" role="header">
+      <header class="compact">
         <div class="safezone">
           <h1>Sketch</h1>
           <menu role="toolbar">
@@ -32,6 +32,7 @@
         </div>
       </header>
       <div class="content">
+        <canvas id="paintCanvas"></canvas>
         <div class="controls">
           <div class="controls-row">
             <input type="color" id="colorPicker">
@@ -53,7 +54,6 @@
             <input type="range" id="opacity" min="0" max="1" step="0.1" value="1">
           </div>
         </div>
-        <canvas id="paintCanvas"></canvas>
       </div>
     </section>
   </div>

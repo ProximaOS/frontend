@@ -18,11 +18,11 @@
   },
   "default_locale": "en",
   "orientation": "portrait-primary",
-  "background_color": "#f0f6ff",
-  "theme_color": "#ff6040",
   "permissions": {
     "ipc": {},
+    "settings": { "access": "readwrite" },
     "webapps-manage": {}
   },
+  "transparent": true,
   "display": "fullscreen"
 }

@@ -6,6 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="theme-color" media="(prefers-color-scheme: light)" content="#f0f6ff">
   <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#000000">
+  <link rel="shortcut icon" href="/style/icons/music.svg" type="image/x-icon">
   <title data-l10n-id="title"></title>
   <link rel="stylesheet" type="text/css" href="http://default_theme.localhost:8081/style/index.css" />
   <link rel="stylesheet" type="text/css" href="http://shared.localhost:8081/style/layout.css" />
@@ -46,7 +47,7 @@
 
 <body>
   <main id="app" role="app">
-    <div role="tablist">
+    <div class="bb-tablist">
       <ul>
         <li><a href="#grid" class="selected" data-page-id="grid">
             <span data-icon="grid"></span>
@@ -69,17 +70,19 @@
 
     <div id="views">
       <section id="grid" class="visible" role="panel">
-        <header role="header">
+        <header>
           <h1 data-l10n-id="title"></h1>
           <menu role="toolbar">
             <a href="#" data-icon="options"></a>
           </menu>
         </header>
-        <div id="grid-container" class="content"></div>
+        <section class="content">
+          <div id="grid-container"></div>
+        </section>
       </section>
 
       <section id="playlists" role="panel">
-        <header role="header">
+        <header>
           <h1 data-l10n-id="playlists"></h1>
           <menu role="toolbar">
             <a href="#" data-icon="options"></a>
@@ -89,7 +92,7 @@
       </section>
 
       <section id="artists" role="panel">
-        <header role="header">
+        <header>
           <h1 data-l10n-id="artists"></h1>
           <menu role="toolbar">
             <a href="#" data-icon="options"></a>
@@ -99,7 +102,7 @@
       </section>
 
       <section id="albums" role="panel">
-        <header role="header">
+        <header>
           <h1 data-l10n-id="albums"></h1>
           <menu role="toolbar">
             <a href="#" data-icon="options"></a>
@@ -110,8 +113,9 @@
     </div>
 
     <section id="player" role="panel">
-      <header class="compact" role="header">
+      <header class="compact">
         <a href="#" id="player-back-button" data-icon="arrow-back"></a>
+        <h1 id="player-name"></h1>
       </header>
       <div class="content">
         <div class="player-cols">

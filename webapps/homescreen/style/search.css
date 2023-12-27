@@ -45,7 +45,7 @@
   height: 3.6rem;
   background-color: #fff;
   border-radius: 25%;
-  outline: solid 0.1rem var(--item-plus);
+  outline: solid 0.1rem var(--separator-color);
   flex-shrink: 0;
 }
 

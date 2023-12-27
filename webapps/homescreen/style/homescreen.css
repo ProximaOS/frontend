@@ -1,6 +1,6 @@
 html, body, [role="app"], [role="panel"] {
   overflow: hidden;
-  background-color: transparent;
+  background-color: transparent !important;
   user-select: none;
 }
 

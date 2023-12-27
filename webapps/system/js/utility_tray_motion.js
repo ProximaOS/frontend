@@ -33,18 +33,21 @@
       document.addEventListener('mouseleave', this.onPointerCancel.bind(this));
       document.addEventListener('touchcancel', this.onPointerCancel.bind(this));
 
-      if (platform() === 'desktop') {
+      if (window.deviceType === 'desktop') {
         this.statusbar.addEventListener('click', this.handleStatusbarClick.bind(this));
       }
 
       this.rowElements = this.controlCenter.querySelectorAll('.control-center-row');
-      for (let index = 0; index < this.rowElements.length; index++) {
+      for (let index = 0, length = this.rowElements.length; index < length; index++) {
         const element = this.rowElements[index];
         element.style.setProperty('--transition-order', index);
       }
     },
 
     onPointerDown: function (event) {
+      if (event.target.nodeName === 'A' || event.target.nodeName === 'BUTTON' || event.target.nodeName === 'INPUT') {
+        return;
+      }
       this.startY = event.clientY || event.touches[0].clientY;
       this.currentY = this.startY;
       this.isDragging = true;
@@ -54,13 +57,10 @@
     },
 
     onPointerMove: function (event) {
-      if (event.target.nodeName === 'A' || event.target.nodeName === 'BUTTON' || event.target.nodeName === 'INPUT') {
-        return;
-      }
       if (!this.isDragging) {
         return;
       }
-      if (platform() === 'desktop') {
+      if (window.deviceType === 'desktop') {
         return;
       }
 
@@ -104,7 +104,7 @@
         this.titlebar.classList.add('transitioning');
         this.motionElement.classList.add('transitioning');
         clearTimeout(this.timer);
-        this.timer = setTimeout(() => {
+        this.timeoutID = setTimeout(() => {
           this.statusbar.classList.remove('transitioning');
           this.titlebar.classList.remove('transitioning');
           this.motionElement.classList.remove('transitioning');
@@ -122,7 +122,7 @@
         this.titlebar.classList.add('transitioning');
         this.motionElement.classList.add('transitioning');
         clearTimeout(this.timer);
-        this.timer = setTimeout(() => {
+        this.timeoutID = setTimeout(() => {
           this.statusbar.classList.remove('transitioning');
           this.titlebar.classList.remove('transitioning');
           this.motionElement.classList.remove('transitioning');

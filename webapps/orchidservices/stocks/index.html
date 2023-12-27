@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" media="(prefers-color-scheme: light)" content="#f0f6ff">
+  <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#000000">
+  <link rel="shortcut icon" href="/style/icons/stocks.svg" type="image/x-icon">
+  <title>Stocks</title>
+  <link rel="stylesheet" type="text/css" href="http://default_theme.localhost:8081/style/index.css" />
+  <link rel="stylesheet" type="text/css" href="http://shared.localhost:8081/style/layout.css" />
+  <link rel="stylesheet" type="text/css" href="http://shared.localhost:8081/style/icons/icons.css" />
+  <link rel="stylesheet" type="text/css" href="http://shared.localhost:8081/style/headers.css" />
+  <link rel="stylesheet" type="text/css" href="http://shared.localhost:8081/style/lists.css" />
+  <link rel="stylesheet" type="text/css" href="http://shared.localhost:8081/style/input_areas.css" />
+  <link rel="stylesheet" type="text/css" href="style/stocks.css">
+  <script defer type="text/javascript" src="js/stocks.js"></script>
+
+  <script type="text/javascript" src="http://shared.localhost:8081/js/l10n.js"></script>
+  <meta name="defaultLanguage" content="en-US">
+  <meta name="availableLanguages"
+    content="af, ar, az, be, bg, bn, ca, cs, cy, da, de, el, eo, et, en-US, es, eu, fa, fi, fr, ga, gu, gl, he, hi, hr, ht, hu, id, is, it, ja, kn, ko, ku, lt, lv, mk, ms, nl, no, pl, pt, ro, ru, sq, sk, sl, sr, sw, ta, te, th, tl, tr, uk, ur, vi, yi, zh, fr-psaccent, ar-psbidi">
+  <link rel="localization" href="/locales/main.{locale}.properties">
+</head>
+<body>
+  <main id="app" role="app">
+    <section id="root" class="visible" role="panel">
+      <header>
+        <h1>Stocks</h1>
+      </header>
+
+      <section class="content lists">
+        <div class="searchbox">
+          <form action="" id="stockForm" class="bb-search">
+            <input type="text" id="symbolInput" placeholder="Enter stock symbol (e.g., AAPL)">
+            <button type="submit" id="getStockButton" data-icon="price"></button>
+          </form>
+        </div>
+
+        <div class="top-gainers">
+          <header>Top Gainers</header>
+          <ul id="topGainersList"></ul>
+        </div>
+        <div class="top-losers">
+          <header>Top Losers</header>
+          <ul id="topLosersList"></ul>
+        </div>
+        <div class="graph-container">
+          <canvas id="stockGraph" width="600" height="400"></canvas>
+        </div>
+      </section>
+    </section>
+  </main>
+</body>
+</html>

@@ -3,15 +3,70 @@
 
   const Devices = {
     devicesContainer: document.getElementById('devices-container'),
+    reloadButton: document.getElementById('devices-reload-button'),
 
-    init: async function () {
-      if ('OrchidServices' in window) {
-        if (await OrchidServices.isUserLoggedIn()) {
-          OrchidServices.getWithUpdate(`profile/${await OrchidServices.userId()}`, this.handleDevices.bind(this));
-        } else {
-          this.createEmptyScreen();
-        }
+    timeoutID: null,
+
+    init: function () {
+      this.loadDevices();
+
+      this.reloadButton.addEventListener('click', this.loadDevices.bind(this));
+    },
+
+    loadDevices: async function () {
+      if (await _os.isLoggedIn()) {
+        this.createSkeletonPolymer();
+
+        clearTimeout(this.timeoutID);
+        this.timeoutID = setTimeout(() => {
+          _os.auth.getDevices().then(this.handleDevices.bind(this));
+        }, 1000);
+      } else {
+        this.createEmptyScreen();
       }
+    },
+
+    createSkeletonPolymer: async function () {
+      this.devicesContainer.innerHTML = '';
+
+      const fragment = document.createDocumentFragment();
+
+      for (let index = 0; index < 16; index++) {
+        const element = document.createElement('li');
+        element.classList.add('device');
+        element.classList.add('pack-skeleton');
+        fragment.appendChild(element);
+
+        const textHolder = document.createElement('div');
+        textHolder.classList.add('text-holder');
+        element.appendChild(textHolder);
+
+        const name = document.createElement('div');
+        name.classList.add('name');
+        name.textContent = 'Skeleton Polymer';
+        textHolder.appendChild(name);
+
+        const type = document.createElement('div');
+        type.classList.add('type');
+        type.textContent = 'Skeleton Polymer';
+        textHolder.appendChild(type);
+
+        const statusbar = document.createElement('div');
+        statusbar.classList.add('statusbar');
+        element.appendChild(statusbar);
+
+        const battery = document.createElement('div');
+        battery.classList.add('battery');
+        battery.dataset.icon = ' ';
+        statusbar.appendChild(battery);
+
+        const wifi = document.createElement('div');
+        wifi.classList.add('wifi');
+        wifi.dataset.icon = ' ';
+        statusbar.appendChild(wifi);
+      }
+
+      this.devicesContainer.appendChild(fragment);
     },
 
     handleDevices: async function (data) {
@@ -19,14 +74,14 @@
 
       const fragment = document.createDocumentFragment();
 
-      const devices = data.devices;
+      const devices = data;
       for (let index = 0; index < devices.length; index++) {
         const device = devices[index];
 
         let firstName;
         let deviceType;
 
-        const userData = await OrchidServices.get(`profile/${await OrchidServices.userId()}`);
+        const userData = await OrchidServices.get(`profile/${await OrchidServices.userID()}`);
         const deviceData = await OrchidServices.get(`devices/${device.token}`);
 
         if (userData.username.includes(' ')) {
@@ -97,21 +152,10 @@
       }
 
       this.devicesContainer.appendChild(fragment);
-    },
-
-    handleBannerEditButton: function () {
-      FilePicker(['.png', '.jpg', '.jpeg', '.webp'], (data) => {
-        compressImage(data, this.KB_SIZE_LIMIT, async (finalImage) => {
-          OrchidServices.set(`profile/${await OrchidServices.userId()}`, {
-            banner: finalImage
-          });
-          console.log(finalImage);
-        });
-      });
     }
   };
 
-  window.addEventListener('orchidservicesload', () => {
+  window.addEventListener('orchid-services-ready', () => {
     Devices.init();
   });
 })(window);

@@ -5,7 +5,12 @@
   "role": "theme",
   "style_path": "/style/index.css",
   "icons": {
-    "48": "/style/icons/theme.png"
+    "16": "/style/icons/default_theme_16.png",
+    "32": "/style/icons/default_theme_32.png",
+    "48": "/style/icons/default_theme_48.png",
+    "64": "/style/icons/default_theme_64.png",
+    "128": "/style/icons/default_theme_128.png",
+    "256": "/style/icons/default_theme_256.png"
   },
   "developer": {
     "name": "Orchid Org.",

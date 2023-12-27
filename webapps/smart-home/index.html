@@ -8,7 +8,8 @@
   <link rel="stylesheet" type="text/css" href="http://default_theme.localhost:8081/style/index.css" />
   <link rel="stylesheet" type="text/css" href="http://shared.localhost:8081/style/layout.css" />
   <link rel="stylesheet" type="text/css" href="http://shared.localhost:8081/style/icons/icons.css" />
-  <link rel="stylesheet" type="text/css" href="http://shared.localhost:8081/rolee/panels.css" />
+  <link rel="stylesheet" type="text/css" href="http://shared.localhost:8081/style/panels.css" />
+  <link rel="stylesheet" type="text/css" href="http://shared.localhost:8081/style/counters.css" />
   <link rel="stylesheet" type="text/css" href="style/icons/icons.css">
   <link rel="stylesheet" type="text/css" href="style/home.css">
   <link rel="stylesheet" type="text/css" href="style/visuals.css">
@@ -18,11 +19,13 @@
   <script defer type="text/javascript" src="http://shared.localhost:8081/js/panels.js"></script>
   <script defer type="text/javascript" src="http://shared.localhost:8081/js/page_controller.js"></script>
   <script defer type="text/javascript" src="http://shared.localhost:8081/js/spatial_navigation.js"></script>
+  <script defer type="text/javascript" src="http://shared.localhost:8081/js/lazy_loader.js"></script>
+  <script defer type="text/javascript" src="http://shared.localhost:8081/js/counters.js"></script>
   <script defer type="text/javascript" src="js/lib/three.js"></script>
   <script type="text/javascript" src="js/bootstrap.js"></script>
   <script defer type="text/javascript" src="js/visuals.js"></script>
   <script defer type="text/javascript" src="js/time_icon.js"></script>
-  <script defer type="text/javascript" src="js/webapps.js"></script>
+  <!-- <script defer type="text/javascript" src="js/webapps.js"></script> -->
   <script defer type="text/javascript" src="js/search.js"></script>
 
   <script type="text/javascript" src="http://shared.localhost:8081/js/l10n.js"></script>
@@ -50,8 +53,8 @@
         <div class="toolbar">
           <button data-icon="settings"></button>
           <button data-icon="bell"></button>
-          <button class="account-button">
-            <img src="style/images/defaultuser.svg" alt="">
+          <button id="account-button" class="account-button">
+            <img src="style/images/defaultuser.svg" alt="" id="account-button-avatar">
           </button>
         </div>
       </div>
@@ -61,24 +64,13 @@
       <div id="content" class="panel">
         <div class="content">
           <div class="content-row">
-            <ul id="webapps">
-              <div class="webapp"></div>
-              <div class="webapp"></div>
-              <div class="webapp"></div>
-              <div class="webapp"></div>
-              <div class="webapp"></div>
-              <div class="webapp"></div>
-              <div class="webapp"></div>
-              <div class="webapp"></div>
-              <div class="webapp"></div>
-              <div class="webapp"></div>
-            </ul>
+            <ul id="webapps-list"></ul>
           </div>
 
           <div class="content-row">
             <div class="selected-card-panel">
-              <h1>Placeholder</h1>
-              <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. In veritatis quidem impedit quasi itaque consectetur odio aut nostrum sint sed laudantium ipsam consequuntur incidunt, perferendis assumenda ad delectus at error.</p>
+              <h1 id="selection-name" role="counter"></h1>
+              <p id="selection-description" role="counter"></p>
               <nav>
                 <a href="#" id="launch">Launch</a>
                 <a href="#" id="learn-more">Learn More</a>

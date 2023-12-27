@@ -12,7 +12,7 @@
   translate: -50% 0;
   border-radius: 2rem;
   background-color: var(--acrylic-background-plus);
-  transition: all 0.3s ease;
+  transition: visibility 0.3s ease;
 }
 
 #screen.software-buttons-enabled #utility-tray-wifi,

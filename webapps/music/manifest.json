@@ -17,9 +17,8 @@
   },
   "default_locale": "en",
   "orientation": "portrait-primary",
-  "background_color": "#f0f6ff",
-  "theme_color": "#ff60c0",
   "permissions": {
+    "ipc": {},
     "settings": {},
     "storage": {},
     "device-storage:home": {},

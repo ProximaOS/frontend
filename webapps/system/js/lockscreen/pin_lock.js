@@ -19,7 +19,7 @@
         this.password = value;
       });
 
-      for (let index = 0; index < this.keypadButtons.length; index++) {
+      for (let index = 0, length = this.keypadButtons.length; index < length; index++) {
         const button = this.keypadButtons[index];
 
         DirectionalScale.init(button);

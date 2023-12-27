@@ -4,8 +4,6 @@ const path = require('path');
 const loadChrome = require('./browser/chrome');
 const webappRuntime = require('./server/webapps');
 const loadOpenOrchid = require('./browser/openorchid');
-const isDev = require('electron-is-dev');
-const electronReload = require('electron-reload');
 const { pathToFileURL } = require('url');
 
 require('dotenv').config();
@@ -64,6 +62,7 @@ dialog.showSaveDialog = (options, callback) => {
   }
 };
 
+app.setAsDefaultProtocolClient('orchid-activity');
 protocol.registerSchemesAsPrivileged([
   { scheme: 'orchid', privileges: { standard: true, secure: true, supportFetchAPI: true } },
   { scheme: 'orchidreader', privileges: { standard: true, secure: true, supportFetchAPI: false } }
@@ -131,9 +130,3 @@ app.on('activate', () => {
     createWindow();
   }
 });
-
-if (isDev) {
-  electronReload(path.resolve(process.env.OPENORCHID_WEBAPPS), {
-    hardResetMethod: 'exit'
-  });
-}

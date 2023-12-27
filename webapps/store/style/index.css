@@ -1,19 +1,14 @@
-header[role="header"] .logo {
+section[role="panel"] > header:first-child > img {
   display: none;
-  flex-shrink: 0;
-  width: 23rem;
-  height: 4rem;
-  margin: 0.5rem 0;
-  background: url(images/logo_light.png) no-repeat left center / 100% 3.6rem;
 }
 
-@media screen and (prefers-color-scheme: dark) {
-  header[role="header"] .logo {
-    background-image: url(images/logo_dark.png);
+@media screen and (min-width: 600px) {
+  section[role="panel"] > header:first-child > img {
+    display: block;
   }
 }
 
-header[role="header"] .searchbox {
+section[role="panel"] > header:first-child .searchbox {
   box-sizing: border-box;
   display: flex;
   width: 100%;
@@ -23,12 +18,14 @@ header[role="header"] .searchbox {
   margin-inline-start: auto;
   margin-inline-end: 0.5rem;
   padding: 0 0.5rem;
+  z-index: 1;
+  position: relative;
   gap: 0.5rem;
   border-radius: 2rem;
   background-color: var(--item-plus);
 }
 
-header[role="header"] .searchbox .placeholder {
+section[role="panel"] > header:first-child .searchbox .placeholder {
   display: flex;
   width: 100%;
   height: 4rem;
@@ -39,14 +36,14 @@ header[role="header"] .searchbox .placeholder {
   line-height: 4rem;
 }
 
-header[role="header"] .searchbox .placeholder[data-icon]::before {
+section[role="panel"] > header:first-child .searchbox .placeholder[data-icon]::before {
   height: 4rem;
   margin-inline-end: 1rem;
   font-size: 2rem;
   line-height: 4rem;
 }
 
-header[role="header"] .searchbox > a {
+section[role="panel"] > header:first-child .searchbox > a {
   width: 4rem;
   height: 3rem;
   margin: 0.5rem 0;
@@ -54,64 +51,18 @@ header[role="header"] .searchbox > a {
   line-height: 3rem;
 }
 
-header[role="header"] .searchbox > a[data-icon]::before {
+section[role="panel"] > header:first-child .searchbox > a[data-icon]::before {
+  width: 3rem;
   height: 3rem;
   line-height: 3rem;
 }
 
-header[role="header"] .searchbox .user-avatar {
+section[role="panel"] > header:first-child .searchbox .avatar {
   width: 3rem;
-  background: url(images/defaultuser.png) no-repeat center / cover;
+  min-width: 3rem;
+  padding: 0;
 }
 
-@media screen and (min-width: 600px) {
-  header[role="header"] .logo {
-    display: block;
-  }
-}
-
-@media screen and (min-width: 768px) {
-  #root {
-    box-sizing: border-box;
-    visibility: visible;
-    z-index: 1;
-    position: absolute;
-    top: 0;
-    width: 32rem;
-    height: 100%;
-    transform: none;
-    filter: none;
-    opacity: 1;
-  }
-  html[dir="ltr"] #root {
-    left: 0;
-  }
-  html[dir="rtl"] #root {
-    right: 0;
-  }
-
-  #root.visible {
-    width: 100%;
-    border-inline-end: none;
-  }
-
-  #root > .content > *:not(.scroll-content),
-  #root > .content > .scroll-content > * {
-    visibility: visible;
-    transform: translateY(0);
-    opacity: 1;
-  }
-
-  [role="panel"]:not(#root) {
-    position: absolute;
-    top: 0;
-    width: calc(100% - 32rem);
-    height: 100%;
-  }
-  html[dir="ltr"] [role="panel"]:not(#root) {
-    left: 32rem;
-  }
-  html[dir="rtl"] [role="panel"]:not(#root) {
-    right: 32rem;
-  }
+section[role="panel"] > header:first-child .searchbox .avatar > img {
+  margin: 0;
 }

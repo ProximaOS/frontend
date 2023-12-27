@@ -3,15 +3,16 @@
 
   const Display = {
     brightnessSlider: document.getElementById('display-brightness-slider'),
-    AutoBrightnessSwitch: document.getElementById('display-autoBrightness-switch'),
-    darkModeSwitch: document.getElementById('display-darkMode-switch'),
-    warmColorsSwitch: document.getElementById('display-warmColors-switch'),
-    eBookModeSwitch: document.getElementById('display-eBook-switch'),
+    AutoBrightnessSwitch: document.getElementById('display-auto-brightness-switch'),
+    darkModeSwitch: document.getElementById('display-dark-mode-switch'),
+    warmColorsSwitch: document.getElementById('display-warm-colors-switch'),
+    readerModeSwitch: document.getElementById('display-reader-mode-switch'),
+    redLightPointSwitch: document.getElementById('display-red-light-point-switch'),
 
     init: function () {
       this.brightnessSlider.min = 0;
       this.brightnessSlider.max = 100;
-      this.brightnessSlider.addEventListener('change', this.handleBrightnessSlider.bind(this));
+      this.brightnessSlider.addEventListener('input', this.handleBrightnessSlider.bind(this));
       window.Settings.getValue('video.brightness').then((data) => {
         this.brightnessSlider.value = data;
       });
@@ -26,9 +27,14 @@
         this.warmColorsSwitch.checked = data;
       });
 
-      this.eBookModeSwitch.addEventListener('change', this.handleEBookModeSwitch.bind(this));
-      window.Settings.getValue('video.ebook_mode.enabled').then((data) => {
-        this.eBookModeSwitch.checked = data;
+      this.readerModeSwitch.addEventListener('change', this.handleReaderModeSwitch.bind(this));
+      window.Settings.getValue('video.reader_mode.enabled').then((data) => {
+        this.readerModeSwitch.checked = data;
+      });
+
+      this.redLightPointSwitch.addEventListener('change', this.handleRedLightPointSwitch.bind(this));
+      window.Settings.getValue('video.red_light_point.enabled').then((data) => {
+        this.redLightPointSwitch.checked = data;
       });
     },
 
@@ -47,9 +53,14 @@
       window.Settings.setValue('video.warm_colors.enabled', value);
     },
 
-    handleEBookModeSwitch: function () {
-      const value = this.eBookModeSwitch.checked;
-      window.Settings.setValue('video.ebook_mode.enabled', value);
+    handleReaderModeSwitch: function () {
+      const value = this.readerModeSwitch.checked;
+      window.Settings.setValue('video.reader_mode.enabled', value);
+    },
+
+    handleRedLightPointSwitch: function () {
+      const value = this.redLightPointSwitch.checked;
+      window.Settings.setValue('video.red_light_point.enabled', value);
     }
   };
 

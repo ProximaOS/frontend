@@ -41,9 +41,10 @@
 
       const doneButton = this.content.querySelector('.done-button');
       doneButton.onclick = () => {
+        Settings.setValue('ftu.enabled', false);
         window.IPC.send('message', {
           type: 'launch',
-          manifestUrl: `http://homescreen.localhost:8081/manifest.json`
+          manifestUrl: 'http://homescreen.localhost:8081/manifest.json'
         });
         window.close();
       };

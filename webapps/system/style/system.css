@@ -18,7 +18,7 @@ html, body {
   user-select: none;
 }
 
-#screen {
+.screen {
   position: fixed;
   top: 0;
   left: 0;
@@ -27,37 +27,17 @@ html, body {
   overflow: hidden;
   transform-origin: top left;
   background: #000 url(/resources/wallpapers/default.png) no-repeat center / cover;
-  box-shadow: 0 0 2rem rgba(0, 0, 0, 0.3);
-  transition: all 0.5s cubic-bezier(1, 0, 0, 1), opacity 0.3s ease, filter 0.3s ease;
+  transition: opacity 0.3s ease, filter 0.3s ease, visibility 0.3s ease;
 }
 
-#screen.poweroff {
+.screen.poweroff {
+  visibility: hidden;
   opacity: 0;
   pointer-events: none;
 }
 
-#screen.poweroff > * {
+.screen.poweroff > * {
   pointer-events: none !important;
-}
-
-#screen.screenshot {
-  border-radius: var(--screen-radius);
-  animation: screenshot 0.5s cubic-bezier(0.5, 0.8, 0, 1);
-}
-
-@keyframes screenshot {
-  0% {
-    transform: scale(1);
-    filter: brightness(100%);
-  }
-  10% {
-    transform: scale(0.9);
-    filter: brightness(500%);
-  }
-  100% {
-    transform: scale(1);
-    filter: brightness(100%);
-  }
 }
 
 #screen::before {
@@ -94,12 +74,11 @@ html, body {
   left: 0;
   width: 100%;
   height: 100%;
-  backdrop-filter: saturate(150%);
-  background-color: rgba(255, 96, 64, 0.2);
+  background-color: rgba(255, 0, 0, 0.1);
   content: '';
   opacity: 0;
   pointer-events: none;
-  transition: all 0.3s ease;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
 }
 
 #screen.warm-colors::after {
@@ -107,7 +86,7 @@ html, body {
   opacity: 1;
 }
 
-#screen.ebook {
+#screen.reader-mode {
   filter: grayscale(1);
 }
 

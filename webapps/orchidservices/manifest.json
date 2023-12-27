@@ -1,0 +1,140 @@
+{
+  "version": "1.0",
+  "name": "Orchid Suite",
+  "long_name": "Orchid Service Suite",
+  "role": "system",
+  "description": "Private services by Orchid",
+  "launch_path": "/index.html",
+  "icons": {
+    "16": "/style/icons/orchidsuite_16.png",
+    "32": "/style/icons/orchidsuite_32.png",
+    "48": "/style/icons/orchidsuite_48.png",
+    "64": "/style/icons/orchidsuite_64.png",
+    "128": "/style/icons/orchidsuite_128.png",
+    "256": "/style/icons/orchidsuite_256.png"
+  },
+  "developer": {
+    "name": "Orchid Org.",
+    "url": "https://openorchid.github.io/"
+  },
+  "default_locale": "en",
+  "orientation": "portrait-primary",
+  "permissions": {
+    "settings": {}
+  },
+  "entry_points": {
+    "articles": {
+      "name": "Articles",
+      "description": "Share & post with friends",
+      "launch_path": "/articles/index.html",
+      "icons": {
+        "16": "/articles/style/icons/articles_16.png",
+        "32": "/articles/style/icons/articles_32.png",
+        "48": "/articles/style/icons/articles_48.png",
+        "64": "/articles/style/icons/articles_64.png",
+        "128": "/articles/style/icons/articles_128.png",
+        "256": "/articles/style/icons/articles_256.png"
+      },
+      "display": "immersive"
+    },
+    "assistant": {
+      "name": "Assistant",
+      "description": "Helps assist you in usage",
+      "launch_path": "/assistant/index.html",
+      "icons": {
+        "16": "/assistant/style/icons/assistant_16.png",
+        "32": "/assistant/style/icons/assistant_32.png",
+        "48": "/assistant/style/icons/assistant_48.png",
+        "64": "/assistant/style/icons/assistant_64.png",
+        "128": "/assistant/style/icons/assistant_128.png",
+        "256": "/assistant/style/icons/assistant_256.png"
+      },
+      "display": "overlay",
+      "transparent": true
+    },
+    "news": {
+      "name": "Newspaper",
+      "description": "Watch the latest news",
+      "launch_path": "/news/index.html",
+      "icons": {
+        "16": "/news/style/icons/newspaper_16.png",
+        "32": "/news/style/icons/newspaper_32.png",
+        "48": "/news/style/icons/newspaper_48.png",
+        "64": "/news/style/icons/newspaper_64.png",
+        "128": "/news/style/icons/newspaper_128.png",
+        "256": "/news/style/icons/newspaper_256.png"
+      },
+      "display": "immersive"
+    },
+    "pc": {
+      "name": "Parental Control",
+      "description": "Enable and set parental restrictions",
+      "launch_path": "/pc/index.html",
+      "icons": {
+        "16": "/pc/style/icons/pc_16.png",
+        "32": "/pc/style/icons/pc_32.png",
+        "48": "/pc/style/icons/pc_48.png",
+        "64": "/pc/style/icons/pc_64.png",
+        "128": "/pc/style/icons/pc_128.png",
+        "256": "/pc/style/icons/pc_256.png"
+      },
+      "display": "immersive"
+    },
+    "search": {
+      "name": "Search",
+      "description": "Search around the internet",
+      "launch_path": "/search/index.html",
+      "icons": {
+        "16": "/search/style/icons/search_16.png",
+        "32": "/search/style/icons/search_32.png",
+        "48": "/search/style/icons/search_48.png",
+        "64": "/search/style/icons/search_64.png",
+        "128": "/search/style/icons/search_128.png",
+        "256": "/search/style/icons/search_256.png"
+      },
+      "display": "immersive"
+    },
+    "stocks": {
+      "name": "Stocks",
+      "description": "Helps you keep track of stocks",
+      "launch_path": "/stocks/index.html",
+      "icons": {
+        "16": "/stocks/style/icons/stocks_16.png",
+        "32": "/stocks/style/icons/stocks_32.png",
+        "48": "/stocks/style/icons/stocks_48.png",
+        "64": "/stocks/style/icons/stocks_64.png",
+        "128": "/stocks/style/icons/stocks_128.png",
+        "256": "/stocks/style/icons/stocks_256.png"
+      },
+      "display": "immersive"
+    },
+    "translator": {
+      "name": "Translator",
+      "description": "Translate your sentences",
+      "launch_path": "/translator/index.html",
+      "icons": {
+        "16": "/translator/style/icons/translator_16.png",
+        "32": "/translator/style/icons/translator_32.png",
+        "48": "/translator/style/icons/translator_48.png",
+        "64": "/translator/style/icons/translator_64.png",
+        "128": "/translator/style/icons/translator_128.png",
+        "256": "/translator/style/icons/translator_256.png"
+      },
+      "display": "immersive"
+    },
+    "weather": {
+      "name": "Weather",
+      "description": "Check your weather forecast",
+      "launch_path": "/weather/index.html",
+      "icons": {
+        "16": "/weather/style/icons/weather_16.png",
+        "32": "/weather/style/icons/weather_32.png",
+        "48": "/weather/style/icons/weather_48.png",
+        "64": "/weather/style/icons/weather_64.png",
+        "128": "/weather/style/icons/weather_128.png",
+        "256": "/weather/style/icons/weather_256.png"
+      },
+      "display": "immersive"
+    }
+  }
+}

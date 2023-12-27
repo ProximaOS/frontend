@@ -8,6 +8,8 @@
     playPauseButton: document.getElementById('media-playback-playpause'),
     previousButton: document.getElementById('media-playback-previous'),
     nextButton: document.getElementById('media-playback-next'),
+    
+    iconElement: document.getElementById('statusbar-playing'),
 
     init: function () {
       window.addEventListener('mediaplay', this.handleMediaPlay.bind(this));
@@ -18,10 +20,12 @@
       this.title.textContent = event.detail.title;
       this.artist.textContent = event.detail.artist;
 
+      this.iconElement.classList.remove('hidden');
       this.playPauseButton.dataset.icon = 'pause-alt';
     },
 
     handleMediaPause: function (event) {
+      this.iconElement.classList.add('hidden');
       this.playPauseButton.dataset.icon = 'play-alt';
     }
   };

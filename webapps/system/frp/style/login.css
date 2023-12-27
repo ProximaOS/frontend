@@ -1,7 +1,6 @@
 #app {
   --statusbar-height: 0rem;
   --safezone-width: 60rem;
-  background: url(/resources/wallpapers/default.png) no-repeat center / cover;
 }
 
 h1 {
@@ -10,35 +9,9 @@ h1 {
   font-size: 2.4rem;
 }
 
-#container {
-  box-sizing: border-box;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: calc(100% - 1rem);
-  max-width: 40rem;
-  height: max-content;
-  overflow: hidden;
-  translate: -50% -50%;
-  border: solid 0.1rem var(--background);
-  border-radius: 1.5rem;
-  background-color: var(--background);
-  box-shadow: 0 0.8rem 2.4rem rgba(0, 0, 0, 0.2), 0 0 0 calc(100vw + 100vh) rgba(0, 0, 0, 0.3);
-}
-
-#container > [role="panel"] {
-  display: none;
-  position: relative;
-  height: max-content;
-}
-
-#container > [role="panel"].visible {
-  display: block;
-}
-
-[role="panel"] > [role="header"].compact {
-  height: 5rem;
-  padding: 0 1rem;
+[role="panel"] > header:first-child.compact {
+  height: 6.5rem !important;
+  padding: 1.5rem 1rem 0;
 }
 
 [role="panel"] > .content {

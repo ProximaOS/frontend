@@ -1,12 +1,6 @@
 !(function (exports) {
   'use strict';
 
-  window.addEventListener('orchidservicesload', () => {
-    OrchidServices.getList('webapps', (array) => {
-      Webapps.populate(array);
-    });
-  });
-
   const Webapps = {
     webapps: document.getElementById('webapps'),
 
@@ -20,10 +14,42 @@
     webappCategories: document.getElementById('webapp-categories'),
     webappDescription: document.getElementById('webapp-description'),
     webappLicense: document.getElementById('webapp-license'),
+    webappLicenseItem: document.getElementById('webapp-license-item'),
     webappGitRepo: document.getElementById('webapp-git-repo'),
     webappDownloads: document.getElementById('webapp-downloads'),
     webappIncludesAds: document.getElementById('webapp-includes-ads'),
     webappIncludedTracking: document.getElementById('webapp-included-tracking'),
+
+    LICENSE_URLS: {
+      MIT: 'https://opensource.org/licenses/MIT',
+      'Apache-2.0': 'https://www.apache.org/licenses/LICENSE-2.0',
+      'GPL-2.0': 'https://www.gnu.org/licenses/old-licenses/gpl-2.0.html',
+      'GPL-3.0': 'https://www.gnu.org/licenses/gpl-3.0.html',
+      'LGPL-2.1': 'https://www.gnu.org/licenses/old-licenses/lgpl-2.1.html',
+      'LGPL-3.0': 'https://www.gnu.org/licenses/lgpl-3.0.html',
+      'BSD-2-Clause': 'https://opensource.org/licenses/BSD-2-Clause',
+      'BSD-3-Clause': 'https://opensource.org/licenses/BSD-3-Clause',
+      ISC: 'https://opensource.org/licenses/ISC',
+      Mozilla: 'https://www.mozilla.org/en-US/MPL/',
+      'EPL-2.0': 'https://opensource.org/licenses/EPL-2.0',
+      'CC-BY-4.0': 'https://creativecommons.org/licenses/by/4.0/',
+      'CC-BY-SA-4.0': 'https://creativecommons.org/licenses/by-sa/4.0/',
+      'CC0-1.0': 'https://creativecommons.org/publicdomain/zero/1.0/',
+      Unlicense: 'http://unlicense.org/',
+      'Artistic-2.0': 'https://opensource.org/licenses/Artistic-2.0',
+      Zlib: 'https://opensource.org/licenses/Zlib'
+    },
+
+    init: function () {
+      if ('OrchidServices' in window) {
+        OrchidServices.list('webapps').then((array) => {
+          for (let index = 0; index < array.length; index++) {
+            const element = array[index];
+            Webapps.populate(element);
+          }
+        });
+      }
+    },
 
     initializeCategory: function (categoryId) {
       const categoryExists = document.getElementById(`category-${categoryId}`);
@@ -47,7 +73,7 @@
       const headerExpand = document.createElement('a');
       headerExpand.href = '#';
       headerExpand.dataset.icon = 'chevron-down';
-      headerExpand.textContent = navigator.mozL10n.get('seeMore');
+      headerExpand.textContent = L10n.get('seeMore');
       headerExpand.onclick = () => {
         category.classList.toggle('expanded');
       };
@@ -108,8 +134,9 @@
     },
 
     openPanel: function (element, data) {
-      console.log(data);
       Transitions.scale(element, this.webappPanel);
+      Transitions.scale(element.querySelector('.icon'), this.webappIcon);
+      Transitions.scale(element.querySelector('.name'), this.webappName);
 
       this.webappBanner.src = data.banner;
       this.webappIcon.src = data.icon;
@@ -139,9 +166,15 @@
 
       this.webappDescription.innerText = data.description;
       this.webappLicense.textContent = data.license;
-      this.webappGitRepo.textContent = data.gitRepo || navigator.mozL10n.get('none');
+      this.webappGitRepo.textContent = data.gitRepo || L10n.get('none');
       this.webappDownloads.textContent = data.downloads.length;
-      this.webappIncludesAds.textContent = data.includesAds ? navigator.mozL10n.get('yes') : navigator.mozL10n.get('no');
+      this.webappIncludesAds.textContent = data.includesAds ? L10n.get('yes') : L10n.get('no');
+
+      this.webappLicenseItem.onclick = () => {
+        window.open(this.LICENSE_URLS[data.license]);
+      }
     }
   };
+
+  Webapps.init();
 })(window);

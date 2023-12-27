@@ -7,19 +7,24 @@
   pointer-events: none;
 }
 
+#screen.keyboard-visible #modal-dialog {
+  height: 60%;
+}
+
 #modal-dialog-alert,
 #modal-dialog-confirm,
 #modal-dialog-prompt,
-#modal-dialog-permission-request {
-  display: flex;
+#modal-dialog-permission-request,
+#modal-dialog-value-selector,
+#modal-dialog-greetings,
+#modal-dialog-patch-logs {
   visibility: hidden;
   position: absolute;
   top: 0;
   left: 0;
-  align-items: end;
-  justify-content: center;
   width: 100%;
   height: 100%;
+  transform: scale(0.9);
   background-color: rgba(0,0,0,0.3);
   opacity: 0;
   pointer-events: all;
@@ -29,195 +34,11 @@
 #modal-dialog-alert.visible,
 #modal-dialog-confirm.visible,
 #modal-dialog-prompt.visible,
-#modal-dialog-permission-request.visible {
+#modal-dialog-permission-request.visible,
+#modal-dialog-value-selector.visible,
+#modal-dialog-greetings.visible,
+#modal-dialog-patch-logs.visible {
   visibility: visible;
+  transform: scale(1);
   opacity: 1;
-}
-
-#modal-dialog-alert .container,
-#modal-dialog-confirm .container,
-#modal-dialog-prompt .container,
-#modal-dialog-permission-request .container {
-  width: calc(100% - 2rem);
-  max-width: 40rem;
-  margin: 0 0 2.5rem;
-  transform: translateY(3rem);
-  border-radius: 2rem;
-  background-color: var(--background-plus);
-  box-shadow: 0 1.6rem 3.2rem rgba(0, 0, 0, 0.2);
-  transition: all 0.3s ease;
-}
-
-#screen.software-buttons-enabled #modal-dialog-alert .container,
-#screen.software-buttons-enabled #modal-dialog-confirm .container,
-#screen.software-buttons-enabled #modal-dialog-prompt .container,
-#screen.software-buttons-enabled #modal-dialog-permission-request .container {
-  margin-bottom: calc(var(--software-buttons-height) + 1rem);
-}
-
-#modal-dialog-alert.visible .container,
-#modal-dialog-confirm.visible .container,
-#modal-dialog-prompt.visible .container,
-#modal-dialog-permission-request.visible .container {
-  transform: translateY(0);
-}
-
-#modal-dialog-alert .content,
-#modal-dialog-confirm .content,
-#modal-dialog-prompt .content,
-#modal-dialog-permission-request .content {
-  width: 100%;
-}
-
-#modal-dialog-alert .content > .title,
-#modal-dialog-confirm .content > .title,
-#modal-dialog-prompt .content > .title,
-#modal-dialog-permission-request .content > .title {
-  box-sizing: border-box;
-  width: 100%;
-  height: 4rem;
-  padding: 0 2rem;
-  color: var(--text-color);
-  font-weight: bold;
-  font-size: 1.8rem;
-  line-height: 4rem;
-}
-
-#modal-dialog-alert .content > .detail,
-#modal-dialog-confirm .content > .detail,
-#modal-dialog-prompt .content > .detail,
-#modal-dialog-permission-request .content > .detail {
-  box-sizing: border-box;
-  width: 100%;
-  padding: 0 2rem 1rem;
-  color: var(--text-color);
-  font-weight: normal;
-  font-size: 1.6rem;
-  line-height: 2.2rem;
-}
-
-#modal-dialog-alert .content form,
-#modal-dialog-confirm .content form,
-#modal-dialog-prompt .content form,
-#modal-dialog-permission-request .content form {
-  box-sizing: border-box;
-  padding: 0 1.5rem 1rem;
-}
-
-#modal-dialog-alert .content form .pack-checkbox,
-#modal-dialog-confirm .content form .pack-checkbox,
-#modal-dialog-prompt .content form .pack-checkbox,
-#modal-dialog-permission-request .content form .pack-checkbox,
-#modal-dialog-alert .content form .pack-radio,
-#modal-dialog-confirm .content form .pack-radio,
-#modal-dialog-prompt .content form .pack-radio,
-#modal-dialog-permission-request .content form .pack-radio {
-  flex-direction: row-reverse;
-  margin-bottom: 0.5rem;
-  gap: 0.5rem;
-}
-
-#modal-dialog-alert .content form .pack-checkbox > label,
-#modal-dialog-confirm .content form .pack-checkbox > label,
-#modal-dialog-prompt .content form .pack-checkbox > label,
-#modal-dialog-permission-request .content form .pack-checkbox > label,
-#modal-dialog-alert .content form .pack-radio > label,
-#modal-dialog-confirm .content form .pack-radio > label,
-#modal-dialog-prompt .content form .pack-radio > label,
-#modal-dialog-permission-request .content form .pack-radio > label {
-  color: var(--text-color);
-  font-size: 1.6rem;
-}
-
-#modal-dialog-alert .content form > .inputbox,
-#modal-dialog-confirm .content form > .inputbox,
-#modal-dialog-prompt .content form > .inputbox,
-#modal-dialog-permission-request .content form > .inputbox {
-  box-sizing: border-box;
-  width: calc(100% - 3rem);
-  height: 4rem;
-  margin: 0;
-  padding: 0 1.5rem;
-  border: none;
-  border-radius: 1rem;
-  outline: none;
-  background-color: var(--background);
-  font-size: 1.6rem;
-  line-height: 4rem;
-}
-
-#modal-dialog-alert menu,
-#modal-dialog-confirm menu,
-#modal-dialog-prompt menu,
-#modal-dialog-permission-request menu {
-  box-sizing: border-box;
-  display: flex;
-  width: 100%;
-  height: 5.5rem;
-  margin: 0;
-  padding: 0 1.5rem 1.5rem;
-  gap: 0.5rem;
-}
-
-#modal-dialog-alert menu button,
-#modal-dialog-confirm menu button,
-#modal-dialog-prompt menu button,
-#modal-dialog-permission-request menu button {
-  box-sizing: border-box;
-  width: 100%;
-  height: 4rem;
-  padding: 0 1.5rem;
-  border: none;
-  border-radius: 2rem;
-  background-color: transparent;
-  color: var(--text-color);
-  font-size: 1.6rem;
-  line-height: 4rem;
-  text-align: center;
-}
-
-#modal-dialog-alert menu button:hover,
-#modal-dialog-confirm menu button:hover,
-#modal-dialog-prompt menu button:hover,
-#modal-dialog-permission-request menu button:hover {
-  background-color: var(--item-hover);
-}
-
-#modal-dialog-alert menu button:active,
-#modal-dialog-confirm menu button:active,
-#modal-dialog-prompt menu button:active,
-#modal-dialog-permission-request menu button:active {
-  background-color: var(--item-active);
-}
-
-#modal-dialog-alert menu button.recommend,
-#modal-dialog-confirm menu button.recommend,
-#modal-dialog-prompt menu button.recommend,
-#modal-dialog-permission-request menu button.recommend {
-  background-color: var(--accent-color);
-  color: var(--accent-color-plus);
-}
-
-#modal-dialog-alert menu button.recommend:hover,
-#modal-dialog-confirm menu button.recommend:hover,
-#modal-dialog-prompt menu button.recommend:hover,
-#modal-dialog-permission-request menu button.recommend:hover {
-  background: var(--accent-color) linear-gradient(0deg, var(--item-hover), var(--item-hover));
-}
-
-#modal-dialog-alert menu button.recommend:active,
-#modal-dialog-confirm menu button.recommend:active,
-#modal-dialog-prompt menu button.recommend:active,
-#modal-dialog-permission-request menu button.recommend:active {
-  background: var(--accent-color) linear-gradient(0deg, var(--item-active), var(--item-active));
-}
-
-@media screen and (orientation: landscape),
-       screen and (min-width: 600px) {
-  #modal-dialog-alert,
-  #modal-dialog-confirm,
-  #modal-dialog-prompt,
-  #modal-dialog-permission-request {
-    align-items: center;
-  }
 }

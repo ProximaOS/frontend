@@ -165,7 +165,6 @@
   flex-grow: 1;
   flex-direction: column;
   width: 100%;
-  padding-inline-start: 1rem;
 }
 
 .webapp-header figure {
@@ -180,25 +179,25 @@
   width: 100%;
 }
 
-#webappInfo-icon {
+#webapp-info-icon {
   flex-shrink: 0;
   width: 6rem;
   height: 6rem;
 }
 
-#webappInfo-name {
+#webapp-info-name {
   color: var(--text-color);
   font-size: 1.6rem;
   line-height: 2.2rem;
 }
 
-#webappInfo-version {
+#webapp-info-version {
   color: var(--text-color-faded);
   font-size: 1.4rem;
   line-height: 2rem;
 }
 
-#webappInfo-author {
+#webapp-info-author {
   color: var(--accent-color);
   font-size: 1.4rem;
   line-height: 2rem;
@@ -230,7 +229,7 @@
 }
 
 .accent-color-row:not(:last-child) {
-  border-bottom: solid 0.1rem var(--item-plus);
+  border-bottom: solid 0.1rem var(--separator-color);
 }
 
 .accent-color-row .colors {
@@ -278,22 +277,22 @@
 }
 
 #storage-used-space-progress {
+  position: relative;
   width: calc(100% - 3rem);
   max-width: calc(var(--safezone-width) - 3rem);
-  height: 2.4rem;
+  height: 3rem;
   margin: 0 auto 1.5rem;
-  border-radius: 1.2rem;
+  border-radius: 1.5rem;
   background-color: #858585;
 }
 
 #storage-used-space-progress > .fill {
   display: inline-block;
-  width: calc((100% * var(--progress, 0)) + 1.2rem);
+  position: absolute;
+  width: calc(100% * var(--progress, 0));
   height: 100%;
-  margin-inline-start: -1.2rem;
-  border-radius: 1.2rem;
-  background-color: hsl(var(--hue), 100%, 75%);
-  box-shadow: 0 0.3rem 0.6rem hsla(var(--hue), 100%, 75%, 0.5);
+  border-radius: 1.5rem;
+  background-color: hsl(var(--hue), 100%, 62.5%);
 }
 
 .aboutInfo-header {
@@ -366,6 +365,22 @@
   }
 }
 
+.credits-category p {
+  box-sizing: border-box;
+  width: 100%;
+  max-width: var(--safezone-width);
+  margin: 0 auto;
+  padding: 0 2rem;
+  color: var(--text-color);
+  font-weight: normal;
+  font-size: 1.6rem;
+  line-height: 2.2rem;
+}
+
+.credits-category:last-child {
+  padding-bottom: 1.5rem;
+}
+
 @media screen and (min-width: 768px) {
   #root {
     box-sizing: border-box;
@@ -391,8 +406,8 @@
     border-inline-end: none;
   }
 
-  #root > .content > *:not(.scroll-content),
-  #root > .content > .scroll-content > * {
+  #root > .content > *:not(.scroll-content, .scrollbar-track, .bb-emptyscreen),
+  #root > .content > .scroll-content > *:not(.bb-emptyscreen) {
     visibility: visible;
     transform: translateY(0);
     opacity: 1;

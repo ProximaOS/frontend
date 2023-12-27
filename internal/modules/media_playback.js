@@ -2,8 +2,6 @@
   'use strict';
 
   const { ipcRenderer } = require('electron');
-  const musicMetadata = require('music-metadata-browser');
-  const mime = require('mime');
 
   const MediaPlayback = {
     mediaElements: null,
@@ -28,10 +26,10 @@
       mediaElement.addEventListener('play', (event) => {
         const url = this.convertToAbsoluteUrl(mediaElement.src);
         this.getFileAsUint8Array(url).then((data) => {
-          musicMetadata.parseBuffer(data, mime.getType(url)).then((metadata) => {
-            const common = metadata.common;
-            this.sendMediaPlayEvent(common);
-          });
+          // musicMetadata.parseBuffer(data, mime.getType(url)).then((metadata) => {
+          //   const common = metadata.common;
+          //   this.sendMediaPlayEvent(common);
+          // });
         });
       });
       mediaElement.addEventListener('pause', function (event) {

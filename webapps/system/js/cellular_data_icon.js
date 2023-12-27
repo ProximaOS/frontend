@@ -5,14 +5,13 @@
     iconElement: document.getElementById('statusbar-cellular-signal'),
 
     init: function () {
-      this.update();
-    },
-
-    update: function () {
-      this.iconElement.classList.remove('hidden');
-
-      clearTimeout(this.timer);
-      this.timer = setTimeout(this.update, 1000);
+      if ('Telephony' in window) {
+        this.iconElement.classList.remove('hidden');
+        this.iconElement.dataset.icon = 'signal-searching';
+      } else {
+        this.iconElement.classList.add('hidden');
+        this.iconElement.dataset.icon = 'signal-0';
+      }
     }
   };
 

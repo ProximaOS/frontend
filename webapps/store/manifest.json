@@ -12,16 +12,21 @@
     "128": "/icons/store_128.png",
     "256": "/icons/store_256.png"
   },
+  "artworks": {
+    "360": "/style/artwork/store.svg"
+  },
   "developer": {
     "name": "Orchid Org.",
     "url": "https://openorchid.github.io/"
   },
   "default_locale": "en",
   "orientation": "portrait-primary",
-  "background_color": "#f0f6ff",
-  "theme_color": "#c00040",
   "permissions": {
-    "settings": {}
+    "settings": { "access": "readwrite" },
+    "webapps-manage": {}
   },
-  "display": "immersive"
+  "display": "immersive",
+  "platforms": [
+    "smart_tv"
+  ]
 }

@@ -9,8 +9,18 @@
   font-family: -orchid-internal-font;
 }
 
+@font-face {
+  src: url(orchid://fonts/NotoSansMono-VariableFont_wdth,wght.ttf);
+  font-family: monospace;
+}
+
 *,
 ::placeholder,
 ::-webkit-file-upload-button {
   font-family: -orchid-internal-font, 'Rubik', 'Jali Arabic', 'IBM Plex Sans Arabic', 'IBM Plex Sans', 'Fira Sans', 'Open Sans', 'Noto Sans', system-ui, sans-serif;
+}
+
+pre,
+textarea {
+  font-family: monospace;
 }

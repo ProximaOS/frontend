@@ -21,5 +21,24 @@
     });
     SpatialNavigation.makeFocusable();
     SpatialNavigation.focus();
+
+    LazyLoader.load('js/pages/root/main.js');
+    LazyLoader.load('js/pages/account/main.js');
+    LazyLoader.load('js/pages/devices/main.js');
+    LazyLoader.load('js/pages/wifi/main.js');
+    LazyLoader.load('js/pages/bluetooth/main.js');
+    LazyLoader.load('js/pages/general/main.js');
+    LazyLoader.load('js/pages/webapps/main.js');
+    LazyLoader.load('js/pages/languages/main.js');
+    LazyLoader.load('js/pages/audio/main.js');
+    LazyLoader.load('js/pages/display/main.js');
+    LazyLoader.load('js/pages/display/accent_color.js');
+    LazyLoader.load('js/pages/display/font_settings.js');
+    LazyLoader.load('js/pages/homescreen/main.js');
+    LazyLoader.load('js/pages/battery/main.js');
+    LazyLoader.load('js/pages/storage/main.js');
+    LazyLoader.load('js/pages/accessibility/main.js');
+    LazyLoader.load('js/pages/about/main.js');
+    LazyLoader.load('js/battery_icon.js');
   });
 })(window);

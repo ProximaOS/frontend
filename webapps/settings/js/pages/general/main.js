@@ -3,7 +3,7 @@
 
   const General = {
     softwareButtonsCheckbox: document.getElementById(
-      'general-softwareButtons-checkbox'
+      'general-software-buttons-checkbox'
     ),
 
     init: function () {

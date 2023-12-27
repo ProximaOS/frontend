@@ -1,7 +1,7 @@
 html, body {
   margin: 0;
   padding: 0;
-  background-color: var(--accent-color);
+  background-color: transparent;
   font-size: 10px;
   font-family: -orchid-internal-font, system-ui, sans-serif;
 }
@@ -16,7 +16,7 @@ html, body {
   left: 0;
   width: 100%;
   height: 100%;
-  background: #333 linear-gradient(to bottom, #333, #545454);
+  background: transparent;
 }
 
 [role="panel"] {
@@ -239,7 +239,7 @@ html[dir="rtl"] [role="panel"].visible {
   line-height: 4rem;
 }
 
-#webapps {
+#webapps-list {
   display: flex;
   margin: 0;
   padding: 0;
@@ -248,31 +248,90 @@ html[dir="rtl"] [role="panel"].visible {
   gap: 1.5rem;
 }
 
-#webapps > .webapp {
+#webapps-list > .webapp {
   position: relative;
   flex-shrink: 0;
   aspect-ratio: 4 / 3;
   height: 30vh;
+  overflow: hidden;
   border-radius: 2rem;
   backdrop-filter: blur(20px) saturate(180%);
   background-color: rgba(255,255,255,0.1);
+  list-style: none;
 }
 
-#webapps > .webapp > .banner {
+#webapps-list > .webapp::before {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 25rem;
+  height: 50vh;
+  translate: -50% -50%;
+  background-image: linear-gradient(to right, transparent, #fff, transparent);
+  content: '';
+  animation: focus-shine 8s linear infinite;
+}
+
+@keyframes focus-shine {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+#webapps-list > .webapp > .artwork-holder {
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
+  overflow: hidden;
+  border-radius: 2rem;
+  transition: all 0.3s cubic-bezier(0.5, 0.8, 0, 1);
 }
 
-#webapps > .webapp {
-  flex-shrink: 0;
-  aspect-ratio: 4 / 3;
-  height: 30vh;
-  border-radius: 2rem;
-  backdrop-filter: blur(20px) saturate(180%);
-  background-color: rgba(255,255,255,0.1);
+#webapps-list > .webapp:hover > .artwork-holder,
+#webapps-list > .webapp:focus > .artwork-holder {
+  top: 0.4rem;
+  left: 0.4rem;
+  width: calc(100% - 0.8rem);
+  height: calc(100% - 0.8rem);
+  border-radius: 1.6rem;
+}
+
+#webapps-list > .webapp > .artwork-holder .artwork {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+#webapps-list > .webapp > .name {
+  box-sizing: border-box;
+  z-index: 1;
+  position: absolute;
+  bottom: 0.4rem;
+  left: 0.4rem;
+  width: calc(100% - 0.8rem);
+  padding: 1rem 1.5rem;
+  border-radius: 0 0 1.6rem 1.6rem;
+  color: #fff;
+  font-weight: normal;
+  font-size: 1.6rem;
+  line-height: 2.2rem;
+  transition: all 0.5s cubic-bezier(0.5, 0.8, 0, 1.5);
+}
+
+#webapps-list > .webapp:hover > .name,
+#webapps-list > .webapp:focus > .name {
+  background-image: linear-gradient(to bottom, transparent, rgba(0, 0, 0, 0.3));
+  font-weight: 400;
+  font-size: 2rem;
+  line-height: 2.6rem;
 }
 
 .selected-card-panel {

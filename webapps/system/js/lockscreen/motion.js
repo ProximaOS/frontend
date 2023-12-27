@@ -15,6 +15,7 @@
     startY: 0,
     currentY: 0,
     isDragging: false,
+    timeoutID: null,
 
     settings: ['lockscreen.type'],
 
@@ -116,8 +117,8 @@
       const progress = 1 - offsetY / maxHeight;
 
       this.motionElement.classList.add('transitioning');
-      clearTimeout(this.timer);
-      this.timer = setTimeout(() => {
+      clearTimeout(this.timeoutID);
+      this.timeoutID = setTimeout(() => {
         this.motionElement.classList.remove('transitioning');
       }, 500);
 
@@ -164,8 +165,8 @@
       this.bottomPanel.classList.add('transitioning');
       TimeIcon.iconElement.classList.remove('hidden');
 
-      clearTimeout(this.timer);
-      this.timer = setTimeout(() => {
+      clearTimeout(this.timeoutID);
+      this.timeoutID = setTimeout(() => {
         this.motionElement.classList.remove('transitioning');
         this.bottomPanel.classList.remove('transitioning');
       }, 500);
@@ -183,8 +184,8 @@
       this.bottomPanel.classList.add('transitioning');
       TimeIcon.iconElement.classList.remove('hidden');
 
-      clearTimeout(this.timer);
-      this.timer = setTimeout(() => {
+      clearTimeout(this.timeoutID);
+      this.timeoutID = setTimeout(() => {
         this.motionElement.classList.remove('transitioning');
         this.bottomPanel.classList.remove('transitioning');
       }, 500);
@@ -214,8 +215,8 @@
     resetMotionElement: function () {
       this.motionElement.classList.add('transitioning');
       this.bottomPanel.classList.add('transitioning');
-      clearTimeout(this.timer);
-      this.timer = setTimeout(() => {
+      clearTimeout(this.timeoutID);
+      this.timeoutID = setTimeout(() => {
         this.motionElement.classList.remove('transitioning');
         this.bottomPanel.classList.remove('transitioning');
       }, 500);
@@ -224,7 +225,7 @@
     },
 
     handleCameraButton: function () {
-      AppWindow.create('http://camera.localhost:8081/manifest.json', {});
+      const appWindow = new AppWindow('http://camera.localhost:8081/manifest.json', {});
       if (!this.isPINLocked) {
         this.hideMotionElement();
       } else {

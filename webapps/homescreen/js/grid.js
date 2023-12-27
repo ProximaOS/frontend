@@ -10,8 +10,8 @@
     DEFAULT_DOCK_ICONS: [
       'http://browser.localhost:8081/manifest.json',
       'http://sms.localhost:8081/manifest.json',
-      'http://contacts.localhost:8081/manifest.json',
-      'http://dialer.localhost:8081/manifest.json'
+      { manifestUrl: 'http://communications.localhost:8081/manifest.json', entryId: 'contacts' },
+      { manifestUrl: 'http://communications.localhost:8081/manifest.json', entryId: 'dialer' }
     ],
 
     app: document.getElementById('app'),
@@ -27,7 +27,7 @@
     dockApps: [],
 
     isHoldingDown: false,
-    timer: null,
+    timeoutID: null,
     timePassed: 0,
 
     DEFAULT_PAGE_INDEX: 0,
@@ -45,18 +45,20 @@
 
       this.gridElement.addEventListener('scroll', this.handleSwiping.bind(this));
 
-      const apps = AppsManager.getAll();
+      let apps = AppsManager.getAll();
       apps.then((data) => {
         this.apps = data;
         this.createIcons();
         this.handleSwiping();
+        this.apps = null;
+        apps = null;
       });
     },
 
     splitArray: function (array, chunkSize) {
       const result = [];
-      for (let i = 0; i < array.length; i += chunkSize) {
-        result.push(array.slice(i, i + chunkSize));
+      for (let index = 0; index < array.length; index += chunkSize) {
+        result.push(array.slice(index, index + chunkSize));
       }
       return result;
     },
@@ -83,9 +85,50 @@
     },
 
     createIcons: function () {
+      for (let index = 0, length = this.apps.length; index < length; index++) {
+        const obj = this.apps[index];
+
+        if (!(obj.manifest && obj.manifest?.entry_points)) {
+          continue;
+        }
+        const entryPoints = Object.entries(obj.manifest?.entry_points) || [];
+
+        if (!(entryPoints && entryPoints.length > 0)) {
+          continue;
+        }
+        for (let index1 = 0, length1 = entryPoints.length; index1 < length1; index1++) {
+          const newObj = {
+            entry_id: entryPoints[index1][0],
+            manifest: entryPoints[index1][1]
+          };
+          const baseObj = { ...obj };
+          const merge = Object.assign(baseObj, newObj);
+          this.apps.push(merge);
+          console.log(merge);
+        }
+      }
       this.apps = this.apps.filter((obj) => this.HIDDEN_ROLES.indexOf(obj.manifest.role) === -1);
-      this.dockApps = this.apps.filter((obj) => this.DEFAULT_DOCK_ICONS.indexOf(obj.manifestUrl['en-US']) !== -1);
-      this.apps = this.apps.filter((obj) => this.DEFAULT_DOCK_ICONS.indexOf(obj.manifestUrl['en-US']) === -1);
+
+      this.dockApps = this.apps.filter((obj) => {
+        const match = this.DEFAULT_DOCK_ICONS.some((item) => {
+          if (typeof item === 'string') {
+            return item === obj.manifestUrl;
+          } else if (typeof item === 'object' && item.manifestUrl && item.entryId) {
+            return item.manifestUrl === obj.manifestUrl && item.entryId === obj.entryId;
+          }
+          return false;
+        });
+
+        return match;
+      });
+
+      this.apps = this.apps.filter((obj) => {
+        if (typeof obj.manifestUrl === 'string') {
+          return !this.DEFAULT_DOCK_ICONS.some((dockIcon) => dockIcon === obj.manifestUrl);
+        }
+        return false;
+      });
+      console.log(this.dockApps, this.apps);
 
       let index = 0;
       this.dockApps.forEach((app) => {
@@ -122,32 +165,6 @@
     },
 
     createAppIcon: async function (page, app, index) {
-      let langCode;
-      try {
-        langCode = L10n.currentLanguage || 'en-US';
-      } catch (error) {
-        // If an error occurs, set a default value for langCodes
-        langCode = 'en-US';
-      }
-
-      let manifestUrl;
-      if (app.manifestUrl[langCode]) {
-        manifestUrl = app.manifestUrl[langCode];
-      } else {
-        manifestUrl = app.manifestUrl['en-US'];
-      }
-
-      let manifest;
-      await fetch(manifestUrl)
-        .then((response) => response.json())
-        .then(function (data) {
-          manifest = data;
-          // You can perform further operations with the 'manifest' variable here
-        })
-        .catch(function (error) {
-          console.error('Error fetching manifest:', error);
-        });
-
       const icon = document.createElement('li');
       icon.id = `appicon${index}`;
       icon.classList.add('icon');
@@ -161,31 +178,29 @@
       icon.appendChild(iconHolder);
 
       let iconContainer;
-      // Used timeout to fix wrong order
-      setTimeout(() => {
-        if (app.manifest.homescreen && app.manifest.homescreen.dynamic_icon && app.manifest.homescreen.dynamic_icon.start_url) {
-          iconContainer = document.createElement('iframe');
-          iconContainer.classList.add('appicon');
-          const url = new URL(manifestUrl);
-          iconContainer.src = url.origin + app.manifest.homescreen.dynamic_icon.start_url;
-          iconHolder.appendChild(iconContainer);
-        } else {
-          iconContainer = document.createElement('img');
-          iconContainer.classList.add('appicon');
-          iconContainer.draggable = false;
-          iconContainer.crossOrigin = 'anonymous';
-          Object.entries(app.manifest.icons).forEach((entry) => {
-            if (entry[0] <= this.APP_ICON_SIZE) {
-              return;
-            }
-            iconContainer.src = entry[1];
-          });
-          iconContainer.onerror = () => {
-            iconContainer.src = '/images/default.svg';
-          };
-          iconHolder.appendChild(iconContainer);
-        }
-      }, 300);
+      if (app.manifest.homescreen && app.manifest.homescreen.dynamic_icon && app.manifest.homescreen.dynamic_icon.start_url) {
+        iconContainer = document.createElement('iframe');
+        iconContainer.classList.add('appicon');
+        const url = new URL(app.manifestUrl['en-US']);
+        iconContainer.src = url.origin + app.manifest.homescreen.dynamic_icon.start_url;
+        iconHolder.appendChild(iconContainer);
+      } else {
+        iconContainer = document.createElement('img');
+        iconContainer.classList.add('appicon');
+        iconContainer.draggable = false;
+        iconContainer.crossOrigin = 'anonymous';
+        Object.entries(app.manifest.icons).forEach((entry) => {
+          if (entry[0] <= this.APP_ICON_SIZE) {
+            return;
+          }
+          const url = new URL(app.manifestUrl['en-US']);
+          iconContainer.src = url.origin + entry[1];
+        });
+        iconContainer.onerror = () => {
+          iconContainer.src = '/images/default.svg';
+        };
+        iconHolder.appendChild(iconContainer);
+      }
 
       const notificationBadge = document.createElement('span');
       notificationBadge.textContent = 0;
@@ -199,7 +214,7 @@
 
       const name = document.createElement('div');
       name.classList.add('name');
-      name.textContent = manifest.name;
+      name.textContent = app.manifest.name;
       icon.appendChild(name);
     },
 
@@ -255,6 +270,7 @@
         IPC.send('message', {
           type: 'launch',
           manifestUrl,
+          entryId: app.entry_id,
           xPos,
           yPos,
           xScale,
@@ -275,7 +291,7 @@
 
     onPointerDown: function () {
       this.isHoldingDown = true;
-      this.timer = setInterval(() => {
+      this.timeoutID = setInterval(() => {
         if (this.timePassed < 500 && this.isHoldingDown) {
           this.timePassed += 10;
           if (this.timePassed >= 500) {

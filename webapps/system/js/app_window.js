@@ -1,12 +1,23 @@
 !(function (exports) {
   'use strict';
 
-  const AppWindow = {
+  let _id = 0;
+  let focusedWindow;
+
+  function AppWindow(manifestUrl, configuration) {
+    if (manifestUrl) {
+      this.manifestUrl = manifestUrl;
+      this.create(manifestUrl, configuration);
+    }
+  }
+
+  AppWindow.prototype = {
     _id: 0,
 
     screen: document.getElementById('screen'),
     wallpapersContainer: document.getElementById('wallpapers'),
     containerElement: document.getElementById('windows'),
+    snapOverlay: document.getElementById('window-snap'),
     statusbar: document.getElementById('statusbar'),
     softwareButtons: document.getElementById('software-buttons'),
     keyboard: document.getElementById('keyboard'),
@@ -23,6 +34,9 @@
     SPLASH_ICON_SIZE: 60,
     UNDRAGGABLE_ELEMENTS: ['A', 'BUTTON', 'INPUT', 'LI', 'WEBVIEW'],
 
+    element: null,
+    chrome: null,
+    namespaceID: null,
     timeoutID: null,
     isDragging: false,
     isResizing: false,
@@ -31,50 +45,11 @@
     startY: null,
     startWidth: null,
     startHeight: null,
+    offsetX: null,
+    offsetY: null,
 
-    /**
-     * The function that initiates windows and adds the event listeners.
-     */
-    init: function () {
-      this.containerElement.addEventListener('contextmenu', this.handleDesktopContextMenu.bind(this));
-
-      this.softwareBackButton.addEventListener('click', this.onButtonClick.bind(this));
-      this.softwareHomeButton.addEventListener('click', this.onButtonClick.bind(this));
-    },
-
-    handleDesktopContextMenu: function (event) {
-      event.preventDefault();
-
-      const x = event.clientX;
-      const y = event.clientY;
-
-      const menu = [
-        {
-          name: 'Widgets',
-          l10nId: 'desktopMenu-widgets',
-          icon: 'groups',
-          onclick: () => {}
-        },
-        {
-          name: 'Open Folder',
-          l10nId: 'desktopMenu-openFolder',
-          icon: 'folder',
-          onclick: () => {}
-        },
-        { type: 'separator' },
-        {
-          name: 'Settings',
-          l10nId: 'desktopMenu-settings',
-          icon: 'settings',
-          onclick: () => {}
-        }
-      ];
-
-      // Delaying the context menu opening so it won't fire the same time click
-      // does and instantly hide as soon as it opens
-      setTimeout(() => {
-        ContextMenu.show(x, y, menu);
-      }, 16);
+    getFocusedWindow: function () {
+      return focusedWindow;
     },
 
     /**
@@ -82,7 +57,7 @@
      *
      * Example:
      * ```js
-     * AppWindow.create('http://settings.localhost:8081/manifest.json', {});
+     * const appWindow = new AppWindow('http://settings.localhost:8081/manifest.json', {});
      * ```
      * @param {String} manifestUrl
      * @param {Object} options
@@ -97,50 +72,71 @@
           this.updateTransformOrigin(existingWindow, options.animationVariables);
         }
         // Unminimize the existing window and return
-        this.unminimize(existingWindow.id);
+        Webapps.getWindowById(existingWindow.id).unminimize();
         return;
       }
 
-      const manifest = await this.fetchManifest(manifestUrl);
+      let manifest = await this.fetchManifest(manifestUrl);
+      if (options.entryId) {
+        manifest = manifest.entry_points[options.entryId];
+        console.log(manifest);
+      }
 
-      const windowId = `appframe${AppWindow._id}`;
-      AppWindow._id++;
+      const namespaceID = `appframe${_id}`;
+      this.namespaceID = manifest.role === 'homescreen' ? 'homescreen' : namespaceID;
+      _id++;
 
       const fragment = document.createDocumentFragment();
 
       // Create and initialize the window container
-      const windowDiv = this.createWindowContainer(fragment, manifest, windowId, options.animationVariables);
+      const windowDiv = this.createWindowContainer(fragment, manifest, namespaceID, options.animationVariables);
       windowDiv.dataset.manifestUrl = manifestUrl;
+      windowDiv.addEventListener('mousedown', () => this.focus());
+      windowDiv.addEventListener('touchstart', () => this.focus());
       windowDiv.addEventListener('contextmenu', (event) => this.handleWindowContextMenu(event, windowDiv));
+      this.element = windowDiv;
 
       // Create dock icon
       if (!this.HIDDEN_ROLES.includes(manifest.role)) {
-        this.createDockIcon(manifestUrl, windowId, manifest.icons);
+        this.createDockIcon(manifestUrl, manifest.icons);
       }
 
       // Create a splash screen with an icon
       this.createSplashScreen(windowDiv, manifest.icons, manifestUrl);
 
-      if (platform() === 'desktop') {
-        this.createWindowedWindow(windowDiv, manifest, windowId, options);
+      if (window.deviceType === 'desktop') {
+        this.createWindowedWindow(windowDiv, manifest, namespaceID, options);
+      }
+
+      const url = new URL(manifestUrl);
+      let targetUrl = url.origin + manifest.launch_path || manifest.start_url;
+      if (manifest.chrome && manifest.chrome.navigation) {
+        if (options.url) {
+          targetUrl = options.url;
+        }
       }
 
       // Create chrome container and initialize the browser
       const chromeContainer = this.createChromeContainer(windowDiv);
-      const url = new URL(manifestUrl);
-      this.initializeBrowser(windowId, chromeContainer, url.origin + manifest.launch_path || manifest.start_url, manifest.chrome?.navigation || false);
+      this.initializeBrowser(chromeContainer, targetUrl, manifest.chrome?.navigation || false);
 
       this.containerElement.appendChild(fragment);
 
       // Focus the app window
-      this.focus(windowDiv.id);
+      this.focus();
+      document.addEventListener('mousemove', this.onPointerMove.bind(this));
+      document.addEventListener('touchmove', this.onPointerMove.bind(this));
+      document.addEventListener('mouseup', this.onPointerUp.bind(this));
+      document.addEventListener('touchend', this.onPointerUp.bind(this));
+      document.addEventListener('mousemove', this.resize.bind(this));
+      document.addEventListener('touchmove', this.resize.bind(this));
+      document.addEventListener('mouseup', this.stopResize.bind(this));
+      document.addEventListener('touchend', this.stopResize.bind(this));
     },
 
-    handleWindowContextMenu: function (event, windowDiv) {
+    handleWindowContextMenu: function (event) {
       event.preventDefault();
       event.stopPropagation();
-
-      const appId = windowDiv.id;
 
       const x = event.clientX;
       const y = event.clientY;
@@ -150,41 +146,41 @@
           name: 'Close',
           l10nId: 'windowMenu-close',
           icon: 'windowmanager-close',
-          onclick: () => this.close(appId)
+          onclick: () => this.close()
         },
         {
           name: 'Maximize',
           l10nId: 'windowMenu-maximize',
           icon: 'windowmanager-maximize',
-          onclick: () => this.maximize(appId)
+          onclick: () => this.maximize()
         },
         {
           name: 'Minimize',
           l10nId: 'windowMenu-minimize',
           icon: 'windowmanager-minimize',
-          onclick: () => this.minimize(appId)
+          onclick: () => this.minimize()
         },
         { type: 'separator' },
         {
           name: 'Shade',
           l10nId: 'windowMenu-shade',
           icon: 'shade',
-          onclick: () => this.shade(appId, true)
+          onclick: () => this.shade(true)
         },
         { type: 'separator' },
         {
           name: 'Close Forcefully',
           l10nId: 'windowMenu-closeForcefully',
           icon: 'forbidden',
-          onclick: () => this.close(appId, true)
+          onclick: () => this.close(true)
         }
       ];
 
       // Delaying the context menu opening so it won't fire the same time click
       // does and instantly hide as soon as it opens
-      setTimeout(() => {
+      requestAnimationFrame(() => {
         ContextMenu.show(x, y, menu);
-      }, 16);
+      });
     },
 
     fetchManifest: async function (manifestUrl) {
@@ -208,23 +204,25 @@
       element.style.setProperty('--icon-scale-y', animationVariables.iconYScale);
     },
 
-    createDockIcon: function (manifestUrl, windowId, icons) {
+    createDockIcon: function (manifestUrl, icons) {
       const icon = document.createElement('div');
       icon.classList.add('icon');
       icon.dataset.manifestUrl = manifestUrl;
-      icon.onclick = () => this.focus(windowId);
+      icon.onclick = () => this.focus();
       this.dock.appendChild(icon);
 
       // Add icon image
-      this.addIconImage(icon, icons, this.DOCK_ICON_SIZE, manifestUrl);
+      const iconImage = document.createElement('img');
+      this.addIconImage(iconImage, icons, this.DOCK_ICON_SIZE, manifestUrl);
+      icon.appendChild(iconImage);
 
       // Add animation class
       this.addAnimationClass(icon, this.OPEN_ANIMATION);
     },
 
-    createWindowContainer: function (fragment, manifest, windowId, animationVariables) {
+    createWindowContainer: function (fragment, manifest, namespaceID, animationVariables) {
       const windowDiv = document.createElement('div');
-      windowDiv.id = manifest.role === 'homescreen' ? 'homescreen' : windowId;
+      windowDiv.id = manifest.role === 'homescreen' ? 'homescreen' : namespaceID;
       windowDiv.classList.add('appframe');
 
       if (manifest.role === 'homescreen') {
@@ -264,7 +262,7 @@
       this.addIconImage(splashScreenIcon, icons, this.SPLASH_ICON_SIZE, manifestUrl);
     },
 
-    createWindowedWindow: function (windowDiv, manifest, windowId, options) {
+    createWindowedWindow: function (windowDiv, manifest, namespaceID, options) {
       windowDiv.classList.add('window');
       windowDiv.style.left = manifest.window_bounds?.left || '3.6rem';
       windowDiv.style.top = manifest.window_bounds?.top || '2.4rem';
@@ -272,21 +270,21 @@
       windowDiv.style.height = manifest.window_bounds?.height || '60rem';
 
       // Create titlebar and its buttons
-      this.createTitlebar(windowDiv, windowId);
+      this.createTitlebar(windowDiv, namespaceID);
 
       // Create resize handlers
       this.createResizeHandlers(windowDiv);
     },
 
-    createTitlebar: function (windowDiv, windowId) {
+    createTitlebar: function (windowDiv, namespaceID) {
       const titlebar = document.createElement('div');
       titlebar.classList.add('titlebar');
       windowDiv.appendChild(titlebar);
 
       const titlebarGrippy = document.createElement('div');
       titlebarGrippy.classList.add('titlebar-grippy');
-      titlebarGrippy.addEventListener('mousedown', this.startDrag.bind(this, windowId));
-      titlebarGrippy.addEventListener('touchstart', this.startDrag.bind(this, windowId));
+      titlebarGrippy.addEventListener('mousedown', this.onPointerDown.bind(this));
+      titlebarGrippy.addEventListener('touchstart', this.onPointerDown.bind(this));
       titlebar.appendChild(titlebarGrippy);
 
       const titlebarButtons = document.createElement('div');
@@ -298,7 +296,7 @@
       closeButton.addEventListener('click', (event) => {
         event.preventDefault();
         event.stopPropagation();
-        this.close(windowId);
+        this.close();
       });
       titlebarButtons.appendChild(closeButton);
 
@@ -307,7 +305,7 @@
       resizeButton.addEventListener('click', (event) => {
         event.preventDefault();
         event.stopPropagation();
-        this.maximize(windowId);
+        this.maximize();
       });
       titlebarButtons.appendChild(resizeButton);
 
@@ -316,7 +314,7 @@
       minimizeButton.addEventListener('click', (event) => {
         event.preventDefault();
         event.stopPropagation();
-        this.minimize(windowId);
+        this.minimize();
       });
       titlebarButtons.appendChild(minimizeButton);
     },
@@ -343,11 +341,11 @@
       resizeHandlers[7].classList.add('se-resize');
 
       // Attach event listeners to each resize handler
-      for (let index = 0; index < resizeHandlers.length; index++) {
+      for (let index = 0, length = resizeHandlers.length; index < length; index++) {
         const resizeHandler = resizeHandlers[index];
 
-        resizeHandler.addEventListener('mousedown', (event) => this.startResize(event, windowDiv, index));
-        resizeHandler.addEventListener('touchstart', (event) => this.startResize(event, windowDiv, index));
+        resizeHandler.addEventListener('mousedown', this.startResize.bind(this));
+        resizeHandler.addEventListener('touchstart', this.startResize.bind(this));
       }
     },
 
@@ -358,31 +356,38 @@
       return chromeContainer;
     },
 
-    initializeBrowser: function (windowId, chromeContainer, startUrl, isChromeEnabled) {
+    initializeBrowser: function (chromeContainer, startUrl, isChromeEnabled) {
       const browser = new Chrome(chromeContainer, startUrl, isChromeEnabled);
+      this.chrome = browser;
+      Webapps.append({
+        appWindow: this,
+        chrome: this.chrome,
+        namespaceID: this.namespaceID,
+        isChromeEnabled,
+        manifestUrl: this.manifestUrl,
+        startUrl
+      });
 
-      chromeContainer.addEventListener('mousedown', this.startDrag.bind(this, windowId));
-      chromeContainer.addEventListener('touchstart', this.startDrag.bind(this, windowId));
+      chromeContainer.addEventListener('mousedown', this.onPointerDown.bind(this));
+      chromeContainer.addEventListener('touchstart', this.onPointerDown.bind(this));
     },
 
     // Utility methods for adding an icon image and an animation class
     addIconImage: function (element, icons, iconSize, manifestUrl) {
-      const iconImage = document.createElement('img');
-      iconImage.crossOrigin = 'anonymous';
-      iconImage.onerror = () => {
-        iconImage.src = '/style/images/default.svg';
+      element.crossOrigin = 'anonymous';
+      element.onerror = () => {
+        element.src = '/style/images/default.svg';
       };
-      element.appendChild(iconImage);
 
       const entries = Object.entries(icons);
-      for (let index = 0; index < entries.length; index++) {
+      for (let index = 0, length = entries.length; index < length; index++) {
         const entry = entries[index];
 
         if (entry[0] <= iconSize) {
           continue;
         }
         const url = new URL(manifestUrl);
-        iconImage.src = url.origin + entry[1];
+        element.src = url.origin + entry[1];
       }
     },
 
@@ -398,38 +403,27 @@
      *
      * Example:
      * ```js
-     * AppWindow.focus('appframe14');
+     * AppWindow.focus();
      * ```
-     * @param {String} id
      * @returns null
      */
-    focus: function (id) {
+    focus: function () {
       if (this.isDragging) {
         return;
       }
-      this.wallpapersContainer.classList.remove('homescreen-to-cards-view');
-      this.wallpapersContainer.style.setProperty('--motion-progress', 0);
+      const dockIcon = this.dock.querySelector(`[data-manifest-url="${this.manifestUrl}"]`);
 
-      const windowDiv = document.getElementById(id);
-      const manifestUrl = windowDiv.dataset.manifestUrl;
-      const dockIcon = this.dock.querySelector(`[data-manifest-url="${manifestUrl}"]`);
-      const focusedWindow = this.focusedWindow;
+      this.element.style.transform = '';
 
-      windowDiv.style.transform = '';
-
-      if (id !== 'homescreen') {
+      if (this.namespaceID !== 'homescreen') {
         this.wallpapersContainer.classList.add('app-open');
         this.bottomPanel.classList.remove('homescreen');
-
-        MusicController.fadeOutCurrentMusic(1);
       } else {
         this.wallpapersContainer.classList.remove('app-open');
         this.bottomPanel.classList.add('homescreen');
-
-        MusicController.fadeInCurrentMusic(1);
       }
 
-      if (windowDiv.classList.contains('fullscreen')) {
+      if (this.element.classList.contains('fullscreen')) {
         this.statusbar.classList.add('hidden');
         this.softwareButtons.classList.add('hidden');
       } else {
@@ -438,41 +432,65 @@
       }
 
       const appWindows = this.containerElement.querySelectorAll('.appframe');
-      for (let index = 0; index < appWindows.length; index++) {
+      for (let index = 0, length = appWindows.length; index < length; index++) {
         const element = appWindows[index];
-        element.classList.remove('active');
+        if (element.classList.contains('overlay')) {
+          element.classList.remove('active-as-overlay');
+        } else {
+          element.classList.remove('active');
+        }
       }
 
       const dockIcons = this.dock.querySelectorAll('.icon');
-      for (let index = 0; index < dockIcons.length; index++) {
+      for (let index = 0, length = dockIcons.length; index < length; index++) {
         const element = dockIcons[index];
         element.classList.remove('active');
       }
 
-      windowDiv.classList.add('active');
+      const webview = this.element.querySelector('.browser-container .browser-view.active > .browser');
+      if (this.getFocusedWindow() && this.getFocusedWindow().element) {
+        const webviews = this.getFocusedWindow().element.querySelectorAll('.browser-container .browser-view > .browser');
+        for (let index1 = 0; index1 < webviews.length; index1++) {
+          const webview1 = webviews[index1];
+          webview1.addEventListener('dom-ready', () => {
+            webview1.send('visibilitystate', 'hidden');
+          });
+        }
+      }
+      if (webview) {
+        webview.addEventListener('dom-ready', () => {
+          webview.send('visibilitystate', 'visible');
+        });
+      }
+
+      if (this.element.classList.contains('overlay')) {
+        this.element.classList.add('active-as-overlay');
+      } else {
+        this.element.classList.add('active');
+      }
       if (dockIcon) {
         dockIcon.classList.add('active');
       }
-      this.focusedWindow = windowDiv;
+      focusedWindow = this;
 
-      this.handleThemeColorFocusUpdated(id);
-      Settings.addObserver('video.dark_mode.enabled', () => this.handleThemeColorFocusUpdated(id));
+      this.handleThemeColorFocusUpdated();
+      Settings.addObserver('video.dark_mode.enabled', () => this.handleThemeColorFocusUpdated());
 
-      if (focusedWindow && focusedWindow !== this.homescreenElement && windowDiv !== this.homescreenElement) {
-        if (windowDiv === focusedWindow) {
+      if (!this.element.classList.contains('overlay') && this.getFocusedWindow().element && this.getFocusedWindow().element !== this.homescreenElement && this.element !== this.homescreenElement) {
+        if (this.element === this.getFocusedWindow().element) {
           return;
         }
 
-        focusedWindow.classList.add('to-left');
-        focusedWindow.addEventListener('animationend', () => {
-          focusedWindow.classList.remove('from-right');
-          focusedWindow.classList.remove('to-left');
+        this.getFocusedWindow().element.classList.add('to-left');
+        this.getFocusedWindow().element.addEventListener('animationend', () => {
+          this.getFocusedWindow().element.classList.remove('from-right');
+          this.getFocusedWindow().element.classList.remove('to-left');
         });
 
-        windowDiv.classList.add('from-right');
-        windowDiv.addEventListener('animationend', () => {
-          windowDiv.classList.remove('from-right');
-          windowDiv.classList.remove('to-left');
+        this.element.classList.add('from-right');
+        this.element.addEventListener('animationend', () => {
+          this.element.classList.remove('from-right');
+          this.element.classList.remove('to-left');
         });
       } else {
         if (this.homescreenElement) {
@@ -489,142 +507,106 @@
      *
      * Example:
      * ```js
-     * AppWindow.close('appframe14');
+     * AppWindow.close();
      * ```
-     * @param {String} id
      * @returns null
      */
-    close: function (id, isFast) {
+    close: function (isFast) {
       if (this.isDragging) {
         return;
       }
-
-      if (id === 'homescreen') {
+      if (this.namespaceID === 'homescreen') {
         return;
       }
 
-      const windowDiv = document.getElementById(id);
-      const manifestUrl = windowDiv.dataset.manifestUrl;
-      const dockIcon = this.dock.querySelector(`[data-manifest-url="${manifestUrl}"]`);
+      const dockIcon = this.dock.querySelector(`[data-manifest-url="${this.manifestUrl}"]`);
+      this.dockIcon = dockIcon;
 
       if (isFast) {
-        windowDiv.remove();
+        this.element.remove();
         if (dockIcon) {
           dockIcon.remove();
         }
       } else {
-        windowDiv.classList.add(this.CLOSE_ANIMATION);
+        this.element.classList.add(this.CLOSE_ANIMATION);
         if (dockIcon) {
           dockIcon.classList.add(this.CLOSE_ANIMATION);
         }
-        windowDiv.addEventListener('animationend', () => {
-          windowDiv.style.transform = '';
-          windowDiv.classList.remove(this.CLOSE_ANIMATION);
-          windowDiv.remove();
+        this.element.addEventListener('animationend', () => {
+          this.element.style.transform = '';
+          this.element.classList.remove(this.CLOSE_ANIMATION);
+          this.element.remove();
           if (dockIcon) {
             dockIcon.classList.remove(this.CLOSE_ANIMATION);
             dockIcon.remove();
           }
-          this.focus('homescreen');
+          HomescreenLauncher.homescreenWindow.focus();
         });
       }
     },
 
-    minimize: function (id) {
+    minimize: function () {
       if (this.isDragging) {
         return;
       }
-
-      if (id === 'homescreen') {
+      if (this.namespaceID === 'homescreen') {
         return;
       }
 
-      const windowDiv = document.getElementById(id);
-      const manifestUrl = windowDiv.dataset.manifestUrl;
-      const dockIcon = this.dock.querySelector(`[data-manifest-url="${manifestUrl}"]`);
+      const dockIcon = this.dock.querySelector(`[data-manifest-url="${this.manifestUrl}"]`);
 
-      this.focus('homescreen');
-      windowDiv.classList.add(this.CLOSE_TO_HOMESCREEN_ANIMATION);
+      HomescreenLauncher.homescreenWindow.focus();
+      this.element.classList.add(this.CLOSE_TO_HOMESCREEN_ANIMATION);
       if (dockIcon) {
         dockIcon.classList.add('minimized');
       }
-      windowDiv.addEventListener('animationend', () => {
-        this.focus('homescreen');
+      this.element.addEventListener('animationend', () => {
+        HomescreenLauncher.homescreenWindow.focus();
       });
       // Focus plays a 0.5s switch animation which could mess up the close animation timer
       this.timeoutID = setTimeout(() => {
-        windowDiv.style.transform = '';
-        windowDiv.classList.remove('active');
-        windowDiv.classList.remove(this.CLOSE_TO_HOMESCREEN_ANIMATION);
+        this.element.style.transform = '';
+        this.element.classList.remove('active');
+        this.element.classList.remove(this.CLOSE_TO_HOMESCREEN_ANIMATION);
       }, 1000);
     },
 
-    unminimize: function (id) {
+    unminimize: function () {
       if (this.isDragging) {
         return;
       }
-
-      if (id === 'homescreen') {
+      if (this.namespaceID === 'homescreen') {
         return;
       }
 
-      const windowDiv = document.getElementById(id);
-      const manifestUrl = windowDiv.dataset.manifestUrl;
-      const dockIcon = this.dock.querySelector(`[data-manifest-url="${manifestUrl}"]`);
+      const dockIcon = this.dock.querySelector(`[data-manifest-url="${this.manifestUrl}"]`);
 
-      if (windowDiv === this.focusedWindow) {
+      if (this.element === this.focusedWindow) {
         return;
       }
 
       if (dockIcon) {
         dockIcon.classList.remove('minimized');
       }
-      this.focus(id);
-      windowDiv.classList.add(this.OPEN_ANIMATION);
-      windowDiv.addEventListener('animationend', () => {
-        windowDiv.classList.remove(this.OPEN_ANIMATION);
-        this.focus(id);
+      this.focus();
+      this.element.classList.add(this.OPEN_ANIMATION);
+      this.element.addEventListener('animationend', () => {
+        this.element.classList.remove(this.OPEN_ANIMATION);
+        this.focus();
       });
     },
 
-    maximize: function (id) {
-      if (id === 'homescreen') {
+    maximize: function () {
+      if (this.namespaceID === 'homescreen') {
         return;
       }
-      const windowDiv = document.getElementById(id);
-      windowDiv.classList.add('transitioning');
-      windowDiv.classList.toggle('maximized');
-      windowDiv.addEventListener('transitionend', () => windowDiv.classList.remove('transitioning'));
+      this.element.classList.add('transitioning');
+      this.element.classList.toggle('maximized');
+      this.element.addEventListener('transitionend', () => this.element.classList.remove('transitioning'));
     },
 
-    onButtonClick: function (event) {
-      switch (event.target) {
-        case this.softwareBackButton:
-          if (!this.screen.classList.contains('keyboard-visible')) {
-            const webview = this.focusedWindow.querySelector('.browser-container .browser.active');
-            if (webview.canGoBack()) {
-              webview.goBack();
-            } else {
-              this.close(this.focusedWindow.id);
-            }
-          } else {
-            this.screen.classList.remove('keyboard-visible');
-            this.keyboard.classList.remove('visible');
-          }
-          break;
-
-        case this.softwareHomeButton:
-          this.minimize(this.focusedWindow.id);
-          break;
-
-        default:
-          break;
-      }
-    },
-
-    handleThemeColorFocusUpdated: function (id) {
-      const windowDiv = document.getElementById(id);
-      const webview = windowDiv.querySelector('.browser-container .browser.active');
+    handleThemeColorFocusUpdated: function () {
+      const webview = this.element.querySelector('.browser-container .browser.active');
       let color;
       if (webview) {
         color = webview.dataset.themeColor.substring(0, 7);
@@ -671,94 +653,169 @@
     },
 
     // Attach event listeners for mouse/touch events to handle dragging
-    startDrag: function (windowId, event) {
+    onPointerDown: function (event) {
       if (this.UNDRAGGABLE_ELEMENTS.indexOf(event.target.nodeName) !== -1) {
         return;
       }
-
-      if (platform() !== 'desktop') {
+      if (window.deviceType !== 'desktop') {
         return;
       }
 
       event.preventDefault();
-      AppWindow.containerElement.classList.add('dragging');
-      const windowDiv = document.getElementById(windowId);
+      this.containerElement.classList.add('dragging');
+      this.isDragging = true;
 
-      windowDiv.classList.add('transitioning');
-      windowDiv.addEventListener('transitionend', () => windowDiv.classList.remove('transitioning'));
-      windowDiv.classList.add('dragging');
+      this.element.classList.add('transitioning');
+      this.element.addEventListener('transitionend', () => this.element.classList.remove('transitioning'));
+      this.element.classList.add('dragging');
 
       // Get initial position
       const initialX = event.pageX || event.touches[0].pageX;
       const initialY = event.pageY || event.touches[0].pageY;
 
       // Get initial window position
-      const initialWindowX = windowDiv.offsetLeft;
-      const initialWindowY = windowDiv.offsetTop;
+      const initialWindowX = this.element.offsetLeft;
+      const initialWindowY = this.element.offsetTop;
 
       // Calculate the offset between the initial position and the window position
-      const offsetX = initialX - initialWindowX;
-      const offsetY = initialY - initialWindowY;
+      this.offsetX = initialX - initialWindowX;
+      this.offsetY = initialY - initialWindowY;
 
-      // windowDiv.style.transformOrigin = `${offsetX}px ${offsetY}px`;
+      // this.element.style.transformOrigin = `${offsetX}px ${offsetY}px`;
+    },
 
-      // Attach event listeners for dragging
-      document.addEventListener('mousemove', dragWindow);
-      document.addEventListener('touchmove', dragWindow);
-      document.addEventListener('mouseup', stopDrag);
-      document.addEventListener('touchend', stopDrag);
-
-      // Function to handle dragging
-      function dragWindow(event) {
-        event.preventDefault();
-        const x = event.pageX || event.touches[0].pageX;
-        const y = event.pageY || event.touches[0].pageY;
-
-        // Calculate the new position of the window
-        const newWindowX = x - offsetX;
-        const newWindowY = y - offsetY;
-
-        // Set the new position of the window
-        windowDiv.style.left = newWindowX + 'px';
-        windowDiv.style.top = newWindowY + 'px';
+    onPointerMove: function (event) {
+      if (window.deviceType !== 'desktop') {
+        return;
+      }
+      if (!this.isDragging) {
+        return;
       }
 
-      // Function to stop dragging
-      function stopDrag(event) {
-        event.preventDefault();
-        AppWindow.containerElement.classList.remove('dragging');
+      event.preventDefault();
+      const x = event.pageX || event.touches[0].pageX;
+      const y = event.pageY || event.touches[0].pageY;
 
-        windowDiv.classList.add('transitioning');
-        windowDiv.addEventListener('transitionend', () => windowDiv.classList.remove('transitioning'));
-        windowDiv.classList.remove('dragging');
+      // Calculate the new position of the window
+      const newWindowX = x - this.offsetX;
+      const newWindowY = Math.max(0, Math.min(window.innerHeight - 64 - 32, y - this.offsetY));
 
-        document.removeEventListener('mousemove', dragWindow);
-        document.removeEventListener('touchmove', dragWindow);
-        document.removeEventListener('mouseup', stopDrag);
-        document.removeEventListener('touchend', stopDrag);
+      // Set the new position of the window
+      this.element.style.left = newWindowX + 'px';
+      this.element.style.top = newWindowY + 'px';
+
+      this.element.classList.remove('snapped');
+      if (event.clientX < 15) {
+        this.snapOverlay.classList.remove('right');
+        this.snapOverlay.classList.remove('cover');
+        this.snapOverlay.classList.remove('top-left');
+        this.snapOverlay.classList.remove('top-right');
+        this.snapOverlay.classList.add('visible');
+        this.snapOverlay.classList.add('left');
+      } else if (event.clientX > window.innerWidth - 15) {
+        this.snapOverlay.classList.remove('left');
+        this.snapOverlay.classList.remove('cover');
+        this.snapOverlay.classList.remove('top-left');
+        this.snapOverlay.classList.remove('top-right');
+        this.snapOverlay.classList.add('visible');
+        this.snapOverlay.classList.add('right');
+      } else if (event.clientX < window.innerWidth / 3 && event.clientY < 15) {
+        this.snapOverlay.classList.remove('left');
+        this.snapOverlay.classList.remove('right');
+        this.snapOverlay.classList.remove('cover');
+        this.snapOverlay.classList.remove('top-right');
+        this.snapOverlay.classList.add('visible');
+        this.snapOverlay.classList.add('top-left');
+      } else if (event.clientX > (window.innerWidth / 3) * 2 && event.clientY < 15) {
+        this.snapOverlay.classList.remove('left');
+        this.snapOverlay.classList.remove('right');
+        this.snapOverlay.classList.remove('cover');
+        this.snapOverlay.classList.remove('top-left');
+        this.snapOverlay.classList.add('visible');
+        this.snapOverlay.classList.add('top-right');
+      } else if (event.clientX < (window.innerWidth / 3) * 2 && event.clientX > window.innerWidth / 3 && event.clientY < 15) {
+        this.snapOverlay.classList.remove('left');
+        this.snapOverlay.classList.remove('right');
+        this.snapOverlay.classList.remove('top-left');
+        this.snapOverlay.classList.remove('top-right');
+        this.snapOverlay.classList.add('visible');
+        this.snapOverlay.classList.add('cover');
+      } else {
+        this.snapOverlay.classList.remove('left');
+        this.snapOverlay.classList.remove('right');
+        this.snapOverlay.classList.remove('cover');
+        this.snapOverlay.classList.remove('top-left');
+        this.snapOverlay.classList.remove('top-right');
+        this.snapOverlay.classList.remove('visible');
       }
     },
 
-    startResize: function (event, windowDiv) {
+    onPointerUp: function (event) {
+      if (window.deviceType !== 'desktop') {
+        return;
+      }
+      event.preventDefault();
+      this.containerElement.classList.remove('dragging');
+
+      this.element.classList.add('transitioning');
+      this.element.addEventListener('transitionend', () => this.element.classList.remove('transitioning'));
+      this.element.classList.remove('dragging');
+
+      this.isDragging = false;
+
+      this.snapOverlay.classList.remove('left');
+      this.snapOverlay.classList.remove('right');
+      this.snapOverlay.classList.remove('cover');
+      this.snapOverlay.classList.remove('top-left');
+      this.snapOverlay.classList.remove('top-right');
+      this.snapOverlay.classList.remove('visible');
+      if (event.clientX < 15) {
+        this.element.style.left = '0';
+        this.element.style.top = '0';
+        this.element.style.width = '50%';
+        this.element.style.height = 'calc(100% - var(--dock-height) - 2rem)';
+        this.element.classList.add('snapped');
+      } else if (event.clientX > window.innerWidth - 15) {
+        this.element.style.left = '50%';
+        this.element.style.top = '0';
+        this.element.style.width = '50%';
+        this.element.style.height = 'calc(100% - var(--dock-height) - 2rem)';
+        this.element.classList.add('snapped');
+      } else if (event.clientX < window.innerWidth / 3 && event.clientY < 15) {
+        this.element.style.left = '0';
+        this.element.style.top = '0';
+        this.element.style.width = '50%';
+        this.element.style.height = 'calc((100% - var(--dock-height) - 2rem) / 2)';
+        this.element.classList.add('snapped');
+      } else if (event.clientX > (window.innerWidth / 3) * 2 && event.clientY < 15) {
+        this.element.style.left = '50%';
+        this.element.style.top = '0';
+        this.element.style.width = '50%';
+        this.element.style.height = 'calc((100% - var(--dock-height) - 2rem) / 2)';
+        this.element.classList.add('snapped');
+      } else if (event.clientX < (window.innerWidth / 3) * 2 && event.clientX > window.innerWidth / 3 && event.clientY < 15) {
+        this.maximize();
+      }
+    },
+
+    startResize: function (event) {
       event.preventDefault();
       this.isResizing = true;
-      this.resizingWindow = windowDiv;
+      this.containerElement.classList.add('dragging');
+      this.resizingWindow = this.element;
+      this.resizingGripper = event.target;
 
       this.startX = event.pageX || event.touches[0].pageX;
       this.startY = event.pageY || event.touches[0].pageY;
       this.startWidth = this.resizingWindow.offsetWidth;
       this.startHeight = this.resizingWindow.offsetHeight;
-
-      document.addEventListener('mousemove', (event) => this.resize(event, event.target));
-      document.addEventListener('touchmove', (event) => this.resize(event, event.target));
-      document.addEventListener('mouseup', (event) => this.stopResize(event, event.target));
-      document.addEventListener('touchend', (event) => this.stopResize(event, event.target));
     },
 
     resize: function (event, gripper) {
       event.preventDefault();
-      if (!this.isResizing) return;
-      AppWindow.containerElement.classList.add('dragging');
+      if (!this.isResizing) {
+        return;
+      }
 
       const currentX = event.pageX || event.touches[0].pageX;
       const currentY = event.pageY || event.touches[0].pageY;
@@ -768,7 +825,6 @@
       let left = this.resizingWindow.offsetLeft;
       let top = this.resizingWindow.offsetTop;
 
-      // Calculate the new dimensions based on the resize handler
       if (gripper.classList.contains('nw-resize')) {
         // Top Left
         width = this.startWidth + (this.startX - currentX);
@@ -803,10 +859,6 @@
         // Bottom Right
         width = this.startWidth + (currentX - this.startX);
         height = this.startHeight + (currentY - this.startY);
-      } else if (gripper.classList.contains('move-center')) {
-        // Center (move window)
-        left = this.resizingWindow.offsetLeft + (currentX - this.startX);
-        top = this.resizingWindow.offsetTop + (currentY - this.startY);
       }
 
       // Update the position and dimensions of the window
@@ -819,15 +871,106 @@
     stopResize: function (event) {
       event.preventDefault();
       this.isResizing = false;
-      AppWindow.containerElement.classList.remove('dragging');
-      document.removeEventListener('mousemove', this.resize.bind(this));
-      document.removeEventListener('touchmove', this.resize.bind(this));
-      document.removeEventListener('mouseup', this.stopResize.bind(this));
-      document.removeEventListener('touchend', this.stopResize.bind(this));
+      this.containerElement.classList.remove('dragging');
     }
   };
 
-  AppWindow.init();
-
   exports.AppWindow = AppWindow;
+
+  const AppWindowExtended = {
+    screen: document.getElementById('screen'),
+    containerElement: document.getElementById('windows'),
+    softwareButtons: document.getElementById('software-buttons'),
+    softwareBackButton: document.getElementById('software-back-button'),
+    softwareHomeButton: document.getElementById('software-home-button'),
+
+    init: function () {
+      this.containerElement.addEventListener('contextmenu', this.handleDesktopContextMenu.bind(this));
+      if (window.deviceType === 'desktop') {
+        this.softwareButtons.addEventListener('contextmenu', this.handleDesktopContextMenu.bind(this));
+      }
+
+      this.softwareBackButton.addEventListener('click', this.onButtonClick.bind(this));
+      this.softwareHomeButton.addEventListener('click', this.onButtonClick.bind(this));
+    },
+
+    handleDesktopContextMenu: function (event) {
+      event.preventDefault();
+
+      const x = event.clientX;
+      const y = event.clientY;
+
+      const trayMenu = [
+        {
+          name: 'Settings',
+          l10nId: 'desktopMenu-settings',
+          icon: 'settings',
+          onclick: () => {
+            const appWindow = new AppWindow('http://settings.localhost:8081/manifest.json', {});
+          }
+        }
+      ];
+
+      const desktopMenu = [
+        {
+          name: 'Widgets',
+          l10nId: 'desktopMenu-widgets',
+          icon: 'groups',
+          onclick: () => {}
+        },
+        {
+          name: 'Open Folder',
+          l10nId: 'desktopMenu-openFolder',
+          icon: 'folder',
+          onclick: () => {}
+        },
+        { type: 'separator' },
+        {
+          name: 'Settings',
+          l10nId: 'desktopMenu-settings',
+          icon: 'settings',
+          onclick: () => {
+            const appWindow = new AppWindow('http://settings.localhost:8081/manifest.json', {});
+          }
+        }
+      ];
+
+      // Delaying the context menu opening so it won't fire the same time click
+      // does and instantly hide as soon as it opens
+      requestAnimationFrame(() => {
+        if (event.target === this.softwareButtons) {
+          ContextMenu.show(x, y, trayMenu);
+        } else if (event.target === this.containerElement) {
+          ContextMenu.show(x, y, desktopMenu);
+        }
+      });
+    },
+
+    onButtonClick: function (event) {
+      switch (event.target) {
+        case this.softwareBackButton:
+          if (!this.screen.classList.contains('keyboard-visible')) {
+            const webview = AppWindow.getFocusedWindow().element.querySelector('.browser-container .browser.active');
+            if (webview.canGoBack()) {
+              webview.goBack();
+            } else {
+              this.close();
+            }
+          } else {
+            this.screen.classList.remove('keyboard-visible');
+            this.keyboard.classList.remove('visible');
+          }
+          break;
+
+        case this.softwareHomeButton:
+          this.minimize();
+          break;
+
+        default:
+          break;
+      }
+    }
+  };
+
+  AppWindowExtended.init();
 })(window);

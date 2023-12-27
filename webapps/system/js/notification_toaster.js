@@ -24,7 +24,7 @@
     currentX: 0,
     threshold: 0.5,
 
-    notifierSound: new Audio('http://shared.localhost:8081/resources/notifications/notifier_orchid.wav'),
+    SOUND_NOTIFIER: new Audio('http://shared.localhost:8081/resources/notifications/notifier_orchid2.wav'),
 
     showNotification: function (title, options) {
       const { body, progress, badge, source, icon, media, actions, tag } = options;
@@ -127,7 +127,7 @@
         if (media && media.length > 0) {
           mediaElement.innerHTML = '';
           this.mediaElement.innerHTML = '';
-          for (let index = 0; index < media.length; index++) {
+          for (let index = 0, length = media.length; index < length; index++) {
             const src = media[index];
 
             const persistentImgElement = document.createElement('img');
@@ -149,7 +149,7 @@
         if (actions && actions.length > 0) {
           actionsElement.innerHTML = '';
           this.actionsElement.innerHTML = '';
-          for (let index = 0; index < actions.length; index++) {
+          for (let index = 0, length = actions.length; index < length; index++) {
             const button = actions[index];
 
             const persistentButtonElement = document.createElement('button');
@@ -177,8 +177,8 @@
       });
 
       if (!taggedNotification) {
-        this.notifierSound.currentTime = 0;
-        this.notifierSound.play();
+        this.SOUND_NOTIFIER.currentTime = 0;
+        this.SOUND_NOTIFIER.play();
       }
 
       this.notificationElement.classList.add('visible');
@@ -187,9 +187,9 @@
         this.notificationElement.classList.remove('visible');
       }, 3000);
 
-      setTimeout(() => {
+      requestAnimationFrame(() => {
         this.lockscreenNotifications.appendChild(fragment.cloneNode(true));
-      }, 16);
+      });
       this.notificationsContainer.appendChild(fragment);
     },
 

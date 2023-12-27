@@ -29,7 +29,7 @@
 <body>
   <main id="app" role="app">
     <section id="root" class="visible" role="panel">
-      <header class="auto-hide compact" role="header">
+      <header class="auto-hide compact">
         <a href="#" data-icon="edit"></a>
         <h1>Orchid</h1>
         <menu role="toolbar">
@@ -43,11 +43,13 @@
               <div class="wordmark" data-l10n-id="browser-wordmark">Orchid</div>
             </div>
           </h1>
-          <form action="" role="search">
-            <input type="text" data-l10n-id="type-here-to-search">
-            <button type="reset" data-icon="close"></button>
-            <button type="submit" data-icon="search"></button>
-          </form>
+          <div class="searchbox">
+            <form action="" class="bb-search">
+              <input type="text" data-l10n-id="type-here-to-search">
+              <button type="reset" data-icon="close"></button>
+              <button type="submit" data-icon="search"></button>
+            </form>
+          </div>
         </header>
 
         <div class="homepage-row">

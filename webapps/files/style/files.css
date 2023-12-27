@@ -3,6 +3,11 @@
   margin: 0;
 }
 
+#content header:first-child::before,
+#content header:first-child::after {
+  display: none;
+}
+
 #quick-access {
   box-sizing: border-box;
   display: flex;
@@ -30,7 +35,7 @@
   text-align: center;
 }
 
-ul li::before {
+#root .lists ul li::before {
   flex-shrink: 0;
   width: 4rem;
   height: 4rem;
@@ -38,35 +43,35 @@ ul li::before {
   content: '';
 }
 
-ul li.home_folder::before {
+#root .lists ul li.home_folder::before {
   background-image: url(images/folder-home.png);
 }
 
-ul li.audio_folder::before {
+#root .lists ul li.audio_folder::before {
   background-image: url(images/folder-audio.png);
 }
 
-ul li.books_folder::before {
+#root .lists ul li.books_folder::before {
   background-image: url(images/folder-books.png);
 }
 
-ul li.downloads_folder::before {
+#root .lists ul li.downloads_folder::before {
   background-image: url(images/folder-downloads.png);
 }
 
-ul li.movies_folder::before {
+#root .lists ul li.movies_folder::before {
   background-image: url(images/folder-movies.png);
 }
 
-ul li.music_folder::before {
+#root .lists ul li.music_folder::before {
   background-image: url(images/folder-audio.png);
 }
 
-ul li.others_folder::before {
+#root .lists ul li.others_folder::before {
   background-image: url(images/folder-others.png);
 }
 
-ul li.photos_folder::before {
+#root .lists ul li.photos_folder::before {
   background-image: url(images/folder-photos.png);
 }
 
@@ -106,6 +111,10 @@ ul li.photos_folder::before {
   background-image: url(images/file-text.png);
 }
 
+.file.readme .icon {
+  background-image: url(images/file-readme.png);
+}
+
 .file.image .icon {
   background-image: var(--thumbnail, url(images/file-image.png));
 }
@@ -116,6 +125,22 @@ ul li.photos_folder::before {
 
 .file.video .icon {
   background-image: url(images/file-video.png);
+}
+
+.file.shell .icon {
+  background-image: url(images/file-shell.png);
+}
+
+.file.python .icon {
+  background-image: url(images/file-python.png);
+}
+
+.file.db .icon {
+  background-image: url(images/file-db.png);
+}
+
+.file.archive .icon {
+  background-image: url(images/file-archive.png);
 }
 
 .file.folder .icon {
@@ -204,8 +229,8 @@ ul li.photos_folder::before {
     border-inline-end: none;
   }
 
-  #root > .content > *:not(.scroll-content),
-  #root > .content > .scroll-content > * {
+  #root > .content > *:not(.scroll-content, .scrollbar-track, .bb-emptyscreen),
+  #root > .content > .scroll-content > *:not(.bb-emptyscreen) {
     visibility: visible;
     transform: translateY(0);
     opacity: 1;

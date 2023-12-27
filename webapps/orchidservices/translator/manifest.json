@@ -1,0 +1,24 @@
+{
+  "version": "1.0",
+  "name": "Translator",
+  "long_name": "Orchid Translator",
+  "description": "Translate your sentences",
+  "launch_path": "/index.html",
+  "icons": {
+    "16": "/style/icons/translator_16.png",
+    "32": "/style/icons/translator_32.png",
+    "48": "/style/icons/translator_48.png",
+    "64": "/style/icons/translator_64.png",
+    "128": "/style/icons/translator_128.png",
+    "256": "/style/icons/translator_256.png"
+  },
+  "developer": {
+    "name": "Orchid Org.",
+    "url": "https://openorchid.github.io/"
+  },
+  "default_locale": "en",
+  "orientation": "portrait-primary",
+  "permissions": {
+    "nodeintegration": {}
+  }
+}

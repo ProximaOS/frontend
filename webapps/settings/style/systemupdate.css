@@ -1,0 +1,217 @@
+.updates {
+  display: flex;
+  flex-direction: column;
+  width: calc(100% - 3rem);
+  max-width: calc(var(--safezone-width) - 3rem);
+  margin: 0 auto;
+  gap: 1rem;
+}
+
+#updates-list {
+  display: flex;
+  flex-direction: column;
+  padding-top: 1rem;
+  gap: 1rem;
+  border-top: solid 0.1rem var(--separator-color);
+}
+
+.update {
+  --update-background-primary: #0061e0;
+  --update-background-secondary: #80c2ff;
+  position: relative;
+  width: 100%;
+  height: 25rem;
+  overflow: hidden;
+  border-radius: 1.5rem;
+  background-color: var(--update-background-primary);
+}
+
+.update .artwork {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: var(--update-background-primary);
+}
+
+.update .artwork .ring {
+  position: absolute;
+  translate: -50% -50%;
+  border: solid 0.2rem var(--update-background-secondary);
+  border-radius: 50%;
+  background-color: var(--update-background-primary);
+}
+
+.update .artwork .ring > .circle {
+  position: absolute;
+  translate: -50% -50%;
+  border-radius: 50%;
+  outline: solid 1rem var(--update-background-primary);
+  background-color: var(--update-background-secondary);
+}
+
+.update .artwork .ring.first {
+  top: 0;
+  left: 100%;
+  width: 20rem;
+  height: 20rem;
+  animation: update-ring-circle1 3s linear infinite;
+}
+
+.update .artwork .ring.first > .circle {
+  top: 100%;
+  left: 50%;
+  width: 5rem;
+  height: 5rem;
+  background-color: #ffc000;
+  animation: update-ring 2s cubic-bezier(1, 0, 0, 1) infinite;
+}
+
+.update .artwork .ring.second {
+  top: 100%;
+  left: 0;
+  width: 30rem;
+  height: 30rem;
+  animation: update-ring-circle2 3s linear infinite;
+}
+
+.update .artwork .ring.second > .circle {
+  top: 0;
+  left: 50%;
+  width: 7rem;
+  height: 7rem;
+  background-color: #c00040;
+  animation: update-ring-in 2s cubic-bezier(1, 0, 0, 1) infinite;
+}
+
+.update .artwork .ring.third {
+  top: 100%;
+  left: 100%;
+  width: 15rem;
+  height: 15rem;
+  animation: update-ring-circle3 5s linear infinite;
+}
+
+.update .artwork .ring.third > .circle {
+  top: 50%;
+  left: 0;
+  width: 4rem;
+  height: 4rem;
+  background-color: #40a060;
+  animation: update-ring 2s cubic-bezier(1, 0, 0, 1) infinite;
+}
+
+@keyframes update-ring {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+}
+
+@keyframes update-ring-in {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(0.9);
+  }
+}
+
+@keyframes update-ring-circle1 {
+  from {
+    transform: rotate(0deg);
+  }
+  50% {
+    transform: rotate(180deg) translateY(1rem);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes update-ring-circle2 {
+  from {
+    transform: rotate(0deg);
+  }
+  50% {
+    transform: rotate(-180deg) translate(0.5rem, -1rem);
+  }
+  100% {
+    transform: rotate(-360deg);
+  }
+}
+
+@keyframes update-ring-circle3 {
+  from {
+    transform: rotate(0deg);
+  }
+  50% {
+    transform: rotate(180deg) translateX(-1rem);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.update .text-holder {
+  display: flex;
+  position: absolute;
+  top: 0;
+  left: 0;
+  flex-direction: column;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  padding: 0 3rem;
+}
+
+.update .text-holder .release-number {
+  width: 100%;
+  margin: 0;
+  color: #fff;
+  font-weight: bold;
+  font-size: 6.4rem;
+}
+
+.update .text-holder .name {
+  width: 100%;
+  margin: 0;
+  color: #fff;
+  font-weight: normal;
+  font-size: 2.4rem;
+}
+
+.update .text-holder .stats {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  height: 2rem;
+  color: rgba(255, 255, 255, 0.5);
+  font-weight: normal;
+  font-size: 1.4rem;
+  line-height: 2rem;
+}
+
+.update .text-holder .stats > .separator {
+  width: 0.4rem;
+  height: 0.4rem;
+  margin: 0 0.5rem;
+  border-radius: 50%;
+  background-color: #fff;
+}
+
+.update .text-holder .updated-apps {
+  display: flex;
+  gap: 1rem;
+}
+
+.update .text-holder .updated-apps > img {
+  width: 3rem;
+  height: 3rem;
+  margin-top: 1rem;
+}

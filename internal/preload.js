@@ -2,7 +2,7 @@
   'use strict';
 
   const { ipcRenderer, contextBridge } = require('electron');
-  const manifests = require('../src/api/manifest_permissions');
+  const permissions = require('../src/permissions');
   const WifiManager = require('../src/wifi');
   const BluetoothManager = require('../src/bluetooth');
   const SDCardManager = require('../src/storage');
@@ -19,11 +19,12 @@
   const SmsManager = require('../src/sms');
   const TasksManager = require('../src/tasks');
   const DeviceInformation = require('../src/device/device_info');
+  const UpdateManager = require('../src/update');
   const appConfig = require('../package.json');
 
   require('dotenv').config();
 
-  function registerEvent(ipcName, windowName) {
+  function registerEvent (ipcName, windowName) {
     ipcRenderer.on(ipcName, (event, data) => {
       const customEvent = new CustomEvent(windowName, {
         detail: data,
@@ -34,34 +35,40 @@
     });
   }
 
-  registerEvent('message', 'ipc-message');
-  registerEvent('messagebox', 'messagebox');
-  registerEvent('openfile', 'openfile');
-  registerEvent('savefile', 'savefile');
-  registerEvent('shutdown', 'shutdown');
-  registerEvent('restart', 'restart');
-  registerEvent('powerstart', 'powerstart');
-  registerEvent('powerend', 'powerend');
-  registerEvent('volumeup', 'volumeup');
-  registerEvent('volumedown', 'volumedown');
-  registerEvent('shortcut', 'shortcut');
-  registerEvent('rotate', 'rotate');
-  registerEvent('mediaplay', 'mediaplay');
-  registerEvent('mediapause', 'mediapause');
-  registerEvent('mediadevicechange', 'mediadevicechange');
-  registerEvent('screencapturechange', 'screencapturechange');
-  registerEvent('webdrag', 'webdrag');
-  registerEvent('webdrop', 'webdrop');
-  registerEvent('downloadrequest', 'downloadrequest');
-  registerEvent('downloadprogress', 'downloadprogress');
-  registerEvent('permissionrequest', 'permissionrequest');
-  registerEvent('overheat', 'overheat');
-  registerEvent('devicepickup', 'devicepickup');
-  registerEvent('deviceputdown', 'deviceputdown');
-  registerEvent('screenshotted', 'screenshotted');
-  registerEvent('narrate', 'narrate');
-
-  registerEvent('requestlogin', 'requestlogin');
+  let eventRegistery = new Map();
+  eventRegistery.set('message', 'ipc-message');
+  eventRegistery.set('messagebox', 'messagebox');
+  eventRegistery.set('openfile', 'openfile');
+  eventRegistery.set('savefile', 'savefile');
+  eventRegistery.set('shutdown', 'shutdown');
+  eventRegistery.set('restart', 'restart');
+  eventRegistery.set('powerstart', 'powerstart');
+  eventRegistery.set('powerend', 'powerend');
+  eventRegistery.set('volumeup', 'volumeup');
+  eventRegistery.set('volumedown', 'volumedown');
+  eventRegistery.set('shortcut', 'shortcut');
+  eventRegistery.set('rotate', 'rotate');
+  eventRegistery.set('mediaplay', 'mediaplay');
+  eventRegistery.set('mediapause', 'mediapause');
+  eventRegistery.set('mediadevicechange', 'mediadevicechange');
+  eventRegistery.set('screencapturechange', 'screencapturechange');
+  eventRegistery.set('downloadrequest', 'downloadrequest');
+  eventRegistery.set('downloadprogress', 'downloadprogress');
+  eventRegistery.set('permissionrequest', 'permissionrequest');
+  eventRegistery.set('overheat', 'overheat');
+  eventRegistery.set('devicepickup', 'devicepickup');
+  eventRegistery.set('deviceputdown', 'deviceputdown');
+  eventRegistery.set('screenshotted', 'screenshotted');
+  eventRegistery.set('input', 'keyboardinput');
+  eventRegistery.set('narrate', 'narrate');
+  eventRegistery.set('update-available', 'update-available');
+  eventRegistery.set('update-download-progress', 'update-download-progress');
+  eventRegistery.set('update-downloaded', 'update-downloaded');
+  eventRegistery.set('requestlogin', 'requestlogin');
+  for (const [key, value] of eventRegistery) {
+    registerEvent(key, value);
+  }
+  eventRegistery = null;
 
   const Environment = {
     type: process.env.ORCHID_ENVIRONMENT,
@@ -78,75 +85,53 @@
     execPath: process.execPath
   };
 
-  const IPCRenderManager = {
+  const IPC = {
     send: ipcRenderer.send,
     sendToHost: ipcRenderer.sendToHost,
     sendSync: ipcRenderer.sendSync
   };
 
-  // Create an object with functions to communicate with the parent renderer
-  const api = {
-    MESSAGE_PREFIX: 'openorchid',
-
-    Environment,
-    IPC: IPCRenderManager,
-
-    DeviceInformation: null,
-    AudioManager: null,
-    DisplayManager: null,
-    BrightnessManager: null,
-    WifiManager: null,
-    BluetoothManager: null,
-    NfcManager: null,
-    Settings: null,
-    InputManager: null,
-    SDCardManager: {},
-    AppsManager: null,
-    AddonsManager: null,
-    TimeManager: null,
-    VirtualManager: null,
-    VirtualCursor: null,
-    ChildProcess: null,
-    PowerManager: null,
-    RtlsdrReciever: null,
-    UsersManager: null,
-    TelephonyManager: null,
-    SmsManager: null,
-    TasksManager: null
-  };
-
-  function verifyAccess(permission, mapName, value) {
-    const result = manifests.checkPermission(permission);
+  function verifyAccess (permission, value) {
+    const result = permissions.checkPermission(permission);
     if (result) {
-      api[mapName] = value;
-      contextBridge.exposeInMainWorld(mapName, value);
+      contextBridge.exposeInMainWorld(value[0], value[1]);
     }
   }
 
-  verifyAccess('environment', 'Environment', Environment);
-  verifyAccess('tasks-manage', 'TasksManager', TasksManager);
-  verifyAccess('ipc', 'IPC', IPCRenderManager);
-  verifyAccess('device-info', 'DeviceInformation', DeviceInformation);
-  verifyAccess('wifi-manage', 'WifiManager', WifiManager);
-  verifyAccess('bluetooth', 'BluetoothManager', BluetoothManager);
-  verifyAccess('settings', 'Settings', Settings);
-  verifyAccess('storage', 'SDCardManager', SDCardManager);
-  verifyAccess('device-storage:apps', 'AppsManager', AppsManager);
-  verifyAccess('time', 'TimeManager', TimeManager);
-  verifyAccess('virtualization', 'VirtualManager', VirtualManager);
-  verifyAccess('child-process', 'ChildProcess', ChildProcess);
-  verifyAccess('power', 'PowerManager', PowerManager);
-  verifyAccess('fm-radio', 'RtlsdrReciever', RtlsdrReciever);
-  verifyAccess('users', 'UsersManager', UsersManager);
-  verifyAccess('telephony', 'TelephonyManager', TelephonyManager);
-  verifyAccess('display', 'DisplayManager', DisplayManager);
-  verifyAccess('sms', 'SmsManager', SmsManager);
+  let apiRegistery = {};
+  apiRegistery.environment = ['Environment', Environment];
+  apiRegistery.ipc = ['IPC', IPC];
+  apiRegistery['device-info'] = ['DeviceInformation', DeviceInformation];
+  apiRegistery['wifi-manage'] = ['WifiManager', WifiManager];
+  apiRegistery.bluetooth = ['BluetoothManager', BluetoothManager];
+  apiRegistery.settings = ['Settings', Settings];
+  apiRegistery.storage = ['SDCardManager', SDCardManager];
+  apiRegistery['webapps-manage'] = ['AppsManager', AppsManager];
+  apiRegistery.time = ['TimeManager', TimeManager];
+  apiRegistery.virtualization = ['VirtualManager', VirtualManager];
+  apiRegistery['child-process'] = ['ChildProcess', ChildProcess];
+  apiRegistery.power = ['PowerManager', PowerManager];
+  apiRegistery['fm-radio'] = ['RtlsdrReciever', RtlsdrReciever];
+  apiRegistery.users = ['UsersManager', UsersManager];
+  apiRegistery.telephony = ['TelephonyManager', TelephonyManager];
+  apiRegistery.display = ['DisplayManager', DisplayManager];
+  apiRegistery.sms = ['SmsManager', SmsManager];
+  apiRegistery['tasks-manage'] = ['TasksManager', TasksManager];
+  apiRegistery.update = ['UpdateManager', UpdateManager];
+
+  let apiEntries = Object.entries(apiRegistery);
+  for (let i = 0, length = apiEntries.length; i < length; i++) {
+    const [key, value] = apiEntries[i];
+    verifyAccess(key, value);
+  }
+  apiEntries = null;
+  apiRegistery = null;
 
   ipcRenderer.send('mediadevicechange', {});
 
-  // contextBridge.exposeInMainWorld('_open', require('./v8js/open'));
   const getUserMedia = navigator.mediaDevices.getUserMedia.bind(navigator.mediaDevices);
   contextBridge.exposeInMainWorld('sessionOverride', {
+    open: require('./vanilla/open'),
     Notification: require('./vanilla/notifications'),
     alert: require('./vanilla/modal_dialogs').alert,
     confirm: require('./vanilla/modal_dialogs').confirm,
@@ -163,64 +148,16 @@
     }
   });
 
-  function playSpatializedAudio(x, y, z, filePath) {
-    const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-
-    fetch(filePath)
-      .then((response) => response.arrayBuffer())
-      .then((data) => audioContext.decodeAudioData(data))
-      .then((audioBuffer) => {
-        const source = audioContext.createBufferSource();
-        source.buffer = audioBuffer;
-
-        const panner = audioContext.createPanner();
-        panner.panningModel = 'HRTF';
-        panner.distanceModel = 'inverse';
-        panner.refDistance = 1;
-        panner.maxDistance = 10000;
-        panner.rolloffFactor = 1;
-        panner.coneInnerAngle = 360;
-        panner.coneOuterAngle = 0;
-        panner.coneOuterGain = 0;
-
-        panner.setPosition(x, y, z);
-
-        source.connect(panner);
-        panner.connect(audioContext.destination);
-
-        source.start();
-      })
-      .catch((error) => console.error('Error loading audio:', error));
-  }
+  const clickSound = new Audio(`http://shared.localhost:${location.port}/resources/sounds/click.wav`);
+  clickSound.crossOrigin = 'anonymous';
 
   document.addEventListener('click', (event) => {
     if (['A', 'BUTTON', 'LI', 'INPUT'].indexOf(event.target.nodeName) === -1) {
       return;
     }
-    const x = event.clientX / window.innerWidth - 0.5;
-    const y = (event.clientY / window.innerHeight - 0.5) * -1;
 
-    playSpatializedAudio(x, y, 0.1, `http://shared.localhost:${location.port}/resources/sounds/click.wav`);
-  });
-
-  document.addEventListener('dragstart', function (event) {
-    event.preventDefault();
-
-    ipcRenderer.send('webdrag', {
-      left: event.target.getBoundingClientRect().left,
-      top: event.target.getBoundingClientRect().top,
-      width: event.target.getBoundingClientRect().width,
-      height: event.target.getBoundingClientRect().height
-    });
-  });
-
-  document.addEventListener('pointerup', function (event) {
-    ipcRenderer.send('webdrop', {
-      left: event.target.getBoundingClientRect().left,
-      top: event.target.getBoundingClientRect().top,
-      width: event.target.getBoundingClientRect().width,
-      height: event.target.getBoundingClientRect().height
-    });
+    clickSound.currentTime = 0;
+    clickSound.play()
   });
 
   document.addEventListener('DOMContentLoaded', function () {
@@ -233,9 +170,11 @@
     require('./modules/videoplayer');
     require('./modules/picture_in_picture');
     require('./modules/webview_handler');
+    require('./modules/keybinds');
+    require('./modules/visibility_state');
   });
 
-  function updateTextSelection() {
+  function updateTextSelection () {
     const selectedText = window.getSelection().toString();
 
     if (selectedText.length > 0) {
@@ -267,13 +206,6 @@
       });
     }
   }
-
-  document.addEventListener('scroll', function () {
-    ipcRenderer.sendToHost('scroll', {
-      left: document.scrollingElement.scrollLeft,
-      top: document.scrollingElement.scrollTop
-    });
-  });
 
   ['pointerdown', 'pointermove', 'pointerup', 'keyup', 'keydown', 'wheel'].forEach((eventType) => {
     document.addEventListener(eventType, function () {

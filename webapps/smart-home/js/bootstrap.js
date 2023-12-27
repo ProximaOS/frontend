@@ -2,18 +2,16 @@
   'use strict';
 
   window.addEventListener('DOMContentLoaded', function () {
-    // Initialize
+    LazyLoader.load([
+      'js/webapps.js',
+      'js/account.js'
+    ]);
+
     SpatialNavigation.init();
-
-    // Define navigable elements (anchors and elements with "focusable" class).
     SpatialNavigation.add({
-      selector: 'a, button, ul li, input'
+      selector: 'a, button, ul li, input, .webapp'
     });
-
-    // Make the *currently existing* navigable elements focusable.
     SpatialNavigation.makeFocusable();
-
-    // Focus the first navigable element.
     SpatialNavigation.focus();
   });
 })(window);

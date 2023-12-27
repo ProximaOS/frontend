@@ -4,19 +4,21 @@
   background-color: var(--accent-color);
 }
 
-#player > [role="header"] {
+section[role="panel"]#player > header:first-child {
   backdrop-filter: none;
-  background-image: none;
+  background-color: transparent;
 }
 
-#player > [role="header"]::before,
-#player > [role="header"]::after {
+section[role="panel"]#player > header:first-child::before,
+section[role="panel"]#player > header:first-child::after {
   display: none;
 }
 
 .player-cols {
   display: flex;
+  position: absolute;
   flex-direction: column;
+  width: 100%;
   height: 100%;
   gap: 1rem;
 }

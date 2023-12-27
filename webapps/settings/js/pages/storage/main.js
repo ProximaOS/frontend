@@ -4,76 +4,84 @@
   const Storage = {
     usedSpaceProgress: document.getElementById('storage-used-space-progress'),
 
-    init: async function () {
-      const sizes = await this.calculateSizes('/');
-      Object.entries(sizes).forEach((category, index) => {
-        const fill = document.createElement('div');
-        fill.classList.add('fill');
-        fill.style.setProperty('--hue', (index / (sizes.length - 1)) * 360);
-        fill.style.setProperty('--progress', (category.sizePercentage / 100) | 0);
-        this.usedSpaceProgress.appendChild(fill);
-      });
+    usedStorage: 0,
+    freeStorage: 10000000,
+    calculatedStorage: {
+      documents: { amount: 0, size: 0 },
+      audio: { amount: 0, size: 0 },
+      images: { amount: 0, size: 0 },
+      videos: { amount: 0, size: 0 },
+      others: { amount: 0, size: 0 }
     },
 
-    calculateSizes: async function (directoryPath) {
-      const fileTypes = {
-        pictures: ['jpg', 'jpeg', 'png', 'gif'],
-        videos: ['mp4', 'avi', 'mkv'],
-        audio: ['mp3', 'wav', 'ogg']
-      };
+    FILE_TYPES: [
+      'documents',
+      'audio',
+      'images',
+      'videos',
+      'others'
+    ],
+    FILE_TYPE_DOCUMENTS: 'text/',
+    FILE_TYPE_AUDIO: 'audio/',
+    FILE_TYPE_IMAGE: 'image/',
+    FILE_TYPE_VIDEO: 'video/',
+    FILE_TYPE_OTHER: 'application/',
 
-      const files = await SDCardManager.list(directoryPath);
-      const fileStats = files.map((file) => {
-        const filePath = directoryPath + '/' + file;
-        const stat = SDCardManager.getFileStats(filePath);
-        return { name: file, size: stat.size };
-      });
+    init: async function () {
+      try {
+        await this.indexFilesAt(this.FILE_TYPE_DOCUMENTS, 'documents');
+        await this.indexFilesAt(this.FILE_TYPE_AUDIO, 'audio');
+        await this.indexFilesAt(this.FILE_TYPE_IMAGE, 'images');
+        await this.indexFilesAt(this.FILE_TYPE_VIDEO, 'videos');
+        await this.indexFilesAt(this.FILE_TYPE_OTHER, 'others');
 
-      const categorizedFiles = {
-        pictures: [],
-        videos: [],
-        audio: [],
-        other: []
-      };
-
-      let totalSize = 0;
-
-      fileStats.forEach((fileStat) => {
-        totalSize += fileStat.size;
-
-        const regex = /\.([^.]+)$/;
-        const match = fileStat.name.toLowerCase().match(regex);
-        const extension = match ? match[1] : null;
-        let categorized = false;
-
-        for (const fileType in fileTypes) {
-          if (fileTypes[fileType].includes(extension)) {
-            categorizedFiles[fileType].push(fileStat);
-            categorized = true;
-            break;
-          }
-        }
-
-        if (!categorized) {
-          categorizedFiles.other.push(fileStat);
-        }
-      });
-
-      const categorizedSizes = [];
-      for (const fileType in categorizedFiles) {
-        const categorySize = categorizedFiles[fileType].reduce(
-          (acc, fileStat) => acc + fileStat.size,
-          0
-        );
-        const percentage = (categorySize / totalSize) * 100;
-        categorizedSizes.push({
-          type: fileType,
-          sizeBytes: categorySize,
-          sizePercentage: percentage
-        });
+        this.displayUsage();
+      } catch (error) {
+        console.error('Error during initialization:', error);
       }
+    },
 
-      return categorizedSizes;
+    indexFilesAt: async function (mime, target) {
+      try {
+        const array = await FileIndexer('/', mime);
+        for (let index = 0, length = array.length; index < length; index++) {
+          const element = array[index];
+          await this.calculateSize(element, target);
+        }
+      } catch (error) {
+        console.error(`Error indexing ${mime} files:`, error);
+      }
+    },
+
+    calculateSize: async function (path, target) {
+      try {
+        const stats = await SDCardManager.getStats(path);
+
+        this.usedStorage += stats.size;
+        this.calculatedStorage[target].amount += 1;
+        this.calculatedStorage[target].size += stats.size;
+      } catch (error) {
+        console.error(`Error calculating size for ${path}:`, error);
+      }
+    },
+
+    displayUsage: function () {
+      try {
+        let progressTotal = 0;
+        const fragment = document.createDocumentFragment();
+        this.FILE_TYPES.forEach((type, index) => {
+          const fill = document.createElement('div');
+          fill.classList.add('fill');
+          fill.style.setProperty('--hue', (index / (this.FILE_TYPES.length - 1)) * 300);
+          progressTotal += this.calculatedStorage[type].size / (this.usedStorage + this.freeStorage);
+          fill.style.setProperty('--progress', progressTotal);
+          fill.style.zIndex = this.FILE_TYPES.length - index;
+          fragment.appendChild(fill);
+        });
+        this.usedSpaceProgress.appendChild(fragment);
+      } catch (error) {
+        console.error('Error displaying usage:', error);
+      }
     }
   };
 

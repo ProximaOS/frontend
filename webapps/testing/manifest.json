@@ -7,13 +7,11 @@
     "48": "/style/icons/test.png"
   },
   "developer": {
-    "name": "Orchid Org.",
+    "name": "Orchid Team",
     "url": "https://openorchid.github.io/"
   },
   "default_locale": "en",
   "orientation": "portrait-primary",
-  "background_color": "#f0f6ff",
-  "theme_color": "#ff6040",
   "permissions": {
     "nodeintegration": {}
   }

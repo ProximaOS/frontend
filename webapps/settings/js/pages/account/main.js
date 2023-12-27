@@ -21,33 +21,45 @@
       this.avatarEditButton.addEventListener('click', this.handleAvatarEditButton.bind(this));
       this.bannerEditButton.addEventListener('click', this.handleBannerEditButton.bind(this));
 
-      if ('OrchidServices' in window) {
-        if (await OrchidServices.isUserLoggedIn()) {
-          OrchidServices.getWithUpdate(
-            `profile/${await OrchidServices.userId()}`,
-            (data) => {
-              this.accountBanner.src = data.banner || data.profile_picture;
-              this.accountAvatar.src = data.profile_picture;
-              this.accountUsername.textContent = data.username;
-              this.accountHandle.textContent = `@${data.handle_name}`;
-              this.accountFollowers.dataset.l10nArgs = JSON.stringify({
-                count: data.followers.length
-              });
-              this.accountFriends.dataset.l10nArgs = JSON.stringify({
-                count: data.friends.length
-              });
-              this.accountStatus.textContent = data.status.text;
-              this.accountEmail.textContent = data.email;
-              this.accountPhoneNumber.textContent = data.phone_number;
-
-              if (data.is_verified) {
-                this.accountUsername.classList.add('verified');
-              } else {
-                this.accountUsername.classList.remove('verified');
-              }
-            }
-          );
-        }
+      if (await _os.isLoggedIn()) {
+        _os.auth.getLiveBanner(null, (data) => {
+          this.accountBanner.src = data;
+        });
+        _os.auth.getLiveAvatar(null, (data) => {
+          this.accountAvatar.src = data;
+        });
+        _os.auth.getUsername().then((data) => {
+          this.accountUsername.textContent = data;
+        });
+        _os.auth.getHandleName().then((data) => {
+          this.accountHandle.textContent = `@${data}`;
+        });
+        _os.auth.getFollowers().then((data) => {
+          this.accountFollowers.dataset.l10nArgs = JSON.stringify({
+            count: data.length
+          });
+        });
+        _os.auth.getFriends().then((data) => {
+          this.accountFriends.dataset.l10nArgs = JSON.stringify({
+            count: data.length
+          });
+        });
+        _os.auth.getStatus().then((data) => {
+          this.accountStatus.textContent = data.text;
+        });
+        _os.auth.getEmail().then((data) => {
+          this.accountEmail.textContent = data;
+        });
+        _os.auth.getPhoneNumber().then((data) => {
+          this.accountPhoneNumber.textContent = data;
+        });
+        _os.auth.getVerificationState().then((data) => {
+          if (data) {
+            this.accountUsername.classList.add('verified');
+          } else {
+            this.accountUsername.classList.remove('verified');
+          }
+        });
       }
     },
 
@@ -61,9 +73,7 @@
         const dataUrl = `data:${mime};base64,${base64String}`;
 
         compressImage(dataUrl, this.KB_SIZE_LIMIT, async (finalImage) => {
-          OrchidServices.set(`profile/${await OrchidServices.userId()}`, {
-            profile_picture: finalImage
-          });
+          _os.auth.setAvatar(finalImage);
         });
       });
     },
@@ -78,15 +88,13 @@
         const dataUrl = `data:${mime};base64,${base64String}`;
 
         compressImage(dataUrl, this.KB_SIZE_LIMIT, async (finalImage) => {
-          OrchidServices.set(`profile/${await OrchidServices.userId()}`, {
-            banner: finalImage
-          });
+          _os.auth.setBanner(finalImage);
         });
       });
     }
   };
 
-  window.addEventListener('orchidservicesload', () => {
+  window.addEventListener('orchid-services-ready', () => {
     Account.init();
   });
 })(window);

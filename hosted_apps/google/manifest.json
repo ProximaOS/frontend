@@ -12,7 +12,5 @@
   },
   "default_locale": "en",
   "orientation": "portrait-primary",
-  "background_color": "#f0f6ff",
-  "theme_color": "#40a060",
   "permissions": {}
 }

@@ -4,7 +4,7 @@
   width: 100%;
   min-height: 6.5rem;
   border-radius: 2rem;
-  background-color: var(--acrylic-background-plus);
+  background-color: var(--tray-button-background);
   transition: all 0.3s ease;
 }
 
@@ -59,23 +59,26 @@
   padding: 0;
   border: none;
   border-radius: 1.6rem;
-  background-color: var(--item-plus);
+  background-color: transparent;
   color: var(--text-color);
   line-height: 3.2rem;
   text-align: center;
+  transition: all 0.3s ease;
 }
 
 #media-playback .content .buttons button:hover {
-  background-color: var(--item-hover-plus);
+  transform: scale(1.1);
+  transition: all 0.1s ease;
 }
 
 #media-playback .content .buttons button:active {
-  background-color: var(--item-active-plus);
+  transform: scale(0.9);
+  transition: all 0.1s ease;
 }
 
 #media-playback .content .buttons button::before {
   position: static;
   height: 3.2rem;
-  font-size: 1.8rem;
+  font-size: 2rem;
   line-height: 3.2rem;
 }

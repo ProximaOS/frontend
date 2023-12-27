@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -18,12 +19,13 @@
   <link rel="stylesheet" type="text/css" href="http://shared.localhost:8081/style/lists.css" />
   <link rel="stylesheet" type="text/css" href="http://shared.localhost:8081/style/switches.css" />
   <link rel="stylesheet" type="text/css" href="http://shared.localhost:8081/style/seekbars.css" />
+  <link rel="stylesheet" type="text/css" href="http://shared.localhost:8081/style/menus.css" />
   <link rel="stylesheet" type="text/css" href="style/files.css" />
-  <link rel="stylesheet" type="text/css" href="style/modal_dialog.css" />
+  <link rel="stylesheet" type="text/css" href="style/views.css" />
+  <link rel="stylesheet" type="text/css" href="style/quick_previews.css" />
   <script defer type="text/javascript" src="http://shared.localhost:8081/js/panels.js"></script>
   <script defer type="text/javascript" src="http://shared.localhost:8081/js/page_controller.js"></script>
   <script defer type="text/javascript" src="js/files.js"></script>
-  <script defer type="text/javascript" src="js/modal_dialog.js"></script>
 
   <script type="text/javascript" src="http://shared.localhost:8081/js/l10n.js"></script>
   <meta name="defaultLanguage" content="en-US">
@@ -31,84 +33,114 @@
     content="af, ar, az, be, bg, bn, ca, cs, cy, da, de, el, eo, et, en-US, es, eu, fa, fi, fr, ga, gu, gl, he, hi, hr, ht, hu, id, is, it, ja, kn, ko, ku, lt, lv, mk, ms, nl, no, pl, pt, ro, ru, sq, sk, sl, sr, sw, ta, te, th, tl, tr, uk, ur, vi, yi, zh, fr-psaccent, ar-psbidi">
   <link rel="localization" href="/locales/main.{locale}.properties">
 </head>
+
 <body>
   <main id="app" role="app">
-    <section id="root" class="visible" role="panel">
-      <header role="header">
-        <div class="safezone">
-          <h1 data-l10n-id="files"></h1>
-          <menu role="toolbar">
-            <a href="#" data-icon="search"></a>
-            <a href="#" data-icon="more"></a>
-          </menu>
+    <nav class="bb-tablist">
+      <ul>
+        <li><a href="#root" class="selected" data-page-id="root">
+            <span data-icon="folder"></span>
+            <span data-l10n-id="files"></span>
+          </a></li>
+        <li><a href="#vault" data-page-id="vault">
+            <span data-icon="password"></span>
+            <span data-l10n-id="vault"></span>
+          </a></li>
+        <li><a href="#ipfs" data-page-id="ipfs">
+            <span data-icon="upload"></span>
+            <span data-l10n-id="ipfs"></span>
+          </a></li>
+      </ul>
+    </nav>
+
+    <div id="views">
+      <section id="root" class="visible" role="panel">
+        <header>
+          <div class="safezone">
+            <h1 data-l10n-id="files"></h1>
+            <menu role="toolbar">
+              <a href="#" data-icon="options"></a>
+              <a href="#" data-icon="search"></a>
+            </menu>
+          </div>
+        </header>
+
+        <div class="content lists">
+          <header data-l10n-id="quickAccess"></header>
+          <ul id="quick-access"></ul>
+
+          <header data-l10n-id="thisDevice"></header>
+          <ul id="devices-list"></ul>
+
+          <header data-l10n-id="tags"></header>
+          <ul id="tags-list"></ul>
         </div>
-      </header>
+      </section>
 
-      <div class="content lists">
-        <header data-l10n-id="quickAccess"></header>
-        <ul id="quick-access"></ul>
+      <section id="content" role="panel">
+        <header class="compact">
+          <div class="safezone">
+            <a href="#" id="back-button" data-icon="arrow-back" data-page-id="root"></a>
+            <h1 id="path-name"></h1>
+            <menu role="toolbar">
+              <a href="#" id="content-grid-button" data-icon="grid"></a>
+              <a href="#" id="content-reload-button" data-icon="reload"></a>
+              <a href="#" data-icon="search"></a>
+            </menu>
+          </div>
+        </header>
 
-        <header data-l10n-id="thisDevice"></header>
-        <ul id="this-device"></ul>
-      </div>
-    </section>
-
-    <section id="content" role="panel">
-      <header class="compact" role="header">
-        <div class="safezone">
-          <a href="#" id="back-button" data-icon="arrow-back" data-page-id="root"></a>
-          <h1 id="path-name"></h1>
-          <menu role="toolbar">
-            <a href="#" id="content-grid-button" data-icon="grid"></a>
-            <a href="#" id="content-reload-button" data-icon="reload"></a>
-            <a href="#" data-icon="search"></a>
-          </menu>
+        <div class="content">
+          <div id="content-files"></div>
         </div>
-      </header>
+      </section>
+    </div>
 
-      <div class="content">
-        <div id="content-files"></div>
-      </div>
-    </section>
+    <div id="quick-preview">
+      <img src="" alt="" id="quick-preview-image">
+      <video src="" id="quick-preview-video"></video>
+    </div>
 
-    <div id="modal-dialog">
-      <div id="modal-dialog-alert">
-        <section class="container">
-          <div class="content">
-            <div class="title"></div>
-            <div class="detail"></div>
-          </div>
-          <menu class="actions">
-            <button class="recommend" data-l10n-id="ok"></button>
-          </menu>
-        </section>
-      </div>
-
-      <div id="modal-dialog-confirm">
-        <section class="container">
-          <div class="content">
-            <div class="title"></div>
-            <div class="detail"></div>
-          </div>
-          <menu class="actions"><button class="cancel" data-l10n-id="cancel"></button><button class="recommend" data-l10n-id="confirm"></button></menu>
-        </section>
-      </div>
-
-      <div id="modal-dialog-prompt">
-        <section class="container">
-          <div class="content">
-            <div class="title"></div>
-            <form action="">
-              <input type="text" name="" id="" class="inputbox">
-            </form>
-          </div>
-          <menu class="actions">
-            <button class="cancel" data-l10n-id="cancel"></button>
-            <button class="recommend" data-l10n-id="confirm"></button>
-          </menu>
-        </section>
-      </div>
+    <div class="bb-menu">
+      <ul>
+        <li class="nav">
+          <ul>
+            <li data-icon="copy"></li>
+            <li data-icon="cut"></li>
+            <li data-icon="share"></li>
+            <li data-icon="delete"></li>
+          </ul>
+        </li>
+        <li class="separator"></li>
+        <li data-icon="file">
+          <span>Open</span>
+        </li>
+        <li data-icon="external">
+          <span>Open With</span>
+        </li>
+        <li data-icon="select-all">
+          <span>Rename</span>
+        </li>
+        <li data-icon="package">
+          <span>Extract Here</span>
+        </li>
+        <li data-icon="package">
+          <span>Extract To...</span>
+        </li>
+        <li class="separator"></li>
+        <li data-icon="folder">
+          <span>Add Folder</span>
+        </li>
+        <li data-icon="reader-mode">
+          <span>Add Text File</span>
+        </li>
+        <li class="separator"></li>
+        <li data-icon="about">
+          <span>Properties</span>
+        </li>
+      </ul>
     </div>
   </main>
 </body>
+
 </html>

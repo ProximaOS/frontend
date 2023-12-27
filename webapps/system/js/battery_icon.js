@@ -20,9 +20,9 @@
         }
         this.percentageElement.dataset.l10nId = 'batteryStatusPercentage';
         this.percentageElement.dataset.l10nArgs = `{"value":"${Math.round(level * 100)}"}`;
-        setTimeout(() => {
-          this.percentageElement.style.setProperty('--hide-margin', `-${this.percentageElement.offsetWidth / 2}px`);
-        }, 100);
+        document.addEventListener('localized', () => {
+          this.percentageElement.style.setProperty('--hide-margin', `-${this.percentageElement.scrollWidth / 2}px`);
+        });
 
         ['chargingchange', 'levelchange'].forEach((event) => {
           battery.addEventListener(event, () => {
@@ -33,9 +33,10 @@
             } else {
               this.iconElement.dataset.icon = `battery-${Math.round(level * 10) * 10}`;
             }
-            this.percentageElement.dataset.l10nId = 'batteryStatusPercentage';
             this.percentageElement.dataset.l10nArgs = `{"value":"${Math.round(level * 100)}"}`;
-            this.percentageElement.style.setProperty('--hide-margin', `-${this.percentageElement.offsetWidth / 2}px`);
+            document.addEventListener('localized', () => {
+              this.percentageElement.style.setProperty('--hide-margin', `-${this.percentageElement.scrollWidth / 2}px`);
+            });
           });
         });
       });

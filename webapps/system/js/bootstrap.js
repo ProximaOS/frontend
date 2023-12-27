@@ -2,7 +2,10 @@
   'use strict';
 
   const Bootstrap = {
-    screen: document.getElementById('screen'),
+    screen: null,
+    frimwareScreen: null,
+
+    isFrimware: false,
 
     settings: [
       'audio.volume.music',
@@ -22,6 +25,15 @@
     SETTINGS_VIDEO_WARM_COLORS: 6,
 
     init: function () {
+      this.screen = document.getElementById('screen');
+      this.frimwareScreen = document.getElementById('frimware');
+      if (this.isFrimware) {
+        this.frimwareScreen.classList.add('visible');
+        LazyLoader.load('js/frimware/charging_battery_icon.js');
+        LazyLoader.load('js/frimware/charging_battery_canvas.js');
+        return;
+      }
+
       Settings.getValue(this.settings[this.SETTINGS_GENERAL_LANG_CODE]).then(this.handleLanguage.bind(this));
       Settings.getValue(this.settings[this.SETTINGS_GENERAL_SOFTWARE_BUTTONS]).then(this.handleSoftwareButtons.bind(this));
       Settings.getValue(this.settings[this.SETTINGS_VIDEO_WARM_COLORS]).then(this.handleWarmColors.bind(this));
@@ -35,9 +47,6 @@
       Settings.addObserver(this.settings[this.SETTINGS_VIDEO_READER_MODE], this.handleReaderMode.bind(this));
 
       AppsManager.getAll().then(() => {
-        Settings.getValue(this.settings[this.SETTINGS_FTU_ENABLED]).then(this.handleFirstLaunch.bind(this));
-        Splashscreen.hide();
-
         LazyLoader.load('js/lockscreen/clock.js');
         LazyLoader.load('js/lockscreen/date.js');
         LazyLoader.load('js/lockscreen/login.js');
@@ -57,6 +66,7 @@
         LazyLoader.load('js/modal_dialog.js');
         LazyLoader.load('js/music_controller.js', () => {
           Settings.getValue(this.settings[this.SETTINGS_AUDIO_VOLUME_MUSIC]).then(this.handleMusicVolume.bind(this));
+          Settings.getValue(this.settings[this.SETTINGS_FTU_ENABLED]).then(this.handleFirstLaunch.bind(this));
 
           MusicController.play('/resources/music/bg.mp3', true);
         });
@@ -66,19 +76,29 @@
         LazyLoader.load('js/privacy_indicators.js');
         LazyLoader.load('js/syncing_data.js');
         LazyLoader.load('js/text_selection.js');
+        LazyLoader.load('js/tray_devices.js');
         LazyLoader.load('js/utility_tray.js');
         LazyLoader.load('js/utility_tray_motion.js');
+        LazyLoader.load('js/webapps.js');
 
-        if ('OrchidServices' in window) {
-          OrchidServices.devices.ensureDevice();
+        if ('_os' in window) {
+          _os.devices.ensureDevice();
         }
+
+        if (navigator.hardwareConcurrency >= 2) {
+          if (navigator.deviceMemory >= 2) {
+            this.screen.classList.add('gpu-capable');
+          }
+        }
+
+        Splashscreen.hide();
       });
 
       window.addEventListener('orchidserviceload', this.onServicesLoad.bind(this));
     },
 
     handleMusicVolume: function (value) {
-      MusicController.setVolume(value, 1);
+      MusicController.setVolume(value / 100, 1);
     },
 
     handleLanguage: function (value) {
@@ -119,7 +139,7 @@
     handleFirstLaunch: function (value) {
       if (value) {
         LockscreenMotion.hideMotionElement();
-        AppWindow.create('http://ftu.localhost:8081/manifest.json', {});
+        const appWindow = new AppWindow('http://ftu.localhost:8081/manifest.json', {});
       } else {
         LazyLoader.load('js/homescreen_launcher.js');
       }

@@ -1,0 +1,24 @@
+{
+  "version": "1.0",
+  "name": "Stocks",
+  "description": "Helps you keep track of stocks",
+  "launch_path": "/index.html",
+  "icons": {
+    "16": "/style/icons/stocks_16.png",
+    "32": "/style/icons/stocks_32.png",
+    "48": "/style/icons/stocks_48.png",
+    "64": "/style/icons/stocks_64.png",
+    "128": "/style/icons/stocks_128.png",
+    "256": "/style/icons/stocks_256.png"
+  },
+  "developer": {
+    "name": "Orchid Org.",
+    "url": "https://openorchid.github.io/"
+  },
+  "default_locale": "en",
+  "orientation": "auto",
+  "permissions": {
+    "nodeintegration": {}
+  },
+  "display": "immersive"
+}

@@ -1,0 +1,94 @@
+#views {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: calc(100% - 8rem);
+}
+
+#post-button {
+  display: block;
+  width: calc(100% - 3rem);
+  max-width: calc(var(--safezone-width) - 3rem);
+  margin: 0 auto 1.5rem;
+}
+
+@media screen and (min-width: 768px) {
+  #root {
+    box-sizing: border-box;
+    visibility: visible;
+    z-index: 1;
+    position: absolute;
+    top: 0;
+    width: 32rem;
+    height: 100%;
+    transform: none;
+    opacity: 1;
+  }
+  html[dir="ltr"] #root {
+    left: 0;
+  }
+  html[dir="rtl"] #root {
+    right: 0;
+  }
+
+  #root.visible {
+    width: 100%;
+    border-inline-end: none;
+  }
+
+  #root > .content > *:not(.scroll-content, .scrollbar-track, .bb-emptyscreen),
+  #root > .content > .scroll-content > *:not(.bb-emptyscreen) {
+    visibility: visible;
+    transform: translateY(0);
+    opacity: 1;
+  }
+
+  [role="panel"]:not(#root) {
+    position: absolute;
+    top: 0;
+    width: calc(100% - 32rem);
+    height: 100%;
+  }
+  html[dir="ltr"] [role="panel"]:not(#root) {
+    left: 32rem;
+  }
+  html[dir="rtl"] [role="panel"]:not(#root) {
+    right: 32rem;
+  }
+}
+
+@media screen and (min-width: 1024px) {
+  #root.visible {
+    width: calc(100% - 32rem);
+  }
+
+  [role="panel"]:not(#root, #trending) {
+    position: absolute;
+    top: 0;
+    width: calc(100% - 64rem) !important;
+    height: 100%;
+  }
+
+  #trending {
+    visibility: visible;
+    width: 32rem !important;
+    transform: none;
+    opacity: 1;
+  }
+  html[dir="ltr"] #trending {
+    right: 0;
+    left: unset !important;
+  }
+  html[dir="rtl"] #trending {
+    right: unset !important;
+    left: 0;
+  }
+
+  #trending > .content > *:not(.scroll-content),
+  #trending > .content > .scroll-content > * {
+    visibility: visible;
+    transform: translateY(0);
+    opacity: 1;
+  }
+}

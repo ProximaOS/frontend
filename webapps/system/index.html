@@ -5,6 +5,12 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+  <!-- Preload -->
+  <link rel="preload" type="text/css" href="style/system.css" as="style">
+  <link rel="preload" type="text/css" href="style/splashscreen.css" as="style">
+  <link rel="preload" type="text/javascript" href="http://shared.localhost:8081/js/l10n.js" as="script">
+  <link rel="preload" type="text/javascript" href="js/splashscreen.js" as="script">
+
   <!-- Shared stylesheets -->
   <link rel="stylesheet" type="text/css" href="http://default_theme.localhost:8081/style/index.css" />
   <link rel="stylesheet" type="text/css" href="http://shared.localhost:8081/style/layout.css" />
@@ -19,6 +25,14 @@
   <link rel="stylesheet" type="text/css" href="http://shared.localhost:8081/style/transitions.css" />
   <link rel="stylesheet" type="text/css" href="http://shared.localhost:8081/style/counters.css" />
   <link rel="stylesheet" type="text/css" href="http://shared.localhost:8081/style/achievements.css" />
+  <link rel="stylesheet" type="text/css" href="http://shared.localhost:8081/style/progress_activity.css" />
+  <link rel="stylesheet" type="text/css" href="http://shared.localhost:8081/style/menus.css" />
+  <link rel="stylesheet" type="text/css" href="http://shared.localhost:8081/style/dropdowns.css" />
+  <link rel="stylesheet" type="text/css" href="http://shared.localhost:8081/style/confirm.css" />
+  <link rel="stylesheet" type="text/css" href="http://shared.localhost:8081/style/value_selector.css" />
+  <link rel="stylesheet" type="text/css" href="http://shared.localhost:8081/style/object_menu.css" />
+  <link rel="stylesheet" type="text/css" href="http://shared.localhost:8081/style/input_areas.css" />
+  <link rel="stylesheet" type="text/css" href="http://shared.localhost:8081/style/skeletons.css" />
 
   <!-- Stylesheets -->
   <link rel="stylesheet" type="text/css" href="dist/main.bundle.css">
@@ -52,12 +66,13 @@
   <link rel="stylesheet" type="text/css" href="style/zindex.css">
   <link rel="stylesheet" type="text/css" href="style/loading_screen.css">
   <link rel="stylesheet" type="text/css" href="style/drag_and_drop.css">
-  <link rel="stylesheet" type="text/css" href="style/context_menu.css">
   <link rel="stylesheet" type="text/css" href="style/title_tooltip.css">
   <link rel="stylesheet" type="text/css" href="style/login_ui.css">
+  <link rel="stylesheet" type="text/css" href="style/context_menu.css">
   <link rel="stylesheet" type="text/css" href="style/incomingcall.css">
   <link rel="stylesheet" type="text/css" href="style/utility_tray_panels.css">
   <link rel="stylesheet" type="text/css" href="style/charging_overlay.css">
+  <link rel="stylesheet" type="text/css" href="style/window_snap.css">
 
   <!-- Stylesheets - Desktop -->
   <link rel="stylesheet" type="text/css" href="desktop/style/desktop_system.css">
@@ -65,21 +80,24 @@
   <link rel="stylesheet" type="text/css" href="desktop/style/desktop_software_buttons.css">
   <link rel="stylesheet" type="text/css" href="desktop/style/desktop_utility_tray.css">
 
+  <!-- Stylesheets - Feature & Querty Phones -->
+  <link rel="stylesheet" type="text/css" href="keyphone/style/definitions.css">
+
+  <!-- Stylesheets - Frimware -->
+  <link rel="stylesheet" type="text/css" href="style/frimware/main.css">
+  <link rel="stylesheet" type="text/css" href="style/frimware/charging_battery.css">
+
   <!-- Online scripts -->
   <script type="module" src="https://orchid-f39a9.web.app/orchid_services.js"></script>
-  <script type="text/javascript" src="https://orchid-f39a9.web.app/crypto-js.js"></script>
-  <script type="text/javascript" src="https://orchid-f39a9.web.app/plugins/sha256.js"></script>
 
   <!-- Shared scripts -->
   <script defer type="text/javascript" src="http://shared.localhost:8081/js/iscroll.js"></script>
   <script defer type="text/javascript" src="http://shared.localhost:8081/js/smooth-scrollbar.js"></script>
   <script defer type="text/javascript" src="http://shared.localhost:8081/js/plugins/overscroll.js"></script>
-  <script type="text/javascript" src="http://shared.localhost:8081/js/platform.js"></script>
   <script type="text/javascript" src="http://shared.localhost:8081/js/directional_scale.js"></script>
   <script defer type="text/javascript" src="http://shared.localhost:8081/js/card_panels.js"></script>
   <script defer type="text/javascript" src="http://shared.localhost:8081/js/transitions.js"></script>
   <script defer type="text/javascript" src="http://shared.localhost:8081/js/color_picker.js"></script>
-  <script defer type="text/javascript" src="http://shared.localhost:8081/js/depthmap.js"></script>
   <script defer type="text/javascript" src="http://shared.localhost:8081/js/counters.js"></script>
   <script defer type="text/javascript" src="http://shared.localhost:8081/js/lazy_loader.js"></script>
   <script defer type="text/javascript" src="http://shared.localhost:8081/js/sticky_scroll.js"></script>
@@ -97,7 +115,7 @@
   <script defer type="text/javascript" src="js/data_icon.js"></script>
   <script defer type="text/javascript" src="js/cellular_data_icon.js"></script>
   <script defer type="text/javascript" src="js/network_icon.js"></script>
-  <script defer type="text/javascript" src="js/bletooth_icon.js"></script>
+  <script defer type="text/javascript" src="js/bluetooth_icon.js"></script>
   <script defer type="text/javascript" src="js/app_window.js"></script>
   <script defer type="text/javascript" src="js/notification_toaster.js"></script>
   <!-- <script defer type="text/javascript" src="js/utility_tray_motion.js"></script> -->
@@ -151,20 +169,24 @@
 </head>
 
 <body>
-  <div id="screen" role="app">
+  <div id="screen" class="screen" role="app">
     <div id="splashscreen" data-z-index-layer="splashscreen">
-      <!-- <video src="" id="splashscreen-video"></video> -->
+      <video src="" id="splashscreen-video">
+        <source id="splashscreen-video-source">
+      </video>
 
-      <div class="logo">OrchidOS</div>
-      <div class="circle primary left"></div>
-      <div class="circle primary right"></div>
-      <div class="circle secondary"></div>
+      <div class="safety-warning">
+        <span data-icon="users"></span>
+        <p data-l10n-id="safetyWarning"></p>
+      </div>
+
+      <div class="os-logo"></div>
     </div>
 
     <div id="loading-screen" data-z-index-layer="loading-screen"></div>
 
     <div id="wallpapers">
-      <img src="" alt="" id="wallpaper-image"></img>
+      <img src="" alt="" id="wallpaper-image">
       <video src="" id="wallpaper-video"></video>
 
       <div class="blur-overlay"></div>
@@ -197,6 +219,7 @@
     </div>
 
     <div id="windows" data-z-index-layer="windows"></div>
+    <div id="window-snap" data-z-index-layer="windows"></div>
 
     <div id="keyboards" data-z-index-layer="keyboards"></div>
 
@@ -261,8 +284,7 @@
                 <div class="buttons">
                   <button id="media-playback-previous" data-icon="skip-back-alt"
                     data-l10n-id="mediaPlayback-skipBackward"></button>
-                  <button id="media-playback-playpause" data-icon="play-alt"
-                    data-l10n-id="mediaPlayback-play"></button>
+                  <button id="media-playback-playpause" data-icon="play-alt" data-l10n-id="mediaPlayback-play"></button>
                   <button id="media-playback-next" data-icon="skip-forward-alt"
                     data-l10n-id="mediaPlayback-skipForward"></button>
                 </div>
@@ -294,13 +316,88 @@
                 </li>
                 <li>
                   <a href="#" id="quick-settings-airplane">
-                    <span data-icon="airplane"></span>
+                    <span class="icon">
+                      <svg width="24" height="24" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <g clip-path="url(#clip0_12_1663)">
+                          <path
+                            d="M0.792893 6.79289L1.29289 7.29289C1.68342 7.68342 1.68342 8.31658 1.29289 8.70711L0.792893 9.20711C0.605357 9.39464 0.5 9.649 0.5 9.91421V10C0.5 10.5523 0.947715 11 1.5 11H1.58579C1.851 11 2.10536 10.8946 2.29289 10.7071L3.20711 9.79289C3.39464 9.60536 3.649 9.5 3.91421 9.5H4.69075C5.35012 9.5 5.82901 10.127 5.65551 10.7631L4.84449 13.7369C4.67099 14.373 5.14988 15 5.80925 15H6.97934C7.30566 15 7.61145 14.8408 7.79858 14.5735L10.7771 10.3184C10.9205 10.1136 11.1354 9.96992 11.3794 9.91569L14.7169 9.17402C15.1745 9.07234 15.5 8.66653 15.5 8.19783V7.80217C15.5 7.33347 15.1745 6.92766 14.7169 6.82598L11.3794 6.08431C11.1354 6.03008 10.9205 5.8864 10.7771 5.68159L7.79858 1.42654C7.61145 1.15921 7.30566 1 6.97934 1H5.80925C5.14988 1 4.67099 1.62698 4.84449 2.26312L5.65551 5.23688C5.82901 5.87302 5.35012 6.5 4.69075 6.5H3.91421C3.649 6.5 3.39464 6.39464 3.20711 6.20711L2.29289 5.29289C2.10536 5.10536 1.851 5 1.58579 5H1.5C0.947715 5 0.5 5.44772 0.5 6V6.08579C0.5 6.351 0.605357 6.60536 0.792893 6.79289Z"
+                            stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" class="plane" />
+                        </g>
+                        <defs>
+                          <clipPath id="clip0_12_1663">
+                            <rect width="16" height="16" fill="currentColor" />
+                          </clipPath>
+                        </defs>
+                      </svg>
+                    </span>
                     <span data-l10n-id="quickSettings-airplaneMode"></span>
                   </a>
                 </li>
                 <li>
                   <a href="#" id="quick-settings-audio">
-                    <span data-icon="bell"></span><span data-l10n-id="quickSettings-audio"></span>
+                    <span class="icon">
+                      <!-- Ringing -->
+                      <svg width="24" height="24" viewBox="0 0 16 16" fill="none" class="ringing"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <g clip-path="url(#clip0_49_11)">
+                          <path
+                            d="M7.5 0.5H8.5M13.5 12.5L12.1864 5.93203C11.7873 3.93645 10.0351 2.5 8 2.5V2.5C5.9649 2.5 4.21271 3.93645 3.81359 5.93203L2.5 12.5M13.5 12.5H15M13.5 12.5H2.5M1 12.5H2.5"
+                            stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" class="bell" />
+                          <path
+                            d="M6.5 14.5H9.5V14.5C9.5 15.0523 9.05228 15.5 8.5 15.5H7.5C6.94772 15.5 6.5 15.0523 6.5 14.5V14.5Z"
+                            stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" class="bell-part" />
+                        </g>
+                        <defs>
+                          <clipPath id="clip0_49_11">
+                            <rect width="16" height="16" fill="currentColor" />
+                          </clipPath>
+                        </defs>
+                      </svg>
+
+                      <!-- Vibrate -->
+                      <svg width="24" height="24" viewBox="0 0 16 16" fill="none" class="vibrate"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <g clip-path="url(#clip0_230_33)">
+                          <path
+                            d="M0.5 3.5L1.64645 4.64645C1.84171 4.84171 1.84171 5.15829 1.64645 5.35355L0.853554 6.14645C0.658291 6.34171 0.658291 6.65829 0.853553 6.85355L1.64645 7.64645C1.84171 7.84171 1.84171 8.15829 1.64645 8.35355L0.853554 9.14645C0.658291 9.34171 0.658291 9.65829 0.853553 9.85355L1.64645 10.6464C1.84171 10.8417 1.84171 11.1583 1.64645 11.3536L0.5 12.5M15.5 3.5L14.3536 4.64645C14.1583 4.84171 14.1583 5.15829 14.3536 5.35355L15.1464 6.14645C15.3417 6.34171 15.3417 6.65829 15.1464 6.85355L14.3536 7.64645C14.1583 7.84171 14.1583 8.15829 14.3536 8.35355L15.1464 9.14645C15.3417 9.34171 15.3417 9.65829 15.1464 9.85355L14.3536 10.6464C14.1583 10.8417 14.1583 11.1583 14.3536 11.3536L15.5 12.5"
+                            stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" class="vibrations" />
+                          <path
+                            d="M5.5 15.5H10.5C11.3284 15.5 12 14.8284 12 14V2C12 1.17157 11.3284 0.5 10.5 0.5H5.5C4.67157 0.5 4 1.17157 4 2V14C4 14.8284 4.67157 15.5 5.5 15.5Z"
+                            stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" class="phone" />
+                        </g>
+                        <defs>
+                          <clipPath id="clip0_230_33">
+                            <rect width="16" height="16" fill="currentColor" />
+                          </clipPath>
+                        </defs>
+                      </svg>
+
+                      <!-- Muted -->
+                      <svg width="24" height="24" viewBox="0 0 16 16" fill="none" class="muted"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <g clip-path="url(#clip0_49_14)">
+                          <path d="M0.5 15.5L15.5 0.5" stroke="currentColor" stroke-linecap="round"
+                            stroke-linejoin="round" class="slash" />
+                          <mask id="mask0_49_14" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0"
+                            width="16" height="16">
+                            <path
+                              d="M7.5 0.5H8.5M13.5 12.5L12.1864 5.93203C11.7873 3.93645 10.0351 2.5 8 2.5V2.5C5.9649 2.5 4.21271 3.93645 3.81359 5.93203L2.5 12.5M13.5 12.5H15M13.5 12.5H2.5M1 12.5H2.5M6.5 14.5H9.5V14.5C9.5 15.0523 9.05228 15.5 8.5 15.5H7.5C6.94772 15.5 6.5 15.0523 6.5 14.5V14.5Z"
+                              stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" />
+                          </mask>
+                          <g mask="url(#mask0_49_14)">
+                            <path fill-rule="evenodd" clip-rule="evenodd"
+                              d="M10.4866 3.39204C10.7042 3.17443 10.681 2.81283 10.4157 2.65684C9.70266 2.23755 8.87472 2 8 2C5.72656 2 3.76916 3.60468 3.3233 5.83398L2.46682 10.1164C2.3698 10.6015 2.96085 10.9178 3.31066 10.568C3.38046 10.4982 3.42804 10.4093 3.4474 10.3125L4.30388 6.03009C4.65626 4.26822 6.20324 3 8 3C8.65457 3 9.27599 3.16832 9.81858 3.4675C10.036 3.5874 10.3111 3.56762 10.4866 3.39204ZM5.97487 12.1464C6.06864 12.0527 6.19581 12 6.32842 12H11.6703C12.3013 12 12.7746 11.4227 12.6509 10.8039L11.8171 6.63523C11.7827 6.46287 11.8366 6.2847 11.9609 6.16041L12.3735 5.74778C12.4755 5.64582 12.6484 5.69258 12.6767 5.83397L13.7491 11.1961C13.8426 11.6635 14.253 12 14.7297 12H15C15.2761 12 15.5 12.2239 15.5 12.5C15.5 12.7761 15.2761 13 15 13H13.5H6.32842C5.88297 13 5.65989 12.4614 5.97487 12.1464ZM0.663426 12.8698C0.782697 12.9784 0.959769 12.9189 1.07384 12.8048L1.25736 12.6213C1.48664 12.392 1.32425 12 1 12C0.723858 12 0.5 12.2239 0.5 12.5C0.5 12.6465 0.563017 12.7783 0.663426 12.8698ZM7.5 0C7.22386 0 7 0.223858 7 0.5C7 0.776142 7.22386 1 7.5 1H8.5C8.77614 1 9 0.776142 9 0.5C9 0.223858 8.77614 0 8.5 0H7.5ZM6.5 14C6.22386 14 6 14.2239 6 14.5C6 15.3284 6.67157 16 7.5 16H8.5C9.32843 16 10 15.3284 10 14.5C10 14.2239 9.77614 14 9.5 14H6.5Z"
+                              fill="currentColor" fill-opacity="0.5" class="bell" />
+                          </g>
+                        </g>
+                        <defs>
+                          <clipPath id="clip0_49_14">
+                            <rect width="16" height="16" fill="currentColor" />
+                          </clipPath>
+                        </defs>
+                      </svg>
+                    </span>
+                    <span data-l10n-id="quickSettings-audio" role="counter"></span>
                   </a>
                 </li>
                 <li>
@@ -315,11 +412,25 @@
                     <span data-l10n-id="quickSettings-flashlight"></span>
                   </a>
                 </li>
-
-                <!-- <li><a href="#" id="quick-settings-focus-mode" data-icon="moon" data-l10n-id="quickSettings-focusMode"></a></li>
-                <li><a href="#" id="quick-settings-bike-mode" data-icon="airplane" data-l10n-id="quickSettings-bikeMode"></a></li>
-                <li><a href="#" id="quick-settings-dark-mode" data-icon="settings-brightness" data-l10n-id="quickSettings-darkMode"></a></li>
-                <li><a href="#" id="quick-settings-warm-colors" data-icon="accessibility" data-l10n-id="quickSettings-warmColors"></a></li>
+                <li>
+                  <a href="#" id="quick-settings-dark-mode">
+                    <span data-icon="dark-mode"></span>
+                    <span data-l10n-id="quickSettings-darkMode"></span>
+                  </a>
+                </li>
+                <li>
+                  <a href="#" id="quick-settings-bike-mode">
+                    <span data-icon="bike-mode"></span>
+                    <span data-l10n-id="quickSettings-bikeMode"></span>
+                  </a>
+                </li>
+                <li>
+                  <a href="#" id="quick-settings-cast">
+                    <span data-icon="cast"></span>
+                    <span data-l10n-id="quickSettings-cast"></span>
+                  </a>
+                </li>
+                <!-- <li><a href="#" id="quick-settings-warm-colors" data-icon="accessibility" data-l10n-id="quickSettings-warmColors"></a></li>
                 <li><a href="#" id="quick-settings-cast" data-icon="cast" data-l10n-id="quickSettings-cast"></a></li> -->
               </ul>
               <div id="brightness">
@@ -334,6 +445,7 @@
             <div id="devices">
               <header>
                 <h1>Devices</h1>
+                <button id="devices-reload-button" data-icon="reload"></button>
                 <button data-icon="add"></button>
               </header>
               <div id="devices-list"></div>
@@ -420,90 +532,138 @@
 
     <div id="modal-dialog" data-z-index-layer="modal-dialogs">
       <div id="modal-dialog-alert">
-        <section class="container">
-          <div class="content">
-            <div class="title"></div>
-            <div class="detail"></div>
-            <form action="">
-              <div class="pack-checkbox">
-                <label for="modal-dialog-alert-block">Don't show this again</label>
-                <span>
-                  <input type="checkbox" id="modal-dialog-alert-block">
-                </span>
-              </div>
-            </form>
-          </div>
-          <menu class="actions">
+        <form action="" role="dialog" data-type="confirm">
+          <section>
+            <h1 class="title"></h1>
+            <p class="detail"></p>
+          </section>
+          <menu>
             <button class="recommend" data-l10n-id="ok"></button>
           </menu>
-        </section>
+        </form>
       </div>
 
       <div id="modal-dialog-confirm">
-        <section class="container">
-          <div class="content">
-            <div class="title"></div>
-            <div class="detail"></div>
-          </div>
-          <menu class="actions">
+        <form action="" role="dialog" data-type="confirm">
+          <section>
+            <h1 class="title"></h1>
+            <p class="detail"></p>
+          </section>
+          <menu>
             <button class="cancel" data-l10n-id="cancel"></button>
             <button class="recommend" data-l10n-id="confirm"></button>
           </menu>
-        </section>
+        </form>
       </div>
 
       <div id="modal-dialog-prompt">
-        <section class="container">
-          <div class="content">
-            <div class="title"></div>
-            <div class="detail"></div>
-            <form action="">
-              <input type="text" name="" id="" class="inputbox">
-            </form>
-          </div>
-          <menu class="actions">
+        <form action="" role="dialog" data-type="confirm">
+          <section>
+            <h1 class="title"></h1>
+            <p class="detail"></p>
+            <input type="text" name="" id="" class="inputbox">
+          </section>
+          <menu>
             <button class="cancel" data-l10n-id="cancel"></button>
             <button class="recommend" data-l10n-id="confirm"></button>
           </menu>
-        </section>
+        </form>
       </div>
 
       <div id="modal-dialog-permission-request">
-        <section class="container">
-          <div class="content">
-            <div class="title"></div>
-            <div class="detail"></div>
-            <form action="">
-              <div class="pack-radio">
-                <label for="modal-dialog-permission-request-constant">Ask Everytime</label>
-                <span>
-                  <input type="radio" name="permission-request-radios" id="modal-dialog-permission-request-constant">
-                </span>
-              </div>
-              <div class="pack-radio">
-                <label for="modal-dialog-permission-request-once">Never ask again</label>
-                <span>
-                  <input type="radio" name="permission-request-radios" id="modal-dialog-permission-request-once">
-                </span>
-              </div>
-            </form>
-          </div>
-          <menu class="actions">
+        <form action="" role="dialog" data-type="confirm">
+          <section>
+            <h1 class="title"></h1>
+            <p class="detail"></p>
+          </section>
+          <menu>
             <button class="cancel" data-l10n-id="cancel"></button>
             <button class="recommend" data-l10n-id="confirm"></button>
           </menu>
-        </section>
+        </form>
+      </div>
+
+      <div id="modal-dialog-value-selector">
+        <form action="" role="dialog" data-type="value-selector">
+          <header>
+            <h1 data-l10n-id="valueSelector"></h1>
+          </header>
+          <ul id="modal-dialog-value-selector-list"></ul>
+          <menu>
+            <button class="cancel" data-l10n-id="cancel"></button>
+            <button class="recommend" data-l10n-id="select"></button>
+          </menu>
+        </form>
+      </div>
+
+      <div id="modal-dialog-greetings">
+        <form action="" role="dialog" data-type="confirm">
+          <header>
+            <img src="" alt="" class="artwork">
+          </header>
+          <section>
+            <h1 class="title"></h1>
+            <p class="detail"></p>
+          </section>
+          <menu>
+            <button class="recommend" data-l10n-id="confirm"></button>
+          </menu>
+        </form>
+      </div>
+
+      <div id="modal-dialog-patch-logs">
+        <form action="" role="dialog" data-type="object">
+          <header>
+            <h1 data-l10n-id="patchLogs"></h1>
+          </header>
+          <section>
+            <img src="" alt="" class="artwork">
+
+            <ul></ul>
+          </section>
+          <menu>
+            <button class="recommend" data-l10n-id="confirm"></button>
+          </menu>
+        </form>
       </div>
     </div>
 
-    <div id="login-ui" class="card-panel" data-z-index-layer="card-panel">
+    <section id="share" role="card" data-z-index-layer="card-panel">
+      <div class="card">
+        <div class="handle"></div>
+        <div class="content">
+          <header class="share-header">
+            <div class="icon-holder">
+              <img src="" alt="" id="share-header-icon">
+            </div>
+            <div class="text-holder">
+              <h1 id="share-header-name"></h1>
+              <p id="share-header-size"></p>
+              <p id="share-header-type"></p>
+            </div>
+          </header>
+
+          <div class="share-devices">
+            <header data-l10n-id="share-devices"></header>
+            <ul id="share-devices-list"></ul>
+          </div>
+
+          <div class="share-apps">
+            <header data-l10n-id="share-apps"></header>
+            <ul id="share-apps-list"></ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="login-ui" role="card" data-z-index-layer="card-panel">
       <div class="card">
         <div class="handle"></div>
         <div class="content">
           <webview src="" id="login-ui-browser" class="browser"></webview>
         </div>
       </div>
-    </div>
+    </section>
 
     <div id="software-buttons" data-z-index-layer="software-buttons">
       <div class="mobile">
@@ -513,7 +673,10 @@
       </div>
       <div class="desktop">
         <button id="software-launcher-button"></button>
-        <button id="software-search-button"></button>
+        <button id="software-search-button">
+          <span data-icon="search"></span>
+          <span data-l10n-id="search"></span>
+        </button>
         <button id="software-cards-view-button"></button>
         <button id="software-dashboard-button"></button>
       </div>
@@ -523,7 +686,12 @@
 
     <div id="launcher" data-z-index-layer="launcher">
       <div class="header">
-        <div id="launcher-search" data-l10n-id="type-here-to-search"></div>
+        <form action="" id="launcher-search" class="bb-search">
+          <input type="text" name="" id="" data-l10n-id="type-here-to-search">
+          <button data-icon="mic"></button>
+          <button type="reset" data-icon="close"></button>
+          <button type="submit" data-icon="search"></button>
+        </form>
         <button id="launcher-maximize-button" data-icon="fullscreen"></button>
       </div>
 
@@ -552,7 +720,8 @@
           <ul id="launcher-shortcuts-menu-options"></ul>
           <ul>
             <li id="launcher-shortcuts-edit-button" data-icon="edit" data-l10n-id="launcherShortcuts-edit"></li>
-            <li id="launcher-shortcuts-uninstall-button" data-icon="delete" data-l10n-id="launcherShortcuts-uninstall"></li>
+            <li id="launcher-shortcuts-uninstall-button" data-icon="delete" data-l10n-id="launcherShortcuts-uninstall">
+            </li>
           </ul>
         </div>
       </div>
@@ -605,7 +774,7 @@
 
       <div id="drag-and-drop"></div>
 
-      <div id="snackbar" class="snackbar hidden">
+      <div id="snackbar" class="bb-snackbar hidden">
         <div id="snackbar-label" class="label"></div>
       </div>
 
@@ -618,10 +787,8 @@
       <div id="text-selection-gripper-start"></div>
       <div id="text-selection-gripper-end"></div>
 
-      <div id="context-menu">
-        <div id="context-menu-content">
-          <div id="context-menu-content-items"></div>
-        </div>
+      <div id="context-menu" class="bb-menu">
+        <ul id="context-menu-content-items"></ul>
       </div>
 
       <div id="title-tooltip">
@@ -634,6 +801,12 @@
     <div id="left-panel" data-z-index-layer="gesture-panel"></div>
     <div id="right-panel" data-z-index-layer="gesture-panel"></div>
     <div id="bottom-panel" data-z-index-layer="gesture-panel"></div>
+  </div>
+  <div id="frimware" class="screen">
+    <div id="charging-battery">
+      <canvas id="charging-battery-canvas"></canvas>
+      <span id="charging-battery-icon" data-icon="battery-charging"></span>
+    </div>
   </div>
 </body>
 

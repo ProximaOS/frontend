@@ -1,0 +1,10 @@
+.featurephone,
+.quertyphone {
+  --statusbar-padding-left: 1.5rem;
+  --statusbar-padding-right: 1.5rem;
+}
+
+.featurephone #bottom-panel,
+.quertyphone #bottom-panel {
+  display: none;
+}

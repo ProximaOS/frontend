@@ -1,0 +1,24 @@
+{
+  "version": "1.0",
+  "name": "Weather",
+  "long_name": "Orchid Weather",
+  "description": "Check your weather forecast",
+  "launch_path": "/index.html",
+  "icons": {
+    "16": "/style/icons/weather_16.png",
+    "32": "/style/icons/weather_32.png",
+    "48": "/style/icons/weather_48.png",
+    "64": "/style/icons/weather_64.png",
+    "128": "/style/icons/weather_128.png",
+    "256": "/style/icons/weather_256.png"
+  },
+  "developer": {
+    "name": "Orchid Org.",
+    "url": "https://openorchid.github.io/"
+  },
+  "default_locale": "en",
+  "orientation": "portrait-primary",
+  "permissions": {
+    "nodeintegration": {}
+  }
+}

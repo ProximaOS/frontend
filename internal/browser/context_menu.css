@@ -30,7 +30,7 @@
   transform-origin: top;
   border: solid 1px var(--acrylic-background);
   border-radius: 12px;
-  backdrop-filter: blur(20px) saturate(180%);
+  backdrop-filter: blur(var(--blur-density)) saturate(180%);
   background: var(--acrylic-background-plus, #fff) content-box;
   pointer-events: all;
   transition: transform 0.5s cubic-bezier(0.2, 0.9, 0.1, 1), visibility 0.3s;

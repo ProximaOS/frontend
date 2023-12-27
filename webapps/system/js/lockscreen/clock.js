@@ -21,21 +21,38 @@
       }
 
       const currentTime = new Date();
-      const langCode =
-        L10n.currentLanguage.startsWith('ar')
-          ? 'ar-SA'
-          : L10n.currentLanguage;
+      const langCode = L10n.currentLanguage.startsWith('ar') ? 'ar-SA' : L10n.currentLanguage;
 
-      Counter.increment(
-        this.clockElement,
-        currentTime
+      if (navigator.hardwareConcurrency > 4) {
+        if (navigator.deviceMemory >= 6) {
+          Counter.increment(
+            this.clockElement,
+            currentTime
+              .toLocaleTimeString(langCode, {
+                hour12: this.is12HourFormat,
+                hour: 'numeric',
+                minute: '2-digit'
+              })
+              .split(' ')[0]
+          );
+        } else {
+          this.clockElement.textContent = currentTime
+            .toLocaleTimeString(langCode, {
+              hour12: this.is12HourFormat,
+              hour: 'numeric',
+              minute: '2-digit'
+            })
+            .split(' ')[0];
+        }
+      } else {
+        this.clockElement.textContent = currentTime
           .toLocaleTimeString(langCode, {
             hour12: this.is12HourFormat,
             hour: 'numeric',
             minute: '2-digit'
           })
-          .split(' ')[0]
-      );
+          .split(' ')[0];
+      }
     }
   };
 

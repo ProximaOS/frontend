@@ -7,10 +7,28 @@
     screen: document.getElementById('screen'),
     keyboardContainer: document.getElementById('keyboards'),
 
-    DEFAULT_KEYBOARD: `http://keyboard.localhost:8081/manifest.json`,
+    DEFAULT_KEYBOARD: 'http://keyboard.localhost:8081/manifest.json',
 
     init: function () {
       this.create(this.DEFAULT_KEYBOARD);
+
+      window.addEventListener('keyboardinput', this.handleKeyInput.bind(this));
+    },
+
+    handleKeyInput: function (event) {
+      const data = event.detail;
+
+      const input = {
+        type: data.type,
+        keyCode: data.keyCode || data.value.charCodeAt(0),
+        key: data.value
+      };
+      console.log(input);
+
+      const webview = AppWindow.focusedWindow.querySelector('.browser-container .browser-view.active .webview');
+      if (AppWindow.focusedWindow && webview) {
+        webview.sendInputEvent(input);
+      }
     },
 
     show: function () {

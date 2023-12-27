@@ -4,7 +4,7 @@
   const fs = require('fs');
   const path = require('path');
   const mime = require('mime');
-  const manifests = require('../api/manifest_permissions');
+  const permissions = require('../permissions');
 
   require('dotenv').config();
 
@@ -12,7 +12,7 @@
     bufferFrom: Buffer.from,
 
     setStorageAccess: function (permission, property, value) {
-      manifests.checkPermission(permission).then((result) => {
+      permissions.checkPermission(permission).then((result) => {
         if (result) {
           SDCardManager[property] = value;
         }
@@ -25,13 +25,13 @@
       }
 
       const accessMap = {
-        audio: manifests.checkPermission('device-storage:audio'),
-        books: manifests.checkPermission('device-storage:books'),
-        downloads: manifests.checkPermission('device-storage:downloads'),
-        movies: manifests.checkPermission('device-storage:movies'),
-        music: manifests.checkPermission('device-storage:music'),
-        others: manifests.checkPermission('device-storage:others'),
-        photos: manifests.checkPermission('device-storage:photoso')
+        audio: permissions.checkPermission('device-storage:audio'),
+        books: permissions.checkPermission('device-storage:books'),
+        downloads: permissions.checkPermission('device-storage:downloads'),
+        movies: permissions.checkPermission('device-storage:movies'),
+        music: permissions.checkPermission('device-storage:music'),
+        others: permissions.checkPermission('device-storage:others'),
+        photos: permissions.checkPermission('device-storage:photoso')
       };
 
       for (const category in accessMap) {
@@ -111,7 +111,7 @@
       });
     },
 
-    getFileStats: function (filePath) {
+    getStats: function (filePath) {
       if (!SDCardManager.meetsPermissions(filePath)) {
         return;
       }

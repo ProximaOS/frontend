@@ -3,6 +3,7 @@
 
   const CardsView = {
     screen: document.getElementById('screen'),
+    wallpapersContainer: document.getElementById('wallpapers'),
     windowContainer: document.getElementById('windows'),
 
     element: document.getElementById('cards-view'),
@@ -29,25 +30,23 @@
 
     show: function () {
       this.isVisible = true;
-      this.element.classList.add('visible');
-      this.screen.classList.add('cards-view-visible');
-      this.cardsContainer.innerHTML = '';
 
       if ('MusicController' in window) {
-        MusicController.applyMuffleEffect();
+        // MusicController.applyMuffleEffect();
       }
-
       CardsView.element.style.setProperty('--aspect-ratio', `${window.innerWidth} / ${window.innerHeight}`);
 
-      const windows = this.windowContainer.querySelectorAll('.appframe:not(#homescreen)');
-      for (let index = 0; index < windows.length; index++) {
-        const appWindow = windows[index];
-        this.createCard(index, appWindow.dataset.manifestUrl, appWindow, appWindow.querySelector('.browser-view.active .browser'));
-
-        if ('Transitions' in window && AppWindow.focusedWindow && this.targetPreviewElement) {
-          Transitions.scale(AppWindow.focusedWindow, this.targetPreviewElement, true);
+      const runningWebapps = Webapps.runningWebapps;
+      this.cardsContainer.innerHTML = '';
+      const fragment = document.createDocumentFragment();
+      for (let index = 0, length = runningWebapps.length; index < length; index++) {
+        const runningWebapp = runningWebapps[index];
+        if (runningWebapp.namespaceID === 'homescreen') {
+          continue;
         }
+        this.createCard(runningWebapp, index - 1, fragment);
       }
+      this.cardsContainer.appendChild(fragment);
     },
 
     hide: function () {
@@ -59,7 +58,7 @@
       this.screen.classList.remove('cards-view-visible');
 
       if ('MusicController' in window) {
-        MusicController.disableMuffleEffect();
+        // MusicController.disableMuffleEffect();
       }
 
       this.element.style.setProperty('--offset-y', null);
@@ -68,41 +67,42 @@
       if ('Transitions' in window && this.targetPreviewElement && AppWindow.focusedWindow) {
         Transitions.scale(this.targetPreviewElement, AppWindow.focusedWindow);
       }
+
+      this.wallpapersContainer.classList.remove('homescreen-to-cards-view');
+      this.wallpapersContainer.style.setProperty('--motion-progress', null);
     },
 
-    createCard: async function (index, manifestUrl, appWindow, webview) {
+    createCard: async function (runningWebapp, index, parentElement = this.cardsContainer) {
       const rtl = document.dir === 'rtl';
       const x = (window.innerWidth * 0.65 + 15) * index;
-
-      const fragment = document.createDocumentFragment();
 
       const cardArea = document.createElement('div');
       cardArea.classList.add('card-area');
       cardArea.style.setProperty('--offset-x', `${rtl ? -x : x}px`);
-      fragment.appendChild(cardArea);
+      parentElement.appendChild(cardArea);
 
-      const focusedWindow = AppWindow.focusedWindow;
-      if (focusedWindow === appWindow) {
+      const focusedWindow = new AppWindow().getFocusedWindow();
+      if (focusedWindow === runningWebapp.appWindow) {
         cardArea.scrollIntoView();
       }
 
       const card = document.createElement('div');
       card.classList.add('card');
-      card.dataset.manifestUrl = manifestUrl;
+      card.dataset.manifestUrl = runningWebapp.manifestUrl;
       card.addEventListener('pointerup', (event) => {
         if (this.isMovingPointer) {
           return;
         }
         event.stopPropagation();
-        AppWindow.focus(appWindow.id);
+        Webapps.getWindowById(runningWebapp.appWindow.namespaceID).focus();
         this.hide();
       });
-      card.addEventListener('mousedown', (event) => this.onPointerDown(event, card, appWindow.id));
-      card.addEventListener('touchstart', (event) => this.onPointerDown(event, card, appWindow.id));
+      card.addEventListener('mousedown', (event) => this.onPointerDown(event, card, runningWebapp.appWindow.namespaceID));
+      card.addEventListener('touchstart', (event) => this.onPointerDown(event, card, runningWebapp.appWindow.namespaceID));
       cardArea.appendChild(card);
 
       let manifest;
-      await fetch(manifestUrl)
+      await fetch(runningWebapp.manifestUrl)
         .then((response) => response.json())
         .then(function (data) {
           manifest = data;
@@ -116,9 +116,11 @@
       preview.classList.add('preview');
       card.appendChild(preview);
 
-      if (manifestUrl === focusedWindow.dataset.manifestUrl) {
+      if (runningWebapp.manifestUrl === focusedWindow.manifestUrl) {
         this.targetPreviewElement = preview;
       }
+
+      const webview = runningWebapp.appWindow.element.querySelector('.browser-container .browser-view.active > .browser');
       DisplayManager.screenshot(webview.getWebContentsId()).then((data) => {
         preview.src = data;
       });
@@ -135,13 +137,13 @@
       titlebar.appendChild(icon);
 
       const entries = Object.entries(manifest.icons);
-      for (let index = 0; index < entries.length; index++) {
+      for (let index = 0, length = entries.length; index < length; index++) {
         const entry = entries[index];
 
         if (entry[0] >= this.APP_ICON_SIZE) {
           continue;
         }
-        const url = new URL(manifestUrl);
+        const url = new URL(runningWebapp.manifestUrl);
         icon.src = url.origin + entry[1];
       }
 
@@ -154,7 +156,13 @@
       name.textContent = manifest.name;
       titles.appendChild(name);
 
-      this.cardsContainer.appendChild(fragment);
+      if (index === 0) {
+        this.element.classList.add('visible');
+        this.screen.classList.add('cards-view-visible');
+        if ('Transitions' in window && focusedWindow.element && this.targetPreviewElement) {
+          Transitions.scale(focusedWindow.element, this.targetPreviewElement, true);
+        }
+      }
     },
 
     handleToggleButton: function (event) {
@@ -200,6 +208,7 @@
         event.preventDefault();
         const currentYPosition = event.clientY || event.touches[0].clientY;
         const distanceY = currentYPosition - this.startY;
+        this.isMovingPointer = false;
 
         card.classList.add('transitioning');
         card.addEventListener('transitionend', () => card.classList.remove('transitioning'));
@@ -210,7 +219,7 @@
             card.style.setProperty('--card-opacity', 1);
             card.style.setProperty('--card-motion-progress', 0);
           } else {
-            AppWindow.close(windowId, true);
+            Webapps.getWindowById(windowId).close(true);
             card.style.setProperty('--card-opacity', 0);
             card.style.setProperty('--card-motion-progress', '-100%');
             card.addEventListener('transitionend', () => {
@@ -218,7 +227,8 @@
 
               if (this.cardsContainer.childNodes.length < 1) {
                 this.hide();
-                AppWindow.focus(AppWindow.homescreenElement.id);
+                Webapps.getWindowById('homescreen').focus();
+                Snackbar.notify(L10n.get('cardsView-cleared'));
               }
             });
           }

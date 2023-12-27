@@ -1,17 +1,17 @@
 <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
 <rect width="16" height="16" rx="4" fill="white"/>
-<rect x="6" y="3" width="8" height="8" rx="1" fill="url(#paint0_linear_26_350)"/>
-<g filter="url(#filter0_b_26_350)">
-<rect x="2" y="5" width="8" height="8" rx="1" fill="#B0DDFF" fill-opacity="0.6"/>
+<rect x="6" y="3" width="8" height="8" rx="2" fill="url(#paint0_linear_91_3079)"/>
+<g filter="url(#filter0_b_91_3079)">
+<rect x="2" y="5" width="8" height="8" rx="2" fill="#B0DDFF" fill-opacity="0.6"/>
 </g>
 <defs>
-<filter id="filter0_b_26_350" x="0" y="3" width="12" height="12" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<filter id="filter0_b_91_3079" x="1" y="4" width="10" height="10" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
 <feFlood flood-opacity="0" result="BackgroundImageFix"/>
-<feGaussianBlur in="BackgroundImageFix" stdDeviation="1"/>
-<feComposite in2="SourceAlpha" operator="in" result="effect1_backgroundBlur_26_350"/>
-<feBlend mode="normal" in="SourceGraphic" in2="effect1_backgroundBlur_26_350" result="shape"/>
+<feGaussianBlur in="BackgroundImageFix" stdDeviation="0.5"/>
+<feComposite in2="SourceAlpha" operator="in" result="effect1_backgroundBlur_91_3079"/>
+<feBlend mode="normal" in="SourceGraphic" in2="effect1_backgroundBlur_91_3079" result="shape"/>
 </filter>
-<linearGradient id="paint0_linear_26_350" x1="10" y1="3" x2="10" y2="11" gradientUnits="userSpaceOnUse">
+<linearGradient id="paint0_linear_91_3079" x1="10" y1="3" x2="10" y2="11" gradientUnits="userSpaceOnUse">
 <stop stop-color="#00DDFF"/>
 <stop offset="1" stop-color="#0061E0"/>
 </linearGradient>

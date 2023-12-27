@@ -20,8 +20,6 @@
     "url": "https://openorchid.github.io/"
   },
   "artwork": [],
-  "background_color": "#f0f6ff",
-  "theme_color": "#0061e0",
   "permissions": {
     "environment": {},
     "tasks-manage": {},

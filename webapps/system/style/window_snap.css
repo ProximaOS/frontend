@@ -1,0 +1,61 @@
+#window-snap {
+  visibility: hidden;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: calc(100% - var(--dock-height) - 1rem);
+  opacity: 0;
+  pointer-events: none;
+  transition: all 0.5s cubic-bezier(1, 0.8, 0, 1);
+}
+
+#window-snap.top-left {
+  visibility: visible;
+  width: 50%;
+  height: calc(50% - var(--dock-height) - 1rem);
+  opacity: 1;
+}
+
+#window-snap.left {
+  visibility: visible;
+  width: 50%;
+  opacity: 1;
+}
+
+#window-snap.top-right {
+  visibility: visible;
+  left: 50%;
+  width: 50%;
+  height: calc(50% - var(--dock-height) - 1rem);
+  opacity: 1;
+}
+
+#window-snap.right {
+  visibility: visible;
+  left: 50%;
+  width: 50%;
+  opacity: 1;
+}
+
+#window-snap.cover {
+  visibility: visible;
+  opacity: 1;
+}
+
+#window-snap::after {
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+  width: calc(100% - 2rem);
+  height: calc(100% - 2rem);
+  border-radius: 1.5rem;
+  background-color: var(--translucent-background-plus);
+  box-shadow: 0 0.8rem 2.4rem rgba(0, 0, 0, 0.2);
+  content: '';
+}
+
+#screen.gpu-capable #window-snap::after {
+  backdrop-filter: blur(20px) saturate(180%);
+  background-color: var(--acrylic-background-plus);
+}

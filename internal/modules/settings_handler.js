@@ -6,20 +6,43 @@
   const SettingsHandler = {
     appElement: document.querySelector('[role="app"]'),
 
-    settings: ['general.lang.code', 'general.software_buttons.enabled', 'homescreen.accent_color.rgb', 'video.wallpaper.url'],
+    deviceType: '',
+
+    settings: ['general.lang.code', 'general.software_buttons.enabled', 'homescreen.accent_color.rgb', 'video.red_light_point.enabled', 'video.wallpaper.url'],
     SETTINGS_LANGUAGE: 0,
     SETTINGS_SOFTWARE_BUTTONS: 1,
     SETTINGS_ACCENT_COLOR: 2,
-    SETTINGS_WALLPAPER_IMAGE: 3,
+    SETTINGS_RED_LIGHT_POINT: 3,
+    SETTINGS_WALLPAPER_IMAGE: 4,
 
     init: function () {
+      if (navigator.userAgent.includes('Mobile') && !navigator.userAgent.includes('Featurephone') && !navigator.userAgent.includes('Qwertyphone')) {
+        this.deviceType = 'mobile';
+      } else if (navigator.userAgent.includes('Smart TV')) {
+        this.deviceType = 'smart-tv';
+      } else if (navigator.userAgent.includes('VR')) {
+        this.deviceType = 'vr';
+      } else if (navigator.userAgent.includes('Homepad')) {
+        this.deviceType = 'homepad';
+      } else if (navigator.userAgent.includes('Wear')) {
+        this.deviceType = 'wear';
+      } else if (navigator.userAgent.includes('Mobile') && navigator.userAgent.includes('Featurephone')) {
+        this.deviceType = 'featurephone';
+      } else if (navigator.userAgent.includes('Mobile') && navigator.userAgent.includes('Qwertyphone')) {
+        this.deviceType = 'qwertyphone';
+      } else {
+        this.deviceType = 'desktop';
+      }
+
       _Settings.getValue(this.settings[this.SETTINGS_WALLPAPER_IMAGE]).then(this.handleWallpaperAccent.bind(this));
       _Settings.getValue(this.settings[this.SETTINGS_ACCENT_COLOR]).then(this.handleAccentColor.bind(this));
       _Settings.getValue(this.settings[this.SETTINGS_SOFTWARE_BUTTONS]).then(this.handleSoftwareButtons.bind(this));
+      _Settings.getValue(this.settings[this.SETTINGS_RED_LIGHT_POINT]).then(this.handleRedLightPoint.bind(this));
 
       _Settings.addObserver(this.settings[this.SETTINGS_WALLPAPER_IMAGE], this.handleWallpaperAccent.bind(this));
       _Settings.addObserver(this.settings[this.SETTINGS_ACCENT_COLOR], this.handleAccentColor.bind(this));
       _Settings.addObserver(this.settings[this.SETTINGS_SOFTWARE_BUTTONS], this.handleSoftwareButtons.bind(this));
+      _Settings.addObserver(this.settings[this.SETTINGS_RED_LIGHT_POINT], this.handleRedLightPoint.bind(this));
 
       window.addEventListener('localized', () => {
         _Settings.getValue(this.settings[this.SETTINGS_LANGUAGE]).then(this.handleLanguage.bind(this));
@@ -210,17 +233,30 @@
       if (!this.appElement || location.protocol === 'orchid:') {
         return;
       }
-      this.appElement.style.setProperty('--statusbar-height', '4rem');
 
-      if (navigator.userAgent.includes('Desktop') || value) {
-        this.appElement.style.setProperty('--software-buttons-height', '4rem');
+      if (this.deviceType === 'featurephone' || this.deviceType === 'qwertyphone') {
+        this.appElement.style.setProperty('--statusbar-height', '3.2rem');
       } else {
-        if (location.origin.includes(`homescreen.localhost:${location.port}`)) {
-          this.appElement.style.setProperty('--software-buttons-height', '1rem');
+        this.appElement.style.setProperty('--statusbar-height', '4rem');
+      }
+
+      if (this.deviceType === 'featurephone' || this.deviceType === 'qwertyphone') {
+        this.appElement.style.setProperty('--software-buttons-height', '0rem');
+      } else {
+        if (value) {
+          this.appElement.style.setProperty('--software-buttons-height', '4rem');
         } else {
-          this.appElement.style.setProperty('--software-buttons-height', '2.5rem');
+          if (location.origin.includes(`homescreen.localhost:${location.port}`)) {
+            this.appElement.style.setProperty('--software-buttons-height', '1rem');
+          } else {
+            this.appElement.style.setProperty('--software-buttons-height', '2.5rem');
+          }
         }
       }
+    },
+
+    handleRedLightPoint: function (value) {
+      document.documentElement.dataset.redLightPoint = value;
     }
   };
 

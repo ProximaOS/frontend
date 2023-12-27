@@ -132,7 +132,6 @@ html[dir='rtl'] .statusbar-icons > .right {
   visibility: hidden;
   margin: 0 var(--hide-margin, -1rem);
   transform: scale(0.2);
-  filter: blur(1rem);
   opacity: 0;
   transition: all 0.3s ease;
 }
@@ -184,8 +183,11 @@ html[dir='rtl'] .statusbar-icons > .right {
   font-size: 1.8rem;
 }
 
-#screen.desktop #statusbar .timedate {
+#statusbar .timedate {
   display: flex;
+}
+
+#screen.desktop #statusbar .timedate {
   flex-direction: column;
   align-items: end;
   height: 2.8rem;
@@ -205,7 +207,6 @@ html[dir='rtl'] .statusbar-icons > .right {
   padding-inline-start: 0.2rem;
   transform: scale(0.2);
   font-size: 1.4rem;
-  filter: blur(1rem);
   opacity: 0;
 }
 
@@ -213,7 +214,6 @@ html[dir='rtl'] .statusbar-icons > .right {
   visibility: visible;
   margin: 0 calc(var(--hide-margin, -1rem) * (1 - var(--motion-progress, 0)));
   transform: scale(calc(0.2 + (0.8 * var(--motion-progress, 0))));
-  filter: blur(calc(1rem * (1 - var(--motion-progress, 0))));
   opacity: calc(var(--motion-progress, 0) / 2);
   transition: all 0.3s ease;
 }
@@ -258,7 +258,6 @@ html[dir='rtl'] .statusbar-icons > .right {
   padding-inline-start: 0.2rem;
   transform: scale(0.2);
   font-size: 1.4rem;
-  filter: blur(1rem);
   opacity: 0;
 }
 
@@ -266,7 +265,6 @@ html[dir='rtl'] .statusbar-icons > .right {
   visibility: visible;
   margin: 0 calc(var(--hide-margin, -1rem) * (1 - var(--motion-progress, 0)));
   transform: scale(calc(0.2 + (0.8 * var(--motion-progress, 0))));
-  filter: blur(calc(1rem * (1 - var(--motion-progress, 0))));
   opacity: var(--motion-progress, 0);
   transition: all 0.3s ease;
 }

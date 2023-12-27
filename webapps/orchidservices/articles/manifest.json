@@ -1,0 +1,25 @@
+{
+  "version": "1.0",
+  "name": "Articles",
+  "long_name": "Orchid Articles",
+  "description": "Share & post with friends",
+  "launch_path": "/index.html",
+  "icons": {
+    "16": "/style/icons/articles_16.png",
+    "32": "/style/icons/articles_32.png",
+    "48": "/style/icons/articles_48.png",
+    "64": "/style/icons/articles_64.png",
+    "128": "/style/icons/articles_128.png",
+    "256": "/style/icons/articles_256.png"
+  },
+  "developer": {
+    "name": "Orchid Org.",
+    "url": "https://openorchid.github.io/"
+  },
+  "default_locale": "en",
+  "orientation": "portrait-primary",
+  "permissions": {
+    "settings": {}
+  },
+  "display": "immersive"
+}
