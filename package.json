@@ -10,7 +10,7 @@
   "manufacturer": "Orchid",
   "device_model_name": "OROS-DEV2",
   "service_pack_name": "OSCore/5.1",
-  "version": "1.0.108",
+  "version": "1.0.109",
   "api_version": 1,
   "main": "src/main.js",
   "scripts": {

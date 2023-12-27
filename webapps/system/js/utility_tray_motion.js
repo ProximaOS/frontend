@@ -15,8 +15,7 @@
     startY: 0,
     currentY: 0,
     isDragging: false,
-    threshold: 0.5, // Adjust the threshold as desired (0.0 to 1.0)
-    yPosThreshold: window.innerHeight / 2,
+    threshold: 0.25,
     lastProgress: 0,
     currentProgress: 0,
     isVisible: false,
@@ -76,7 +75,7 @@
 
       this.currentY = event.clientY || event.touches[0].clientY;
       const offsetY = this.startY - this.currentY;
-      const maxHeight = this.yPosThreshold;
+      const maxHeight = window.innerHeight * Math.abs(this.lastProgress - this.threshold);
       const progress = (offsetY / maxHeight) * -1;
 
       this.updateMotionProgress(progress); // Update motion element opacity
@@ -85,13 +84,13 @@
     onPointerUp: function (event) {
       this.currentY = event.clientY || event.touches[0].clientY;
       const offsetY = this.startY - this.currentY;
-      const maxHeight = this.yPosThreshold;
+      const maxHeight = window.innerHeight * Math.abs(this.lastProgress - this.threshold);
       let progress = ((offsetY / maxHeight) * -1) / 2;
       progress = this.lastProgress + progress;
 
       progress = Math.min(1, progress); // Limit progress between 0 and 1
 
-      if (progress >= this.threshold) {
+      if (progress >= Math.abs(this.lastProgress - this.threshold)) {
         this.currentProgress = 1;
         this.lastProgress = this.currentProgress;
         this.statusbar.style.setProperty('--motion-progress', 1);
@@ -161,7 +160,7 @@
       this.motionElement.style.setProperty('--overscroll-progress', overflowProgress);
       this.windowContainer.style.setProperty('--motion-progress', motionProgress);
 
-      if (motionProgress <= this.threshold) {
+      if (motionProgress <= Math.abs(this.lastProgress - this.threshold)) {
         this.motionElement.classList.add('fade-out');
         this.motionElement.classList.remove('fade-in');
       } else {
@@ -207,10 +206,10 @@
 
     resetMotionElement: function () {
       const offsetY = this.startY - this.currentY;
-      const maxHeight = this.yPosThreshold;
+      const maxHeight = window.innerHeight * Math.abs(this.lastProgress - this.threshold);
       const progress = 1 - offsetY / maxHeight;
 
-      if (progress >= this.threshold) {
+      if (progress >= Math.abs(this.lastProgress - this.threshold)) {
         this.currentProgress = 0;
         this.statusbar.style.setProperty('--motion-progress', 0);
         this.statusbar.style.setProperty('--overscroll-progress', 0);
