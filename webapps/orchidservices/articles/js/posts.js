@@ -15,17 +15,18 @@
     postText: document.getElementById('post-text'),
 
     init: function () {
-      window.addEventListener('orchidservicesload', this.handleServicesLoad.bind(this));
+      window.addEventListener('orchid-services-ready', this.handleServicesLoad.bind(this));
       this.backButton.addEventListener('click', this.handleBackButton.bind(this));
     },
 
     handleServicesLoad: function () {
-      OrchidServices.list('posts').then((array) => {
+      _os.articles.getRelavantPosts().then((array) => {
+        this.posts.innerHTML = '';
         array.forEach(element => {
           this.populate(element);
         });
       });
-      window.removeEventListener('orchidservicesload', this.handleServicesLoad.bind(this));
+      window.removeEventListener('orchid-services-ready', this.handleServicesLoad.bind(this));
     },
 
     populate: function (data) {
@@ -62,7 +63,7 @@
 
       const date = document.createElement('span');
       date.classList.add('date');
-      date.textContent = new Date(data.time_created).toLocaleDateString(
+      date.textContent = new Date(parseInt(data.time_created)).toLocaleDateString(
         navigator.language,
         {
           year: 'numeric',
@@ -88,9 +89,11 @@
       }
       stats.appendChild(views);
 
-      OrchidServices.get(`profile/${data.publisher_id}`).then((data) => {
-        icon.src = data.profile_picture;
-        username.textContent = data.username;
+      _os.auth.getAvatar(data.publisher_id).then((data) => {
+        icon.src = data;
+      });
+      _os.auth.getUsername(data.publisher_id).then((data) => {
+        username.textContent = data;
       });
 
       const content = document.createElement('div');
@@ -133,12 +136,15 @@
     },
 
     openPost: function (element, data) {
-      Transitions.scale(element, this.postPanel.querySelector('.post'));
+      requestAnimationFrame(() => Transitions.scale(element, this.postPanel.querySelector('.post')));
+
       this.homePanel.classList.remove('visible');
       this.postPanel.classList.add('visible');
+      this.posts.classList.add('hidden');
       this.selectedElement = element;
+      this.selectedElement.classList.add('target');
 
-      this.postDate.textContent = new Date(data.time_created).toLocaleDateString(
+      this.postDate.textContent = new Date(parseInt(data.time_created)).toLocaleDateString(
         navigator.language,
         {
           year: 'numeric',
@@ -151,9 +157,11 @@
       );
       this.postViews.innerText = data.views.length;
 
-      OrchidServices.get(`profile/${data.publisher_id}`).then((data) => {
-        this.postAvatar.src = data.profile_picture;
-        this.postUsername.textContent = data.username;
+      _os.auth.getAvatar(data.publisher_id).then((data) => {
+        this.postAvatar.src = data;
+      });
+      _os.auth.getUsername(data.publisher_id).then((data) => {
+        this.postUsername.textContent = data;
       });
 
       this.postText.innerText = data.content;
@@ -163,6 +171,9 @@
       Transitions.scale(this.postPanel.querySelector('.post'), this.selectedElement);
       this.homePanel.classList.add('visible');
       this.postPanel.classList.remove('visible');
+      this.posts.classList.remove('hidden');
+
+      this.selectedElement.classList.remove('target');
     }
   };
 

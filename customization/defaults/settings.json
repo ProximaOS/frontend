@@ -29,7 +29,7 @@
   "video.dark_mode.enabled": false,
   "video.warm_colors.enabled": false,
   "video.reader_mode.enabled": false,
-  "video.red_light_point.enabled": true,
+  "video.red_light_point.enabled": false,
   "video.timeout_duration": 15000,
   "homescreen.manifest_url.desktop": {
     "url": "http://system-extended.localhost:8081/manifest.json",

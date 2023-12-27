@@ -122,12 +122,12 @@
         return match;
       });
 
-      this.apps = this.apps.filter((obj) => {
-        if (typeof obj.manifestUrl === 'string') {
-          return !this.DEFAULT_DOCK_ICONS.some((dockIcon) => dockIcon === obj.manifestUrl);
-        }
-        return false;
-      });
+      // this.apps = this.apps.filter((obj) => {
+      //   if (typeof obj.manifestUrl === 'string') {
+      //     return !this.DEFAULT_DOCK_ICONS.some((dockIcon) => dockIcon === obj.manifestUrl);
+      //   }
+      //   return false;
+      // });
       console.log(this.dockApps, this.apps);
 
       let index = 0;

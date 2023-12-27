@@ -31,7 +31,7 @@
     },
 
     handleSubmitButtonClick: function (event) {
-      OrchidServices.articles.post(this.dialogAudience.value, this.dialogInput.value);
+      _os.articles.post(this.dialogAudience.value, this.dialogInput.value);
       this.dialog.classList.remove('visible');
     }
   };

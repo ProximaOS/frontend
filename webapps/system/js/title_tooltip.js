@@ -29,19 +29,21 @@
         .querySelector('.appframe.active .browser-container .browser-view.active > .browser')
         .getBoundingClientRect();
 
-      if (x > window.innerWidth - (elementBox.width + 10)) {
-        x = window.innerWidth - (elementBox.width + 10);
-      }
+      requestAnimationFrame(() => {
+        if (x > window.innerWidth - (elementBox.width + 10)) {
+          x = window.innerWidth - (elementBox.width + 10);
+        }
 
-      this.element.style.width = this.label.scrollWidth + 'px';
-      this.element.style.height = this.label.scrollHeight + 'px';
-      if (originType === 'webapp') {
-        this.element.style.left = `${webviewBox.left + x}px`;
-        this.element.style.top = `${webviewBox.top + 24}px`;
-      } else {
-        this.element.style.left = `${x}px`;
-        this.element.style.top = `${y + 24}px`;
-      }
+        this.element.style.width = this.label.scrollWidth + 'px';
+        this.element.style.height = this.label.scrollHeight + 'px';
+        if (originType === 'webapp') {
+          this.element.style.left = `${webviewBox.left + x}px`;
+          this.element.style.top = `${webviewBox.top + 24}px`;
+        } else {
+          this.element.style.left = `${x}px`;
+          this.element.style.top = `${y + 24}px`;
+        }
+      });
     },
 
     hide: function () {

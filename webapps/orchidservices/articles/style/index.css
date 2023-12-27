@@ -6,6 +6,33 @@
   height: calc(100% - 8rem);
 }
 
+@media screen and (min-width: 1024px) {
+  #views {
+    width: calc(100% - 10vw);
+    margin: 0 5vw;
+  }
+}
+
+#home,
+#post {
+  transform: translateX(0) !important;
+  transition: opacity 0.5s ease, visibility 0.5s ease;
+}
+
+#home > .content > *:not(.scroll-content, .scrollbar-track),
+#post > .content > *:not(.scroll-content, .scrollbar-track),
+#home > .content > .scroll-content > *,
+#post > .content > .scroll-content > * {
+  visibility: unset !important;
+  transform: translateY(0) !important;
+  opacity: 1 !important;
+  transition: none !important;
+}
+
+#post .post::after {
+  display: none;
+}
+
 #post-button {
   display: block;
   width: calc(100% - 3rem);

@@ -1,84 +1,114 @@
 .posts {
-
+  position: relative;
+  height: 100%;
+  perspective: 100vh;
 }
 
 .post {
-  width: calc(100% - 3rem);
-  max-width: calc(var(--safezone-width) - 3rem);
-  margin: 0 auto 1.5rem;
-  background-color: var(--background-plus);
-  border-radius: 1.5rem;
-  padding: 1rem 1.5rem;
   box-sizing: border-box;
   display: flex;
+  position: relative;
   flex-direction: column;
+  width: calc(100% - 3rem);
+  max-width: calc(var(--safezone-width) - 3rem);
+  margin: 0 auto 1rem;
+  padding: 1rem 1.5rem;
   gap: 1rem;
+  border-radius: 1.5rem;
+  background-color: var(--background-plus);
+  transition: transform 0.5s ease;
+}
+
+.post::after {
+  position: absolute;
+  top: 0.5rem;
+  left: 0.5rem;
+  width: calc(100% - 1rem);
+  height: calc(100% - 1rem);
+  border-radius: 1rem;
+  content: '';
+  pointer-events: none;
+  transition: background-color 0.3s ease;
+}
+
+.post:hover::after {
+  background-color: var(--item-hover);
+  transition: background-color 0.1s ease;
+}
+
+.post:active::after {
+  background-color: var(--item-active);
+  transition: background-color 0.1s ease;
+}
+
+.posts.hidden .post:not(.target) {
+  transform: translateZ(-10rem);
 }
 
 .post .header {
+  display: flex;
   width: 100%;
   height: 4.2rem;
-  display: flex;
   gap: 1rem;
 }
 
 .post .header .icon-holder {
+  flex-shrink: 0;
   width: 4.2rem;
   height: 4.2rem;
-  flex-shrink: 0;
 }
 
 .post .header .icon-holder > img {
   width: 4.2rem;
   height: 4.2rem;
-  background-color: #858585;
-  border-radius: 50%;
-  object-fit: cover;
   overflow: hidden;
+  object-fit: cover;
+  border-radius: 50%;
+  background-color: #858585;
 }
 
 .post .header .text-holder {
+  display: flex;
+  flex-grow: 1;
+  flex-direction: column;
   width: 100%;
   height: 4.2rem;
-  flex-grow: 1;
-  display: flex;
-  flex-direction: column;
 }
 
 .post .header .text-holder > .username {
   width: 100%;
   height: 2.2rem;
-  line-height: 2.2rem;
   color: var(--text-color);
-  font-size: 1.6rem;
   font-weight: normal;
+  font-size: 1.6rem;
+  line-height: 2.2rem;
 }
 
 .post .header .text-holder > .stats {
-  width: 100%;
-  height: 2rem;
-  line-height: 2rem;
-  color: var(--text-color-faded);
-  font-size: 1.4rem;
-  font-weight: normal;
   display: flex;
   align-items: center;
+  width: 100%;
+  height: 2rem;
+  color: var(--text-color-faded);
+  font-weight: normal;
+  font-size: 1.4rem;
+  line-height: 2rem;
 }
 
 .post .header .text-holder > .stats > .separator {
   width: 0.4rem;
   height: 0.4rem;
+  margin: 0 0.5rem;
   border-radius: 50%;
   background-color: var(--text-color);
-  margin: 0 0.5rem;
 }
 
 .post .content .text {
   width: 100%;
-  line-height: 2.2rem;
   color: var(--text-color);
-  font-size: 1.6rem;
   font-weight: normal;
+  font-size: 1.6rem;
+  line-height: 2.2rem;
 }
 
 .post .content .text p,
@@ -100,13 +130,13 @@
 }
 
 .post .options > button {
+  flex-grow: 1;
   width: 100%;
   height: 4rem;
-  line-height: 4rem;
-  flex-grow: 1;
-  background-color: transparent;
   margin: 0;
   padding: 0 1.5rem;
+  background-color: transparent;
+  line-height: 4rem;
 }
 
 .post .options > button[data-icon]::before {
